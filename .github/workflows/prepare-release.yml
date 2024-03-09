@@ -41,11 +41,12 @@ jobs:
 
       - name: Create Release Tag with Notes
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: v${{ inputs.releaseVersion }}
-          release_name: v${{ inputs.releaseVersion }}
+          commit: [chore] Release Preparation v${{ inputs.releaseVersion }}
+          generateReleaseNotes: true
+          tag: v${{ inputs.releaseVersion }}
+          name: v${{ inputs.releaseVersion }}
           draft: false
           prerelease: false
+          token: ${{ secrets.RELEASE_TOKEN }}
