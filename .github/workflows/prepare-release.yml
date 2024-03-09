@@ -19,31 +19,41 @@ on:
 
 jobs:
   build:
-  
+
     runs-on: ubuntu-latest
 
     steps:
-    
-    - uses: actions/checkout@v3
-    
-    - name: Set up Java
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-        
-    - name: Build with Maven
-      run: mvn -B verify --file pom.xml
-      
-    - name: Set Release Version
-      run: mvn versions:set -DnewVersion=$RELEASE_VERSION -DgenerateBackupPoms=false
-    
-    - name: Create git tag
-      run: |
+
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B verify --file pom.xml
+
+      - name: Set Release Version
+        run: mvn versions:set -DnewVersion=$RELEASE_VERSION -DgenerateBackupPoms=false
+
+      - name: Create git tag
+        run: |
           git tag $RELEASE_VERSION
-    - name: Push tag to repository
-      run: git push origin $RELEASE_VERSION
+      - name: Push tag to repository
+        run: git push origin $RELEASE_VERSION
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: $RELEASE_VERSION
+          release_name: v$RELEASE_VERSION
+          draft: false
+          prerelease: false
 
     env:
       RELEASE_VERSION: ${{ inputs.tags }}
