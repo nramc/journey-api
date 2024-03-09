@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Package, Release & Deploy
+name: Prepare Release
 
 on:
   workflow_dispatch:
@@ -33,13 +33,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
-        run: mvn -B verify --file pom.xml
-
       - name: Set Release Version
         run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
 
-      - name: Create Release
+      - name: Build with Maven
+        run: mvn -B verify --file pom.xml
+
+      - name: Create Release Tag with Notes
         id: create_release
         uses: actions/create-release@v1
         env:
