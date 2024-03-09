@@ -37,18 +37,19 @@ jobs:
         run: mvn -B verify --file pom.xml
 
       - name: Set Release Version
-        run: mvn versions:set -DnewVersion=$RELEASE_VERSION -DgenerateBackupPoms=false
+        run: mvn -B versions:set -DnewVersion=$RELEASE_VERSION -DgenerateBackupPoms=false
+        env:
+          RELEASE_VERSION: ${{ inputs.tags }}
 
       - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ inputs.tags }}
         with:
           tag_name: $RELEASE_VERSION
           release_name: v$RELEASE_VERSION
           draft: false
           prerelease: false
 
-    env:
-      RELEASE_VERSION: ${{ inputs.tags }}
-    
