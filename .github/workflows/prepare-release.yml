@@ -37,7 +37,7 @@ jobs:
         run: mvn -B verify --file pom.xml
 
       - name: Set Release Version
-        run: mvn -B versions:set -DnewVersion=$RELEASE_VERSION -DgenerateBackupPoms=false
+        run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
         env:
           RELEASE_VERSION: ${{ inputs.releaseVersion }}
 
@@ -48,8 +48,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_VERSION: ${{ inputs.releaseVersion }}
         with:
-          tag_name: $RELEASE_VERSION
-          release_name: v$RELEASE_VERSION
+          tag_name: ${{ inputs.releaseVersion }}
+          release_name: v${{ inputs.releaseVersion }}
           draft: false
           prerelease: false
 
