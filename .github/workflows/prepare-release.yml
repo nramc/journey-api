@@ -40,10 +40,9 @@ jobs:
         run: mvn -B verify --file pom.xml
 
       - name: Create Release Tag with Notes
-        id: create_release
         uses: ncipollo/release-action@v1
         with:
-          commit: [chore] Release Preparation v${{ inputs.releaseVersion }}
+          commit: "[chore] Release Preparation v${{ inputs.releaseVersion }}"
           generateReleaseNotes: true
           tag: v${{ inputs.releaseVersion }}
           name: v${{ inputs.releaseVersion }}
