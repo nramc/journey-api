@@ -38,17 +38,14 @@ jobs:
 
       - name: Set Release Version
         run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
-        env:
-          RELEASE_VERSION: ${{ inputs.releaseVersion }}
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ inputs.releaseVersion }}
         with:
-          tag_name: ${{ inputs.releaseVersion }}
+          tag_name: v${{ inputs.releaseVersion }}
           release_name: v${{ inputs.releaseVersion }}
           draft: false
           prerelease: false
