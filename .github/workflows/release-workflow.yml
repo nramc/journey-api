@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Package and Publish to docker
+name: Build, Package, Publish & Deploy
 
 on:
   push:
