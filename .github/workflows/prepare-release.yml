@@ -15,7 +15,7 @@ on:
         description: 'Release Version'
         required: true
         default: MAJOR.MINOR.PATCH
-        type: text
+        type: string
 
 jobs:
   build:
