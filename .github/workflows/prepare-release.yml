@@ -42,7 +42,7 @@ jobs:
       - name: Create Release Tag with Notes
         uses: ncipollo/release-action@v1
         with:
-          commit: "[chore] Release Preparation v${{ inputs.releaseVersion }}"
+          commit: main
           generateReleaseNotes: true
           tag: v${{ inputs.releaseVersion }}
           name: v${{ inputs.releaseVersion }}
