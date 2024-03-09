@@ -39,12 +39,6 @@ jobs:
       - name: Set Release Version
         run: mvn versions:set -DnewVersion=$RELEASE_VERSION -DgenerateBackupPoms=false
 
-      - name: Create git tag
-        run: |
-          git tag $RELEASE_VERSION
-      - name: Push tag to repository
-        run: git push origin $RELEASE_VERSION
-
       - name: Create Release
         uses: actions/create-release@v1
         env:
