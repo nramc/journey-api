@@ -26,8 +26,6 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Checkout tag
-      run: git checkout ${{github.event.tag_name}}
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
