@@ -39,7 +39,7 @@ jobs:
           git config --global user.name "Deploy Bot"
 
       - name: Set Release Version
-        run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} && versions:commit
+        run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} && mvn -B versions:commit
 
       - name: Prepare Release
         run: |
