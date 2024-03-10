@@ -2,6 +2,10 @@
 spring:
   application:
     name: ${app.name}
+  data:
+    mongodb:
+      database: journey-dev
+      auto-index-creation: true
 
 app:
   name: Journey API
