@@ -39,7 +39,7 @@ jobs:
           git config --global user.name "Deploy Bot"
 
       - name: Prepare Release
-        run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }} -Dpassword=${{ secrets.RELEASE_TOKEN }} -Dusername=${{github.actor}}
+        run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }}
 
       - name: Release
         run: mvn -B release:perform
