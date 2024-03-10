@@ -38,9 +38,6 @@ jobs:
           git config --global user.email "ramachandrannellai@gmail.com"
           git config --global user.name "Deploy Bot"
 
-      - name: Set Release Version
-        run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} && mvn -B versions:commit
-
       - name: Prepare Release
         run: |
           mvn -B -V -DpushChanges=false release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }} -Dpassword=${{ secrets.RELEASE_TOKEN }} -Dusername=${{github.actor}}
