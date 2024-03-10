@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      database: ${DATABASE_NAME}
+      uri: ${MONGODB_CONNECTION_URL}
+
+
