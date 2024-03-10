@@ -1,1 +1,8 @@
 
+spring:
+  application:
+    name: ${app.name}
+
+app:
+  name: Journey API
+  version: '@project.version@'
