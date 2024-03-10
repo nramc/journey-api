@@ -41,9 +41,6 @@ jobs:
       - name: Prepare Release
         run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }}
 
-      - name: Release
-        run: mvn -B release:perform
-
       - name: Create Release Tag with Notes
         uses: ncipollo/release-action@v1
         with:
