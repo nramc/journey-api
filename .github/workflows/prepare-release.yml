@@ -38,10 +38,12 @@ jobs:
           git config --global user.email "ramachandrannellai@gmail.com"
           git config --global user.name "Deploy Bot"
 
+      - name: Set Release Version
+        run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} && versions:commit
+
       - name: Prepare Release
         run: |
           mvn -B -V -DpushChanges=false release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }} -Dpassword=${{ secrets.RELEASE_TOKEN }} -Dusername=${{github.actor}}
-          mvn -B -V -DpushChanges=false release:perform -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }} -Dpassword=${{ secrets.RELEASE_TOKEN }} -Dusername=${{github.actor}}
 
       - name: Create Release Tag with Notes
         uses: ncipollo/release-action@v1
