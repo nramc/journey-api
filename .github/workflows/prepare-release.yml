@@ -33,11 +33,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set Release Version
-        run: mvn -B versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
-
-      - name: Build with Maven
-        run: mvn -B verify --file pom.xml
+      - name: Prepare Release
+        run: mvn -B -V -DpushChanges=false release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }}
 
       - name: Create Release Tag with Notes
         uses: ncipollo/release-action@v1
