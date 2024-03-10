@@ -34,7 +34,7 @@ jobs:
           cache: maven
 
       - name: Prepare Release
-        run: mvn -B -V -DpushChanges=false release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }}
+        run: mvn -B -V -DpushChanges=false release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }} -Dpassword=${{ secrets.RELEASE_TOKEN }} -Dusername=${{github.actor}}
 
       - name: Create Release Tag with Notes
         uses: ncipollo/release-action@v1
