@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.geojson.types;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -14,6 +15,7 @@ public enum GeoJsonType {
     FEATURE("Feature"),
     FEATURE_COLLECTION("FeatureCollection");
 
+    @JsonValue
     private final String type;
 
     GeoJsonType(String type) {
