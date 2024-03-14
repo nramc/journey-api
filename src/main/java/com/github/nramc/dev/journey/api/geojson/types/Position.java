@@ -26,6 +26,18 @@ public final class Position implements Serializable {
         this.values = new double[]{longitude, latitude, altitude};
     }
 
+    public static Position of(double longitude, double latitude) {
+        return new Position(longitude, latitude);
+    }
+
+    public static Position of(double longitude, double latitude, double altitude) {
+        return new Position(longitude, latitude, altitude);
+    }
+
+    public double[] getCoordinates() {
+        return this.values;
+    }
+
     public double getLongitude() {
         return values.length > 0 ? values[0] : Double.NaN;
     }
