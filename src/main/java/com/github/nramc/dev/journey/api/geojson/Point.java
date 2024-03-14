@@ -25,8 +25,8 @@ public final class Point extends Geometry {
         return new Point(coordinates);
     }
 
-    public static Point of(Position position) {
-        return new Point(position);
+    public static Point of(Position coordinates) {
+        return of(GeoJsonType.POINT, coordinates);
     }
 
 }
