@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.github.nramc.dev.journey.api.geojson.types.GeoJsonType;
 import com.github.nramc.dev.journey.api.geojson.types.Position;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public final class Point extends Geometry {
     private final Position coordinates;
 

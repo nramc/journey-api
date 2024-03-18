@@ -63,7 +63,7 @@ class PointTest {
             { "type": "Point" }"""
 
     })
-    void testDeserialization_withInvalidCoordinates(String jsonString) throws IOException {
+    void testDeserialization_withInvalidCoordinates(String jsonString) {
         Assertions.assertThrows(Exception.class, () -> jacksonTester.parseObject(jsonString));
     }
 
