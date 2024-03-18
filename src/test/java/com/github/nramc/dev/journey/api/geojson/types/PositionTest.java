@@ -23,14 +23,14 @@ class PositionTest {
 
     @Test
     void testSerialization_withMandatoryValuesOnly() throws IOException {
-        Position position = new Position(10.0, 15.0);
+        Position position = Position.of(10.0, 15.0);
         JsonContent<Position> jsonContent = jacksonTester.write(position);
         assertThat(jsonContent).isEqualToJson("[10.0, 15.0]");
     }
 
     @Test
     void testSerialization_withMandatoryAndOptionalValues() throws IOException {
-        Position position = new Position(10.0, 15.0, 25.0);
+        Position position = Position.of(10.0, 15.0, 25.0);
         JsonContent<Position> jsonContent = jacksonTester.write(position);
         assertThat(jsonContent).isEqualToJson("[10.0, 15.0, 25.0]");
     }
@@ -56,7 +56,7 @@ class PositionTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"[24.1]", "[]", "[1, 2, 3, 4]"})
+    @ValueSource(strings = {"[24.1]", "[]", "[1, 2, 3, 4]", "[-190, 90]", "[100.0, -180]", "[190, 74]", "[80.0, 98.0]"})
     @NullAndEmptySource
     void testDeserialization_withInvalidValues(String jsonString) {
         Assertions.assertThrows(Exception.class, () -> jacksonTester.parseObject(jsonString));
