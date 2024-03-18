@@ -20,7 +20,7 @@ class PointTest {
 
 
     @Test
-    void testJsonSerialisation_withMandatoryCoordinates() throws IOException {
+    void testJsonSerialisation_withLongitudeAndLatitude() throws IOException {
         assertThat(jacksonTester.write(Point.of(Position.of(60.8, 20.5))))
                 .isEqualToJson("""
                         { "type": "Point", "coordinates": [60.8, 20.5] }""");
@@ -28,7 +28,7 @@ class PointTest {
     }
 
     @Test
-    void testJsonSerialisation_withMandatoryAndOptionalCoordinates() throws IOException {
+    void testJsonSerialisation_withLongitudeAndLatitudeAndAltitude() throws IOException {
         assertThat(jacksonTester.write(Point.of(Position.of(60.8, 20.5, 43.2))))
                 .isEqualToJson("""
                         { "type": "Point", "coordinates": [60.8, 20.5, 43.2] }""");
@@ -36,7 +36,7 @@ class PointTest {
     }
 
     @Test
-    void testDeserialization_withMandatoryCoordinates() throws IOException {
+    void testDeserialization_withLongitudeAndLatitudeAndWithoutAptitude() throws IOException {
         String jsonString = """
                 { "type": "Point", "coordinates": [60.8, 20.5] }""";
         Point point = Point.of(Position.of(60.8, 20.5));
@@ -46,7 +46,7 @@ class PointTest {
     }
 
     @Test
-    void testDeserialization_withOptionalCoordinates() throws IOException {
+    void testDeserialization_withLongitudeAndLatitudeAndAltitude() throws IOException {
         String jsonString = """
                 { "type": "Point", "coordinates": [60.8, 20.5, 54.7] }""";
         Point point = Point.of(Position.of(60.8, 20.5, 54.7));
