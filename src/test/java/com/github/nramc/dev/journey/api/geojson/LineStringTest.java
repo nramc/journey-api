@@ -155,7 +155,7 @@ class LineStringTest {
     }
 
     @Test
-    void serialisation_withCoordinates_shouldThrowError() {
+    void serialisation_withoutCoordinates_shouldThrowError() {
         assertThrows(Exception.class, () -> new LineString(List.of()));
     }
 
