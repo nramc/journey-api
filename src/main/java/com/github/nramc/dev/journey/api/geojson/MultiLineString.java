@@ -36,11 +36,10 @@ public final class MultiLineString extends Geometry {
         return new MultiLineString(Arrays.stream(coordinates).toList());
     }
 
-    private static List<Position> validateAndThrowError(List<Position> coordinate) {
+    private static void validateAndThrowError(List<Position> coordinate) {
         if (coordinate.size() < 2) {
             throw new IllegalArgumentException("Invalid coordinates. Minimum 2 positions required");
         }
-        return coordinate;
     }
 
 }
