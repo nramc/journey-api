@@ -20,6 +20,9 @@
     </scm>
     <properties>
         <java.version>21</java.version>
+
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
     </properties>
     <dependencies>
         <dependency>
@@ -64,6 +67,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
         </dependency>
 
         <dependency>
