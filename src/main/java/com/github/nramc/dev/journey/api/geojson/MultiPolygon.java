@@ -28,7 +28,7 @@ public final class MultiPolygon extends Geometry {
     @JsonCreator
     public static MultiPolygon of(GeoJsonType type, List<PolygonCoordinates> coordinates) {
         if (type != GeoJsonType.MULTI_POLYGON) {
-            throw new IllegalArgumentException("Invalid type. expected 'MultiPolygon'");
+            throw new IllegalArgumentException("Invalid type. expected 'MultiPolygon', but got " + type);
         }
         if (CollectionUtils.isEmpty(coordinates)) {
             throw new IllegalArgumentException("Invalid coordinates. Minimum one required");

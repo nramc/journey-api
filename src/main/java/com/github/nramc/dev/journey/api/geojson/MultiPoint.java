@@ -28,7 +28,7 @@ public final class MultiPoint extends Geometry {
     @JsonCreator
     public static MultiPoint of(GeoJsonType type, List<Position> coordinates) {
         if (type != GeoJsonType.MULTI_POINT) {
-            throw new IllegalArgumentException("Invalid type. 'MultiPoint' expected");
+            throw new IllegalArgumentException("Invalid type. 'MultiPoint' expected, but got " + type);
         }
         return new MultiPoint(coordinates);
     }

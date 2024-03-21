@@ -37,7 +37,7 @@ public final class Polygon extends Geometry {
     @JsonCreator
     public static Polygon of(GeoJsonType type, List<List<Position>> coordinates) {
         if (type != GeoJsonType.POLYGON) {
-            throw new IllegalArgumentException("Invalid type. 'Polygon' expected");
+            throw new IllegalArgumentException("Invalid type. 'Polygon' expected, but got " + type);
         }
         if (CollectionUtils.isEmpty(coordinates)) {
             throw new IllegalArgumentException("Invalid Coordinates. Mandatory one position required.");
