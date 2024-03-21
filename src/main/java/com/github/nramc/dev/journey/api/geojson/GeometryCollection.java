@@ -2,13 +2,17 @@ package com.github.nramc.dev.journey.api.geojson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.github.nramc.dev.journey.api.geojson.types.GeoJsonType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
 
 @Getter
+@ToString
+@EqualsAndHashCode(callSuper = false)
 public final class GeometryCollection extends Geometry {
     private final List<Geometry> geometries;
 
