@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.create;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,8 +16,8 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JO
 public class CreateJourneyResource {
 
     @PostMapping(value = CREATE_JOURNEY, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> create(@RequestBody CreateJourneyRequest request) {
-        log.info("Jouney {}", request);
+    public ResponseEntity<Void> create(@RequestBody @Valid CreateJourneyRequest request) {
+        log.info("Journey {}", request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
