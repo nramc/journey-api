@@ -1,19 +1,21 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.create;
 
-import com.github.nramc.commons.geojson.domain.Point;
-import com.github.nramc.commons.geojson.domain.Position;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.List;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JOURNEY;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -22,22 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = {CreateJourneyResource.class})
 @ActiveProfiles({"prod", "test"})
+@Testcontainers
 class CreateJourneyResourceTest {
-    private static final CreateJourneyRequest VALID_REQUEST = CreateJourneyRequest.builder()
-            .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
-            .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
-            .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
-            .tags(List.of("Travel", "Germany", "Munich"))
-            .thumbnail("valid image id")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-            .build();
+    private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     private static final String VALID_JSON_REQUEST = """
             {
-              "id" : "ecc76991-0137-4152-b3b2-efce70a37ed0",
               "name" : "First Flight Experience",
               "title" : "One of the most beautiful experience ever in my life",
               "description" : "Travelled first time for work deputation to Germany, Munich city",
@@ -54,7 +45,14 @@ class CreateJourneyResourceTest {
             """;
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private JourneyRepository journeyRepository;
 
+    @BeforeEach
+    void setup() {
+        Mockito.when(journeyRepository.save(Mockito.any(JourneyEntity.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0, JourneyEntity.class).toBuilder().id(VALID_UUID).build());
+    }
 
     @Test
     void testContext() {
@@ -72,10 +70,9 @@ class CreateJourneyResourceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {/* Invalid id */"""
+    @ValueSource(strings = {/* Mandatory name field is blank */"""
             {
-              "id" : "not valid id",
-              "name" : "First Flight Experience",
+              "name" : "",
               "title" : "One of the most beautiful experience ever in my life",
               "description" : "Travelled first time for work deputation to Germany, Munich city",
               "category" : "Travel",

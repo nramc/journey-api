@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.mvc.home;
 
 import com.github.nramc.dev.journey.api.config.ApplicationProperties;
-import com.github.nramc.dev.journey.api.data.repository.LocationRepository;
+import com.github.nramc.dev.journey.api.repository.LocationRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

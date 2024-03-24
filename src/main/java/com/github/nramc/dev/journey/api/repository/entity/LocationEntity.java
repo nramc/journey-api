@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.data.entity;
+package com.github.nramc.dev.journey.api.repository.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

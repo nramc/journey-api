@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api;
 
-import com.github.nramc.dev.journey.api.data.entity.LocationEntity;
-import com.github.nramc.dev.journey.api.data.repository.LocationRepository;
+import com.github.nramc.dev.journey.api.repository.entity.LocationEntity;
+import com.github.nramc.dev.journey.api.repository.LocationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
