@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
+
 @Controller
 @RequiredArgsConstructor
 public class HomeResource {
     private final ApplicationProperties applicationProperties;
 
-    @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = HOME, produces = MediaType.TEXT_HTML_VALUE)
     public String home(Model model) {
         model.addAttribute("applicationProperties", applicationProperties);
         return "home";
