@@ -1,0 +1,19 @@
+### Create new Journey
+POST http://localhost:8080/rest/journey
+Content-Type: application/json
+
+{
+  "name" : "First Flight Experience",
+  "title" : "One of the most beautiful experience ever in my life",
+  "description" : "Travelled first time for work deputation to Germany, Munich city",
+  "category" : "Travel",
+  "city" : "Munich",
+  "country" : "Germany",
+  "tags" : ["Travel", "Germany", "Munich"],
+  "thumbnail" : "valid image id",
+  "location" : {
+    "type": "Point",
+    "coordinates": [100.0, 0.0]
+  }
+}
+

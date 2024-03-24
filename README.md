@@ -1,6 +1,10 @@
 # Journey Rest API
 
 
+##### Run Application
+1. Run Application with `dev` profile
+2. Local MongoDB can be accessed in [http://localhost:9090/](http://localhost:9090/) with help of [Mongo Express](https://github.com/mongo-express/mongo-express) 
+
 
 ##### Release new version:
 1. Manually run [Prepare Release Workflow](https://github.com/nramc/journey-api/blob/main/.github/workflows/prepare-release.yml) with release version "MAJOR.MINOR.PATCH" e.g. 0.0.1 
