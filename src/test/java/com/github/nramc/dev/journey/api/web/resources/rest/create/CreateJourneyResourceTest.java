@@ -41,7 +41,24 @@ class CreateJourneyResourceTest {
               "thumbnail" : "valid image id",
               "location" : {
                 "type": "Point",
-                "coordinates": [100.0, 0.0]
+                "coordinates": [48.183160038296585, 11.53090747669896]
+              }
+            }
+            """;
+    private static final String VALID_JSON_RESPONSE = """
+            {
+               "id": "ecc76991-0137-4152-b3b2-efce70a37ed0",
+              "name" : "First Flight Experience",
+              "title" : "One of the most beautiful experience ever in my life",
+              "description" : "Travelled first time for work deputation to Germany, Munich city",
+              "category" : "Travel",
+              "city" : "Munich",
+              "country" : "Germany",
+              "tags" : ["Travel", "Germany", "Munich"],
+              "thumbnail" : "valid image id",
+              "location" : {
+                "type": "Point",
+                "coordinates": [48.183160038296585, 11.53090747669896]
               }
             }
             """;
@@ -68,7 +85,7 @@ class CreateJourneyResourceTest {
                         .content(VALID_JSON_REQUEST))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().string(""));
+                .andExpect(content().json(VALID_JSON_RESPONSE));
     }
 
     @ParameterizedTest

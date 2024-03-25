@@ -22,4 +22,20 @@ public class CreateRequestAndEntityConverter {
 
     }
 
+    public static CreateJourneyResponse convert(JourneyEntity entity) {
+        return CreateJourneyResponse.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .city(entity.getCity())
+                .country(entity.getCountry())
+                .category(entity.getCategory())
+                .tags(entity.getTags())
+                .location(entity.getLocation())
+                .thumbnail(entity.getThumbnail())
+                .build();
+
+    }
+
 }
