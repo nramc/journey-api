@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class CreateRequestAndEntityConverter {
+class CreateJourneyConverter {
 
     public static JourneyEntity convert(CreateJourneyRequest request) {
         return JourneyEntity.builder()
@@ -22,7 +22,7 @@ public class CreateRequestAndEntityConverter {
 
     }
 
-    public static CreateJourneyResponse convert(JourneyEntity entity) {
+    static CreateJourneyResponse convert(JourneyEntity entity) {
         return CreateJourneyResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())

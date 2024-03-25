@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JOURNEY;
 import static org.mockito.Mockito.any;
@@ -26,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = {CreateJourneyResource.class})
 @ActiveProfiles({"prod", "test"})
-@Testcontainers
 class CreateJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     private static final String VALID_JSON_REQUEST = """

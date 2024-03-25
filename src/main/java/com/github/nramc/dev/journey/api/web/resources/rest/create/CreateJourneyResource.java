@@ -22,12 +22,12 @@ public class CreateJourneyResource {
 
     @PostMapping(value = CREATE_JOURNEY, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateJourneyResponse> create(@RequestBody @Valid CreateJourneyRequest request) {
-        JourneyEntity entity = CreateRequestAndEntityConverter.convert(request);
+        JourneyEntity entity = CreateJourneyConverter.convert(request);
 
         JourneyEntity journeyEntity = journeyRepository.save(entity);
 
         log.info("new Journey saved successfully with id:{}", journeyEntity.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(CreateRequestAndEntityConverter.convert(journeyEntity));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CreateJourneyConverter.convert(journeyEntity));
     }
 
 }
