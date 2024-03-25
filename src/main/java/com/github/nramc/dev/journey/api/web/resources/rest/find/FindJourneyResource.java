@@ -24,7 +24,7 @@ public class FindJourneyResource {
     private final JourneyRepository journeyRepository;
 
     @GetMapping(value = FIND_JOURNEY, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FindJourneyResponse> findAndReturnJson(@Valid @NotBlank @UUID @PathVariable String id) {
+    public ResponseEntity<FindJourneyResponse> findAndReturnJson(@Valid @NotBlank @PathVariable String id) {
 
         Optional<JourneyEntity> entityOptional = journeyRepository.findById(id);
         Optional<FindJourneyResponse> findJourneyResponse = entityOptional.map(FindJourneyConverter::convert);

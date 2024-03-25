@@ -17,3 +17,7 @@ Content-Type: application/json
   }
 }
 
+
+### Find Journey
+GET http://localhost:8080/rest/journey/6601cb9cac2cff0663cd4475
+Accept: application/json
