@@ -22,7 +22,7 @@
     <properties>
         <java.version>21</java.version>
 
-        <commons-geojson.version>0.0.27</commons-geojson.version>
+        <commons-geojson.version>0.0.31</commons-geojson.version>
         <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
     </properties>
     <dependencies>

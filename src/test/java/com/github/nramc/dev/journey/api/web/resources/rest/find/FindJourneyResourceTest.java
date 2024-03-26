@@ -85,7 +85,7 @@ class FindJourneyResourceTest {
 
     @Test
     void findAndReturnJson_whenIdNotValid_thenShouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, "invalid id")
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest());
