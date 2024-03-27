@@ -1,0 +1,39 @@
+{
+  "content": [
+    {
+      "id": "ID_5", "name": "First Flight Experience", "title": "One of the most beautiful experience ever in my life",
+      "description": "Travelled first time for work deputation to Germany, Munich city", "category": "Travel",
+      "city": "Munich", "country": "Germany", "tags": ["Travel", "Germany", "Munich"], "thumbnail": "valid image id",
+      "location": {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]},
+      "journeyDate": "2024-03-27", "createdDate": "2024-04-01"
+    }, {
+      "id": "ID_6", "name": "First Flight Experience", "title": "One of the most beautiful experience ever in my life",
+      "description": "Travelled first time for work deputation to Germany, Munich city", "category": "Travel",
+      "city": "Munich", "country": "Germany", "tags": ["Travel", "Germany", "Munich"], "thumbnail": "valid image id",
+      "location": {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]},
+      "journeyDate": "2024-03-27", "createdDate": "2024-04-02"
+    }, {
+      "id": "ID_7", "name": "First Flight Experience", "title": "One of the most beautiful experience ever in my life",
+      "description": "Travelled first time for work deputation to Germany, Munich city", "category": "Travel",
+      "city": "Munich", "country": "Germany", "tags": ["Travel", "Germany", "Munich"], "thumbnail": "valid image id",
+      "location": {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]},
+      "journeyDate": "2024-03-27", "createdDate": "2024-04-03"
+    }, {
+      "id": "ID_8", "name": "First Flight Experience", "title": "One of the most beautiful experience ever in my life",
+      "description": "Travelled first time for work deputation to Germany, Munich city", "category": "Travel",
+      "city": "Munich", "country": "Germany", "tags": ["Travel", "Germany", "Munich"], "thumbnail": "valid image id",
+      "location": {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]},
+      "journeyDate": "2024-03-27", "createdDate": "2024-04-04"
+    }, {
+      "id": "ID_9", "name": "First Flight Experience", "title": "One of the most beautiful experience ever in my life",
+      "description": "Travelled first time for work deputation to Germany, Munich city", "category": "Travel",
+      "city": "Munich", "country": "Germany", "tags": ["Travel", "Germany", "Munich"], "thumbnail": "valid image id",
+      "location": {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]},
+      "journeyDate": "2024-03-27", "createdDate": "2024-04-05"
+    }
+  ], "pageable": {
+  "pageNumber": 1, "pageSize": 5, "sort": {"unsorted": false, "sorted": true, "empty": false}, "offset": 5,
+  "paged": true, "unpaged": false
+}, "totalPages": 2, "totalElements": 10, "last": true, "numberOfElements": 5,
+  "sort": {"unsorted": false, "sorted": true, "empty": false}, "size": 5, "first": false, "number": 1, "empty": false
+}

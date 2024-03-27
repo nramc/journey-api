@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY;
@@ -40,13 +39,13 @@ public class FindJourneyResource {
     }
 
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<FindJourneyResponse> findAllAndReturnJson(@RequestParam Map<String, Object> params) {
+    public Page<FindJourneyResponse> findAllAndReturnJson(
+            @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "sort", defaultValue = "createdDate") String sortColumn,
+            @RequestParam(name = "order", defaultValue = "DESC") Sort.Direction sortOrder) {
 
-        int pageIndex = (int) params.getOrDefault("pageIndex", 0);
-        int pageSize = (int) params.getOrDefault("pageSize", 5);
-        String sortColumn = (String) params.getOrDefault("sort", "createdDate");
-        String sortOrder = (String) params.getOrDefault("order", "ASC");
-        Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.valueOf(sortOrder), sortColumn));
+        Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
 
         Page<JourneyEntity> entityPage = journeyRepository.findAll(pageable);
         Page<FindJourneyResponse> responsePage = entityPage.map(FindJourneyConverter::convert);
