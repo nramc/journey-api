@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Document("journey")
@@ -23,4 +24,6 @@ public class JourneyEntity {
     private List<String> tags;
     private String thumbnail;
     private Geometry location;
+    private LocalDate createdDate;
+    private LocalDate journeyDate;
 }

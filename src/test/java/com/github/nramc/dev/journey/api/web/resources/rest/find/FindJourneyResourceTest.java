@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,9 @@ class FindJourneyResourceTest {
               "location" : {
                 "type": "Point",
                 "coordinates": [48.183160038296585, 11.53090747669896]
-              }
+              },
+              "createdDate": "2024-03-27",
+              "journeyDate": "2024-03-27"
             }
             """;
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
@@ -54,6 +57,8 @@ class FindJourneyResourceTest {
             .tags(List.of("Travel", "Germany", "Munich"))
             .thumbnail("valid image id")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
+            .createdDate(LocalDate.of(2024, 3, 27))
+            .journeyDate(LocalDate.of(2024, 3, 27))
             .build();
     @Autowired
     private MockMvc mockMvc;

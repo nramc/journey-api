@@ -16,6 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
+
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JOURNEY;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -40,7 +42,8 @@ class CreateJourneyResourceTest {
               "location" : {
                 "type": "Point",
                 "coordinates": [48.183160038296585, 11.53090747669896]
-              }
+              },
+              "journeyDate": "2024-03-27"
             }
             """;
     private static final String VALID_JSON_RESPONSE = """
@@ -57,7 +60,9 @@ class CreateJourneyResourceTest {
               "location" : {
                 "type": "Point",
                 "coordinates": [48.183160038296585, 11.53090747669896]
-              }
+              },
+              "createdDate": "2024-03-27",
+              "journeyDate": "2024-03-27"
             }
             """;
     @Autowired
@@ -68,7 +73,10 @@ class CreateJourneyResourceTest {
     @BeforeEach
     void setup() {
         when(journeyRepository.save(any(JourneyEntity.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0, JourneyEntity.class).toBuilder().id(VALID_UUID).build());
+                .thenAnswer(invocation -> invocation.getArgument(0, JourneyEntity.class).toBuilder()
+                        .createdDate(LocalDate.of(2024, 3, 27))
+                        .id(VALID_UUID)
+                        .build());
     }
 
     @Test

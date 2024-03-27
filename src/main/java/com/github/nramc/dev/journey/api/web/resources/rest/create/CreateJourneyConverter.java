@@ -3,6 +3,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.create;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDate;
+
 @UtilityClass
 class CreateJourneyConverter {
 
@@ -18,6 +20,8 @@ class CreateJourneyConverter {
                 .tags(request.tags())
                 .location(request.location())
                 .thumbnail(request.thumbnail())
+                .journeyDate(request.journeyDate())
+                .createdDate(LocalDate.now())
                 .build();
 
     }
@@ -34,6 +38,8 @@ class CreateJourneyConverter {
                 .tags(entity.getTags())
                 .location(entity.getLocation())
                 .thumbnail(entity.getThumbnail())
+                .createdDate(entity.getCreatedDate())
+                .journeyDate(entity.getJourneyDate())
                 .build();
 
     }

@@ -18,6 +18,8 @@ class FindJourneyConverter {
                 .tags(entity.getTags())
                 .location(entity.getLocation())
                 .thumbnail(entity.getThumbnail())
+                .journeyDate(entity.getJourneyDate())
+                .createdDate(entity.getCreatedDate())
                 .build();
     }
 
