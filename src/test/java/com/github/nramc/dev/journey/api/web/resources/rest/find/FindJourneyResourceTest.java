@@ -6,25 +6,30 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = {FindJourneyResource.class})
-@ActiveProfiles({"prod", "test"})
+@Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles({"test"})
+@AutoConfigureMockMvc
 class FindJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     private static final String VALID_JSON_RESPONSE = """
@@ -62,12 +67,17 @@ class FindJourneyResourceTest {
             .build();
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
+    @Container
+    @ServiceConnection
+    static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:latest"))
+            .withExposedPorts(27017);
+
+    @Autowired
     private JourneyRepository journeyRepository;
 
     @Test
     void findAndReturnJson_whenJourneyExists_ShouldReturnValidJson() throws Exception {
-        Mockito.when(journeyRepository.findById(VALID_UUID)).thenReturn(Optional.of(VALID_JOURNEY));
+        journeyRepository.save(VALID_JOURNEY);
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
                         .accept(MediaType.APPLICATION_JSON)
@@ -79,7 +89,7 @@ class FindJourneyResourceTest {
 
     @Test
     void findAndReturnJson_whenJourneyNotExists_shouldReturnError() throws Exception {
-        Mockito.when(journeyRepository.findById(VALID_UUID)).thenReturn(Optional.empty());
+        //Mockito.when(journeyRepository.findById(VALID_UUID)).thenReturn(Optional.empty());
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
                         .accept(MediaType.APPLICATION_JSON)
