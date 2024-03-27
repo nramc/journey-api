@@ -15,10 +15,16 @@ Content-Type: application/json
     "type": "Point",
     "coordinates": [100.0, 0.0]
   },
-  "journeyDate": "2024-03-27"
+  "journeyDate": "2021-08-04"
 }
 
 
 ### Find Journey
-GET http://localhost:8080/rest/journey/6603d70deb26b82f8448c556
+GET http://localhost:8080/rest/journey/66042f634acf0200fb6db1e9
 Accept: application/json
+
+
+### Find all Journeys
+GET http://localhost:8080/rest/journeys
+Accept: application/json
+
