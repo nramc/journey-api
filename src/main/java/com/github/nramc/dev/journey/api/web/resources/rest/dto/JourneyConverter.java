@@ -1,13 +1,13 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.find;
+package com.github.nramc.dev.journey.api.web.resources.rest.dto;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-class FindJourneyConverter {
+public class JourneyConverter {
 
-    static FindJourneyResponse convert(JourneyEntity entity) {
-        return FindJourneyResponse.builder()
+    public static JourneyResponse convert(JourneyEntity entity) {
+        return JourneyResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .title(entity.getTitle())
