@@ -1,7 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.update;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import lombok.experimental.UtilityClass;
+
+import java.util.Optional;
 
 @UtilityClass
 public class UpdateJourneyConverter {
@@ -18,6 +22,17 @@ public class UpdateJourneyConverter {
                 .location(fromRequest.location())
                 .thumbnail(fromRequest.thumbnail())
                 .journeyDate(fromRequest.journeyDate())
+                .build();
+
+    }
+
+    public static JourneyEntity extendWithGeoDetails(UpdateJourneyGeoDetailsRequest fromRequest, JourneyEntity toEntity) {
+        JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
+
+        JourneyGeoDetailsEntity geoDetailsEntity = JourneyGeoDetailsEntity.builder().geoJson(fromRequest.geoJson()).build();
+
+        return toEntity.toBuilder()
+                .extended(extendedEntity.toBuilder().geoDetails(geoDetailsEntity).build())
                 .build();
 
     }
