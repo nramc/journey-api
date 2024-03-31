@@ -142,8 +142,45 @@ class UpdateJourneyResourceTest {
                 .andExpect(jsonPath("$.location.coordinates").value(hasSize(2)))
                 .andExpect(jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)))
                 .andExpect(jsonPath("$.extendedDetails.geoDetails.geoJson.type").value("GeometryCollection"))
-                .andExpect(jsonPath("$.extendedDetails.mediaDetails").isEmpty())
-        ;
+                .andExpect(jsonPath("$.extendedDetails.mediaDetails").isEmpty());
+    }
+
+    @Test
+    void updateMediaDetails() throws Exception {
+        // setup data
+        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
+        assertThat(journeyEntity).isNotNull()
+                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
+        String journeyId = journeyEntity.getId();
+
+        String jsonRequestTemplate = """
+                { "images": ["img1.jpg", "img2.png", "img3.gif"], "videos": null }
+                """;
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_MEDIA_DETAILS)
+                        .content(jsonRequestTemplate)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name").value("First Flight Experience"))
+                .andExpect(jsonPath("$.title").value("One of the most beautiful experience ever in my life"))
+                .andExpect(jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"))
+                .andExpect(jsonPath("$.category").value("Travel"))
+                .andExpect(jsonPath("$.city").value("Munich"))
+                .andExpect(jsonPath("$.country").value("Germany"))
+                .andExpect(jsonPath("$.tags").isArray())
+                .andExpect(jsonPath("$.tags").value(hasSize(3)))
+                .andExpect(jsonPath("$.tags").value(hasItems("Travel", "Germany", "Munich")))
+                .andExpect(jsonPath("$.thumbnail").value("valid image id"))
+                .andExpect(jsonPath("$.journeyDate").value("2024-03-27"))
+                .andExpect(jsonPath("$.createdDate").value("2024-03-27"))
+                .andExpect(jsonPath("$.location.type").value("Point"))
+                .andExpect(jsonPath("$.location.coordinates").isArray())
+                .andExpect(jsonPath("$.location.coordinates").value(hasSize(2)))
+                .andExpect(jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)))
+                .andExpect(jsonPath("$.extendedDetails.mediaDetails.images").value(hasItems("img1.jpg", "img2.png", "img3.gif")))
+                .andExpect(jsonPath("$.extendedDetails.mediaDetails.videos").isEmpty());
     }
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_MEDIA_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
 
 @RestController
@@ -29,25 +30,37 @@ public class UpdateJourneyResource {
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_BASIC_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateBasicDetails(@RequestBody @Valid UpdateJourneyBasicDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists"));
+        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update base info"));
 
         JourneyEntity journey = UpdateJourneyConverter.copyData(request, entity);
 
         JourneyEntity journeyEntity = journeyRepository.save(journey);
 
-        log.info("Journey saved successfully with id:{}", journeyEntity.getId());
+        log.info("Journey's base details saved successfully with id:{}", journeyEntity.getId());
         return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
     }
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_GEO_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateGeoDetails(@RequestBody @Valid UpdateJourneyGeoDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists"));
+        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update geo info"));
 
         JourneyEntity journey = UpdateJourneyConverter.extendWithGeoDetails(request, entity);
 
         JourneyEntity journeyEntity = journeyRepository.save(journey);
 
-        log.info("Journey saved successfully with id:{}", journeyEntity.getId());
+        log.info("Journey's geo information saved successfully with id:{}", journeyEntity.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
+    }
+
+    @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_MEDIA_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Journey> updateMediaDetails(@RequestBody @Valid UpdateJourneyMediaDetailsRequest request, @PathVariable String id) {
+        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update media info"));
+
+        JourneyEntity journey = UpdateJourneyConverter.extendWithMediaDetails(request, entity);
+
+        JourneyEntity journeyEntity = journeyRepository.save(journey);
+
+        log.info("Journey's media information saved successfully with id:{}", journeyEntity.getId());
         return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
     }
 
