@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder(toBuilder = true)
-public record JourneyResponse(
+public record Journey(
         @NotBlank String id,
         @NotBlank String name,
         @NotBlank String title,
@@ -23,5 +23,6 @@ public record JourneyResponse(
         @NotBlank String thumbnail,
         @NotNull Geometry location,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate) {
+        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate,
+        JourneyExtendedDetails extendedDetails) {
 }

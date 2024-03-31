@@ -6,8 +6,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class JourneyConverter {
 
-    public static JourneyResponse convert(JourneyEntity entity) {
-        return JourneyResponse.builder()
+    public static Journey convert(JourneyEntity entity) {
+        return Journey.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .title(entity.getTitle())

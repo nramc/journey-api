@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.update;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.dto.JourneyConverter;
-import com.github.nramc.dev.journey.api.web.resources.rest.dto.JourneyResponse;
+import com.github.nramc.dev.journey.api.web.resources.rest.dto.Journey;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class UpdateJourneyResource {
     private final JourneyRepository journeyRepository;
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_BASIC_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JourneyResponse> updateBasicDetails(@RequestBody @Valid UpdateJourneyBasicDetailsRequest request, @PathVariable String id) {
+    public ResponseEntity<Journey> updateBasicDetails(@RequestBody @Valid UpdateJourneyBasicDetailsRequest request, @PathVariable String id) {
         JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists"));
 
         JourneyEntity journey = UpdateJourneyConverter.copyData(request, entity);

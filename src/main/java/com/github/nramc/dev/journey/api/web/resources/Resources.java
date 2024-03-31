@@ -13,5 +13,6 @@ public class Resources {
     @UtilityClass
     public static class MediaType {
         public static final String UPDATE_JOURNEY_BASIC_DETAILS = "application/vnd.journey.api.basic.v1+json";
+        public static final String UPDATE_JOURNEY_GEO_DETAILS = "application/vnd.journey.api.geo.v1+json";
     }
 }
