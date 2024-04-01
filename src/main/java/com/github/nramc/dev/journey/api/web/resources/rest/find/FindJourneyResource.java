@@ -2,6 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.find;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.web.resources.rest.dto.JourneyConverter;
+import com.github.nramc.dev.journey.api.web.resources.rest.dto.Journey;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -31,17 +33,17 @@ public class FindJourneyResource {
     private final JourneyRepository journeyRepository;
 
     @GetMapping(value = FIND_JOURNEY, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FindJourneyResponse> findAndReturnJson(@Valid @NotBlank @PathVariable String id) {
+    public ResponseEntity<Journey> findAndReturnJson(@Valid @NotBlank @PathVariable String id) {
 
         Optional<JourneyEntity> entityOptional = journeyRepository.findById(id);
-        Optional<FindJourneyResponse> findJourneyResponse = entityOptional.map(FindJourneyConverter::convert);
+        Optional<Journey> findJourneyResponse = entityOptional.map(JourneyConverter::convert);
 
         log.info("Journey exists? [{}]", findJourneyResponse.isPresent());
         return ResponseEntity.of(findJourneyResponse);
     }
 
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<FindJourneyResponse> findAllAndReturnJson(
+    public Page<Journey> findAllAndReturnJson(
             @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(name = "sort", defaultValue = "createdDate") String sortColumn,
@@ -50,7 +52,7 @@ public class FindJourneyResource {
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
 
         Page<JourneyEntity> entityPage = journeyRepository.findAll(pageable);
-        Page<FindJourneyResponse> responsePage = entityPage.map(FindJourneyConverter::convert);
+        Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",
                 responsePage.hasContent(), responsePage.getTotalPages(), responsePage.getTotalElements());

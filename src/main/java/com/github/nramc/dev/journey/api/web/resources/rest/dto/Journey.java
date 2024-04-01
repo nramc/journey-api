@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.find;
+package com.github.nramc.dev.journey.api.web.resources.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.commons.geojson.domain.Geometry;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder(toBuilder = true)
-public record FindJourneyResponse(
+public record Journey(
         @NotBlank String id,
         @NotBlank String name,
         @NotBlank String title,
@@ -23,5 +23,6 @@ public record FindJourneyResponse(
         @NotBlank String thumbnail,
         @NotNull Geometry location,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate) {
+        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate,
+        JourneyExtendedDetails extendedDetails) {
 }
