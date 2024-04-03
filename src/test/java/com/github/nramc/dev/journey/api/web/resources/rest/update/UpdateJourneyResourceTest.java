@@ -142,7 +142,7 @@ class UpdateJourneyResourceTest {
                 .andExpect(jsonPath("$.location.coordinates").value(hasSize(2)))
                 .andExpect(jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)))
                 .andExpect(jsonPath("$.extendedDetails.geoDetails.geoJson.type").value("GeometryCollection"))
-                .andExpect(jsonPath("$.extendedDetails.mediaDetails").isEmpty());
+                .andExpect(jsonPath("$.extendedDetails.imagesDetails").isEmpty());
     }
 
     @Test
@@ -154,10 +154,15 @@ class UpdateJourneyResourceTest {
         String journeyId = journeyEntity.getId();
 
         String jsonRequestTemplate = """
-                { "images": ["img1.jpg", "img2.png", "img3.gif"], "videos": null }
+                { "images": [
+                 {"url":"image1.jpg", "assetId": "first-image"},
+                 {"url":"image2.png", "assetId": "second-image"},
+                 {"url":"image3.gif", "assetId": "third-image"}
+                ]
+                }
                 """;
         mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
-                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_MEDIA_DETAILS)
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS)
                         .content(jsonRequestTemplate)
                 )
                 .andDo(print())
@@ -179,8 +184,9 @@ class UpdateJourneyResourceTest {
                 .andExpect(jsonPath("$.location.coordinates").isArray())
                 .andExpect(jsonPath("$.location.coordinates").value(hasSize(2)))
                 .andExpect(jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)))
-                .andExpect(jsonPath("$.extendedDetails.mediaDetails.images").value(hasItems("img1.jpg", "img2.png", "img3.gif")))
-                .andExpect(jsonPath("$.extendedDetails.mediaDetails.videos").isEmpty());
+                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images").value(hasSize(3)))
+                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.png", "image3.gif")))
+                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].assetId").value(hasItems("first-image", "second-image", "third-image")));
     }
 
 }

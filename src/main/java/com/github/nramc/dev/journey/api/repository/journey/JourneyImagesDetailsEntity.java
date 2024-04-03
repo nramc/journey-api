@@ -7,8 +7,7 @@ import java.util.List;
 
 @Data
 @Builder(toBuilder = true)
-public class JourneyMediaDetailsEntity {
-    private List<String> images;
-    private List<String> videos;
+public class JourneyImagesDetailsEntity {
+    private List<JourneyImageDetailEntity> images;
 
 }

@@ -3,9 +3,12 @@ package com.github.nramc.dev.journey.api.web.resources.rest.update;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyMediaDetailsEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @UtilityClass
@@ -38,12 +41,19 @@ public class UpdateJourneyConverter {
 
     }
 
-    public static JourneyEntity extendWithMediaDetails(UpdateJourneyMediaDetailsRequest fromRequest, JourneyEntity toEntity) {
+    public static JourneyEntity extendWithMediaDetails(UpdateJourneyImagesDetailsRequest fromRequest, JourneyEntity toEntity) {
         JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
 
-        JourneyMediaDetailsEntity mediaDetailsEntity = JourneyMediaDetailsEntity.builder()
-                .images(fromRequest.images())
-                .videos(fromRequest.Videos())
+        List<JourneyImageDetailEntity> imageDetailEntities = CollectionUtils.emptyIfNull(fromRequest.images()).stream()
+                .map(imageDetail -> JourneyImageDetailEntity.builder()
+                        .url(imageDetail.url())
+                        .assetId(imageDetail.assetId())
+                        .build()
+                )
+                .toList();
+
+        JourneyImagesDetailsEntity mediaDetailsEntity = JourneyImagesDetailsEntity.builder()
+                .images(imageDetailEntities)
                 .build();
 
         return toEntity.toBuilder()
