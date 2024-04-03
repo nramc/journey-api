@@ -56,7 +56,7 @@ public class UpdateJourneyResource {
     public ResponseEntity<Journey> updateImagesDetails(@RequestBody @Valid UpdateJourneyImagesDetailsRequest request, @PathVariable String id) {
         JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update images info"));
 
-        JourneyEntity journey = UpdateJourneyConverter.extendWithMediaDetails(request, entity);
+        JourneyEntity journey = UpdateJourneyConverter.extendWithImagesDetails(request, entity);
 
         JourneyEntity journeyEntity = journeyRepository.save(journey);
 

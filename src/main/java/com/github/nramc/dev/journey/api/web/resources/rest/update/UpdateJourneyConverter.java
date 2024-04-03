@@ -41,7 +41,7 @@ public class UpdateJourneyConverter {
 
     }
 
-    public static JourneyEntity extendWithMediaDetails(UpdateJourneyImagesDetailsRequest fromRequest, JourneyEntity toEntity) {
+    public static JourneyEntity extendWithImagesDetails(UpdateJourneyImagesDetailsRequest fromRequest, JourneyEntity toEntity) {
         JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
 
         List<JourneyImageDetailEntity> imageDetailEntities = CollectionUtils.emptyIfNull(fromRequest.images()).stream()
@@ -52,12 +52,12 @@ public class UpdateJourneyConverter {
                 )
                 .toList();
 
-        JourneyImagesDetailsEntity mediaDetailsEntity = JourneyImagesDetailsEntity.builder()
+        JourneyImagesDetailsEntity imageDetailsEntity = JourneyImagesDetailsEntity.builder()
                 .images(imageDetailEntities)
                 .build();
 
         return toEntity.toBuilder()
-                .extended(extendedEntity.toBuilder().mediaDetails(mediaDetailsEntity).build())
+                .extended(extendedEntity.toBuilder().imagesDetails(imageDetailsEntity).build())
                 .build();
     }
 }

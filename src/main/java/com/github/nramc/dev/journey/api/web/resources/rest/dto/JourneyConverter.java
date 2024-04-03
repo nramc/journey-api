@@ -51,7 +51,7 @@ public class JourneyConverter {
 
     private static JourneyImagesDetails getImagesDetails(JourneyEntity journeyEntity) {
         return Optional.ofNullable(journeyEntity.getExtended())
-                .map(JourneyExtendedEntity::getMediaDetails)
+                .map(JourneyExtendedEntity::getImagesDetails)
                 .map(entity -> JourneyImagesDetails.builder().images(getImageDetails(entity.getImages())).build())
                 .orElse(null);
     }

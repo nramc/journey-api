@@ -146,7 +146,7 @@ class UpdateJourneyResourceTest {
     }
 
     @Test
-    void updateMediaDetails() throws Exception {
+    void updateImagesDetails() throws Exception {
         // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()

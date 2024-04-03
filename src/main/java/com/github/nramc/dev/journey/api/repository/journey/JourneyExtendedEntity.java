@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class JourneyExtendedEntity {
     private JourneyGeoDetailsEntity geoDetails;
-    private JourneyImagesDetailsEntity mediaDetails;
+    private JourneyImagesDetailsEntity imagesDetails;
 
 }
