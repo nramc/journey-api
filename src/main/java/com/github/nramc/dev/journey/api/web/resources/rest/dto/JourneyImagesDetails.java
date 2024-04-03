@@ -7,7 +7,6 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder(toBuilder = true)
-record JourneyMediaDetails(
-        @NotNull @NotEmpty List<String> images,
-        @NotNull @NotEmpty List<String> videos) {
+record JourneyImagesDetails(
+        @NotNull @NotEmpty List<JourneyImageDetail> images) {
 }
