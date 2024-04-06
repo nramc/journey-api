@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
 
 @RestController
@@ -60,7 +61,19 @@ public class UpdateJourneyResource {
 
         JourneyEntity journeyEntity = journeyRepository.save(journey);
 
-        log.info("Journey's media information saved successfully with id:{}", journeyEntity.getId());
+        log.info("Journey's image information saved successfully with id:{}", journeyEntity.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
+    }
+
+    @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_VIDEOS_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Journey> updateVideosDetails(@RequestBody @Valid UpdateJourneyVideosDetailsRequest request, @PathVariable String id) {
+        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update images info"));
+
+        JourneyEntity journey = UpdateJourneyConverter.extendWithVideosDetails(request, entity);
+
+        JourneyEntity journeyEntity = journeyRepository.save(journey);
+
+        log.info("Journey's video information saved successfully with id:{}", journeyEntity.getId());
         return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
     }
 
