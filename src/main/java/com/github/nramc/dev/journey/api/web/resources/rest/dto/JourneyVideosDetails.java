@@ -7,6 +7,6 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder(toBuilder = true)
-record JourneyVideosDetails(
+public record JourneyVideosDetails(
         @NotNull @NotEmpty List<JourneyVideoDetail> videos) {
 }
