@@ -8,5 +8,6 @@ import lombok.Data;
 public class JourneyExtendedEntity {
     private JourneyGeoDetailsEntity geoDetails;
     private JourneyImagesDetailsEntity imagesDetails;
+    private JourneyVideosDetailsEntity videosDetails;
 
 }

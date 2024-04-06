@@ -5,6 +5,8 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -58,6 +60,25 @@ public class UpdateJourneyConverter {
 
         return toEntity.toBuilder()
                 .extended(extendedEntity.toBuilder().imagesDetails(imageDetailsEntity).build())
+                .build();
+    }
+
+    public static JourneyEntity extendWithVideosDetails(UpdateJourneyVideosDetailsRequest fromRequest, JourneyEntity toEntity) {
+        JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
+
+        List<JourneyVideoDetailEntity> videoDetailEntities = CollectionUtils.emptyIfNull(fromRequest.videos()).stream()
+                .map(videoDetail -> JourneyVideoDetailEntity.builder()
+                        .videoId(videoDetail.videoId())
+                        .build()
+                )
+                .toList();
+
+        JourneyVideosDetailsEntity journeyVideosDetailsEntity = JourneyVideosDetailsEntity.builder()
+                .videos(videoDetailEntities)
+                .build();
+
+        return toEntity.toBuilder()
+                .extended(extendedEntity.toBuilder().videosDetails(journeyVideosDetailsEntity).build())
                 .build();
     }
 }

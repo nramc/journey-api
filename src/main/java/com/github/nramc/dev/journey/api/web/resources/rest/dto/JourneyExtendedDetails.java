@@ -5,5 +5,6 @@ import lombok.Builder;
 @Builder(toBuilder = true)
 public record JourneyExtendedDetails(
         JourneyGeoDetails geoDetails,
-        JourneyImagesDetails imagesDetails) {
+        JourneyImagesDetails imagesDetails,
+        JourneyVideosDetails videosDetails) {
 }
