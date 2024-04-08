@@ -26,6 +26,6 @@ public class JourneyEntity {
     private Geometry location;
     private LocalDate createdDate;
     private LocalDate journeyDate;
-    private boolean isPublished;
+    private Boolean isPublished;
     private JourneyExtendedEntity extended;
 }

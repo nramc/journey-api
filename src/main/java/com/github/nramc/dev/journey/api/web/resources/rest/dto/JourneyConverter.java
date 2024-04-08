@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEnt
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class JourneyConverter {
                 .journeyDate(entity.getJourneyDate())
                 .createdDate(entity.getCreatedDate())
                 .extendedDetails(getExtendedDetails(entity))
-                .isPublished(entity.isPublished())
+                .isPublished(BooleanUtils.toBoolean(entity.getIsPublished()))
                 .build();
     }
 
