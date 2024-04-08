@@ -47,7 +47,7 @@ class UpdateJourneyResourceTest {
             .city("Munich")
             .country("Germany")
             .tags(List.of("Travel", "Germany", "Munich"))
-            .thumbnail("valid image id")
+            .thumbnail("https://example.com/thumbnail.png")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
@@ -66,7 +66,7 @@ class UpdateJourneyResourceTest {
             jsonPath("$.tags").isArray(),
             jsonPath("$.tags").value(hasSize(3)),
             jsonPath("$.tags").value(hasItems("Travel", "Germany", "Munich")),
-            jsonPath("$.thumbnail").value("valid image id"),
+            jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"),
             jsonPath("$.journeyDate").value("2024-03-27"),
             jsonPath("$.createdDate").value("2024-03-27"),
             jsonPath("$.location.type").value("Point"),
@@ -121,7 +121,7 @@ class UpdateJourneyResourceTest {
                                   "city" : "Chennai",
                                   "country" : "India",
                                   "tags" : ["Travel", "Germany", "Munich", "Updated"],
-                                  "thumbnail" : "valid image id Updated",
+                                  "thumbnail" : "https://example.com/thumbnail.png",
                                   "location" : {
                                     "type": "Point",
                                     "coordinates": [48.183160038296585, 11.53090747669896]
@@ -141,7 +141,7 @@ class UpdateJourneyResourceTest {
                 .andExpect(jsonPath("$.tags").isArray())
                 .andExpect(jsonPath("$.tags").value(hasSize(4)))
                 .andExpect(jsonPath("$.tags").value(hasItems("Travel", "Germany", "Munich", "Updated")))
-                .andExpect(jsonPath("$.thumbnail").value("valid image id Updated"))
+                .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
                 .andExpect(jsonPath("$.journeyDate").value("2050-01-31"))
                 .andExpect(jsonPath("$.location.type").value("Point"));
     }
@@ -234,7 +234,7 @@ class UpdateJourneyResourceTest {
 
         mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
-                        .content(JOURNEY_BASIC_DETAILS.formatted("valid image id", false))
+                        .content(JOURNEY_BASIC_DETAILS.formatted("https://example.com/thumbnail.png", false))
                 )
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
@@ -251,7 +251,7 @@ class UpdateJourneyResourceTest {
 
         mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
-                        .content(JOURNEY_BASIC_DETAILS.formatted("valid image id", true))
+                        .content(JOURNEY_BASIC_DETAILS.formatted("https://example.com/thumbnail.png", true))
                 )
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
