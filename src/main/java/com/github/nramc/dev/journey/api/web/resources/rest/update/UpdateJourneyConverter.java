@@ -81,4 +81,11 @@ public class UpdateJourneyConverter {
                 .extended(extendedEntity.toBuilder().videosDetails(journeyVideosDetailsEntity).build())
                 .build();
     }
+
+    public static JourneyEntity extendEntityWith(PublishJourneyRequest request, JourneyEntity entity) {
+        return entity.toBuilder()
+                .isPublished(request.isPublished())
+                .thumbnail(request.thumbnail())
+                .build();
+    }
 }
