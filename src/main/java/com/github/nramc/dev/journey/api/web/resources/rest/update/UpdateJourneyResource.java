@@ -4,6 +4,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.dto.Journey;
 import com.github.nramc.dev.journey.api.web.resources.rest.dto.JourneyConverter;
+import com.github.nramc.dev.journey.api.web.resources.rest.update.validator.JourneyValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.PUBLISH_JOURNEY_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS;
@@ -28,6 +30,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JO
 @CrossOrigin(value = "*")
 public class UpdateJourneyResource {
     private final JourneyRepository journeyRepository;
+    private final JourneyValidator journeyValidator;
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_BASIC_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateBasicDetails(@RequestBody @Valid UpdateJourneyBasicDetailsRequest request, @PathVariable String id) {
@@ -67,7 +70,7 @@ public class UpdateJourneyResource {
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_VIDEOS_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateVideosDetails(@RequestBody @Valid UpdateJourneyVideosDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update images info"));
+        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update videos info"));
 
         JourneyEntity journey = UpdateJourneyConverter.extendWithVideosDetails(request, entity);
 
@@ -75,6 +78,25 @@ public class UpdateJourneyResource {
 
         log.info("Journey's video information saved successfully with id:{}", journeyEntity.getId());
         return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
+    }
+
+    @PutMapping(value = UPDATE_JOURNEY, consumes = PUBLISH_JOURNEY_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Journey> publishJourney(@RequestBody @Valid PublishJourneyRequest request, @PathVariable String id) {
+        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't publish journey"));
+
+        JourneyEntity journey = UpdateJourneyConverter.extendEntityWith(request, entity);
+        Journey journeyToBePublished = JourneyConverter.convert(journey);
+
+        boolean canPublish = journeyValidator.canPublish(journeyToBePublished);
+
+        if (canPublish) {
+            JourneyEntity journeyEntity = journeyRepository.save(journey);
+            log.info("Journey published successfully with id:{}", journeyEntity.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 
 }

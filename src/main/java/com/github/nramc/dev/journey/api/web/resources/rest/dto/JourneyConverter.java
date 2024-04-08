@@ -28,6 +28,7 @@ public class JourneyConverter {
                 .journeyDate(entity.getJourneyDate())
                 .createdDate(entity.getCreatedDate())
                 .extendedDetails(getExtendedDetails(entity))
+                .isPublished(entity.isPublished())
                 .build();
     }
 

@@ -74,6 +74,24 @@ class UpdateJourneyResourceTest {
             jsonPath("$.location.coordinates").value(hasSize(2)),
             jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
     };
+    private static final String JOURNEY_BASIC_DETAILS = """
+            {
+              "name" : "First Flight Experience",
+              "title" : "One of the most beautiful experience ever in my life",
+              "description" : "Travelled first time for work deputation to Germany, Munich city",
+              "category" : "Travel",
+              "city" : "Munich",
+              "country" : "Germany",
+              "tags" : ["Travel", "Germany", "Munich"],
+              "thumbnail" : "%s",
+              "location" : {
+                "type": "Point",
+                "coordinates": [48.183160038296585, 11.53090747669896]
+              },
+              "journeyDate": "2024-03-27",
+              "isPublished": %s
+            }
+            """;
     @Autowired
     private MockMvc mockMvc;
     @Container
@@ -205,6 +223,55 @@ class UpdateJourneyResourceTest {
                 .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
                 .andExpect(jsonPath("$.extendedDetails.videosDetails.videos").value(hasSize(3)))
                 .andExpect(jsonPath("$.extendedDetails.videosDetails.videos[*].videoId").value(hasItems("VIDEO_ID001", "VIDEO_ID002", "VIDEO_ID003")));
+    }
+
+    @Test
+    void publishJourney_saveAsDraft() throws Exception {
+        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
+        assertThat(journeyEntity).isNotNull()
+                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
+        String journeyId = journeyEntity.getId();
+
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
+                        .content(JOURNEY_BASIC_DETAILS.formatted("valid image id", false))
+                )
+                .andDo(print())
+                .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
+                .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
+                .andExpect(jsonPath("$.isPublished").value(false));
+    }
+
+    @Test
+    void publishJourney() throws Exception {
+        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
+        assertThat(journeyEntity).isNotNull()
+                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
+        String journeyId = journeyEntity.getId();
+
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
+                        .content(JOURNEY_BASIC_DETAILS.formatted("valid image id", true))
+                )
+                .andDo(print())
+                .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
+                .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
+                .andExpect(jsonPath("$.isPublished").value(true));
+    }
+
+    @Test
+    void publishJourney_whenValidationFailsDueToInsufficientData_throwsError() throws Exception {
+        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
+        assertThat(journeyEntity).isNotNull()
+                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
+        String journeyId = journeyEntity.getId();
+
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
+                        .content(JOURNEY_BASIC_DETAILS.formatted(null, true))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
 }
