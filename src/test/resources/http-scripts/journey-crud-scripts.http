@@ -28,3 +28,7 @@ Accept: application/json
 GET http://localhost:8080/rest/journeys
 Accept: application/json
 
+### Find all Journeys and return Geo Json
+GET http://localhost:8080/rest/journeys
+Accept: application/geo+json
+
