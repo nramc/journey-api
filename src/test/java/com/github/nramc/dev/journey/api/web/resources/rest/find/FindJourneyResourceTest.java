@@ -24,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -87,7 +89,6 @@ class FindJourneyResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(VALID_JSON_RESPONSE));
-
     }
 
     @Test
@@ -113,9 +114,8 @@ class FindJourneyResourceTest {
     @Test
     void findAllAndReturnJson_whenPagingAndSortingFieldGiven_shouldReturnCorrespondingPageWithRequestedSorting_withSecondPageAndAscendingSort() throws Exception {
         // setup data
-        IntStream.range(0, 10).forEach(index -> {
-            journeyRepository.save(VALID_JOURNEY.toBuilder().id("ID_" + index).createdDate(LocalDate.now().plusDays(index)).build());
-        });
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).createdDate(LocalDate.now().plusDays(index)).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
@@ -146,9 +146,8 @@ class FindJourneyResourceTest {
     @Test
     void findAllAndReturnJson_whenPagingAndSortingFieldGiven_shouldReturnCorrespondingPageWithRequestedSorting_withSecondPageAndDescendingSort() throws Exception {
         // setup data
-        IntStream.range(0, 10).forEach(index -> {
-            journeyRepository.save(VALID_JOURNEY.toBuilder().id("ID_" + index).createdDate(LocalDate.now().plusDays(index)).build());
-        });
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).createdDate(LocalDate.now().plusDays(index)).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
@@ -179,9 +178,8 @@ class FindJourneyResourceTest {
     @Test
     void findAllAndReturnJson_whenPagingAndSortingParamsNotGiven_thenShouldConsiderDefaultValues() throws Exception {
         // setup data
-        IntStream.range(0, 10).forEach(index -> {
-            journeyRepository.save(VALID_JOURNEY.toBuilder().id("ID_" + index).createdDate(LocalDate.now().plusDays(index)).build());
-        });
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).createdDate(LocalDate.now().plusDays(index)).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
@@ -208,5 +206,39 @@ class FindJourneyResourceTest {
                 .andExpect(jsonPath("$.content[8].createdDate").value(LocalDate.now().plusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE)))
                 .andExpect(jsonPath("$.content[9].createdDate").value(LocalDate.now().plusDays(0).format(DateTimeFormatter.ISO_LOCAL_DATE)))
                 .andExpect(jsonPath("$.content[10]").doesNotExist());
+    }
+
+    @Test
+    void findAllAndReturnGeoJson_whenNoPublishedJourneyExists_ShouldReturnEmptyCollection() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS, VALID_UUID)
+                        .accept(JOURNEYS_GEO_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(JOURNEYS_GEO_JSON))
+                .andExpect(jsonPath("$.type").value("FeatureCollection"))
+                .andExpect(jsonPath("$.features").isEmpty());
+    }
+
+    @Test
+    void findAllAndReturnGeoJson_whenPublishedJourneyExists_ShouldReturnValidGeoJson() throws Exception {
+        journeyRepository.save(VALID_JOURNEY.toBuilder()
+                .isPublished(true)
+                .build());
+
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS, VALID_UUID)
+                        .accept(JOURNEYS_GEO_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(JOURNEYS_GEO_JSON))
+                .andExpect(jsonPath("$.type").value("FeatureCollection"))
+                .andExpect(jsonPath("$.features").isNotEmpty())
+                .andExpect(jsonPath("$.features[0].type").value("Feature"))
+                .andExpect(jsonPath("$.features[0].id").value(VALID_JOURNEY.getId()))
+                .andExpect(jsonPath("$.features[0].geometry").exists())
+                .andExpect(jsonPath("$.features[0].properties").exists())
+                .andExpect(jsonPath("$.features[0].properties.name").value(VALID_JOURNEY.getName()))
+                .andExpect(jsonPath("$.features[0].properties.category").value(VALID_JOURNEY.getCategory()))
+                .andExpect(jsonPath("$.features[0].properties.description").value(VALID_JOURNEY.getDescription()))
+                .andExpect(jsonPath("$.features[0].properties.tags").value(equalTo(VALID_JOURNEY.getTags())));
     }
 }

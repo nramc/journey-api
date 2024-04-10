@@ -1,13 +1,18 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.find;
 
+import com.github.nramc.commons.geojson.domain.Feature;
+import com.github.nramc.commons.geojson.domain.FeatureCollection;
+import com.github.nramc.commons.geojson.domain.GeoJson;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.dto.JourneyConverter;
-import com.github.nramc.dev.journey.api.web.resources.rest.dto.Journey;
+import com.github.nramc.dev.journey.api.web.dto.Journey;
+import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
+import com.github.nramc.dev.journey.api.web.dto.converter.JourneyFeatureConverter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +25,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 
 @RestController
 @Slf4j
@@ -57,6 +64,20 @@ public class FindJourneyResource {
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",
                 responsePage.hasContent(), responsePage.getTotalPages(), responsePage.getTotalElements());
         return responsePage;
+    }
+
+    @GetMapping(value = FIND_JOURNEYS, produces = JOURNEYS_GEO_JSON)
+    public GeoJson findAllAndReturnGeoJson() {
+        JourneyEntity journeyEntity = new JourneyEntity();
+        journeyEntity.setIsPublished(true);
+
+        Example<JourneyEntity> journeyExample = Example.of(journeyEntity);
+        List<JourneyEntity> entities = journeyRepository.findAll(journeyExample);
+
+        List<Feature> features = entities.stream().map(JourneyFeatureConverter::toFeature).toList();
+        log.info("Journeys:[{}] Features:[{}]", entities.size(), features.size());
+
+        return FeatureCollection.of(features);
     }
 
 }

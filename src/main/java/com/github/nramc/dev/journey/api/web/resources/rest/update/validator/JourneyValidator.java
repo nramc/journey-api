@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.update.validator;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.dto.Journey;
+import com.github.nramc.dev.journey.api.web.dto.Journey;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;

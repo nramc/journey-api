@@ -1,9 +1,16 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.dto;
+package com.github.nramc.dev.journey.api.web.dto.converter;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
+import com.github.nramc.dev.journey.api.web.dto.Journey;
+import com.github.nramc.dev.journey.api.web.dto.JourneyImagesDetails;
+import com.github.nramc.dev.journey.api.web.dto.JourneyVideoDetail;
+import com.github.nramc.dev.journey.api.web.dto.JourneyVideosDetails;
+import com.github.nramc.dev.journey.api.web.dto.JourneyExtendedDetails;
+import com.github.nramc.dev.journey.api.web.dto.JourneyGeoDetails;
+import com.github.nramc.dev.journey.api.web.dto.JourneyImageDetail;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
