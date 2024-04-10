@@ -17,5 +17,6 @@ public class Resources {
         public static final String UPDATE_JOURNEY_IMAGES_DETAILS = "application/vnd.journey.api.images.v1+json";
         public static final String UPDATE_JOURNEY_VIDEOS_DETAILS = "application/vnd.journey.api.videos.v1+json";
         public static final String PUBLISH_JOURNEY_DETAILS = "application/vnd.journey.api.publish.v1+json";
+        public static final String JOURNEYS_GEO_JSON = "application/vnd.journey.api.publish.v1+json";
     }
 }
