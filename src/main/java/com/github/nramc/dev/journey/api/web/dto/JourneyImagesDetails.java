@@ -7,6 +7,6 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder(toBuilder = true)
-record JourneyImagesDetails(
+public record JourneyImagesDetails(
         @NotNull @NotEmpty List<JourneyImageDetail> images) {
 }
