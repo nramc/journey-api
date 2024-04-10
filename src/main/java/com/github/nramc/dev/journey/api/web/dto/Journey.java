@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.dto;
+package com.github.nramc.dev.journey.api.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.commons.geojson.domain.Geometry;

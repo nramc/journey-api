@@ -1,8 +1,10 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
 import com.github.nramc.commons.geojson.domain.Geometry;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Document("journey")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
 public class JourneyEntity {
     @Id

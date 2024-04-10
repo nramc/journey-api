@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.dto;
+package com.github.nramc.dev.journey.api.web.dto;
 
 import lombok.Builder;
 
