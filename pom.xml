@@ -22,7 +22,8 @@
     <properties>
         <java.version>21</java.version>
 
-        <commons-geojson.version>0.0.35</commons-geojson.version>
+        <!--    mvn versions:display-property-updates    -->
+        <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
     </properties>
     <dependencies>
