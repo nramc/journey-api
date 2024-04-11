@@ -27,6 +27,11 @@ public class JourneyFeatureConverter {
         properties.put("name", entity.getName());
         properties.put("category", entity.getCategory());
         properties.put("description", entity.getDescription());
+
+        properties.put("city", entity.getCity());
+        properties.put("country", entity.getCountry());
+        properties.put("location", entity.getLocation());
+
         properties.put("tags", entity.getTags().toArray());
 
         return properties;
