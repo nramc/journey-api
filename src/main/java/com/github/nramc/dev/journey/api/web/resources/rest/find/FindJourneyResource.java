@@ -39,16 +39,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType
 public class FindJourneyResource {
     private final JourneyRepository journeyRepository;
 
-    @GetMapping(value = FIND_JOURNEY, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> findAndReturnJson(@Valid @NotBlank @PathVariable String id) {
-
-        Optional<JourneyEntity> entityOptional = journeyRepository.findById(id);
-        Optional<Journey> findJourneyResponse = entityOptional.map(JourneyConverter::convert);
-
-        log.info("Journey exists? [{}]", findJourneyResponse.isPresent());
-        return ResponseEntity.of(findJourneyResponse);
-    }
-
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<Journey> findAllAndReturnJson(
             @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,

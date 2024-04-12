@@ -37,25 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class FindJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
-    private static final String VALID_JSON_RESPONSE = """
-            {
-               "id": "ecc76991-0137-4152-b3b2-efce70a37ed0",
-              "name" : "First Flight Experience",
-              "title" : "One of the most beautiful experience ever in my life",
-              "description" : "Travelled first time for work deputation to Germany, Munich city",
-              "category" : "Travel",
-              "city" : "Munich",
-              "country" : "Germany",
-              "tags" : ["Travel", "Germany", "Munich"],
-              "thumbnail" : "valid image id",
-              "location" : {
-                "type": "Point",
-                "coordinates": [48.183160038296585, 11.53090747669896]
-              },
-              "createdDate": "2024-03-27",
-              "journeyDate": "2024-03-27"
-            }
-            """;
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
             .id(VALID_UUID)
             .name("First Flight Experience")
@@ -79,37 +60,6 @@ class FindJourneyResourceTest {
 
     @Autowired
     private JourneyRepository journeyRepository;
-
-    @Test
-    void findAndReturnJson_whenJourneyExists_ShouldReturnValidJson() throws Exception {
-        journeyRepository.save(VALID_JOURNEY);
-
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(VALID_JSON_RESPONSE));
-    }
-
-    @Test
-    void findAndReturnJson_whenJourneyNotExists_shouldReturnError() throws Exception {
-        //Mockito.when(journeyRepository.findById(VALID_UUID)).thenReturn(Optional.empty());
-
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andDo(print())
-                .andExpect(status().isNotFound());
-
-    }
-
-    @Test
-    void findAndReturnJson_whenIdNotValid_thenShouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andDo(print())
-                .andExpect(status().isBadRequest());
-
-    }
 
     @Test
     void findAllAndReturnJson_whenPagingAndSortingFieldGiven_shouldReturnCorrespondingPageWithRequestedSorting_withSecondPageAndAscendingSort() throws Exception {

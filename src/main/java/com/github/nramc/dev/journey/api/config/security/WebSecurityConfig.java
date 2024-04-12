@@ -23,6 +23,8 @@ import static org.springframework.http.HttpMethod.PUT;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    public static final String MAINTAINER_ROLE = "MAINTAINER";
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -44,11 +46,11 @@ public class WebSecurityConfig {
 
                         // Allowed for unauthenticated calls
                         .requestMatchers(GET, "/rest/journeys").permitAll()
-                        .requestMatchers(GET, "/rest/journey/*").permitAll()
 
                         // Allowed only when user authenticated
-                        .requestMatchers(POST, "/rest/journey").hasAnyAuthority("MAINTAINER")
-                        .requestMatchers(PUT, "/rest/journey/*").hasAnyAuthority("MAINTAINER")
+                        .requestMatchers(GET, "/rest/journey/*").hasAnyAuthority(MAINTAINER_ROLE)
+                        .requestMatchers(POST, "/rest/journey").hasAnyAuthority(MAINTAINER_ROLE)
+                        .requestMatchers(PUT, "/rest/journey/*").hasAnyAuthority(MAINTAINER_ROLE)
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
