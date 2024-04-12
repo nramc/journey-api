@@ -10,6 +10,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsE
 import com.github.nramc.dev.journey.api.web.resources.rest.update.basic.UpdateJourneyBasicDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.update.geo.UpdateJourneyGeoDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.update.images.UpdateJourneyImagesDetailsRequest;
+import com.github.nramc.dev.journey.api.web.resources.rest.update.publish.PublishJourneyRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.update.videos.UpdateJourneyVideosDetailsRequest;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;

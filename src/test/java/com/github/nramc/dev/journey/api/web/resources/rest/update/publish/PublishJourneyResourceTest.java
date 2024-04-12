@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.update;
+package com.github.nramc.dev.journey.api.web.resources.rest.update.publish;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -20,8 +22,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
-class UpdateJourneyResourceTest {
+class PublishJourneyResourceTest {
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
             .name("First Flight Experience")
             .title("One of the most beautiful experience ever in my life")
@@ -103,12 +103,8 @@ class UpdateJourneyResourceTest {
     private JourneyRepository journeyRepository;
 
 
-
-
-
-
-
     @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
     void publishJourney_saveAsDraft() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
@@ -126,6 +122,7 @@ class UpdateJourneyResourceTest {
     }
 
     @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
     void publishJourney() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
@@ -143,6 +140,7 @@ class UpdateJourneyResourceTest {
     }
 
     @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
     void publishJourney_whenValidationFailsDueToInsufficientData_throwsError() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
@@ -155,6 +153,38 @@ class UpdateJourneyResourceTest {
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void publishJourney_whenNotAuthenticated_thenShouldThrowError() throws Exception {
+        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
+        assertThat(journeyEntity).isNotNull()
+                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
+        String journeyId = journeyEntity.getId();
+
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
+                        .content(JOURNEY_BASIC_DETAILS.formatted(null, true))
+                )
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"USER"})
+    void publishJourney_whenNotAuthorized_thenThrowError() throws Exception {
+        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
+        assertThat(journeyEntity).isNotNull()
+                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
+        String journeyId = journeyEntity.getId();
+
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
+                        .content(JOURNEY_BASIC_DETAILS.formatted(null, true))
+                )
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
 }

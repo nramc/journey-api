@@ -1,9 +1,10 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.update;
+package com.github.nramc.dev.journey.api.web.resources.rest.update.publish;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.dto.Journey;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
+import com.github.nramc.dev.journey.api.web.resources.rest.update.UpdateJourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.update.validator.JourneyValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,9 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JO
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin(value = "*")
-public class UpdateJourneyResource {
+public class PublishJourneyResource {
     private final JourneyRepository journeyRepository;
     private final JourneyValidator journeyValidator;
-
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = PUBLISH_JOURNEY_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> publishJourney(@RequestBody @Valid PublishJourneyRequest request, @PathVariable String id) {
