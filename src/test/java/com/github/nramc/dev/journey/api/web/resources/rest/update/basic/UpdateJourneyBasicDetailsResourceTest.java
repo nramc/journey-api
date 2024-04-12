@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
-class JourneyUpdateBasicDetailsResourceTest {
+class UpdateJourneyBasicDetailsResourceTest {
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
             .name("First Flight Experience")
             .title("One of the most beautiful experience ever in my life")
