@@ -1,5 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.create;
 
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.exceptions.NonTechnicalException;
@@ -11,7 +13,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {CreateJourneyResource.class})
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
 @ActiveProfiles({"prod", "test"})
 class CreateJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
@@ -85,6 +90,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"CREATE_JOURNEY"})
     void create_whenJourneyCreatedSuccessfully_shouldReturnCreatedResourceUrl() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -92,6 +98,25 @@ class CreateJourneyResourceTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().json(VALID_JSON_RESPONSE));
+    }
+
+    @Test
+    void create_whenAuthenticationMissing_shouldThrowUnAuthenticatedError() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(VALID_JSON_REQUEST))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"USER"})
+    void create_whenAuthenticationExistsButDoesBNotHaveAuthority_shouldThrowError() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(VALID_JSON_REQUEST))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     @ParameterizedTest
@@ -127,6 +152,7 @@ class CreateJourneyResourceTest {
              }
             """
     })
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"CREATE_JOURNEY"})
     void create_whenJourneyDataNotValid_thenShouldThrowError(String jsonContent) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -136,6 +162,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"CREATE_JOURNEY"})
     void create_whenAnyNonTechnicalErrorOccurred_shouldThrowError() throws Exception {
         when(journeyRepository.save(any(JourneyEntity.class))).thenThrow(new NonTechnicalException("mocked"));
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
