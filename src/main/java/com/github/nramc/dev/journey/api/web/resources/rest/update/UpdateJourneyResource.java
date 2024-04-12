@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.PUBLISH_JOURNEY_DETAILS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
@@ -31,7 +29,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JO
 public class UpdateJourneyResource {
     private final JourneyRepository journeyRepository;
     private final JourneyValidator journeyValidator;
-
 
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_IMAGES_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
