@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin(value = "*")
-public class FindJourneyResource {
+public class FindPublishedJourneyResource {
     private final JourneyRepository journeyRepository;
 
 
-    @GetMapping(value = FIND_JOURNEYS, produces = JOURNEYS_GEO_JSON)
+    @GetMapping(value = FIND_PUBLISHED_JOURNEYS, produces = JOURNEYS_GEO_JSON)
     public GeoJson findAllAndReturnGeoJson() {
         JourneyEntity journeyEntity = new JourneyEntity();
         journeyEntity.setIsPublished(true);

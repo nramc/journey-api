@@ -45,7 +45,7 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, "/").permitAll()
 
                         // Allowed for unauthenticated calls
-                        .requestMatchers(GET, "/rest/journeys/published").permitAll()
+                        .requestMatchers(GET, "/rest/public/journeys").permitAll()
 
                         // Allowed only when user authenticated
                         .requestMatchers(GET, "/rest/journeys").hasAnyAuthority(MAINTAINER)

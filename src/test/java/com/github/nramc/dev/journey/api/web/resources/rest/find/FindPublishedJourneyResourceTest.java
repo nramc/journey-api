@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,9 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static org.hamcrest.Matchers.equalTo;
@@ -35,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
-class FindJourneyResourceTest {
+class FindPublishedJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
             .id(VALID_UUID)
@@ -63,8 +60,9 @@ class FindJourneyResourceTest {
 
 
     @Test
-    void findAllAndReturnGeoJson_whenNoPublishedJourneyExists_ShouldReturnEmptyCollection() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS, VALID_UUID)
+    void find_whenNoPublishedJourneyExists_ShouldReturnEmptyCollection() throws Exception {
+        journeyRepository.deleteAll();
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS)
                         .accept(JOURNEYS_GEO_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
@@ -74,12 +72,12 @@ class FindJourneyResourceTest {
     }
 
     @Test
-    void findAllAndReturnGeoJson_whenPublishedJourneyExists_ShouldReturnValidGeoJson() throws Exception {
+    void find_whenPublishedJourneyExists_ShouldReturnValidGeoJson() throws Exception {
         journeyRepository.save(VALID_JOURNEY.toBuilder()
                 .isPublished(true)
                 .build());
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS, VALID_UUID)
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS, VALID_UUID)
                         .accept(JOURNEYS_GEO_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
