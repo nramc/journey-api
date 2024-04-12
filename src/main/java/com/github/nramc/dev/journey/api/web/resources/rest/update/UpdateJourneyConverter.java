@@ -7,6 +7,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEnt
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
+import com.github.nramc.dev.journey.api.web.resources.rest.update.basic.UpdateJourneyBasicDetailsRequest;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 

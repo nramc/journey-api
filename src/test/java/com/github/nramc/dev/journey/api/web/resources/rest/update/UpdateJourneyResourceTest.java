@@ -103,50 +103,6 @@ class UpdateJourneyResourceTest {
     private JourneyRepository journeyRepository;
 
     @Test
-    void updateBasicDetails() throws Exception {
-        // setup data
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
-
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
-                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
-                        .content("""
-                                {
-                                  "name" : "First Internation Flight Experience",
-                                  "title" : "One of the most beautiful experience ever happened in my life",
-                                  "description" : "Travelled first time for work deputation from India to Germany, Munich city",
-                                  "category" : "Work",
-                                  "city" : "Chennai",
-                                  "country" : "India",
-                                  "tags" : ["Travel", "Germany", "Munich", "Updated"],
-                                  "thumbnail" : "https://example.com/thumbnail.png",
-                                  "location" : {
-                                    "type": "Point",
-                                    "coordinates": [48.183160038296585, 11.53090747669896]
-                                  },
-                                  "journeyDate": "2050-01-31"
-                                }
-                                """)
-                )
-                .andDo(print())
-                .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
-                .andExpect(jsonPath("$.name").value("First Internation Flight Experience"))
-                .andExpect(jsonPath("$.title").value("One of the most beautiful experience ever happened in my life"))
-                .andExpect(jsonPath("$.description").value("Travelled first time for work deputation from India to Germany, Munich city"))
-                .andExpect(jsonPath("$.category").value("Work"))
-                .andExpect(jsonPath("$.city").value("Chennai"))
-                .andExpect(jsonPath("$.country").value("India"))
-                .andExpect(jsonPath("$.tags").isArray())
-                .andExpect(jsonPath("$.tags").value(hasSize(4)))
-                .andExpect(jsonPath("$.tags").value(hasItems("Travel", "Germany", "Munich", "Updated")))
-                .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
-                .andExpect(jsonPath("$.journeyDate").value("2050-01-31"))
-                .andExpect(jsonPath("$.location.type").value("Point"));
-    }
-
-    @Test
     void updateGeoDetails() throws Exception {
         // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);

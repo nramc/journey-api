@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.update;
+package com.github.nramc.dev.journey.api.web.resources.rest.update.basic;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.commons.geojson.domain.Geometry;

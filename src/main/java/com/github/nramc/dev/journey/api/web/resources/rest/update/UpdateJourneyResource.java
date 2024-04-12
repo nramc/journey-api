@@ -32,18 +32,6 @@ public class UpdateJourneyResource {
     private final JourneyRepository journeyRepository;
     private final JourneyValidator journeyValidator;
 
-    @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_BASIC_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> updateBasicDetails(@RequestBody @Valid UpdateJourneyBasicDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update base info"));
-
-        JourneyEntity journey = UpdateJourneyConverter.copyData(request, entity);
-
-        JourneyEntity journeyEntity = journeyRepository.save(journey);
-
-        log.info("Journey's base details saved successfully with id:{}", journeyEntity.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
-    }
-
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_GEO_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateGeoDetails(@RequestBody @Valid UpdateJourneyGeoDetailsRequest request, @PathVariable String id) {
         JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update geo info"));
