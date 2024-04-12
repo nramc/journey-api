@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.update;
+package com.github.nramc.dev.journey.api.web.resources.rest.update.videos;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -20,8 +22,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
-class UpdateJourneyResourceTest {
+class UpdateJourneyVideosDetailsResourceTest {
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
             .name("First Flight Experience")
             .title("One of the most beautiful experience ever in my life")
@@ -74,24 +74,7 @@ class UpdateJourneyResourceTest {
             jsonPath("$.location.coordinates").value(hasSize(2)),
             jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
     };
-    private static final String JOURNEY_BASIC_DETAILS = """
-            {
-              "name" : "First Flight Experience",
-              "title" : "One of the most beautiful experience ever in my life",
-              "description" : "Travelled first time for work deputation to Germany, Munich city",
-              "category" : "Travel",
-              "city" : "Munich",
-              "country" : "Germany",
-              "tags" : ["Travel", "Germany", "Munich"],
-              "thumbnail" : "%s",
-              "location" : {
-                "type": "Point",
-                "coordinates": [48.183160038296585, 11.53090747669896]
-              },
-              "journeyDate": "2024-03-27",
-              "isPublished": %s
-            }
-            """;
+
     @Autowired
     private MockMvc mockMvc;
     @Container
@@ -102,59 +85,82 @@ class UpdateJourneyResourceTest {
     @Autowired
     private JourneyRepository journeyRepository;
 
-
-
-
-
-
-
     @Test
-    void publishJourney_saveAsDraft() throws Exception {
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    void updateVideoDetails() throws Exception {
+        // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
                 .satisfies(entity -> assertThat(entity.getId()).isNotNull());
         String journeyId = journeyEntity.getId();
 
+        String jsonRequestTemplate = """
+                { "videos": [
+                 {"videoId":"VIDEO_ID001"},
+                 {"videoId":"VIDEO_ID002"},
+                 {"videoId":"VIDEO_ID003"}
+                ]
+                }
+                """;
         mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
-                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
-                        .content(JOURNEY_BASIC_DETAILS.formatted("https://example.com/thumbnail.png", false))
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS)
+                        .content(jsonRequestTemplate)
                 )
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
                 .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
-                .andExpect(jsonPath("$.isPublished").value(false));
+                .andExpect(jsonPath("$.extendedDetails.videosDetails.videos").value(hasSize(3)))
+                .andExpect(jsonPath("$.extendedDetails.videosDetails.videos[*].videoId").value(hasItems("VIDEO_ID001", "VIDEO_ID002", "VIDEO_ID003")));
     }
 
     @Test
-    void publishJourney() throws Exception {
+    @WithAnonymousUser
+    void updateVideoDetails_whenNotAuthenticated_thenShouldThrowError() throws Exception {
+        // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
                 .satisfies(entity -> assertThat(entity.getId()).isNotNull());
         String journeyId = journeyEntity.getId();
 
+        String jsonRequestTemplate = """
+                { "videos": [
+                 {"videoId":"VIDEO_ID001"},
+                 {"videoId":"VIDEO_ID002"},
+                 {"videoId":"VIDEO_ID003"}
+                ]
+                }
+                """;
         mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
-                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
-                        .content(JOURNEY_BASIC_DETAILS.formatted("https://example.com/thumbnail.png", true))
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS)
+                        .content(jsonRequestTemplate)
                 )
                 .andDo(print())
-                .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
-                .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
-                .andExpect(jsonPath("$.isPublished").value(true));
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    void publishJourney_whenValidationFailsDueToInsufficientData_throwsError() throws Exception {
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"USER"})
+    void updateVideoDetails_whenNotAuthorized_thenShouldThrowError() throws Exception {
+        // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
                 .satisfies(entity -> assertThat(entity.getId()).isNotNull());
         String journeyId = journeyEntity.getId();
 
+        String jsonRequestTemplate = """
+                { "videos": [
+                 {"videoId":"VIDEO_ID001"},
+                 {"videoId":"VIDEO_ID002"},
+                 {"videoId":"VIDEO_ID003"}
+                ]
+                }
+                """;
         mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
-                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
-                        .content(JOURNEY_BASIC_DETAILS.formatted(null, true))
+                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS)
+                        .content(jsonRequestTemplate)
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isForbidden());
     }
 
 }

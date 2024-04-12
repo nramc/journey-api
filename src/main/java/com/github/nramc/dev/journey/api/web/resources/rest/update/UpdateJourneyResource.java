@@ -32,17 +32,7 @@ public class UpdateJourneyResource {
 
 
 
-    @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_VIDEOS_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> updateVideosDetails(@RequestBody @Valid UpdateJourneyVideosDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update videos info"));
 
-        JourneyEntity journey = UpdateJourneyConverter.extendWithVideosDetails(request, entity);
-
-        JourneyEntity journeyEntity = journeyRepository.save(journey);
-
-        log.info("Journey's video information saved successfully with id:{}", journeyEntity.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
-    }
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = PUBLISH_JOURNEY_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> publishJourney(@RequestBody @Valid PublishJourneyRequest request, @PathVariable String id) {
