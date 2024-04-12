@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
+
 @TestConfiguration
 public class WebSecurityTestConfig {
 
@@ -19,12 +22,12 @@ public class WebSecurityTestConfig {
         UserDetails user = User.builder()
                 .username("test-user")
                 .password(passwordEncoder.encode("test-password"))
-                .roles("USER")
+                .roles(USER)
                 .build();
         UserDetails admin = User.builder()
                 .username("test-admin")
                 .password(passwordEncoder.encode("test-password"))
-                .roles("USER", "ADMIN")
+                .roles(USER, MAINTAINER)
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
     }

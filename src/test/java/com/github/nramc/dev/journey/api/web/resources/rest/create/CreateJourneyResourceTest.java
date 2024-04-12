@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 
+import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JOURNEY;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -91,7 +93,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void create_whenJourneyCreatedSuccessfully_shouldReturnCreatedResourceUrl() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,7 +114,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"USER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
     void create_whenAuthenticationExistsButDoesBNotHaveAuthority_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,7 +156,7 @@ class CreateJourneyResourceTest {
              }
             """
     })
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void create_whenJourneyDataNotValid_thenShouldThrowError(String jsonContent) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -164,7 +166,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void create_whenAnyNonTechnicalErrorOccurred_shouldThrowError() throws Exception {
         when(journeyRepository.save(any(JourneyEntity.class))).thenThrow(new NonTechnicalException("mocked"));
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)

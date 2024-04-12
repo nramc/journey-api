@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
@@ -22,8 +24,6 @@ import static org.springframework.http.HttpMethod.PUT;
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
 public class WebSecurityConfig {
-
-    public static final String MAINTAINER_ROLE = "MAINTAINER";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,9 +48,9 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, "/rest/journeys").permitAll()
 
                         // Allowed only when user authenticated
-                        .requestMatchers(GET, "/rest/journey/*").hasAnyAuthority(MAINTAINER_ROLE)
-                        .requestMatchers(POST, "/rest/journey").hasAnyAuthority(MAINTAINER_ROLE)
-                        .requestMatchers(PUT, "/rest/journey/*").hasAnyAuthority(MAINTAINER_ROLE)
+                        .requestMatchers(GET, "/rest/journey/*").hasAnyAuthority(Authority.MAINTAINER)
+                        .requestMatchers(POST, "/rest/journey").hasAnyAuthority(Authority.MAINTAINER)
+                        .requestMatchers(PUT, "/rest/journey/*").hasAnyAuthority(Authority.MAINTAINER)
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
@@ -65,7 +65,7 @@ public class WebSecurityConfig {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("password"))
-                .roles("USER", "ADMIN")
+                .roles(USER, MAINTAINER)
                 .build();
         return new InMemoryUserDetailsManager(admin);
     }

@@ -25,6 +25,8 @@ import org.testcontainers.utility.DockerImageName;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -86,7 +88,7 @@ class UpdateJourneyVideosDetailsResourceTest {
     private JourneyRepository journeyRepository;
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void updateVideoDetails() throws Exception {
         // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
@@ -139,7 +141,7 @@ class UpdateJourneyVideosDetailsResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"USER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
     void updateVideoDetails_whenNotAuthorized_thenShouldThrowError() throws Exception {
         // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);

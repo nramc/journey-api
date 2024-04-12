@@ -25,6 +25,8 @@ import org.testcontainers.utility.DockerImageName;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -104,7 +106,7 @@ class PublishJourneyResourceTest {
 
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void publishJourney_saveAsDraft() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
@@ -122,7 +124,7 @@ class PublishJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void publishJourney() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
@@ -140,7 +142,7 @@ class PublishJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void publishJourney_whenValidationFailsDueToInsufficientData_throwsError() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()
@@ -172,7 +174,7 @@ class PublishJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"USER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
     void publishJourney_whenNotAuthorized_thenThrowError() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()

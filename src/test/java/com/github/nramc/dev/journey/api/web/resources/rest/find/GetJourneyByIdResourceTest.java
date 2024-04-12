@@ -24,6 +24,8 @@ import org.testcontainers.utility.DockerImageName;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,7 +80,7 @@ class GetJourneyByIdResourceTest {
     private JourneyRepository journeyRepository;
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void findAndReturnJson_whenJourneyExists_ShouldReturnValidJson() throws Exception {
         journeyRepository.save(VALID_JOURNEY);
 
@@ -90,7 +92,7 @@ class GetJourneyByIdResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void findAndReturnJson_whenJourneyNotExists_shouldReturnError() throws Exception {
         //Mockito.when(journeyRepository.findById(VALID_UUID)).thenReturn(Optional.empty());
 
@@ -101,7 +103,7 @@ class GetJourneyByIdResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void findAndReturnJson_whenIdNotValid_thenShouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
                         .accept(MediaType.APPLICATION_JSON)
@@ -119,7 +121,7 @@ class GetJourneyByIdResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"USER"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
     void findAndReturnJson_whenNotAuthorized_thenShouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
                         .accept(MediaType.APPLICATION_JSON)
