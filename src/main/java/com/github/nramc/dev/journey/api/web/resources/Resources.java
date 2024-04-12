@@ -8,6 +8,7 @@ public class Resources {
     public static final String CREATE_JOURNEY = "/rest/journey";
     public static final String FIND_JOURNEY = "/rest/journey/{id}";
     public static final String FIND_JOURNEYS = "/rest/journeys";
+    public static final String FIND_PUBLISHED_JOURNEYS = "/rest/public/journeys";
     public static final String UPDATE_JOURNEY = "/rest/journey/{id}";
 
     @UtilityClass
