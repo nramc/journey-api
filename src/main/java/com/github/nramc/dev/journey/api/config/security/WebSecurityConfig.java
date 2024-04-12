@@ -39,15 +39,16 @@ public class WebSecurityConfig {
                 .httpBasic(Customizer.withDefaults())
 
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(GET, "/actuator/health").permitAll()
                         .requestMatchers(GET, "/").permitAll()
 
                         // Allowed for unauthenticated calls
                         .requestMatchers(GET, "/rest/journeys").permitAll()
+                        .requestMatchers(GET, "/rest/journey/*").permitAll()
 
                         // Allowed only when user authenticated
                         .requestMatchers(POST, "/rest/journey").hasAnyAuthority("MAINTAINER")
                         .requestMatchers(PUT, "/rest/journey/*").hasAnyAuthority("MAINTAINER")
-                        .requestMatchers(GET, "/rest/journey/*").permitAll()
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
