@@ -31,17 +31,6 @@ public class UpdateJourneyResource {
     private final JourneyValidator journeyValidator;
 
 
-    @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_IMAGES_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> updateImagesDetails(@RequestBody @Valid UpdateJourneyImagesDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update images info"));
-
-        JourneyEntity journey = UpdateJourneyConverter.extendWithImagesDetails(request, entity);
-
-        JourneyEntity journeyEntity = journeyRepository.save(journey);
-
-        log.info("Journey's image information saved successfully with id:{}", journeyEntity.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
-    }
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_VIDEOS_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateVideosDetails(@RequestBody @Valid UpdateJourneyVideosDetailsRequest request, @PathVariable String id) {
