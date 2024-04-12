@@ -5,7 +5,6 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.dto.Journey;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.update.UpdateJourneyConverter;
-import com.github.nramc.dev.journey.api.web.resources.rest.update.UpdateJourneyVideosDetailsRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,5 +38,5 @@ public class UpdateJourneyVideosDetailsResource {
         log.info("Journey's video information saved successfully with id:{}", journeyEntity.getId());
         return ResponseEntity.status(HttpStatus.OK).body(JourneyConverter.convert(journeyEntity));
     }
-    
+
 }
