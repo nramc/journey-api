@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
-class GetJourneyByIdResourceTest {
+class FindJourneyByIdResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     private static final String VALID_JSON_RESPONSE = """
             {
@@ -81,7 +81,7 @@ class GetJourneyByIdResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void findAndReturnJson_whenJourneyExists_ShouldReturnValidJson() throws Exception {
+    void find_whenJourneyExists_ShouldReturnValidJson() throws Exception {
         journeyRepository.save(VALID_JOURNEY);
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
@@ -93,7 +93,7 @@ class GetJourneyByIdResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void findAndReturnJson_whenJourneyNotExists_shouldReturnError() throws Exception {
+    void find_whenJourneyNotExists_shouldReturnError() throws Exception {
         //Mockito.when(journeyRepository.findById(VALID_UUID)).thenReturn(Optional.empty());
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
@@ -104,7 +104,7 @@ class GetJourneyByIdResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void findAndReturnJson_whenIdNotValid_thenShouldThrowError() throws Exception {
+    void find_whenIdNotValid_thenShouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -113,7 +113,7 @@ class GetJourneyByIdResourceTest {
 
     @Test
     @WithAnonymousUser
-    void findAndReturnJson_whenNotAuthenticated_thenShouldThrowError() throws Exception {
+    void find_whenNotAuthenticated_thenShouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -122,7 +122,7 @@ class GetJourneyByIdResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
-    void findAndReturnJson_whenNotAuthorized_thenShouldThrowError() throws Exception {
+    void find_whenNotAuthorized_thenShouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())

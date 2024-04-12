@@ -23,11 +23,11 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin(value = "*")
-public class GetJourneyByIdResource {
+public class FindJourneyByIdResource {
     private final JourneyRepository journeyRepository;
 
     @GetMapping(value = FIND_JOURNEY, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> findAndReturnJson(@Valid @NotBlank @PathVariable String id) {
+    public ResponseEntity<Journey> find(@Valid @NotBlank @PathVariable String id) {
 
         Optional<JourneyEntity> entityOptional = journeyRepository.findById(id);
         Optional<Journey> findJourneyResponse = entityOptional.map(JourneyConverter::convert);
