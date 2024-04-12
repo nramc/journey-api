@@ -45,9 +45,9 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, "/rest/journeys").permitAll()
 
                         // Allowed only when user authenticated
-                        .requestMatchers(POST, "/rest/journey").hasAuthority("CREATE_JOURNEY")
+                        .requestMatchers(POST, "/rest/journey").hasAnyAuthority("MAINTAINER")
+                        .requestMatchers(PUT, "/rest/journey/*").hasAnyAuthority("MAINTAINER")
                         .requestMatchers(GET, "/rest/journey/*").permitAll()
-                        .requestMatchers(PUT, "/rest/journey/*").permitAll()
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()

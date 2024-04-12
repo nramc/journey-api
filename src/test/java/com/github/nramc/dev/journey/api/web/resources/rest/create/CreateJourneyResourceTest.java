@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -92,7 +91,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"CREATE_JOURNEY"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
     void create_whenJourneyCreatedSuccessfully_shouldReturnCreatedResourceUrl() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +154,7 @@ class CreateJourneyResourceTest {
              }
             """
     })
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"CREATE_JOURNEY"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
     void create_whenJourneyDataNotValid_thenShouldThrowError(String jsonContent) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -165,7 +164,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {"CREATE_JOURNEY"})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {"MAINTAINER"})
     void create_whenAnyNonTechnicalErrorOccurred_shouldThrowError() throws Exception {
         when(journeyRepository.save(any(JourneyEntity.class))).thenThrow(new NonTechnicalException("mocked"));
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
