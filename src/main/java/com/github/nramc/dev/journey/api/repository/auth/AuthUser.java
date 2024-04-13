@@ -21,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class User implements UserDetails {
+public class AuthUser implements UserDetails {
     private @MongoId ObjectId id;
     private String username;
     private String password;

@@ -2,8 +2,8 @@ package com.github.nramc.dev.journey.api.repository.auth;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<AuthUser, String> {
 
-    User findUserByUsername(String username);
+    AuthUser findUserByUsername(String username);
 
 }
