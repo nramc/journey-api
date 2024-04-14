@@ -1,0 +1,6 @@
+app:
+  user:
+    username: admin
+    password: password
+    roles: USER, MAINTAINER
+

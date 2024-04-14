@@ -1,5 +1,9 @@
+@USER_NAME = admin
+@PASSWORD = password
+
 ### Create new Journey
 POST http://localhost:8080/rest/journey
+Authorization: Basic {{USER_NAME}} {{PASSWORD}}
 Content-Type: application/json
 
 {
@@ -21,14 +25,17 @@ Content-Type: application/json
 
 ### Find Journey
 GET http://localhost:8080/rest/journey/66042f634acf0200fb6db1e9
+Authorization: Basic {{USER_NAME}} {{PASSWORD}}
 Accept: application/json
 
 
 ### Find all Journeys
 GET http://localhost:8080/rest/journeys
+Authorization: Basic {{USER_NAME}} {{PASSWORD}}
 Accept: application/json
 
 ### Find all Journeys and return Geo Json
-GET http://localhost:8080/rest/journeys
+GET http://localhost:8080/rest/public/journeys
+Authorization: Basic {{USER_NAME}} {{PASSWORD}}
 Accept: application/geo+json
 
