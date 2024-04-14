@@ -1,4 +1,3 @@
-
 spring:
   application:
     name: ${app.name}
@@ -10,3 +9,10 @@ spring:
 app:
   name: Journey API
   version: '@project.version@'
+  user:
+    username: ${OPR_USER}
+    password: ${OPR_USER_PWD}
+    roles: ${OPR_USER_ROLES}
+
+
+
