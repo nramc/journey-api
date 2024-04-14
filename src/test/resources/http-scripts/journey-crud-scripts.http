@@ -25,11 +25,13 @@ Content-Type: application/json
 
 ### Find Journey
 GET http://localhost:8080/rest/journey/66042f634acf0200fb6db1e9
+Authorization: Basic {{USER_NAME}} {{PASSWORD}}
 Accept: application/json
 
 
 ### Find all Journeys
 GET http://localhost:8080/rest/journeys
+Authorization: Basic {{USER_NAME}} {{PASSWORD}}
 Accept: application/json
 
 ### Find all Journeys and return Geo Json
