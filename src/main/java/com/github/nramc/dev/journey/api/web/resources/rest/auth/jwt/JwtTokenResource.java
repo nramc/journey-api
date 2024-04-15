@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.jwt;
+package com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class JwtTokenResource {
     private final JwtGenerator jwtGenerator;
 
-    @PostMapping("/token")
+    @PostMapping("/auth/token")
     public String token(Authentication authentication) {
         return jwtGenerator.generate(authentication).getTokenValue();
     }
