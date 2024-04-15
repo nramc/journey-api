@@ -31,18 +31,16 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
-    @ExceptionHandler({NonTechnicalException.class, RuntimeException.class, Exception.class})
-    protected ProblemDetail handleNonTechnicalExceptions(Exception ex) {
-        log.warn(ex.getMessage(), ex);
-        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
-    }
-
     @ExceptionHandler({TechnicalException.class})
     protected ProblemDetail handleTechnicalException(Exception ex) {
         log.error(ex.getMessage(), ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
+    @ExceptionHandler({NonTechnicalException.class})
+    public ProblemDetail handleNonTechnicalExceptions(Exception ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(@Nonnull MethodArgumentNotValidException ex,

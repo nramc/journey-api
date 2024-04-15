@@ -21,6 +21,7 @@ public class AppUserInitialization {
     private final PasswordEncoder passwordEncoder;
 
     @EventListener
+    @SuppressWarnings("unused")
     void onApplicationEvent(ContextRefreshedEvent event) {
 
         if (authUserDetailsService.userExists(properties.username())) {
@@ -33,6 +34,7 @@ public class AppUserInitialization {
                     .build();
 
             authUserDetailsService.createUser(appUser);
+            log.info("app user created with configured env variable.");
         }
     }
 }
