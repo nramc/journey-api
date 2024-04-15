@@ -6,7 +6,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -25,11 +25,7 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-
 import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER_SCOPE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
@@ -40,12 +36,8 @@ import static org.springframework.security.oauth2.core.authorization.OAuth2Autho
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
+@EnableConfigurationProperties(JwtProperties.class)
 public class WebSecurityConfig {
-    @Value("${jwt.public.key}")
-    RSAPublicKey key;
-
-    @Value("${jwt.private.key}")
-    RSAPrivateKey priv;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -81,9 +73,9 @@ public class WebSecurityConfig {
                         .requestMatchers(POST, "/token").authenticated()
 
                         .requestMatchers(GET, "/rest/journeys").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
-                        .requestMatchers(GET, "/rest/journey/*").hasAnyAuthority(MAINTAINER, MAINTAINER_SCOPE)
-                        .requestMatchers(POST, "/rest/journey").hasAnyAuthority(MAINTAINER, MAINTAINER_SCOPE)
-                        .requestMatchers(PUT, "/rest/journey/*").hasAnyAuthority(MAINTAINER, MAINTAINER_SCOPE)
+                        .requestMatchers(GET, "/rest/journey/*").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
+                        .requestMatchers(POST, "/rest/journey").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
+                        .requestMatchers(PUT, "/rest/journey/*").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
@@ -98,13 +90,13 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(this.key).build();
+    JwtDecoder jwtDecoder(JwtProperties jwtProperties) {
+        return NimbusJwtDecoder.withPublicKey(jwtProperties.publicKey()).build();
     }
 
     @Bean
-    JwtEncoder jwtEncoder() {
-        JWK jwk = new RSAKey.Builder(this.key).privateKey(this.priv).build();
+    JwtEncoder jwtEncoder(JwtProperties jwtProperties) {
+        JWK jwk = new RSAKey.Builder(jwtProperties.publicKey()).privateKey(jwtProperties.privateKey()).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }

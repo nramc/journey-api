@@ -12,5 +12,7 @@ logging:
 #    org.springframework.boot.autoconfigure: DEBUG
 
 jwt:
-  private.key: classpath:app.key
-  public.key: classpath:app.pub
+  private-key: classpath:app.key
+  public-key: classpath:app.pub
+  ttl-in-seconds: 3600
+  issuer: self

@@ -14,5 +14,8 @@ app:
     password: ${OPR_USER_PWD}
     roles: ${OPR_USER_ROLES}
 
-
-
+jwt:
+  private-key: /etc/secrets/jwt-private.key
+  public-key: /etc/secrets/jwt-public.pub
+  ttl-in-seconds: 3600
+  issuer: self

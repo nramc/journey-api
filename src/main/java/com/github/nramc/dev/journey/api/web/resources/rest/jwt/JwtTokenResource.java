@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.jwt;
 
+import com.github.nramc.dev.journey.api.config.security.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,19 +18,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @CrossOrigin(value = "*")
 public class JwtTokenResource {
+    private final JwtProperties jwtProperties;
     private final JwtEncoder encoder;
 
     @PostMapping("/token")
     public String token(Authentication authentication) {
         Instant now = Instant.now();
-        long expiry = 36000L;
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self")
+                .issuer(jwtProperties.issuer())
                 .issuedAt(now)
-                .expiresAt(now.plusSeconds(expiry))
+                .expiresAt(now.plusSeconds(jwtProperties.ttlInSeconds()))
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
