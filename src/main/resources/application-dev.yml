@@ -14,5 +14,5 @@ logging:
 jwt:
   private-key: classpath:app.key
   public-key: classpath:app.pub
-  ttl-in-seconds: 3600
+  ttl: 1h
   issuer: self

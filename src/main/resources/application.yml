@@ -17,5 +17,5 @@ app:
 jwt:
   private-key: /etc/secrets/jwt-private.key
   public-key: /etc/secrets/jwt-public.pub
-  ttl-in-seconds: 3600
+  ttl: 1h
   issuer: self

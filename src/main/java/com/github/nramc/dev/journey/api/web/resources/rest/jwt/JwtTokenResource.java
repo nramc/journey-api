@@ -30,7 +30,7 @@ public class JwtTokenResource {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(jwtProperties.issuer())
                 .issuedAt(now)
-                .expiresAt(now.plusSeconds(jwtProperties.ttlInSeconds()))
+                .expiresAt(now.plus(jwtProperties.ttl()))
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
