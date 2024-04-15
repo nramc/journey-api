@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.jwt;
+package com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt;
 
 import com.github.nramc.dev.journey.api.config.security.JwtProperties;
 import lombok.RequiredArgsConstructor;

@@ -66,11 +66,12 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, "/actuator/health").permitAll()
                         .requestMatchers(GET, "/").permitAll()
 
+                        // protected auth login/token
+                        .requestMatchers(POST, "/auth/token").authenticated()
+
                         // Allowed for unauthenticated calls
                         .requestMatchers(GET, "/rest/public/journeys").permitAll()
 
-                        // Allowed only when user authenticated
-                        .requestMatchers(POST, "/token").authenticated()
 
                         .requestMatchers(GET, "/rest/journeys").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
                         .requestMatchers(GET, "/rest/journey/*").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))

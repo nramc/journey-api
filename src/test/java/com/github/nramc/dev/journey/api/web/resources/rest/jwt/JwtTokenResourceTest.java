@@ -53,7 +53,7 @@ class JwtTokenResourceTest {
 
     @Test
     void token_whenUserAuthenticated_thenShouldGetJwtToken() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/token")
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/token")
                         .with(httpBasic("admin", "password"))
                 ).andDo(print())
                 .andExpect(status().isOk())
@@ -63,7 +63,7 @@ class JwtTokenResourceTest {
 
     @Test
     void token_whenJwtValid_thenShouldAuthenticateSuccessfully() throws Exception {
-        String jwtToken = mockMvc.perform(MockMvcRequestBuilders.post("/token")
+        String jwtToken = mockMvc.perform(MockMvcRequestBuilders.post("/auth/token")
                         .with(httpBasic("admin", "password"))
                 ).andDo(print())
                 .andExpect(status().isOk())
