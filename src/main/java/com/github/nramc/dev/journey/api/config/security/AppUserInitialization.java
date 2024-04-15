@@ -33,6 +33,7 @@ public class AppUserInitialization {
                     .build();
 
             authUserDetailsService.createUser(appUser);
+            log.info("app user created with configured env variable.");
         }
     }
 }

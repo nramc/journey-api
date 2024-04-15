@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.find;
 
-import com.github.nramc.dev.journey.api.config.security.Authority;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.dto.Journey;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +26,6 @@ public class FindJourneyByQueryResource {
     private final JourneyRepository journeyRepository;
 
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({Authority.MAINTAINER})
     public Page<Journey> find(
             @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
