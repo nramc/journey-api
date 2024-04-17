@@ -1,6 +1,11 @@
 @USER_NAME = admin
 @PASSWORD = password
 
+### Login
+POST http://localhost:8080/rest/login
+Authorization: Basic {{USER_NAME}} {{PASSWORD}}
+
+
 ### Create new Journey
 POST http://localhost:8080/rest/journey
 Authorization: Basic {{USER_NAME}} {{PASSWORD}}
