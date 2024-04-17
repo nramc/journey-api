@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.server.resource.web.access.BearerToke
 import org.springframework.security.web.SecurityFilterChain;
 
 import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
@@ -67,7 +68,7 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, "/").permitAll()
 
                         // protected auth login/token
-                        .requestMatchers(POST, "/auth/token").authenticated()
+                        .requestMatchers(POST, LOGIN).authenticated()
 
                         // Allowed for unauthenticated calls
                         .requestMatchers(GET, "/rest/public/journeys").permitAll()
