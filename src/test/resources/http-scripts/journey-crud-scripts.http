@@ -1,9 +1,16 @@
-@USER_NAME = admin
-@PASSWORD = password
+
 
 ### Login
-POST http://localhost:8080/rest/login
-Authorization: Basic {{USER_NAME}} {{PASSWORD}}
+POST {{baseUrl}}/login
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token !== null, "Redirect URL is empty");
+        client.global.set("jwtToken", response.body.token)
+    });
+%}
 
 
 ### Create new Journey
@@ -27,20 +34,20 @@ Content-Type: application/json
   "journeyDate": "2021-08-04"
 }
 
+### Find all Journeys
+GET {{baseUrl}}/journeys
+Authorization: Bearer {{jwtToken}}
+Accept: application/json
+
 
 ### Find Journey
-GET http://localhost:8080/rest/journey/66042f634acf0200fb6db1e9
-Authorization: Basic {{USER_NAME}} {{PASSWORD}}
+GET {{baseUrl}}/journey/66042f634acf0200fb6db1e9
+Authorization: Basic {{appUsername}} {{appUserPassword}}
 Accept: application/json
 
-
-### Find all Journeys
-GET http://localhost:8080/rest/journeys
-Authorization: Basic {{USER_NAME}} {{PASSWORD}}
-Accept: application/json
 
 ### Find all Journeys and return Geo Json
-GET http://localhost:8080/rest/public/journeys
-Authorization: Basic {{USER_NAME}} {{PASSWORD}}
+GET {{baseUrl}}/public/journeys
+Authorization: Basic {{appUsername}} {{appUserPassword}}
 Accept: application/geo+json
 
