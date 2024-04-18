@@ -15,7 +15,7 @@ app:
     roles: ${OPR_USER_ROLES}
 
 jwt:
-  private-key: /etc/secrets/jwt-private.key
-  public-key: /etc/secrets/jwt-public.pub
+  private-key: 'file:/etc/secrets/jwt-private.key'
+  public-key: 'file:/etc/secrets/jwt-public.pub'
   ttl: 1h
   issuer: self
