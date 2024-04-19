@@ -3,14 +3,11 @@ package com.github.nramc.dev.journey.api.services;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service
@@ -29,14 +26,7 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
 
     @Override
     public void createUser(UserDetails userDetails) {
-        AuthUser authUser = AuthUser.builder()
-                .username(userDetails.getUsername())
-                .password(userDetails.getPassword())
-                .roles(AuthorityUtils.authorityListToSet(userDetails.getAuthorities()))
-                .enabled(true)
-                .createdDate(LocalDateTime.now())
-                .build();
-        userRepository.save(authUser);
+        userRepository.save((AuthUser) userDetails);
     }
 
     @Override

@@ -13,6 +13,7 @@ app:
     username: ${OPR_USER}
     password: ${OPR_USER_PWD}
     roles: ${OPR_USER_ROLES}
+    name: Administrator
 
 jwt:
   private-key: 'file:/etc/secrets/jwt-private.key'
