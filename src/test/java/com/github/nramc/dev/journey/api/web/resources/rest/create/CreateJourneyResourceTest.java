@@ -78,7 +78,7 @@ class CreateJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", password = "password", authorities = {MAINTAINER})
+    @WithMockUser(username = "admin", authorities = {MAINTAINER})
     void create_whenJourneyCreatedSuccessfully_shouldReturnCreatedResourceUrl() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
                         .with(user(MAINTAINER_USER))
