@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.create;
 
+import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import lombok.experimental.UtilityClass;
 
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 @UtilityClass
 class CreateJourneyConverter {
 
-    public static JourneyEntity convert(CreateJourneyRequest request) {
+    public static JourneyEntity convert(CreateJourneyRequest request, AuthUser authUser) {
         return JourneyEntity.builder()
                 .id(null)
                 .name(request.name())
@@ -22,6 +23,7 @@ class CreateJourneyConverter {
                 .thumbnail(request.thumbnail())
                 .journeyDate(request.journeyDate())
                 .createdDate(LocalDate.now())
+                .createdBy(authUser.getUsername())
                 .build();
 
     }
