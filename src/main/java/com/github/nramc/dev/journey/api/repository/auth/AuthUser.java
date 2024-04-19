@@ -25,6 +25,7 @@ public class AuthUser implements UserDetails {
     private @MongoId ObjectId id;
     private String username;
     private String password;
+    private String name;
     private String secret;
     private LocalDateTime createdDate;
     private LocalDateTime lastLoggedIn;

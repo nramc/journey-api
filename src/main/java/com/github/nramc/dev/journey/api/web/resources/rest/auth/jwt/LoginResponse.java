@@ -9,6 +9,7 @@ import java.util.Set;
 public record LoginResponse(
         String token,
         Instant expiredAt,
-        Set<String> authorities
+        Set<String> authorities,
+        String name
 ) {
 }

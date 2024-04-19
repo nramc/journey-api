@@ -8,5 +8,6 @@ import java.util.Set;
 public record ApplicationUserProperties(
         String username,
         String password,
-        Set<String> roles) {
+        Set<String> roles,
+        String name) {
 }

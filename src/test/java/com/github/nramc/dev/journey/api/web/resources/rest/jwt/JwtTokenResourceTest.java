@@ -68,7 +68,10 @@ class JwtTokenResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
+                .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
+                .andExpect(jsonPath("$.name").value("Administrator"))
                 .andExpect(jsonPath("$.authorities").value(hasItems("MAINTAINER", "USER")));
+
     }
 
     @Test
