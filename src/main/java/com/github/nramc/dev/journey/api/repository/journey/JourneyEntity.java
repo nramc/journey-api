@@ -29,6 +29,7 @@ public class JourneyEntity {
     private String thumbnail;
     private Geometry location;
     private LocalDate createdDate;
+    private String createdBy;
     private LocalDate journeyDate;
     private Boolean isPublished;
     private JourneyExtendedEntity extended;
