@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.create;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,7 +21,6 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
 import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
@@ -30,7 +28,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JO
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,13 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 class CreateJourneyResourceTest {
-    private static final AuthUser MAINTAINER_USER = AuthUser.builder()
-            .name("Administrator")
-            .username("admin")
-            .password("password")
-            .enabled(true)
-            .roles(Set.of("USER", "MAINTAINER"))
-            .build();
     private static final String VALID_JSON_REQUEST = """
             {
               "name" : "First Flight Experience",
@@ -81,7 +71,6 @@ class CreateJourneyResourceTest {
     @WithMockUser(username = "admin", authorities = {MAINTAINER})
     void create_whenJourneyCreatedSuccessfully_shouldReturnCreatedResourceUrl() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
-                        .with(user(MAINTAINER_USER))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(VALID_JSON_REQUEST))
                 .andDo(print())

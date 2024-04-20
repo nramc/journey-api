@@ -15,24 +15,32 @@ Authorization: Basic {{appUsername}} {{appUserPassword}}
 
 ### Create new Journey
 POST http://localhost:8080/rest/journey
-Authorization: Basic {{USER_NAME}} {{PASSWORD}}
+Authorization: Bearer {{jwtToken}}
 Content-Type: application/json
 
 {
-  "name" : "First Flight Experience",
+  "name" : "Creating Journey with http client script",
   "title" : "One of the most beautiful experience ever in my life",
   "description" : "Travelled first time for work deputation to Germany, Munich city",
   "category" : "Travel",
   "city" : "Munich",
   "country" : "Germany",
-  "tags" : ["Travel", "Germany", "Munich"],
-  "thumbnail" : "valid image id",
+  "tags" : ["Travel", "Germany", "Munich", "dev", "http-client"],
+  "thumbnail" : "https://res.cloudinary.com/journeytogether/image/upload/v1712604194/journey/readonly/aeqhy3zwrwko7ba2rinr.jpg",
   "location" : {
     "type": "Point",
-    "coordinates": [100.0, 0.0]
+    "coordinates": [{{$random.float(-180, 180)}}, {{$random.float(-90, 90)}}]
   },
   "journeyDate": "2021-08-04"
 }
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+        client.assert(response.body.id !== null, "ID is empty");
+        client.global.set("journeyId", response.body.id)
+    });
+%}
 
 ### Find all Journeys
 GET {{baseUrl}}/journeys
@@ -41,13 +49,13 @@ Accept: application/json
 
 
 ### Find Journey
-GET {{baseUrl}}/journey/66042f634acf0200fb6db1e9
-Authorization: Basic {{appUsername}} {{appUserPassword}}
+GET {{baseUrl}}/journey/{{journeyId}}
+Authorization: Bearer {{jwtToken}}
 Accept: application/json
 
 
 ### Find all Journeys and return Geo Json
 GET {{baseUrl}}/public/journeys
-Authorization: Basic {{appUsername}} {{appUserPassword}}
+Authorization: Bearer {{jwtToken}}
 Accept: application/geo+json
 
