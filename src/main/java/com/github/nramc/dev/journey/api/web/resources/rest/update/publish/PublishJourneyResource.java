@@ -30,7 +30,9 @@ public class PublishJourneyResource {
     private final JourneyValidator journeyValidator;
 
     @PutMapping(value = UPDATE_JOURNEY, consumes = PUBLISH_JOURNEY_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> publishJourney(@RequestBody @Valid PublishJourneyRequest request, @PathVariable String id) {
+    public ResponseEntity<Journey> publishJourney(
+            @RequestBody @Valid PublishJourneyRequest request,
+            @PathVariable String id) {
         JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't publish journey"));
 
         JourneyEntity journey = UpdateJourneyConverter.extendEntityWith(request, entity);

@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.commons.geojson.domain.Geometry;
+import com.github.nramc.dev.journey.api.model.security.Visibility;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Builder(toBuilder = true)
 public record Journey(
@@ -26,5 +28,6 @@ public record Journey(
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate,
         JourneyExtendedDetails extendedDetails,
+        Set<Visibility> visibilities,
         boolean isPublished) {
 }
