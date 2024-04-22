@@ -17,6 +17,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @UtilityClass
 public class UpdateJourneyConverter {
@@ -89,6 +90,7 @@ public class UpdateJourneyConverter {
 
     public static JourneyEntity extendEntityWith(PublishJourneyRequest request, JourneyEntity entity) {
         return entity.toBuilder()
+                .visibilities(Set.copyOf(request.visibilities()))
                 .isPublished(request.isPublished())
                 .thumbnail(request.thumbnail())
                 .build();

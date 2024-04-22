@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
 import com.github.nramc.commons.geojson.domain.Geometry;
+import com.github.nramc.dev.journey.api.model.security.Visibility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Document("journey")
 @Data
@@ -32,5 +34,6 @@ public class JourneyEntity {
     private String createdBy;
     private LocalDate journeyDate;
     private Boolean isPublished;
+    private Set<Visibility> visibilities;
     private JourneyExtendedEntity extended;
 }
