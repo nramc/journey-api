@@ -5,10 +5,12 @@ import com.github.nramc.commons.geojson.domain.FeatureCollection;
 import com.github.nramc.commons.geojson.domain.GeoJson;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.security.JourneyAuthorizationManager;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyFeatureConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,14 +29,18 @@ public class FindPublishedJourneyResource {
 
 
     @GetMapping(value = FIND_PUBLISHED_JOURNEYS, produces = JOURNEYS_GEO_JSON)
-    public GeoJson findAllAndReturnGeoJson() {
+    public GeoJson find(
+            Authentication authentication
+    ) {
         JourneyEntity journeyEntity = new JourneyEntity();
         journeyEntity.setIsPublished(true);
 
         Example<JourneyEntity> journeyExample = Example.of(journeyEntity);
         List<JourneyEntity> entities = journeyRepository.findAll(journeyExample);
 
-        List<Feature> features = entities.stream().map(JourneyFeatureConverter::toFeature).toList();
+        List<Feature> features = entities.stream()
+                .filter(entity -> JourneyAuthorizationManager.isAuthorized(entity, authentication))
+                .map(JourneyFeatureConverter::toFeature).toList();
         log.info("Journeys:[{}] Features:[{}]", entities.size(), features.size());
 
         return FeatureCollection.of(features);

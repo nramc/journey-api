@@ -55,7 +55,7 @@ Accept: application/json
 
 
 ### Find all Journeys and return Geo Json
-GET {{baseUrl}}/public/journeys
+GET {{baseUrl}}/journeys
 Authorization: Bearer {{jwtToken}}
 Accept: application/geo+json
 
