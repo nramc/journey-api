@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
 import com.github.nramc.commons.geojson.domain.Geometry;
-import com.github.nramc.dev.journey.api.model.security.Visibility;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

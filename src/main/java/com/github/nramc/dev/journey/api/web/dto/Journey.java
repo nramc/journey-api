@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.commons.geojson.domain.Geometry;
-import com.github.nramc.dev.journey.api.model.security.Visibility;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
