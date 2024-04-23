@@ -6,4 +6,5 @@ import lombok.experimental.UtilityClass;
 public class Authority {
     public static final String MAINTAINER = "MAINTAINER";
     public static final String USER = "USER";
+    public static final String GUEST = "GUEST";
 }

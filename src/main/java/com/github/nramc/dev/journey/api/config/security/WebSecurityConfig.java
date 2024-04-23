@@ -9,6 +9,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,8 +25,12 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
-import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Roles.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.security.Roles.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Roles.GUEST;
+import static com.github.nramc.dev.journey.api.security.Roles.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -39,6 +44,15 @@ import static org.springframework.security.oauth2.core.authorization.OAuth2Autho
 @EnableMethodSecurity(securedEnabled = true)
 @EnableConfigurationProperties(JwtProperties.class)
 public class WebSecurityConfig {
+    AuthorizationManager<RequestAuthorizationContext> readOnlyAuthorizationManager = anyOf(
+            hasAnyAuthority(GUEST.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
+            hasAnyScope(GUEST.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
+    );
+
+    AuthorizationManager<RequestAuthorizationContext> readAndWriteAuthorizationManager = anyOf(
+            hasAnyAuthority(MAINTAINER.name(), ADMINISTRATOR.name()),
+            hasAnyScope(MAINTAINER.name(), ADMINISTRATOR.name())
+    );
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -70,14 +84,11 @@ public class WebSecurityConfig {
                         // protected auth login/token
                         .requestMatchers(POST, LOGIN).authenticated()
 
-                        // Allowed for unauthenticated calls
-                        .requestMatchers(GET, "/rest/public/journeys").permitAll()
+                        .requestMatchers(GET, "/rest/journeys").access(readOnlyAuthorizationManager)
+                        .requestMatchers(GET, "/rest/journey/*").access(readOnlyAuthorizationManager)
 
-
-                        .requestMatchers(GET, "/rest/journeys").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
-                        .requestMatchers(GET, "/rest/journey/*").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
-                        .requestMatchers(POST, "/rest/journey").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
-                        .requestMatchers(PUT, "/rest/journey/*").access(anyOf(hasAnyAuthority(MAINTAINER), hasAnyScope(MAINTAINER)))
+                        .requestMatchers(POST, "/rest/journey").access(readAndWriteAuthorizationManager)
+                        .requestMatchers(PUT, "/rest/journey/*").access(readAndWriteAuthorizationManager)
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()

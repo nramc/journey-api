@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.security;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 
@@ -15,7 +16,7 @@ public class JourneyAuthorizationManager {
 
     public static boolean isAuthorized(JourneyEntity journeyEntity, Authentication authentication) {
 
-        return journeyEntity.getVisibilities()
+        return CollectionUtils.emptyIfNull(journeyEntity.getVisibilities())
                 .stream()
                 .anyMatch(visibility -> isJourneyVisible(visibility, journeyEntity, authentication));
     }

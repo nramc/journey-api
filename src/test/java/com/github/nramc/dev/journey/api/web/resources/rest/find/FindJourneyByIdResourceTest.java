@@ -4,6 +4,7 @@ import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,10 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
+import static com.github.nramc.dev.journey.api.config.security.Authority.GUEST;
 import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
 import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -51,6 +55,7 @@ class FindJourneyByIdResourceTest {
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
+            .visibilities(Set.of(Visibility.MAINTAINER))
             .build();
     @Autowired
     private MockMvc mockMvc;
@@ -91,9 +96,20 @@ class FindJourneyByIdResourceTest {
     }
 
     @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST})
+    void find_whenJourneyExists_butDoesNotHavePermission_ShouldThrowError() throws Exception {
+        journeyRepository.save(VALID_JOURNEY);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenJourneyNotExists_shouldReturnError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, UUID.randomUUID().toString())
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isNotFound());
