@@ -23,11 +23,11 @@ public class JourneyAuthorizationManager {
 
     private static boolean isJourneyVisible(Visibility visibility, JourneyEntity journeyEntity, Authentication authentication) {
         return switch (visibility) {
+            case MYSELF -> isJourneyOwnedByLoggedInUser(journeyEntity, authentication);
             case ADMINISTRATOR -> isAdministratorRoleExists(authentication.getAuthorities());
             case MAINTAINER -> isMaintainerRoleExists(authentication.getAuthorities());
             case AUTHENTICATED_USER -> isAuthenticatedUser(authentication.getAuthorities());
             case GUEST -> isGuestUser(authentication.getAuthorities());
-            default -> isJourneyOwnedByLoggedInUser(journeyEntity, authentication);
         };
     }
 

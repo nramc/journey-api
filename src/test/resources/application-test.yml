@@ -10,6 +10,7 @@ logging:
     org.springframework.web: INFO
     org.springframework.security: DEBUG
 #    org.springframework.boot.autoconfigure: DEBUG
+    org.springframework.data.mongodb.core: DEBUG
 
 jwt:
   private-key: classpath:app.key
