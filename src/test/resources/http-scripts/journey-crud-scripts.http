@@ -48,7 +48,7 @@ Authorization: Bearer {{jwtToken}}
 Accept: application/json
 
 
-### Find Journey
+### Find Journey By ID
 GET {{baseUrl}}/journey/{{journeyId}}
 Authorization: Bearer {{jwtToken}}
 Accept: application/json

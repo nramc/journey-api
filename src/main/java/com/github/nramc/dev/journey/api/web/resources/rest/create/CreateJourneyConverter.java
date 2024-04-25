@@ -32,6 +32,7 @@ class CreateJourneyConverter {
                 .createdDate(LocalDate.now())
                 .createdBy(authUser.getUsername())
                 .visibilities(DEFAULT_VISIBILITIES)
+                .isPublished(false)
                 .build();
 
     }
