@@ -10,11 +10,19 @@ import java.util.Set;
 public interface JourneyRepository extends MongoRepository<JourneyEntity, String> {
     //db.users.find(  } )
 
-    @Query("{$and: [" +
-            "{ $or: [ {'createdBy' : ?1}, {'visibilities': {$in: ?0}} ] }," +
-            "{ 'isPublished': ?2 }," +
-            "{ $or: [ { 'name' : { $regex : '.*?3.*', '$options' : 'i' } }, { 'title' : { $regex : '.*?3.*', '$options' : 'i' } }, { 'description' : { $regex : '.*?3.*', '$options' : 'i' } } ] }" +
-            "]}"
+    @Query("""
+            { $and: [
+                { $or: [ {'createdBy' : ?1}, {'visibilities': {$in: ?0}} ] },
+                { 'isPublished': ?2 },
+                { $or: [
+                    { 'name' : { $regex : '.*?3.*', '$options' : 'i' } },
+                    { 'title' : { $regex : '.*?3.*', '$options' : 'i' } },
+                    { 'description' : { $regex : '.*?3.*', '$options' : 'i' } }
+                  ]
+                }
+              ]
+            }
+            """
     )
     Page<JourneyEntity> findAllBy(Set<String> visibilities, String username, boolean publishedOnly, String searchText, Pageable pageable);
 }
