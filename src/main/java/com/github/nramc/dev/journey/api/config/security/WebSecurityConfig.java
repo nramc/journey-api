@@ -33,6 +33,7 @@ import static com.github.nramc.dev.journey.api.security.Roles.GUEST;
 import static com.github.nramc.dev.journey.api.security.Roles.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAnyAuthority;
@@ -80,6 +81,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(GET, "/actuator/health").permitAll()
                         .requestMatchers(GET, "/").permitAll()
+
+                        // Allow Preflight requests
+                        .requestMatchers(OPTIONS, "/**").permitAll()
 
                         // protected auth login/token
                         .requestMatchers(POST, LOGIN).authenticated()
