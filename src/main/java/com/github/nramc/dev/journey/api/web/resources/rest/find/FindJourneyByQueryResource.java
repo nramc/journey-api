@@ -41,11 +41,12 @@ public class FindJourneyByQueryResource {
 
         Set<String> visibilities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         String username = authentication.getName();
+        Set<Boolean> publishedFlags = publishedOnly ? Set.of(true) : Set.of(true, false);
 
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
 
 
-        Page<JourneyEntity> entityPage = journeyRepository.findAllBy(visibilities, username, publishedOnly, searchText, pageable);
+        Page<JourneyEntity> entityPage = journeyRepository.findAllBy(visibilities, username, publishedFlags, searchText, pageable);
         Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",

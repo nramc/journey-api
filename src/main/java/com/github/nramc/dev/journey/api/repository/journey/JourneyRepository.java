@@ -13,7 +13,7 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
     @Query("""
             { $and: [
                 { $or: [ {'createdBy' : ?1}, {'visibilities': {$in: ?0}} ] },
-                { 'isPublished': ?2 },
+                { 'isPublished': {$in: ?2} },
                 { $or: [
                     { 'name' : { $regex : '.*?3.*', '$options' : 'i' } },
                     { 'title' : { $regex : '.*?3.*', '$options' : 'i' } },
@@ -24,5 +24,5 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
             }
             """
     )
-    Page<JourneyEntity> findAllBy(Set<String> visibilities, String username, boolean publishedOnly, String searchText, Pageable pageable);
+    Page<JourneyEntity> findAllBy(Set<String> visibilities, String username, Set<Boolean> publishedFlags, String searchText, Pageable pageable);
 }
