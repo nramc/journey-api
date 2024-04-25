@@ -1,15 +1,16 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.create;
 
-import com.github.nramc.dev.journey.api.model.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.model.security.Visibility.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.model.security.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.security.Visibility.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
+
 
 @UtilityClass
 class CreateJourneyConverter {
@@ -31,6 +32,7 @@ class CreateJourneyConverter {
                 .createdDate(LocalDate.now())
                 .createdBy(authUser.getUsername())
                 .visibilities(DEFAULT_VISIBILITIES)
+                .isPublished(false)
                 .build();
 
     }
