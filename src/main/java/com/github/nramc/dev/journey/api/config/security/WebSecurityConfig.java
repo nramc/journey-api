@@ -39,6 +39,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CH
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.OPTIONS;
@@ -57,10 +58,12 @@ public class WebSecurityConfig {
             hasAnyAuthority(GUEST.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
             hasAnyScope(GUEST.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
     );
-
     AuthorizationManager<RequestAuthorizationContext> readAndWriteAuthorizationManager = anyOf(
             hasAnyAuthority(MAINTAINER.name(), ADMINISTRATOR.name()),
             hasAnyScope(MAINTAINER.name(), ADMINISTRATOR.name())
+    );
+    AuthorizationManager<RequestAuthorizationContext> adminOnlyAuthorizationManager = anyOf(
+            hasAnyAuthority(ADMINISTRATOR.name()), hasAnyScope(ADMINISTRATOR.name())
     );
 
     @Bean
@@ -93,7 +96,7 @@ public class WebSecurityConfig {
                         // Allow Preflight requests
                         .requestMatchers(OPTIONS, ALL_REQUESTS).permitAll()
 
-                        // protected auth login/token
+                        // Journeys resources
                         .requestMatchers(POST, LOGIN).authenticated()
 
                         .requestMatchers(GET, FIND_JOURNEYS).access(readOnlyAuthorizationManager)
@@ -102,6 +105,9 @@ public class WebSecurityConfig {
 
                         .requestMatchers(POST, NEW_JOURNEY).access(readAndWriteAuthorizationManager)
                         .requestMatchers(PUT, UPDATE_JOURNEY).access(readAndWriteAuthorizationManager)
+
+                        // Users resources
+                        .requestMatchers(POST, NEW_USER).access(adminOnlyAuthorizationManager)
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()

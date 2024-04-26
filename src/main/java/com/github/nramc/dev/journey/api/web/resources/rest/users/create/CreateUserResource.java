@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.create;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.security.Roles;
@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,11 +22,11 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin(value = "*")
-public class UserResource {
+public class CreateUserResource {
     private final AuthUserDetailsService userDetailsService;
 
 
-    @GetMapping(value = Resources.NEW_USER, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = Resources.NEW_USER, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequest userRequest) {
         AuthUser user = toUserModel(userRequest);
         userDetailsService.createUser(user);
