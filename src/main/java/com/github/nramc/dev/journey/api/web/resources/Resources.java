@@ -4,13 +4,19 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Resources {
-    public static final String HOME = "";
+    public static final String HOME = "/";
+    public static final String HEALTH_CHECK = "/actuator/health";
     public static final String LOGIN = "/rest/login";
-    public static final String CREATE_JOURNEY = "/rest/journey";
-    public static final String FIND_JOURNEY = "/rest/journey/{id}";
+    public static final String ALL_REQUESTS = "/**";
+
+    public static final String NEW_JOURNEY = "/rest/journey";
+    public static final String FIND_JOURNEY_BY_ID = "/rest/journey/{id}";
     public static final String FIND_JOURNEYS = "/rest/journeys";
-    public static final String FIND_PUBLISHED_JOURNEYS = "/rest/journeys";
+    public static final String FIND_PUBLISHED_JOURNEYS = "/rest/journeys/published";
     public static final String UPDATE_JOURNEY = "/rest/journey/{id}";
+    public static final String VIEW_JOURNEY = "/rest/journey/{id}";
+
+    public static final String NEW_USER = "/rest/user/new";
 
     @UtilityClass
     public static class MediaType {

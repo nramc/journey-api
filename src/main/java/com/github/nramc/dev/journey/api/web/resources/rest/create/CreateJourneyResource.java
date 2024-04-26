@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 
 @RestController
 @Slf4j
@@ -29,7 +29,7 @@ public class CreateJourneyResource {
     private final JourneyRepository journeyRepository;
     private final AuthUserDetailsService userDetailsService;
 
-    @PostMapping(value = CREATE_JOURNEY, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = NEW_JOURNEY, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateJourneyResponse> create(
             Authentication authentication,
             @RequestBody @Valid CreateJourneyRequest request) {

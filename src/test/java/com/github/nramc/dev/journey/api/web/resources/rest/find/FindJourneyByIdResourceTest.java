@@ -72,7 +72,7 @@ class FindJourneyByIdResourceTest {
     void find_whenJourneyExists_ShouldReturnValidJson() throws Exception {
         journeyRepository.save(VALID_JOURNEY);
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, VALID_UUID)
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
@@ -100,7 +100,7 @@ class FindJourneyByIdResourceTest {
     void find_whenJourneyExists_butDoesNotHavePermission_ShouldThrowError() throws Exception {
         journeyRepository.save(VALID_JOURNEY);
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, VALID_UUID)
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, VALID_UUID)
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isNotFound());
@@ -109,7 +109,7 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenJourneyNotExists_shouldReturnError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, UUID.randomUUID().toString())
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, UUID.randomUUID().toString())
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isNotFound());
@@ -118,7 +118,7 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenIdNotValid_thenShouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, " ")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest());
@@ -127,7 +127,7 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithAnonymousUser
     void find_whenNotAuthenticated_thenShouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, " ")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isUnauthorized());
@@ -136,7 +136,7 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
     void find_whenNotAuthorized_thenShouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY, " ")
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, " ")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isForbidden());

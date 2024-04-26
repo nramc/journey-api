@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY_BY_ID;
 
 @RestController
 @Slf4j
@@ -28,7 +28,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 public class FindJourneyByIdResource {
     private final JourneyRepository journeyRepository;
 
-    @GetMapping(value = FIND_JOURNEY, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = FIND_JOURNEY_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> find(
             @Valid @NotBlank @PathVariable String id,
             Authentication authentication

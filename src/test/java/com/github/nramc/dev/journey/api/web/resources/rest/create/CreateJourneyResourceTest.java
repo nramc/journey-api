@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 
 import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
 import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.CREATE_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -70,7 +70,7 @@ class CreateJourneyResourceTest {
     @Test
     @WithMockUser(username = "admin", authorities = {MAINTAINER})
     void create_whenJourneyCreatedSuccessfully_shouldReturnCreatedResourceUrl() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
+        mockMvc.perform(MockMvcRequestBuilders.post(NEW_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(VALID_JSON_REQUEST))
                 .andDo(print())
@@ -94,7 +94,7 @@ class CreateJourneyResourceTest {
     @Test
     @WithAnonymousUser
     void create_whenAuthenticationMissing_shouldThrowUnAuthenticatedError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
+        mockMvc.perform(MockMvcRequestBuilders.post(NEW_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(VALID_JSON_REQUEST))
                 .andDo(print())
@@ -104,7 +104,7 @@ class CreateJourneyResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
     void create_whenAuthenticationExistsButDoesBNotHaveAuthority_shouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
+        mockMvc.perform(MockMvcRequestBuilders.post(NEW_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(VALID_JSON_REQUEST))
                 .andDo(print())
@@ -146,7 +146,7 @@ class CreateJourneyResourceTest {
     })
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void create_whenJourneyDataNotValid_thenShouldThrowError(String jsonContent) throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_JOURNEY)
+        mockMvc.perform(MockMvcRequestBuilders.post(NEW_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andDo(print())
