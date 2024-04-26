@@ -21,6 +21,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
@@ -86,7 +87,7 @@ class JwtTokenResourceTest {
 
         LoginResponse loginResponse = objectMapper.readValue(response, LoginResponse.class);
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/rest/journeys")
+                        MockMvcRequestBuilders.get(FIND_JOURNEYS)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + loginResponse.token())
                 ).andDo(print())
