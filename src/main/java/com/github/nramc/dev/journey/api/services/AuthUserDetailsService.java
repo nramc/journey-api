@@ -31,12 +31,12 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
 
     @Override
     public void updateUser(UserDetails user) {
-        throw new UnsupportedOperationException("update user feature not possible");
+        userRepository.save((AuthUser) user);
     }
 
     @Override
     public void deleteUser(String username) {
-        throw new UnsupportedOperationException("delete user feature not possible");
+        userRepository.deleteByUsername(username);
     }
 
     @Override

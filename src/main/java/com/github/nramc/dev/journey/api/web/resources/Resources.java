@@ -17,6 +17,8 @@ public class Resources {
 
     public static final String NEW_USER = "/rest/user/new";
     public static final String FIND_USERS = "/rest/users";
+    public static final String DELETE_USER_BY_USERNAME = "/rest/user/{username}";
+    public static final String DELETE_MY_ACCOUNT = "/rest/my-account";
 
     @UtilityClass
     public static class MediaType {
