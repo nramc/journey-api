@@ -45,6 +45,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.OPTIONS;
@@ -120,8 +121,10 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, FIND_USERS).access(adminOnlyAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminOnlyAuthorizationManager)
 
-                        .requestMatchers(DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
-                        .requestMatchers(CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(DELETE, DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
+
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()

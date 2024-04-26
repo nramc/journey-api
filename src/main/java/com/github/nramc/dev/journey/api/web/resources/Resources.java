@@ -20,6 +20,7 @@ public class Resources {
     public static final String DELETE_USER_BY_USERNAME = "/rest/user/{username}";
     public static final String DELETE_MY_ACCOUNT = "/rest/my-account";
     public static final String CHANGE_MY_PASSWORD = "/rest/changePassword";
+    public static final String UPDATE_MY_ACCOUNT = "/rest/my-account";
 
     @UtilityClass
     public static class MediaType {
