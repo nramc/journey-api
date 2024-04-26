@@ -16,6 +16,7 @@ public class Resources {
     public static final String UPDATE_JOURNEY = "/rest/journey/{id}";
 
     public static final String NEW_USER = "/rest/user/new";
+    public static final String FIND_USERS = "/rest/users";
 
     @UtilityClass
     public static class MediaType {

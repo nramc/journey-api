@@ -35,6 +35,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.ALL_REQUE
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY_BY_ID;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CHECK;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
@@ -108,6 +109,7 @@ public class WebSecurityConfig {
 
                         // Users resources
                         .requestMatchers(POST, NEW_USER).access(adminOnlyAuthorizationManager)
+                        .requestMatchers(GET, FIND_USERS).access(adminOnlyAuthorizationManager)
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
