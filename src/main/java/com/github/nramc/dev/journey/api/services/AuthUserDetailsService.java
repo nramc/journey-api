@@ -21,7 +21,10 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
 
     @Override
     public UserDetails updatePassword(UserDetails user, String newPassword) {
-        throw new UnsupportedOperationException("update password feature not possible");
+        AuthUser authUser = userRepository.findUserByUsername(user.getUsername());
+        authUser.setPassword(newPassword);
+        userRepository.save(authUser);
+        return authUser;
     }
 
     @Override
