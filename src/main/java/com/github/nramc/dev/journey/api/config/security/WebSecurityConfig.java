@@ -32,6 +32,7 @@ import static com.github.nramc.dev.journey.api.security.Roles.AUTHENTICATED_USER
 import static com.github.nramc.dev.journey.api.security.Roles.GUEST;
 import static com.github.nramc.dev.journey.api.security.Roles.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.ALL_REQUESTS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
@@ -118,7 +119,9 @@ public class WebSecurityConfig {
                         .requestMatchers(POST, NEW_USER).access(adminOnlyAuthorizationManager)
                         .requestMatchers(GET, FIND_USERS).access(adminOnlyAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminOnlyAuthorizationManager)
+
                         .requestMatchers(DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
 
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
