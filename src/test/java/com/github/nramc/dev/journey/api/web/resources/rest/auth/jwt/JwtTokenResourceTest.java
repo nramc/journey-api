@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.LoginResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,11 +3,10 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publ
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish.PublishJourneyRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
