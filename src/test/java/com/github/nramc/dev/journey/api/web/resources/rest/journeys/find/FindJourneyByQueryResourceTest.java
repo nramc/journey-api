@@ -4,7 +4,6 @@ import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.security.Roles;
 import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.BeforeEach;
