@@ -29,8 +29,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.security.Visibility.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -206,7 +206,7 @@ class PublishJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {AUTHENTICATED_USER})
     void publishJourney_whenNotAuthorized_thenThrowError() throws Exception {
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
         assertThat(journeyEntity).isNotNull()

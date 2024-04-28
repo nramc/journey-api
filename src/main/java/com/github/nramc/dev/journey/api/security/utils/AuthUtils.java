@@ -28,7 +28,7 @@ public class AuthUtils {
 
     public static boolean isGuestUser(Collection<? extends GrantedAuthority> authorities) {
         return CollectionUtils.emptyIfNull(authorities).stream()
-                .anyMatch(authority -> StringUtils.equals(authority.getAuthority(), Roles.GUEST.name()));
+                .anyMatch(authority -> StringUtils.equals(authority.getAuthority(), Roles.GUEST_USER.name()));
     }
 
 }

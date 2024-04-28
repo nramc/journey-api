@@ -19,7 +19,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
@@ -55,7 +55,7 @@ class FindUsersResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST, AUTHENTICATED_USER, MAINTAINER})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
     void find_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_USERS))
                 .andDo(print())
@@ -88,7 +88,7 @@ class FindUsersResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
     void findMyAccount_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_MY_ACCOUNT))
                 .andDo(print())

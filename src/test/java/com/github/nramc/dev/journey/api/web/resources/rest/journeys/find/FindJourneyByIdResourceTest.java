@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.github.nramc.dev.journey.api.config.security.Authority.GUEST;
-import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -96,7 +96,7 @@ class FindJourneyByIdResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST_USER})
     void find_whenJourneyExists_butDoesNotHavePermission_ShouldThrowError() throws Exception {
         journeyRepository.save(VALID_JOURNEY);
 
@@ -134,7 +134,7 @@ class FindJourneyByIdResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {AUTHENTICATED_USER})
     void find_whenNotAuthorized_thenShouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, " ")
                         .accept(MediaType.APPLICATION_JSON)

@@ -18,7 +18,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,7 +62,7 @@ class UpdateUserResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
     void change_whenUserNotAuthorized_thenShouldThrowError() throws Exception {
         mockMvc.perform(post(UPDATE_MY_ACCOUNT)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -18,7 +18,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
@@ -53,7 +53,7 @@ class DeleteUserResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST, AUTHENTICATED_USER, MAINTAINER})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
     void find_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
         mockMvc.perform(delete(DELETE_USER_BY_USERNAME, "test-user"))
                 .andDo(print())
@@ -76,7 +76,7 @@ class DeleteUserResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
     void deleteMyAccount_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
         mockMvc.perform(delete(DELETE_MY_ACCOUNT))
                 .andDo(print())

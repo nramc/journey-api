@@ -29,7 +29,7 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 
 import static com.github.nramc.dev.journey.api.security.Roles.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Roles.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.GUEST;
+import static com.github.nramc.dev.journey.api.security.Roles.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Roles.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.ALL_REQUESTS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
@@ -66,8 +66,8 @@ public class WebSecurityConfig {
             hasAnyScope(AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
     );
     AuthorizationManager<RequestAuthorizationContext> readOnlyAuthorizationManager = anyOf(
-            hasAnyAuthority(GUEST.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
-            hasAnyScope(GUEST.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
+            hasAnyAuthority(GUEST_USER.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
+            hasAnyScope(GUEST_USER.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
     );
     AuthorizationManager<RequestAuthorizationContext> readAndWriteAuthorizationManager = anyOf(
             hasAnyAuthority(MAINTAINER.name(), ADMINISTRATOR.name()),

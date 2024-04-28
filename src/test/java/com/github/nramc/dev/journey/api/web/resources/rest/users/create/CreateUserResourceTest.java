@@ -26,7 +26,7 @@ import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,7 +74,7 @@ class CreateUserResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST, AUTHENTICATED_USER, MAINTAINER})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
     void create_whenUserNotAuthorized_shouldReturnError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(NEW_USER)
                         .contentType(MediaType.APPLICATION_JSON)

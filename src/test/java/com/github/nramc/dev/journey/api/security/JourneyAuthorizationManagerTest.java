@@ -57,7 +57,7 @@ class JourneyAuthorizationManagerTest {
 
     @Test
     void isAuthorized_whenLoggedInUserGuest_thenShouldHaveAccessOnlyToJourneysHaveGuestVisibility() {
-        doReturn(List.of(new SimpleGrantedAuthority(Roles.GUEST.name()))).when(authentication).getAuthorities();
+        doReturn(List.of(new SimpleGrantedAuthority(Roles.GUEST_USER.name()))).when(authentication).getAuthorities();
 
         assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
         assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));

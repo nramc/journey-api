@@ -2,9 +2,10 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.config.security.Authority;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.security.Roles;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.github.nramc.dev.journey.api.security.Visibility.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
@@ -78,7 +80,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {Authority.MAINTAINER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenJourneyExists_butLoggedInUserDoesNotHavePermission_thenShouldReturnEmptyResponse() throws Exception {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
@@ -108,7 +110,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {Authority.MAINTAINER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenJourneyExists_butLoggedInUserDoesHavePermissionDueToVisibility_thenShouldReturnEmptyResponse() throws Exception {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
@@ -116,7 +118,7 @@ class FindJourneyByQueryResourceTest {
                                 .id("ID_" + index)
                                 .createdDate(LocalDate.now().plusDays(index))
                                 .createdBy("admin-user")
-                                .visibilities(Set.of(MAINTAINER))
+                                .visibilities(Set.of(Visibility.MAINTAINER))
                                 .build()
                 )
         );
@@ -138,7 +140,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {Authority.MAINTAINER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenPagingAndSortingFieldGiven_shouldReturnCorrespondingPageWithRequestedSorting_withSecondPageAndAscendingSort() throws Exception {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
@@ -167,7 +169,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {Authority.MAINTAINER})
+    @WithMockUser(username = "test-user", authorities = {MAINTAINER})
     void find_whenSearchQueryProvided_shouldReturnSearchQuerySatisfiedJourneys() throws Exception {
         // setup data
         journeyRepository.save(VALID_JOURNEY.toBuilder().id("ID_00").build());
@@ -203,7 +205,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {Authority.MAINTAINER})
+    @WithMockUser(username = "test-user", authorities = {MAINTAINER})
     void find_whenPublishedOnlyRequested_shouldReturnOnlyPublishedJourneys() throws Exception {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
@@ -241,7 +243,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {Authority.MAINTAINER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenPagingAndSortingFieldGiven_shouldReturnCorrespondingPageWithRequestedSorting_withSecondPageAndDescendingSort() throws Exception {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
@@ -270,7 +272,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {Authority.MAINTAINER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void findAllAndReturnJson_whenPagingAndSortingParamsNotGiven_thenShouldConsiderDefaultValues() throws Exception {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
@@ -308,7 +310,7 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {Authority.USER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {AUTHENTICATED_USER})
     void find_whenNotAuthorized_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
