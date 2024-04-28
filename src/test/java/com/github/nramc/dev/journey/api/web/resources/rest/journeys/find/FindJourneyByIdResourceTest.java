@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

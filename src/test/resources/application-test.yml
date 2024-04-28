@@ -3,11 +3,11 @@ app:
     users:
       - username: admin
         password: password
-        roles: USER, MAINTAINER
+        roles: AUTHENTICATED_USER, MAINTAINER
         name: Administrator
       - username: GUEST
         password: <placeholder>
-        roles: GUEST
+        roles: GUEST_USER
         name: Guest User
       - username: test-user
         password: test-password

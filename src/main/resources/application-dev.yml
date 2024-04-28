@@ -4,10 +4,10 @@ app:
       - name: localDevAdmin
         username: admin
         password: password
-        roles: USER, MAINTAINER, ADMINISTRATOR
+        roles: AUTHENTICATED_USER, MAINTAINER, ADMINISTRATOR
       - username: GUEST
         password: <placeholder>
-        roles: GUEST
+        roles: GUEST_USER
         name: Guest
       - username: test-user-001
         password: test-password-001

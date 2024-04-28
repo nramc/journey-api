@@ -29,8 +29,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.security.Visibility.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static org.assertj.core.api.Assertions.assertThat;

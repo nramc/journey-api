@@ -24,8 +24,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

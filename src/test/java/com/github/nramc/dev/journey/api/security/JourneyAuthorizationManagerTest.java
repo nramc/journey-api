@@ -57,7 +57,7 @@ class JourneyAuthorizationManagerTest {
 
     @Test
     void isAuthorized_whenLoggedInUserGuest_thenShouldHaveAccessOnlyToJourneysHaveGuestVisibility() {
-        doReturn(List.of(new SimpleGrantedAuthority(Roles.GUEST_USER.name()))).when(authentication).getAuthorities();
+        doReturn(List.of(new SimpleGrantedAuthority(Role.GUEST_USER.name()))).when(authentication).getAuthorities();
 
         assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
         assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
@@ -68,7 +68,7 @@ class JourneyAuthorizationManagerTest {
 
     @Test
     void isAuthorized_whenLoggedInUserAuthenticatedUser_thenShouldHaveAccessToJourneysHaveAuthenticatedUserVisibility() {
-        doReturn(List.of(new SimpleGrantedAuthority(Roles.AUTHENTICATED_USER.name()))).when(authentication).getAuthorities();
+        doReturn(List.of(new SimpleGrantedAuthority(Role.AUTHENTICATED_USER.name()))).when(authentication).getAuthorities();
 
         assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
         assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
@@ -79,7 +79,7 @@ class JourneyAuthorizationManagerTest {
 
     @Test
     void isAuthorized_whenLoggedInUserAuthenticatedUser_thenShouldHaveAccessToJourneysCreatedByThemself() {
-        doReturn(List.of(new SimpleGrantedAuthority(Roles.AUTHENTICATED_USER.name()))).when(authentication).getAuthorities();
+        doReturn(List.of(new SimpleGrantedAuthority(Role.AUTHENTICATED_USER.name()))).when(authentication).getAuthorities();
         when(authentication.getName()).thenReturn("xyz123");
 
         assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
@@ -91,7 +91,7 @@ class JourneyAuthorizationManagerTest {
 
     @Test
     void isAuthorized_whenLoggedInUserMaintainer_thenShouldHaveAccessToJourneysHaveMaintainerVisibility() {
-        doReturn(List.of(new SimpleGrantedAuthority(Roles.MAINTAINER.name()))).when(authentication).getAuthorities();
+        doReturn(List.of(new SimpleGrantedAuthority(Role.MAINTAINER.name()))).when(authentication).getAuthorities();
 
         assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
         assertTrue(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
@@ -102,7 +102,7 @@ class JourneyAuthorizationManagerTest {
 
     @Test
     void isAuthorized_whenLoggedInUserAdministrator_thenShouldHaveAccessToJourneysHaveAdministratorVisibility() {
-        doReturn(List.of(new SimpleGrantedAuthority(Roles.ADMINISTRATOR.name()))).when(authentication).getAuthorities();
+        doReturn(List.of(new SimpleGrantedAuthority(Role.ADMINISTRATOR.name()))).when(authentication).getAuthorities();
 
         assertTrue(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
         assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));

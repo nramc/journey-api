@@ -1,10 +1,10 @@
 package com.github.nramc.dev.journey.api.repository.auth;
 
+import com.github.nramc.dev.journey.api.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -31,11 +31,11 @@ public class AuthUser implements UserDetails {
     private LocalDateTime createdDate;
     private LocalDateTime lastLoggedIn;
     private boolean enabled;
-    private Set<String> roles;
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(CollectionUtils.emptyIfNull(roles));
+        return AuthorityUtils.createAuthorityList(Role.toStringRoles(roles));
     }
 
     @Override

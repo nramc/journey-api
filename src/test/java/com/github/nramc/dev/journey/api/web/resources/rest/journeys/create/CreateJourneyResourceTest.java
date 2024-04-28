@@ -22,8 +22,8 @@ import org.testcontainers.utility.DockerImageName;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
