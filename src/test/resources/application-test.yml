@@ -8,7 +8,7 @@ app:
       - username: GUEST
         password: <placeholder>
         roles: GUEST_USER
-        name: Guest User
+        name: Guest
       - username: test-user
         password: test-password
         roles: AUTHENTICATED_USER, MAINTAINER

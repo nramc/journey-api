@@ -40,6 +40,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CHECK;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
@@ -107,7 +108,8 @@ public class WebSecurityConfig {
                         // Allow Preflight requests
                         .requestMatchers(OPTIONS, ALL_REQUESTS).permitAll()
 
-                        // Journeys resources
+                        // Login resources
+                        .requestMatchers(POST, GUEST_LOGIN).permitAll()
                         .requestMatchers(POST, LOGIN).authenticated()
 
                         .requestMatchers(GET, FIND_JOURNEYS).access(readOnlyAuthorizationManager)

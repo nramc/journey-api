@@ -1,0 +1,29 @@
+### Login as Guest user
+POST {{baseUrl}}/guestLogin
+
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token !== null, "Redirect URL is empty");
+        client.global.set("jwtToken", response.body.token)
+    });
+%}
+
+
+### Find all Journeys
+GET {{baseUrl}}/journeys
+Authorization: Bearer {{jwtToken}}
+Accept: application/json
+
+
+### Find Journey By ID
+GET {{baseUrl}}/journey/journey-123
+Authorization: Bearer {{jwtToken}}
+Accept: application/json
+
+
+### Find all Journeys and return Geo Json
+GET {{baseUrl}}/journeys/published
+Authorization: Bearer {{jwtToken}}
+Accept: application/geo+json
