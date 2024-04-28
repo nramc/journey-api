@@ -1,8 +1,14 @@
 app:
-  user:
-    username: admin
-    password: password
-    roles: USER, MAINTAINER
+  operational:
+    users:
+      - name: localDevAdmin
+        username: admin
+        password: password
+        roles: USER, MAINTAINER, ADMINISTRATOR
+      - username: GUEST
+        password: <placeholder>
+        roles: GUEST
+        name: Guest
 
 logging:
   level:

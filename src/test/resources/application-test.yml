@@ -5,6 +5,10 @@ app:
         password: password
         roles: USER, MAINTAINER
         name: Administrator
+      - username: GUEST
+        password: <placeholder>
+        roles: GUEST
+        name: Guest
 
 logging:
   level:
