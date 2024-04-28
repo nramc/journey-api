@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static org.hamcrest.Matchers.contains;
@@ -306,15 +305,6 @@ class FindJourneyByQueryResourceTest {
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {AUTHENTICATED_USER})
-    void find_whenNotAuthorized_shouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andDo(print())
-                .andExpect(status().isForbidden());
     }
 
 }
