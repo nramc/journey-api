@@ -31,3 +31,21 @@ Content-Type: application/json
   "newPassword": "{{appUserPassword}}"
 }
 
+### Update My Account Details
+POST http://localhost:8080/rest/my-account
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+Content-Type: application/json
+
+{
+  "name": "Test User Name Updated",
+  "emailAddress": "updated-email-address@dummy.com"
+}
+
+### GET My Account Details
+GET http://localhost:8080/rest/my-account
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+
+### DELETE My Account
+DELETE http://localhost:8080/rest/my-account
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+
