@@ -43,7 +43,8 @@ class CreateUserResourceTest {
              "username": "%s",
              "password": "%s",
              "name": "%s",
-             "emailAddress": "%s"
+             "emailAddress": "%s",
+             "roles": ["AUTHENTICATED_USER"]
             }""";
     private static final String USER_NAME = "valid-user-name";
     private static final String VALID_PASSWORD = "valid-passsword@001";
@@ -99,7 +100,7 @@ class CreateUserResourceTest {
                 .satisfies(u -> assertThat(u.getSecret()).isBlank())
                 .satisfies(u -> assertThat(u.getEmailAddress()).isEqualTo(EMAIL_ADDRESS))
                 .satisfies(u -> assertThat(u.getRoles()).isEqualTo(Set.of(Roles.AUTHENTICATED_USER.name())))
-                .satisfies(u -> assertThat(u.isEnabled()).isFalse());
+                .satisfies(u -> assertThat(u.isEnabled()).isTrue());
     }
 
     @ParameterizedTest
