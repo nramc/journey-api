@@ -178,7 +178,6 @@ class FindJourneyByQueryResourceTest {
 
         JourneyEntity entity = new JourneyEntity();
         entity.setIsPublished(true);
-        System.out.println(journeyRepository.findAll(Example.of(entity)));
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
@@ -216,7 +215,6 @@ class FindJourneyByQueryResourceTest {
         );
         JourneyEntity entity = new JourneyEntity();
         entity.setIsPublished(true);
-        System.out.println(journeyRepository.findAll(Example.of(entity)));
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)

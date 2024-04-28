@@ -1,8 +1,9 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt;
+package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.LoginResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +15,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOGIN;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 @AutoConfigureJson
-class JwtTokenResourceTest {
+class GuestLoginResourceTest {
     @Autowired
     private MockMvc mockMvc;
     @Container
@@ -54,40 +55,35 @@ class JwtTokenResourceTest {
     }
 
     @Test
-    void operationalUserShouldExistsInDatabase() {
-        AuthUser operationalUser = userRepository.findUserByUsername("admin");
+    void guestUserShouldExistsInDatabase() {
+        AuthUser operationalUser = userRepository.findUserByUsername("GUEST");
         Assertions.assertNotNull(operationalUser);
     }
 
     @Test
-    void token_whenUserAuthenticated_thenShouldGetJwtToken() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
-                        .with(httpBasic("admin", "password"))
-                ).andDo(print())
+    void guestLogin_thenShouldGetJwtToken() throws Exception {
+        mockMvc.perform(post(GUEST_LOGIN)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
-                .andExpect(jsonPath("$.name").value("Administrator"))
-                .andExpect(jsonPath("$.authorities").value(hasItems("MAINTAINER", "AUTHENTICATED_USER")));
-
+                .andExpect(jsonPath("$.name").value("Guest"))
+                .andExpect(jsonPath("$.authorities").value(hasItems("GUEST_USER")));
     }
 
     @Test
-    void token_whenJwtValid_thenShouldAuthenticateSuccessfully() throws Exception {
-        String response = mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
-                        .with(httpBasic("admin", "password"))
-                ).andDo(print())
+    void token_whenGuestUserAuthenticationValid_thenShouldAuthenticateSuccessfully() throws Exception {
+        String response = mockMvc.perform(post(GUEST_LOGIN))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().string(not(blankOrNullString())))
                 .andReturn().getResponse().getContentAsString();
 
         LoginResponse loginResponse = objectMapper.readValue(response, LoginResponse.class);
-        mockMvc.perform(
-                        MockMvcRequestBuilders.get(FIND_JOURNEYS)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + loginResponse.token())
+        mockMvc.perform(get(FIND_JOURNEYS)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + loginResponse.token())
                 ).andDo(print())
                 .andExpect(status().isOk());
     }

@@ -19,6 +19,10 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
         return userRepository.findUserByUsername(username);
     }
 
+    public AuthUser getGuestUserDetails() {
+        return userRepository.findUserByUsername("GUEST");
+    }
+
     @Override
     public UserDetails updatePassword(UserDetails user, String newPassword) {
         AuthUser authUser = userRepository.findUserByUsername(user.getUsername());
