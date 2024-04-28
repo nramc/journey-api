@@ -17,7 +17,7 @@ app:
         name: Administrator
       - username: GUEST
         password: <placeholder>
-        roles: GUEST
+        roles: GUEST_USER
         name: Guest
 
 

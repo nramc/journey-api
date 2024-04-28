@@ -27,8 +27,8 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -135,7 +135,7 @@ class UpdateJourneyGeoDetailsResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {USER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {AUTHENTICATED_USER})
     void updateGeoDetails_whenNotAuthorized_shouldThrowError() throws Exception {
         // setup data
         JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);

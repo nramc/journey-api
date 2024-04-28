@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.dto.user;
 
+import com.github.nramc.dev.journey.api.security.Role;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,6 @@ public record User(
         LocalDateTime createdDate,
         LocalDateTime lastLoggedIn,
         boolean enabled,
-        Set<String> roles
+        Set<Role> roles
 ) {
 }

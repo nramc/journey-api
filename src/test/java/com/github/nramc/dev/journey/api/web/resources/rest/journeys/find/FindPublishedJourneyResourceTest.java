@@ -24,8 +24,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.security.Authority.GUEST;
-import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -79,7 +79,7 @@ class FindPublishedJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
     void find_whenPublishedJourneyExists_butDoesNNotHavePermission_ShouldReturnEmptyCollection() throws Exception {
         journeyRepository.save(VALID_JOURNEY.toBuilder()
                 .isPublished(true)

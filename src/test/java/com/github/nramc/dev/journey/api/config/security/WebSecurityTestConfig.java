@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.config.security;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.security.Role;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.Set;
-
-import static com.github.nramc.dev.journey.api.config.security.Authority.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Authority.USER;
 
 @TestConfiguration
 public class WebSecurityTestConfig {
@@ -26,13 +24,13 @@ public class WebSecurityTestConfig {
         UserDetails user = AuthUser.builder()
                 .username("test-user")
                 .password(passwordEncoder.encode("test-password"))
-                .roles(Set.of(USER))
+                .roles(Set.of(Role.AUTHENTICATED_USER))
                 .name("USER")
                 .build();
         UserDetails admin = AuthUser.builder()
                 .username("test-admin")
                 .password(passwordEncoder.encode("test-password"))
-                .roles(Set.of(USER, MAINTAINER))
+                .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
                 .name("Administrator")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);

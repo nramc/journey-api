@@ -18,10 +18,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST;
-import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,7 +64,7 @@ class ChangePasswordResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST})
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
     void find_whenUserNotAuthorized_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CHANGE_MY_PASSWORD)
                         .contentType(MediaType.APPLICATION_JSON)

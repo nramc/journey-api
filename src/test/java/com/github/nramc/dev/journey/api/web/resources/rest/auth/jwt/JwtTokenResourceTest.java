@@ -70,7 +70,7 @@ class JwtTokenResourceTest {
                 .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.name").value("Administrator"))
-                .andExpect(jsonPath("$.authorities").value(hasItems("MAINTAINER", "USER")));
+                .andExpect(jsonPath("$.authorities").value(hasItems("MAINTAINER", "AUTHENTICATED_USER")));
 
     }
 
