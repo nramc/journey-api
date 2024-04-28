@@ -36,13 +36,13 @@ public class CreateUserResource {
 
     private AuthUser toUserModel(CreateUserRequest userRequest) {
         return AuthUser.builder()
-                .enabled(false) // Administrator has to verify enable user manually due to security concern
-                .roles(Set.of(Roles.AUTHENTICATED_USER.name()))
+                .enabled(true)
                 .createdDate(LocalDateTime.now())
 
+                .name(userRequest.name())
                 .username(userRequest.username())
                 .password(userRequest.password())
-                .name(userRequest.name())
+                .roles(userRequest.roles())
                 .emailAddress(userRequest.emailAddress())
                 .build();
     }

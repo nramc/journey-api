@@ -1,0 +1,28 @@
+
+
+### Login as Adminstrator
+### Login
+POST {{baseUrl}}/login
+Authorization: Basic {{adminUsername}} {{adminUserPassword}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token !== null, "Redirect URL is empty");
+        client.global.set("jwtToken", response.body.token)
+    });
+%}
+
+
+### Create User
+POST http://localhost:8080/rest/user/new
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "username": "app-user001",
+  "password": "dummy-001",
+  "name": "App User 001",
+  "emailAddress": "app-user@dummy.com",
+  "roles": ["ADMINISTRATOR", "AUTHENTICATED_USER", "MAINTAINER"]
+}
