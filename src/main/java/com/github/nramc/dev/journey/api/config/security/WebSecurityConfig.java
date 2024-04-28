@@ -37,6 +37,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY_BY_ID;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CHECK;
@@ -121,6 +122,8 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, FIND_USERS).access(adminOnlyAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminOnlyAuthorizationManager)
 
+
+                        .requestMatchers(GET, FIND_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)

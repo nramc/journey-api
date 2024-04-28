@@ -9,6 +9,10 @@ app:
         password: <placeholder>
         roles: GUEST
         name: Guest
+      - username: test-user
+        password: test-password
+        roles: AUTHENTICATED_USER, MAINTAINER
+        name: Test User
 
 logging:
   level:

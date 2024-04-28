@@ -1,7 +1,6 @@
 
 
 ### Login as Adminstrator
-### Login
 POST {{baseUrl}}/login
 Authorization: Basic {{adminUsername}} {{adminUserPassword}}
 
@@ -26,3 +25,12 @@ Content-Type: application/json
   "emailAddress": "app-user@dummy.com",
   "roles": ["ADMINISTRATOR", "AUTHENTICATED_USER", "MAINTAINER"]
 }
+
+### Find all users
+GET http://localhost:8080/rest/users
+Authorization: Bearer {{jwtToken}}
+
+### Delete user account
+DELETE http://localhost:8080/rest/user/app-user001
+Authorization: Bearer {{jwtToken}}
+

@@ -21,6 +21,7 @@ import static com.github.nramc.dev.journey.api.security.Roles.Constants.ADMINIST
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.GUEST;
 import static com.github.nramc.dev.journey.api.security.Roles.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -76,8 +77,40 @@ class FindUsersResourceTest {
                 .andExpect(jsonPath("$[0].enabled").hasJsonPath())
                 .andExpect(jsonPath("$[0].roles").hasJsonPath())
                 .andExpect(jsonPath("$[0].password").doesNotHaveJsonPath())
-                .andExpect(jsonPath("$[0].secret").doesNotHaveJsonPath())
-        ;
+                .andExpect(jsonPath("$[0].secret").doesNotHaveJsonPath());
+    }
+
+    @Test
+    void findMyAccount_whenUserNotAuthenticated_shouldThrowError() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(FIND_MY_ACCOUNT))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", authorities = {GUEST})
+    void findMyAccount_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(FIND_MY_ACCOUNT))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", authorities = {AUTHENTICATED_USER})
+    void findMyAccount_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_MY_ACCOUNT))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.username").hasJsonPath())
+                .andExpect(jsonPath("$.name").hasJsonPath())
+                .andExpect(jsonPath("$.emailAddress").hasJsonPath())
+                .andExpect(jsonPath("$.createdDate").hasJsonPath())
+                .andExpect(jsonPath("$.lastLoggedIn").hasJsonPath())
+                .andExpect(jsonPath("$.enabled").hasJsonPath())
+                .andExpect(jsonPath("$.roles").hasJsonPath())
+                .andExpect(jsonPath("$.password").doesNotHaveJsonPath())
+                .andExpect(jsonPath("$.secret").doesNotHaveJsonPath());
     }
 
 }
