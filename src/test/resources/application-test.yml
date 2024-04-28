@@ -1,15 +1,25 @@
 app:
-  user:
-    username: admin
-    password: password
-    roles: USER, MAINTAINER
+  operational:
+    users:
+      - username: admin
+        password: password
+        roles: USER, MAINTAINER
+        name: Administrator
+      - username: GUEST
+        password: <placeholder>
+        roles: GUEST
+        name: Guest
+      - username: test-user
+        password: test-password
+        roles: AUTHENTICATED_USER, MAINTAINER
+        name: Test User
 
 logging:
   level:
     root: INFO
     org.springframework.web: INFO
     org.springframework.security: DEBUG
-#    org.springframework.boot.autoconfigure: DEBUG
+    #    org.springframework.boot.autoconfigure: DEBUG
     org.springframework.data.mongodb.core: DEBUG
 
 jwt:

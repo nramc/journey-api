@@ -1,0 +1,51 @@
+
+### Login as Application user
+POST {{baseUrl}}/login
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token !== null, "Redirect URL is empty");
+        client.global.set("jwtToken", response.body.token)
+    });
+%}
+
+### Change My Account Password
+POST http://localhost:8080/rest/my-account/changePassword
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+Content-Type: application/json
+
+{
+  "oldPassword": "{{appUserPassword}}",
+  "newPassword": "{{adminUserPassword}}"
+}
+
+### Change My Account Password back to original
+POST http://localhost:8080/rest/my-account/changePassword
+Authorization: Basic {{appUsername}} {{adminUserPassword}}
+Content-Type: application/json
+
+{
+  "oldPassword": "{{adminUserPassword}}",
+  "newPassword": "{{appUserPassword}}"
+}
+
+### Update My Account Details
+POST http://localhost:8080/rest/my-account
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+Content-Type: application/json
+
+{
+  "name": "Test User Name Updated",
+  "emailAddress": "updated-email-address@dummy.com"
+}
+
+### GET My Account Details
+GET http://localhost:8080/rest/my-account
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+
+### DELETE My Account
+DELETE http://localhost:8080/rest/my-account
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+

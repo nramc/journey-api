@@ -9,11 +9,17 @@ spring:
 app:
   name: Journey API
   version: '@project.version@'
-  user:
-    username: ${OPR_USER}
-    password: ${OPR_USER_PWD}
-    roles: ${OPR_USER_ROLES}
-    name: Administrator
+  operational:
+    users:
+      - username: ${OPR_USER}
+        password: ${OPR_USER_PWD}
+        roles: ${OPR_USER_ROLES}
+        name: Administrator
+      - username: GUEST
+        password: <placeholder>
+        roles: GUEST
+        name: Guest
+
 
 jwt:
   private-key: 'file:/etc/secrets/jwt-private.key'

@@ -6,4 +6,6 @@ public interface UserRepository extends MongoRepository<AuthUser, String> {
 
     AuthUser findUserByUsername(String username);
 
+    void deleteByUsername(String username);
+
 }

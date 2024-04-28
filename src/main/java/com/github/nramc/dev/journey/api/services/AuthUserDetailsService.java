@@ -21,7 +21,10 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
 
     @Override
     public UserDetails updatePassword(UserDetails user, String newPassword) {
-        throw new UnsupportedOperationException("update password feature not possible");
+        AuthUser authUser = userRepository.findUserByUsername(user.getUsername());
+        authUser.setPassword(newPassword);
+        userRepository.save(authUser);
+        return authUser;
     }
 
     @Override
@@ -31,12 +34,12 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
 
     @Override
     public void updateUser(UserDetails user) {
-        throw new UnsupportedOperationException("update user feature not possible");
+        userRepository.save((AuthUser) user);
     }
 
     @Override
     public void deleteUser(String username) {
-        throw new UnsupportedOperationException("delete user feature not possible");
+        userRepository.deleteByUsername(username);
     }
 
     @Override
