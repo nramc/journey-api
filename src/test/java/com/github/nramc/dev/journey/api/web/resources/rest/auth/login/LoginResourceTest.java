@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt;
+package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 @AutoConfigureJson
-class JwtTokenResourceTest {
+class LoginResourceTest {
     @Autowired
     private MockMvc mockMvc;
     @Container
@@ -60,7 +60,7 @@ class JwtTokenResourceTest {
     }
 
     @Test
-    void token_whenUserAuthenticated_thenShouldGetJwtToken() throws Exception {
+    void login_whenUserAuthenticated_thenShouldGetJwtToken() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
                         .with(httpBasic("admin", "password"))
                 ).andDo(print())
@@ -74,7 +74,7 @@ class JwtTokenResourceTest {
     }
 
     @Test
-    void token_whenJwtValid_thenShouldAuthenticateSuccessfully() throws Exception {
+    void login_whenJwtValid_thenShouldAuthenticateSuccessfully() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
                         .with(httpBasic("admin", "password"))
                 ).andDo(print())

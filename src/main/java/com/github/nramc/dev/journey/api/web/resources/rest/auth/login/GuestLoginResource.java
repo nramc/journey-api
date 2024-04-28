@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.services.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.JwtGenerator;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt;
+package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
