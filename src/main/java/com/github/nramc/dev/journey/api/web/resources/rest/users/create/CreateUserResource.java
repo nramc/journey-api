@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.create;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.security.Roles;
 import com.github.nramc.dev.journey.api.services.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import jakarta.validation.Valid;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @RestController
 @Slf4j
