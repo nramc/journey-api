@@ -2,6 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.security.Visibility;
+import com.github.nramc.dev.journey.api.security.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.web.dto.Journey;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +40,7 @@ public class FindJourneyByQueryResource {
             @RequestParam(name = "q", defaultValue = "") String searchText,
             Authentication authentication) {
 
-        Set<String> visibilities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+        Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
         String username = authentication.getName();
         Set<Boolean> publishedFlags = publishedOnly ? Set.of(true) : Set.of(true, false);
 

@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
+import com.github.nramc.dev.journey.api.security.Visibility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -24,5 +25,5 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
             }
             """
     )
-    Page<JourneyEntity> findAllBy(Set<String> visibilities, String username, Set<Boolean> publishedFlags, String searchText, Pageable pageable);
+    Page<JourneyEntity> findAllBy(Set<Visibility> visibilities, String username, Set<Boolean> publishedFlags, String searchText, Pageable pageable);
 }
