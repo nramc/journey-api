@@ -12,6 +12,10 @@ public enum Role {
     MAINTAINER,
     GUEST_USER;
 
+    public List<String> allVariant() {
+        return List.of(this.name(), "SCOPE_" + this.name(), "ROLE_" + this.name());
+    }
+
     @UtilityClass
     public static class Constants {
         public static final String ADMINISTRATOR = "ADMINISTRATOR";
