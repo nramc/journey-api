@@ -36,6 +36,7 @@ import static com.github.nramc.dev.journey.api.security.Role.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Role.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Role.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Role.MAINTAINER;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSION;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
@@ -111,6 +112,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
                         .requestMatchers(HOME).permitAll()
+                        .requestMatchers(GET, API_VERSION).permitAll()
 
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()

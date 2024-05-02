@@ -7,6 +7,7 @@ public class Resources {
     public static final String HOME = "/";
     public static final String HEALTH_CHECK = "/actuator/health";
 
+    public static final String API_VERSION = "/rest/version";
     public static final String GUEST_LOGIN = "/rest/guestLogin";
     public static final String LOGIN = "/rest/login";
     public static final String ALL_REQUESTS = "/**";
