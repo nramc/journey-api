@@ -26,12 +26,16 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 import static com.github.nramc.dev.journey.api.security.Role.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Role.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Role.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Role.MAINTAINER;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.ALL_REQUESTS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
@@ -50,7 +54,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JO
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAnyAuthority;
@@ -60,7 +63,7 @@ import static org.springframework.security.oauth2.core.authorization.OAuth2Autho
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
-@EnableConfigurationProperties(JwtProperties.class)
+@EnableConfigurationProperties({JwtProperties.class, CorsProperties.class})
 public class WebSecurityConfig {
     AuthorizationManager<RequestAuthorizationContext> authenticatedUserAuthorizationManager = anyOf(
             hasAnyAuthority(AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
@@ -81,6 +84,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // configure CORS security
+                .cors(Customizer.withDefaults())
+
                 // Configure session management to create stateless sessions
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -89,6 +95,7 @@ public class WebSecurityConfig {
 
                 // configure http headers with customizer
                 .headers(new SecurityHeadersCustomizer())
+
 
                 // HTTP Basic authentication
                 .httpBasic(Customizer.withDefaults())
@@ -103,10 +110,7 @@ public class WebSecurityConfig {
 
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
-                        .requestMatchers(GET, HOME).permitAll()
-
-                        // Allow Preflight requests
-                        .requestMatchers(OPTIONS, ALL_REQUESTS).permitAll()
+                        .requestMatchers(HOME).permitAll()
 
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()
@@ -153,6 +157,20 @@ public class WebSecurityConfig {
         JWK jwk = new RSAKey.Builder(jwtProperties.publicKey()).privateKey(jwtProperties.privateKey()).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(CorsProperties corsProperties) {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        corsProperties.properties().forEach(corsProperty -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(corsProperty.allowedOrigins());
+            configuration.setAllowedMethods(corsProperty.allowedMethods());
+            configuration.setAllowedHeaders(List.of("*"));
+            source.registerCorsConfiguration(corsProperty.path(), configuration);
+        });
+        return source;
     }
 
 }

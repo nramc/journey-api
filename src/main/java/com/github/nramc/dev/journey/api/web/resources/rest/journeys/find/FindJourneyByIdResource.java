@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +23,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(value = "*")
 public class FindJourneyByIdResource {
     private final JourneyRepository journeyRepository;
 
