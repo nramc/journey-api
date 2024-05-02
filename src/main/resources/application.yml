@@ -19,6 +19,12 @@ app:
         password: <placeholder>
         roles: GUEST_USER
         name: Guest
+  security:
+    cors:
+      properties:
+        - path: /**
+          allowed-origins: https://nramc.github.io
+          allowed-methods: GET, POST, PUT, OPTIONS, DELETE
 
 
 jwt:

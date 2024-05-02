@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +25,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(value = "*")
 public class FindJourneyByQueryResource {
     private final JourneyRepository journeyRepository;
 

@@ -5,7 +5,6 @@ import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.JwtGenerator
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +14,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(value = "*")
 public class LoginResource {
     private final JwtGenerator jwtGenerator;
 
