@@ -110,7 +110,7 @@ public class WebSecurityConfig {
 
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
-                        .requestMatchers(GET, HOME).permitAll()
+                        .requestMatchers(HOME).permitAll()
 
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()
