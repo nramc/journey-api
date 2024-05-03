@@ -296,6 +296,66 @@ class FindJourneyByQueryResourceTest {
     }
 
     @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void find_whenTagsGiven_thenShouldFilterResultByGivenTags() throws Exception {
+        // setup data
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).tags(List.of("tag_" + index)).build()));
+
+        // Request result with page number 1 (second page) and order by id ascending
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+                        .queryParam("tags", "tag")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.totalPages").value("0"))
+                .andExpect(jsonPath("$.totalElements").value("0"));
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void find_whenMoreThanOneTagsGiven_thenShouldFilterResultByUnion() throws Exception {
+        // setup data
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).tags(List.of("tag_" + index)).build()));
+
+        // Request result with page number 1 (second page) and order by id ascending
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+                        .queryParam("tags", "tag_0", "tag_1")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.totalPages").value("1"))
+                .andExpect(jsonPath("$.totalElements").value("2"));
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void find_whenMoreThanOneTagsGivenAsCSV_thenShouldFilterResultByUnion() throws Exception {
+        // setup data
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).tags(List.of("tag_" + index)).build()));
+
+        // Request result with page number 1 (second page) and order by id ascending
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+                        .queryParam("tags", "tag_0, tag_1")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.totalPages").value("1"))
+                .andExpect(jsonPath("$.totalElements").value("2"));
+    }
+
+    @Test
     @WithAnonymousUser
     void find_whenNotAuthenticated_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
