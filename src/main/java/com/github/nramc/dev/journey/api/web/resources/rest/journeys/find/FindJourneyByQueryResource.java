@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
@@ -36,6 +37,7 @@ public class FindJourneyByQueryResource {
             @RequestParam(name = "order", defaultValue = "DESC") Sort.Direction sortOrder,
             @RequestParam(name = "publishedOnly", defaultValue = "false") boolean publishedOnly,
             @RequestParam(name = "q", defaultValue = "") String searchText,
+            @RequestParam(name = "tags", defaultValue = "") List<String> tags,
             Authentication authentication) {
 
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
@@ -43,9 +45,11 @@ public class FindJourneyByQueryResource {
         Set<Boolean> publishedFlags = publishedOnly ? Set.of(true) : Set.of(true, false);
 
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
+        log.info("Received tags:{} length:{}", tags, tags.size());
 
 
-        Page<JourneyEntity> entityPage = journeyRepository.findAllBy(visibilities, username, publishedFlags, searchText, pageable);
+        Page<JourneyEntity> entityPage = journeyRepository.findAllBy(
+                visibilities, username, publishedFlags, searchText, tags, pageable);
         Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",

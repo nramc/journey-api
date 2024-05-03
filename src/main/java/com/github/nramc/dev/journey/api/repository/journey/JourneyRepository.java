@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.List;
 import java.util.Set;
 
 public interface JourneyRepository extends MongoRepository<JourneyEntity, String> {
@@ -20,10 +21,21 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
                     { 'title' : { $regex : '.*?3.*', '$options' : 'i' } },
                     { 'description' : { $regex : '.*?3.*', '$options' : 'i' } }
                   ]
+                },
+                { $or: [
+                    { $expr: { $eq: [?4, []] } },
+                    { 'tags': { $in: ?4 } }
+                  ]
                 }
               ]
             }
             """
     )
-    Page<JourneyEntity> findAllBy(Set<Visibility> visibilities, String username, Set<Boolean> publishedFlags, String searchText, Pageable pageable);
+    Page<JourneyEntity> findAllBy(
+            Set<Visibility> visibilities,
+            String username,
+            Set<Boolean> publishedFlags,
+            String searchText,
+            List<String> tags,
+            Pageable pageable);
 }
