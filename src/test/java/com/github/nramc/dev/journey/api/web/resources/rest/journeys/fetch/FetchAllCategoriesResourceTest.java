@@ -91,6 +91,23 @@ class FetchAllCategoriesResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void find_whenTextGiven_shouldProvideResultForText() throws Exception {
+        IntStream.range(0, 21).forEach(index -> journeyRepository.save(VALID_JOURNEY.toBuilder().category("category_" + index).build()));
+
+
+        mockMvc.perform(MockMvcRequestBuilders.get(FETCH_ALL_CATEGORIES)
+                        .queryParam("text", "category_2")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.*").isArray())
+                .andExpect(jsonPath("$.*").value(hasSize(2)))
+                .andExpect(jsonPath("$.*").value(containsInRelativeOrder("category_2", "category_20")));
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenMoreCategoriesExists_shouldLimitResult() throws Exception {
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(VALID_JOURNEY.toBuilder().category("category_" + index).build()));
 
