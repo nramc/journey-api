@@ -40,6 +40,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSI
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FETCH_ALL_CATEGORIES;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY_BY_ID;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
@@ -135,6 +136,8 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE, DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
+
+                        .requestMatchers(GET, FETCH_ALL_CATEGORIES).access(readOnlyAuthorizationManager)
 
 
                         // disallow other paths, or authenticated(), permitAll()
