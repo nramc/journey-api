@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface JourneyRepository extends MongoRepository<JourneyEntity, String> {
-    //db.users.find(  } )
 
     @Query("""
             { $and: [
@@ -37,5 +36,6 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
             Set<Boolean> publishedFlags,
             String searchText,
             List<String> tags,
-            Pageable pageable);
+            Pageable pageable
+    );
 }

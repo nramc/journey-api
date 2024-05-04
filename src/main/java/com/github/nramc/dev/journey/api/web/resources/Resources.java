@@ -10,7 +10,6 @@ public class Resources {
     public static final String API_VERSION = "/rest/version";
     public static final String GUEST_LOGIN = "/rest/guestLogin";
     public static final String LOGIN = "/rest/login";
-    public static final String ALL_REQUESTS = "/**";
 
     public static final String NEW_JOURNEY = "/rest/journey";
     public static final String FIND_JOURNEY_BY_ID = "/rest/journey/{id}";
@@ -26,6 +25,8 @@ public class Resources {
     public static final String DELETE_MY_ACCOUNT = "/rest/my-account";
     public static final String CHANGE_MY_PASSWORD = "/rest/my-account/changePassword";
     public static final String UPDATE_MY_ACCOUNT = "/rest/my-account";
+
+    public static final String FETCH_ALL_CATEGORIES = "/rest/categories";
 
     @UtilityClass
     public static class MediaType {
