@@ -8,12 +8,13 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsE
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basic.UpdateJourneyBasicDetailsRequest;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.videos.UpdateJourneyVideosDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo.UpdateJourneyGeoDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.images.UpdateJourneyImagesDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish.PublishJourneyRequest;
+import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.videos.UpdateJourneyVideosDetailsRequest;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class UpdateJourneyConverter {
                 .city(fromRequest.city())
                 .country(fromRequest.country())
                 .category(fromRequest.category())
-                .tags(fromRequest.tags())
+                .tags(CollectionUtils.emptyIfNull(fromRequest.tags()).stream().map(StringUtils::lowerCase).toList())
                 .location(fromRequest.location())
                 .thumbnail(fromRequest.thumbnail())
                 .journeyDate(fromRequest.journeyDate())

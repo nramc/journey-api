@@ -4,6 +4,8 @@ import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.security.Visibility;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -25,7 +27,7 @@ class CreateJourneyConverter {
                 .city(request.city())
                 .country(request.country())
                 .category(request.category())
-                .tags(request.tags())
+                .tags(CollectionUtils.emptyIfNull(request.tags()).stream().map(StringUtils::lowerCase).toList())
                 .location(request.location())
                 .thumbnail(request.thumbnail())
                 .journeyDate(request.journeyDate())

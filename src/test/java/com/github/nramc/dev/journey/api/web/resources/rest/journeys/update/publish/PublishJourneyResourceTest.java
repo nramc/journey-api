@@ -55,7 +55,7 @@ class PublishJourneyResourceTest {
             .category("Travel")
             .city("Munich")
             .country("Germany")
-            .tags(List.of("Travel", "Germany", "Munich"))
+            .tags(List.of("travel", "germany", "munich"))
             .thumbnail("https://example.com/thumbnail.png")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
@@ -74,7 +74,7 @@ class PublishJourneyResourceTest {
             jsonPath("$.country").value("Germany"),
             jsonPath("$.tags").isArray(),
             jsonPath("$.tags").value(hasSize(3)),
-            jsonPath("$.tags").value(hasItems("Travel", "Germany", "Munich")),
+            jsonPath("$.tags").value(hasItems("travel", "germany", "munich")),
             jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"),
             jsonPath("$.journeyDate").value("2024-03-27"),
             jsonPath("$.createdDate").value("2024-03-27"),

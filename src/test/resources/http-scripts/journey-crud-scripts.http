@@ -25,7 +25,7 @@ Content-Type: application/json
   "category" : "Travel",
   "city" : "Munich",
   "country" : "Germany",
-  "tags" : ["Travel", "Germany", "Munich", "dev", "http-client"],
+  "tags" : ["travel", "germany", "munich", "dev", "http-client"],
   "thumbnail" : "https://res.cloudinary.com/journeytogether/image/upload/v1712604194/journey/readonly/aeqhy3zwrwko7ba2rinr.jpg",
   "location" : {
     "type": "Point",

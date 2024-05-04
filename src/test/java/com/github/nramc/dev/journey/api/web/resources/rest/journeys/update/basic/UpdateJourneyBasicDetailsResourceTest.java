@@ -48,7 +48,7 @@ class UpdateJourneyBasicDetailsResourceTest {
             .category("Travel")
             .city("Munich")
             .country("Germany")
-            .tags(List.of("Travel", "Germany", "Munich"))
+            .tags(List.of("travel", "germany", "munich"))
             .thumbnail("https://example.com/thumbnail.png")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
@@ -62,7 +62,7 @@ class UpdateJourneyBasicDetailsResourceTest {
               "category" : "Work",
               "city" : "Chennai",
               "country" : "India",
-              "tags" : ["Travel", "Germany", "Munich", "Updated"],
+              "tags" : ["travel", "germany", "munich", "updated"],
               "thumbnail" : "https://example.com/thumbnail.png",
               "location" : {
                 "type": "Point",
@@ -108,7 +108,7 @@ class UpdateJourneyBasicDetailsResourceTest {
                 .andExpect(jsonPath("$.country").value("India"))
                 .andExpect(jsonPath("$.tags").isArray())
                 .andExpect(jsonPath("$.tags").value(hasSize(4)))
-                .andExpect(jsonPath("$.tags").value(hasItems("Travel", "Germany", "Munich", "Updated")))
+                .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich", "updated")))
                 .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
                 .andExpect(jsonPath("$.journeyDate").value("2050-01-31"))
                 .andExpect(jsonPath("$.location.type").value("Point"));
