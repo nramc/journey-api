@@ -8,6 +8,7 @@ import com.github.nramc.dev.journey.api.web.dto.Journey;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,11 +46,10 @@ public class FindJourneyByQueryResource {
         Set<Boolean> publishedFlags = publishedOnly ? Set.of(true) : Set.of(true, false);
 
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
-        log.info("Received tags:{} length:{}", tags, tags.size());
 
-
+        List<String> tagsInLowerCase = tags.stream().map(StringUtils::lowerCase).toList();
         Page<JourneyEntity> entityPage = journeyRepository.findAllBy(
-                visibilities, username, publishedFlags, searchText, tags, pageable);
+                visibilities, username, publishedFlags, searchText, tagsInLowerCase, pageable);
         Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",

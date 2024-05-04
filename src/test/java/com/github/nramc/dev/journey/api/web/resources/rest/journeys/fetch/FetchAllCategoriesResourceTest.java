@@ -48,7 +48,7 @@ class FetchAllCategoriesResourceTest {
             .category("Travel")
             .city("Munich")
             .country("Germany")
-            .tags(List.of("Travel", "Germany", "Munich"))
+            .tags(List.of("travel", "germany", "munich"))
             .thumbnail("valid image id")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
