@@ -167,12 +167,6 @@
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
                 <version>${rewrite-maven-plugin.version}</version>
-                <configuration>
-                    <failOnDryRunResults>true</failOnDryRunResults>
-                    <activeRecipes>
-                        <recipe>org.openrewrite.java.OrderImports</recipe>
-                    </activeRecipes>
-                </configuration>
                 <executions>
                     <execution>
                         <id>dry-run-open-rewrite-execution</id>
@@ -192,6 +186,33 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <failOnDryRunResults>true</failOnDryRunResults>
+                    <activeRecipes>
+                        <recipe>com.github.nramc.recipes.common</recipe>
+                        <recipe>com.github.nramc.recipes.testing</recipe>
+                    </activeRecipes>
+                    <activeStyles>
+                        <style>org.openrewrite.java.style.IntelliJ</style>
+                    </activeStyles>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-static-analysis</artifactId>
+                        <version>1.5.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-recommendations</artifactId>
+                        <version>1.4.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-testing-frameworks</artifactId>
+                        <version>2.7.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
