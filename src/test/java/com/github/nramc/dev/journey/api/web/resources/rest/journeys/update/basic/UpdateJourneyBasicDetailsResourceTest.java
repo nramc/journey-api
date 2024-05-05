@@ -50,6 +50,7 @@ class UpdateJourneyBasicDetailsResourceTest {
             .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
             .thumbnail("https://example.com/thumbnail.png")
+            .icon("home")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
@@ -64,6 +65,7 @@ class UpdateJourneyBasicDetailsResourceTest {
               "country" : "India",
               "tags" : ["travel", "germany", "munich", "updated"],
               "thumbnail" : "https://example.com/thumbnail.png",
+              "icon": "home",
               "location" : {
                 "type": "Point",
                 "coordinates": [48.183160038296585, 11.53090747669896]
@@ -110,6 +112,7 @@ class UpdateJourneyBasicDetailsResourceTest {
                 .andExpect(jsonPath("$.tags").value(hasSize(4)))
                 .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich", "updated")))
                 .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
+                .andExpect(jsonPath("$.icon").value("home"))
                 .andExpect(jsonPath("$.journeyDate").value("2050-01-31"))
                 .andExpect(jsonPath("$.location.type").value("Point"));
     }

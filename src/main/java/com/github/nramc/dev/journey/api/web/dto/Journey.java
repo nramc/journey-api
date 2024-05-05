@@ -24,6 +24,7 @@ public record Journey(
         @NotBlank String country,
         @NotEmpty List<String> tags,
         @NotBlank @URL String thumbnail,
+        @NotBlank String icon,
         @NotNull Geometry location,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate,

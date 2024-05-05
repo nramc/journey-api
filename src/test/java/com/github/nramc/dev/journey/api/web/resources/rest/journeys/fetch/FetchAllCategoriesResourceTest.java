@@ -1,10 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.fetch;
 
-import com.github.nramc.commons.geojson.domain.Point;
-import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.security.Visibility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +17,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FETCH_ALL_CATEGORIES;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -41,20 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 class FetchAllCategoriesResourceTest {
-    private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
-            .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
-            .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
-            .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("valid image id")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-            .createdDate(LocalDate.of(2024, 3, 27))
-            .journeyDate(LocalDate.of(2024, 3, 27))
-            .visibilities(Set.of(Visibility.MAINTAINER))
-            .build();
     @Autowired
     private MockMvc mockMvc;
     @Container
@@ -73,7 +53,7 @@ class FetchAllCategoriesResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenMoreCategoriesExists_shouldLimitResultByDefault() throws Exception {
-        IntStream.range(0, 20).forEach(index -> journeyRepository.save(VALID_JOURNEY.toBuilder().category("category_" + index).build()));
+        IntStream.range(0, 20).forEach(index -> journeyRepository.save(JOURNEY_ENTITY.toBuilder().category("category_" + index).build()));
 
 
         mockMvc.perform(MockMvcRequestBuilders.get(FETCH_ALL_CATEGORIES)
@@ -92,7 +72,7 @@ class FetchAllCategoriesResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenTextGiven_shouldProvideResultForText() throws Exception {
-        IntStream.range(0, 21).forEach(index -> journeyRepository.save(VALID_JOURNEY.toBuilder().category("category_" + index).build()));
+        IntStream.range(0, 21).forEach(index -> journeyRepository.save(JOURNEY_ENTITY.toBuilder().category("category_" + index).build()));
 
 
         mockMvc.perform(MockMvcRequestBuilders.get(FETCH_ALL_CATEGORIES)
@@ -109,7 +89,7 @@ class FetchAllCategoriesResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenMoreCategoriesExists_shouldLimitResult() throws Exception {
-        IntStream.range(0, 10).forEach(index -> journeyRepository.save(VALID_JOURNEY.toBuilder().category("category_" + index).build()));
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(JOURNEY_ENTITY.toBuilder().category("category_" + index).build()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(FETCH_ALL_CATEGORIES)
                         .queryParam("limit", "5")
@@ -126,7 +106,7 @@ class FetchAllCategoriesResourceTest {
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenDuplicatesCategoriesExists_shouldReturnUniqueCategories() throws Exception {
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
-                VALID_JOURNEY.toBuilder().category("category_" + index % 2).build()));
+                JOURNEY_ENTITY.toBuilder().category("category_" + index % 2).build()));
 
 
         mockMvc.perform(MockMvcRequestBuilders.get(FETCH_ALL_CATEGORIES)

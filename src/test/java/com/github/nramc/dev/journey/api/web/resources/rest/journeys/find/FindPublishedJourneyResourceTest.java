@@ -49,6 +49,7 @@ class FindPublishedJourneyResourceTest {
             .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
             .thumbnail("valid image id")
+            .icon("home")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
@@ -113,6 +114,8 @@ class FindPublishedJourneyResourceTest {
                 .andExpect(jsonPath("$.features[0].properties").exists())
                 .andExpect(jsonPath("$.features[0].properties.name").value(VALID_JOURNEY.getName()))
                 .andExpect(jsonPath("$.features[0].properties.category").value(VALID_JOURNEY.getCategory()))
+                .andExpect(jsonPath("$.features[0].properties.thumbnail").value(VALID_JOURNEY.getThumbnail()))
+                .andExpect(jsonPath("$.features[0].properties.icon").value(VALID_JOURNEY.getIcon()))
                 .andExpect(jsonPath("$.features[0].properties.description").value(VALID_JOURNEY.getDescription()))
                 .andExpect(jsonPath("$.features[0].properties.tags").value(equalTo(VALID_JOURNEY.getTags())));
     }

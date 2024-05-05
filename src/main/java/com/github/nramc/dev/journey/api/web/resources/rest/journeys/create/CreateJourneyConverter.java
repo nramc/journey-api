@@ -30,6 +30,7 @@ class CreateJourneyConverter {
                 .tags(CollectionUtils.emptyIfNull(request.tags()).stream().map(StringUtils::lowerCase).toList())
                 .location(request.location())
                 .thumbnail(request.thumbnail())
+                .icon(request.icon())
                 .journeyDate(request.journeyDate())
                 .createdDate(LocalDate.now())
                 .createdBy(authUser.getUsername())
@@ -51,6 +52,7 @@ class CreateJourneyConverter {
                 .tags(entity.getTags())
                 .location(entity.getLocation())
                 .thumbnail(entity.getThumbnail())
+                .icon(entity.getIcon())
                 .createdDate(entity.getCreatedDate())
                 .journeyDate(entity.getJourneyDate())
                 .build();
