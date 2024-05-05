@@ -1,0 +1,22 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.github.nramc.recipes.common
+recipeList:
+  - org.openrewrite.staticanalysis.CommonStaticAnalysis
+  - org.openrewrite.java.RemoveUnusedImports
+  - org.openrewrite.recommendations.CodeHealth
+  - org.openrewrite.recommendations.DependencyManagement
+  - org.openrewrite.recipes.JavaRecipeBestPractices
+#  - org.openrewrite.java.AddApache2LicenseHeader
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.github.nramc.recipes.testing
+recipeList:
+  - org.openrewrite.java.testing.assertj.Assertj
+  - org.openrewrite.recipes.RecipeTestingBestPractices
+  - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
+  - org.openrewrite.java.testing.cleanup.BestPractices
+  - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices
+
+---

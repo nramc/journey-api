@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.create;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -63,8 +63,8 @@ class CreateJourneyResourceTest {
             .withExposedPorts(27017);
 
     @Test
-    void testContext() {
-        Assertions.assertNotNull(mockMvc);
+    void context() {
+        assertThat(mockMvc).isNotNull();
     }
 
     @Test
