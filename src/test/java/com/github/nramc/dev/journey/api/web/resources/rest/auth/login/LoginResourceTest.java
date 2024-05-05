@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
@@ -22,6 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
@@ -50,13 +50,13 @@ class LoginResourceTest {
 
     @Test
     void test() {
-        Assertions.assertNotNull(mockMvc);
+        assertThat(mockMvc).isNotNull();
     }
 
     @Test
     void operationalUserShouldExistsInDatabase() {
         AuthUser operationalUser = userRepository.findUserByUsername("admin");
-        Assertions.assertNotNull(operationalUser);
+        assertThat(operationalUser).isNotNull();
     }
 
     @Test

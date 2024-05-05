@@ -21,8 +21,7 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTIC
 import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +47,7 @@ class UpdateUserResourceTest {
 
     @Test
     void testContext() {
-        assertNotNull(mockMvc);
+        assertThat(mockMvc).isNotNull();
     }
 
 
@@ -96,8 +95,8 @@ class UpdateUserResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk());
         AuthUser user = userRepository.findUserByUsername("admin");
-        assertEquals("Updated Valid Name", user.getName());
-        assertEquals("updated-valid-email-addresss@gmail.com", user.getEmailAddress());
+        assertThat(user.getName()).isEqualTo("Updated Valid Name");
+        assertThat(user.getEmailAddress()).isEqualTo("updated-valid-email-addresss@gmail.com");
     }
 
 }

@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.find;
 
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +22,7 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USE
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,7 +44,7 @@ class FindUsersResourceTest {
 
     @Test
     void testContext() {
-        Assertions.assertNotNull(mockMvc);
+        assertThat(mockMvc).isNotNull();
     }
 
     @Test

@@ -23,8 +23,7 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTIC
 import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,7 +50,7 @@ class ChangePasswordResourceTest {
 
     @Test
     void testContext() {
-        assertNotNull(mockMvc);
+        assertThat(mockMvc).isNotNull();
     }
 
     @Test
@@ -98,7 +97,7 @@ class ChangePasswordResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk());
         AuthUser user = userRepository.findUserByUsername("admin");
-        assertTrue(passwordEncoder.matches("valid-new-password", user.getPassword()));
+        assertThat(passwordEncoder.matches("valid-new-password", user.getPassword())).isTrue();
     }
 
 }

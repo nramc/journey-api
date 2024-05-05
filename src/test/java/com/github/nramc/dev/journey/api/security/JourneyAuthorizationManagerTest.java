@@ -17,8 +17,7 @@ import static com.github.nramc.dev.journey.api.security.Visibility.ADMINISTRATOR
 import static com.github.nramc.dev.journey.api.security.Visibility.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Visibility.MAINTAINER;
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -59,22 +58,22 @@ class JourneyAuthorizationManagerTest {
     void isAuthorized_whenLoggedInUserGuest_thenShouldHaveAccessOnlyToJourneysHaveGuestVisibility() {
         doReturn(List.of(new SimpleGrantedAuthority(Role.GUEST_USER.name()))).when(authentication).getAuthorities();
 
-        assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication));
-        assertTrue(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication));
+        assertThat(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication)).isTrue();
     }
 
     @Test
     void isAuthorized_whenLoggedInUserAuthenticatedUser_thenShouldHaveAccessToJourneysHaveAuthenticatedUserVisibility() {
         doReturn(List.of(new SimpleGrantedAuthority(Role.AUTHENTICATED_USER.name()))).when(authentication).getAuthorities();
 
-        assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
-        assertTrue(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication));
+        assertThat(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication)).isTrue();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication)).isFalse();
     }
 
     @Test
@@ -82,33 +81,33 @@ class JourneyAuthorizationManagerTest {
         doReturn(List.of(new SimpleGrantedAuthority(Role.AUTHENTICATED_USER.name()))).when(authentication).getAuthorities();
         when(authentication.getName()).thenReturn("xyz123");
 
-        assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
-        assertTrue(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication));
-        assertTrue(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication));
+        assertThat(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication)).isTrue();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication)).isTrue();
+        assertThat(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication)).isFalse();
     }
 
     @Test
     void isAuthorized_whenLoggedInUserMaintainer_thenShouldHaveAccessToJourneysHaveMaintainerVisibility() {
         doReturn(List.of(new SimpleGrantedAuthority(Role.MAINTAINER.name()))).when(authentication).getAuthorities();
 
-        assertFalse(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
-        assertTrue(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication));
+        assertThat(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication)).isTrue();
+        assertThat(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication)).isFalse();
     }
 
     @Test
     void isAuthorized_whenLoggedInUserAdministrator_thenShouldHaveAccessToJourneysHaveAdministratorVisibility() {
         doReturn(List.of(new SimpleGrantedAuthority(Role.ADMINISTRATOR.name()))).when(authentication).getAuthorities();
 
-        assertTrue(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication));
-        assertFalse(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication));
+        assertThat(JourneyAuthorizationManager.isAuthorized(ADMIN_VISIBILITY, authentication)).isTrue();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MAINTAINER_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(AUTHENTICATED_USER_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(MYSELF_VISIBILITY, authentication)).isFalse();
+        assertThat(JourneyAuthorizationManager.isAuthorized(GUEST_VISIBILITY, authentication)).isFalse();
     }
 
 }

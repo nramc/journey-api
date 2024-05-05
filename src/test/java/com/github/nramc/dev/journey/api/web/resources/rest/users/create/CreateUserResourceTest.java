@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.create;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
 import com.github.nramc.dev.journey.api.security.Role;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -61,7 +60,7 @@ class CreateUserResourceTest {
 
     @Test
     void testContext() {
-        Assertions.assertNotNull(mockMvc);
+        assertThat(mockMvc).isNotNull();
     }
 
     @Test
