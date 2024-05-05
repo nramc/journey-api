@@ -49,7 +49,7 @@ class ChangePasswordResourceTest {
             .withExposedPorts(27017);
 
     @Test
-    void testContext() {
+    void context() {
         assertThat(mockMvc).isNotNull();
     }
 
