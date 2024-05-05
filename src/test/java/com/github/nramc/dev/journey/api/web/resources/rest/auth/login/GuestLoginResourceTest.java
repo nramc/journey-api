@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,13 +51,17 @@ class GuestLoginResourceTest {
 
     @Test
     void test() {
-        assertThat(mockMvc).isNotNull();
+        assertDoesNotThrow(() -> {
+            assertThat(mockMvc).isNotNull();
+        });
     }
 
     @Test
     void guestUserShouldExistsInDatabase() {
-        AuthUser operationalUser = userRepository.findUserByUsername("GUEST");
-        assertThat(operationalUser).isNotNull();
+        assertDoesNotThrow(() -> {
+            AuthUser operationalUser = userRepository.findUserByUsername("GUEST");
+            assertThat(operationalUser).isNotNull();
+        });
     }
 
     @Test

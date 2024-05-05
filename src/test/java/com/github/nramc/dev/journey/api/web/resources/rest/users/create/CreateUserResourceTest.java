@@ -29,6 +29,7 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USE
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +61,9 @@ class CreateUserResourceTest {
 
     @Test
     void context() {
-        assertThat(mockMvc).isNotNull();
+        assertDoesNotThrow(() -> {
+            assertThat(mockMvc).isNotNull();
+        });
     }
 
     @Test

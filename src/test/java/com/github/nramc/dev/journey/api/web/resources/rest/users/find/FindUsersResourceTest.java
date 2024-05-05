@@ -23,6 +23,7 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINE
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,7 +45,9 @@ class FindUsersResourceTest {
 
     @Test
     void context() {
-        assertThat(mockMvc).isNotNull();
+        assertDoesNotThrow(() -> {
+            assertThat(mockMvc).isNotNull();
+        });
     }
 
     @Test

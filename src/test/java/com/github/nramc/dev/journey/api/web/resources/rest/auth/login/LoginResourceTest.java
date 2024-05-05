@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -50,13 +51,17 @@ class LoginResourceTest {
 
     @Test
     void test() {
-        assertThat(mockMvc).isNotNull();
+        assertDoesNotThrow(() -> {
+            assertThat(mockMvc).isNotNull();
+        });
     }
 
     @Test
     void operationalUserShouldExistsInDatabase() {
-        AuthUser operationalUser = userRepository.findUserByUsername("admin");
-        assertThat(operationalUser).isNotNull();
+        assertDoesNotThrow(() -> {
+            AuthUser operationalUser = userRepository.findUserByUsername("admin");
+            assertThat(operationalUser).isNotNull();
+        });
     }
 
     @Test
