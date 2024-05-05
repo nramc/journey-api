@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.4</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.nramc.dev.journey</groupId>
     <artifactId>journey-api</artifactId>
@@ -18,12 +19,22 @@
         <developerConnection>scm:git:https://github.com/nramc/journey-api.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
+    <profiles>
+        <profile>
+            <id>run-open-rewrite</id>
+            <properties>
+                <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
+            </properties>
+        </profile>
+    </profiles>
     <properties>
         <java.version>21</java.version>
 
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+        <rewrite-maven-plugin.version>5.29.0</rewrite-maven-plugin.version>
+        <rewrite-maven-plugin.skip>true</rewrite-maven-plugin.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -151,6 +162,36 @@
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>${rewrite-maven-plugin.version}</version>
+                <configuration>
+                    <failOnDryRunResults>true</failOnDryRunResults>
+                    <activeRecipes>
+                        <recipe>org.openrewrite.java.OrderImports</recipe>
+                    </activeRecipes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>dry-run-open-rewrite-execution</id>
+                        <goals>
+                            <goal>dryRun</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                    <execution>
+                        <id>run-open-rewrite-execution</id>
+                        <goals>
+                            <goal>runNoFork</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <rewriteSkip>${rewrite-maven-plugin.skip}</rewriteSkip>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
