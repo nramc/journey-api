@@ -193,7 +193,7 @@
                         <recipe>com.github.nramc.recipes.testing</recipe>
                     </activeRecipes>
                     <activeStyles>
-                        <style>org.openrewrite.java.style.IntelliJ</style>
+                        <style>org.openrewrite.java.IntelliJ</style>
                     </activeStyles>
                 </configuration>
                 <dependencies>
