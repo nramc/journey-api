@@ -27,6 +27,7 @@ Content-Type: application/json
   "country" : "Germany",
   "tags" : ["travel", "germany", "munich", "dev", "http-client"],
   "thumbnail" : "https://res.cloudinary.com/journeytogether/image/upload/v1712604194/journey/readonly/aeqhy3zwrwko7ba2rinr.jpg",
+  "icon": "default",
   "location" : {
     "type": "Point",
     "coordinates": [{{$random.float(-180, 180)}}, {{$random.float(-90, 90)}}]
