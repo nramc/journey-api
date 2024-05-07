@@ -34,6 +34,7 @@ public class UpdateJourneyConverter {
                 .tags(CollectionUtils.emptyIfNull(fromRequest.tags()).stream().map(StringUtils::lowerCase).toList())
                 .location(fromRequest.location())
                 .thumbnail(fromRequest.thumbnail())
+                .icon(fromRequest.icon())
                 .journeyDate(fromRequest.journeyDate())
                 .build();
 

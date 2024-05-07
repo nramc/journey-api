@@ -29,6 +29,7 @@ public class JourneyEntity {
     private String country;
     private List<String> tags;
     private String thumbnail;
+    private String icon;
     private Geometry location;
     private LocalDate createdDate;
     private String createdBy;

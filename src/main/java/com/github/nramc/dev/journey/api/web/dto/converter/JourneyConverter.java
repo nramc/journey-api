@@ -33,6 +33,7 @@ public class JourneyConverter {
                 .tags(entity.getTags())
                 .location(entity.getLocation())
                 .thumbnail(entity.getThumbnail())
+                .icon(entity.getIcon())
                 .journeyDate(entity.getJourneyDate())
                 .createdDate(entity.getCreatedDate())
                 .extendedDetails(getExtendedDetails(entity))

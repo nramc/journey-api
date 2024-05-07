@@ -1,0 +1,31 @@
+### Login
+POST {{baseUrl}}/login
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token !== null, "Redirect URL is empty");
+        client.global.set("jwtToken", response.body.token)
+    });
+%}
+
+### Find all Journeys
+GET {{baseUrl}}/journeys
+Authorization: Bearer {{jwtToken}}
+Accept: application/json
+
+### Update basic details
+PUT http://localhost:8080/rest/journey/662a87967fa7197ffb6ed84a
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/vnd.journey.api.basic.v1+json
+
+{
+  "name": "First International Travel ",
+  "title": "First International travel in Flight",
+  "description": "This is the First time travelling in Flight over seas.", "category": "Travel", "city": "Munich",
+  "country": "Germany", "tags": ["flight", "first", "sakunthala", "munich", "germany"],
+  "thumbnail": "https://res.cloudinary.com/journeytogether/image/upload/v1714415512/journey/journey-dev/662a87967fa7197ffb6ed84a/dz6fp76nwo76k7g8i5rg.jpg",
+  "icon": "default", "location": {"type": "Point", "coordinates": [11.545594906216165, 48.1699924100739]},
+  "journeyDate": "2024-04-23", "createdDate": "2024-04-25"
+}

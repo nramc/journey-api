@@ -21,6 +21,7 @@ public record CreateJourneyResponse(
         @NotBlank String country,
         @NotEmpty List<String> tags,
         @NotBlank String thumbnail,
+        @NotBlank String icon,
         @NotNull Geometry location,
         @NotNull LocalDate createdDate,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate) {

@@ -20,6 +20,7 @@ public record UpdateJourneyBasicDetailsRequest(
         @NotBlank String country,
         @NotEmpty List<String> tags,
         @NotBlank String thumbnail,
+        @NotBlank String icon,
         @NotNull Geometry location,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate) {
 }

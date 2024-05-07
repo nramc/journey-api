@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
@@ -38,23 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 class CreateJourneyResourceTest {
-    private static final String VALID_JSON_REQUEST = """
-            {
-              "name" : "First Flight Experience",
-              "title" : "One of the most beautiful experience ever in my life",
-              "description" : "Travelled first time for work deputation to Germany, Munich city",
-              "category" : "Travel",
-              "city" : "Munich",
-              "country" : "Germany",
-              "tags" : ["travel", "germany", "munich"],
-              "thumbnail" : "valid image id",
-              "location" : {
-                "type": "Point",
-                "coordinates": [48.183160038296585, 11.53090747669896]
-              },
-              "journeyDate": "2024-03-27"
-            }
-            """;
     @Autowired
     private MockMvc mockMvc;
     @Container
@@ -72,7 +56,7 @@ class CreateJourneyResourceTest {
     void create_whenJourneyCreatedSuccessfully_shouldReturnCreatedResourceUrl() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(NEW_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(VALID_JSON_REQUEST))
+                        .content(NEW_JOURNEY_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -85,6 +69,7 @@ class CreateJourneyResourceTest {
                 .andExpect(jsonPath("$.country").value("Germany"))
                 .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich")))
                 .andExpect(jsonPath("$.thumbnail").value("valid image id"))
+                .andExpect(jsonPath("$.icon").value("home"))
                 .andExpect(jsonPath("$.location.type").value("Point"))
                 .andExpect(jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)))
                 .andExpect(jsonPath("$.journeyDate").value("2024-03-27"))
@@ -96,7 +81,7 @@ class CreateJourneyResourceTest {
     void create_whenAuthenticationMissing_shouldThrowUnAuthenticatedError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(NEW_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(VALID_JSON_REQUEST))
+                        .content(NEW_JOURNEY_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
@@ -106,7 +91,7 @@ class CreateJourneyResourceTest {
     void create_whenAuthenticationExistsButDoesBNotHaveAuthority_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(NEW_JOURNEY)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(VALID_JSON_REQUEST))
+                        .content(NEW_JOURNEY_JSON))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
