@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CreateUserResource {
     private final AuthUserDetailsService userDetailsService;
-
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping(value = Resources.NEW_USER, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequest userRequest) {
@@ -37,7 +38,7 @@ public class CreateUserResource {
 
                 .name(userRequest.name())
                 .username(userRequest.username())
-                .password(userRequest.password())
+                .password(passwordEncoder.encode(userRequest.password()))
                 .roles(userRequest.roles())
                 .emailAddress(userRequest.emailAddress())
                 .build();
