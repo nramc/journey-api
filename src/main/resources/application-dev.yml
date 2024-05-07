@@ -17,7 +17,7 @@ app:
     cors:
       properties:
         - path: /**
-          allowed-origins: http://localhost:4200
+          allowed-origins: http://localhost:4200, https://nramc.github.io
           allowed-methods: GET, POST, PUT, DELETE
 
 
