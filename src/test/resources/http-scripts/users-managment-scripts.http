@@ -14,9 +14,10 @@ Authorization: Basic {{adminUsername}} {{adminUserPassword}}
 
 
 ### Create User
-POST http://localhost:8080/rest/user/new
+POST {{baseUrl}}/user/new
 Authorization: Bearer {{jwtToken}}
 Content-Type: application/json
+Origin: https://nramc.github.io
 
 {
   "username": "app-user001",
@@ -27,10 +28,10 @@ Content-Type: application/json
 }
 
 ### Find all users
-GET http://localhost:8080/rest/users
+GET {{baseUrl}}/users
 Authorization: Bearer {{jwtToken}}
 
 ### Delete user account
-DELETE http://localhost:8080/rest/user/app-user001
+DELETE {{baseUrl}}/user/app-user001
 Authorization: Bearer {{jwtToken}}
 
