@@ -8,5 +8,8 @@ import lombok.Data;
 public class JourneyImageDetailEntity {
     private String url;
     private String assetId;
+    String title;
+    boolean isFavorite;
+    boolean isThumbnail;
 
 }

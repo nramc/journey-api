@@ -73,6 +73,9 @@ public class JourneyConverter {
         return CollectionUtils.emptyIfNull(entities).stream().map(entity -> JourneyImageDetail.builder()
                 .url(entity.getUrl())
                 .assetId(entity.getAssetId())
+                .title(entity.getTitle())
+                .isFavorite(entity.isFavorite())
+                .isThumbnail(entity.isThumbnail())
                 .build()
         ).toList();
     }

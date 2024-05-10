@@ -55,11 +55,7 @@ public class UpdateJourneyConverter {
         JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
 
         List<JourneyImageDetailEntity> imageDetailEntities = CollectionUtils.emptyIfNull(fromRequest.images()).stream()
-                .map(imageDetail -> JourneyImageDetailEntity.builder()
-                        .url(imageDetail.url())
-                        .assetId(imageDetail.assetId())
-                        .build()
-                )
+                .map(UpdateJourneyConverter::toJourneyImageDetailEntity)
                 .toList();
 
         JourneyImagesDetailsEntity imageDetailsEntity = JourneyImagesDetailsEntity.builder()
@@ -67,8 +63,23 @@ public class UpdateJourneyConverter {
                 .build();
 
         return toEntity.toBuilder()
+                .thumbnail(getThumbnailImageIfExists(imageDetailEntities).map(JourneyImageDetailEntity::getUrl).orElse(toEntity.getThumbnail()))
                 .extended(extendedEntity.toBuilder().imagesDetails(imageDetailsEntity).build())
                 .build();
+    }
+
+    private static JourneyImageDetailEntity toJourneyImageDetailEntity(UpdateJourneyImagesDetailsRequest.ImageDetail imageDetail) {
+        return JourneyImageDetailEntity.builder()
+                .url(imageDetail.url())
+                .assetId(imageDetail.assetId())
+                .title(imageDetail.title())
+                .isFavorite(imageDetail.isFavorite())
+                .isThumbnail(imageDetail.isThumbnail())
+                .build();
+    }
+
+    private static Optional<JourneyImageDetailEntity> getThumbnailImageIfExists(List<JourneyImageDetailEntity> imagesDetails) {
+        return CollectionUtils.emptyIfNull(imagesDetails).stream().filter(JourneyImageDetailEntity::isThumbnail).findFirst();
     }
 
     public static JourneyEntity extendWithVideosDetails(UpdateJourneyVideosDetailsRequest fromRequest, JourneyEntity toEntity) {
