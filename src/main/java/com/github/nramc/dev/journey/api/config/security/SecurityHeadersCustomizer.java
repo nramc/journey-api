@@ -21,6 +21,6 @@ public class SecurityHeadersCustomizer implements Customizer<HeadersConfigurer<H
 
         headersConfigurer.httpStrictTransportSecurity(hsts -> hsts.preload(true).includeSubDomains(true).requestMatcher(AnyRequestMatcher.INSTANCE));
 
-        headersConfigurer.contentSecurityPolicy(csp -> csp.policyDirectives("script-src 'self';base-uri 'self';child-src 'none';connect-src 'self';font-src 'self';form-action 'self';frame-ancestors 'none';frame-src 'self';img-src 'self';media-src 'none';object-src 'none';style-src 'self';worker-src 'none';upgrade-insecure-requests;require-trusted-types-for 'script';"));
+        headersConfigurer.contentSecurityPolicy(csp -> csp.policyDirectives("script-src 'self';base-uri 'self';child-src 'none';connect-src 'self';font-src 'self';form-action 'self';frame-ancestors 'none';frame-src 'self';img-src 'self' data:;media-src 'none';object-src 'none';style-src 'self' 'unsafe-inline';worker-src 'none';upgrade-insecure-requests;require-trusted-types-for 'script';"));
     }
 }
