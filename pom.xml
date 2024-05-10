@@ -34,6 +34,7 @@
         <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
         <rewrite-maven-plugin.version>5.29.0</rewrite-maven-plugin.version>
         <rewrite-maven-plugin.skip>true</rewrite-maven-plugin.skip>
+        <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
     </properties>
     <dependencies>
         <dependency>
@@ -136,6 +137,12 @@
             <artifactId>junit-jupiter</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
         </dependency>
 
     </dependencies>

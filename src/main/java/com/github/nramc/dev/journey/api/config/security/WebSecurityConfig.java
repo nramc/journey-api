@@ -52,6 +52,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
 import static org.springframework.http.HttpMethod.DELETE;
@@ -112,8 +113,10 @@ public class WebSecurityConfig {
 
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
+
                         .requestMatchers(HOME).permitAll()
                         .requestMatchers(GET, API_VERSION).permitAll()
+                        .requestMatchers(REST_DOC).permitAll()
 
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()

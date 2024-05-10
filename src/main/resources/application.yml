@@ -32,3 +32,22 @@ jwt:
   public-key: 'file:/etc/secrets/jwt-public.pub'
   ttl: 1h
   issuer: self
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /doc/openapi
+
+  swagger-ui:
+    path: /doc/swagger-ui.html
+  group-configs:
+    - group: Journeys
+      packages-to-scan:
+        - com.github.nramc.dev.journey.api.web.resources.rest.journeys
+    - group: Users
+      packages-to-scan:
+        - com.github.nramc.dev.journey.api.web.resources.rest.users
+    - group: Auth
+      packages-to-scan:
+        - com.github.nramc.dev.journey.api.web.resources.rest.auth
+
