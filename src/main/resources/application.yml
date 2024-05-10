@@ -39,6 +39,7 @@ springdoc:
     path: /doc/openapi
 
   swagger-ui:
+    queryConfigEnabled: true
     path: /doc/swagger-ui.html
   group-configs:
     - group: Journeys
