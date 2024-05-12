@@ -6,6 +6,11 @@ import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.security.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.web.dto.Journey;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
+import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -27,9 +32,13 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@Tag(name = "Find Journey by Search Query Resource")
 public class FindJourneyByQueryResource {
     private final JourneyRepository journeyRepository;
 
+    @Operation(summary = "Find Journeys for given query")
+    @RestDocCommonResponse
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returns available Journeys for given query")})
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<Journey> find(
             @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,
