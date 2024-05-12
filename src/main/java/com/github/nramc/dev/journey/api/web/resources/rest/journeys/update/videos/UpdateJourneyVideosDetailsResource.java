@@ -7,6 +7,7 @@ import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.UpdateJourneyConverter;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class UpdateJourneyVideosDetailsResource {
     private final JourneyRepository journeyRepository;
 
     @RestDocCommonResponse
+    @ApiResponse(responseCode = "200", description = "Journey details updated successfully")
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_VIDEOS_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateVideosDetails(@RequestBody @Valid UpdateJourneyVideosDetailsRequest request, @PathVariable String id) {
         JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update videos info"));
