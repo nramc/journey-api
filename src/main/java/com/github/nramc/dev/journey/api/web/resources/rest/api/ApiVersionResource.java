@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.api;
 
 import com.github.nramc.dev.journey.api.config.ApplicationProperties;
+import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,12 +22,9 @@ public class ApiVersionResource {
     private final ApplicationProperties applicationProperties;
 
     @Operation(summary = "get current API version")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Return application Name and Version",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApiVersionResponse.class))}),
-            @ApiResponse(responseCode = "401", description = "Invalid Credentials", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Insufficient scope", content = @Content)}
-    )
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Return application Name and Version",
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApiVersionResponse.class))})})
+    @RestDocCommonResponse
     @GetMapping(value = API_VERSION, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiVersionResponse version() {
         return ApiVersionResponse.builder()
