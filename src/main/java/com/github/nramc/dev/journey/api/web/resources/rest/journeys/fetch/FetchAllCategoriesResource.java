@@ -2,6 +2,11 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.fetch;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.repository.journey.projection.CategoryOnly;
+import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,9 +24,13 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FETCH_ALL
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@Tag(name = "Categories Resource")
 public class FetchAllCategoriesResource {
     private final JourneyRepository journeyRepository;
 
+    @Operation(summary = "Get available categories from Journeys")
+    @RestDocCommonResponse
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Available categories")})
     @GetMapping(value = FETCH_ALL_CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> find(
             @RequestParam(value = "text", defaultValue = "") String text,

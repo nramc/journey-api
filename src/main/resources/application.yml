@@ -51,4 +51,7 @@ springdoc:
     - group: Auth
       packages-to-scan:
         - com.github.nramc.dev.journey.api.web.resources.rest.auth
+    - group: API Info
+      packages-to-scan:
+        - com.github.nramc.dev.journey.api.web.resources.rest.api
 
