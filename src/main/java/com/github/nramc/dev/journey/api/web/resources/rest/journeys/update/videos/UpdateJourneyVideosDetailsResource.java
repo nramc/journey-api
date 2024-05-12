@@ -6,7 +6,6 @@ import com.github.nramc.dev.journey.api.web.dto.Journey;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.UpdateJourneyConverter;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
