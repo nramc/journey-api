@@ -1,9 +1,9 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/nramc/journey-api/ci-build-workflow.yml?branch=main&style=flat&logoColor=ff0)
-[![Release](https://img.shields.io/github/release/nramc/journeys.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journeys/releases)
-[![Contributors](https://img.shields.io/github/contributors/nramc/journeys.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journeys/graphs/contributors)
-[![Issues](https://img.shields.io/github/issues/nramc/journeys.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journeys/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/nramc/journeys.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journeys/pulls)
-[![Stars](https://img.shields.io/github/stars/nramc/journeys.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journeys/stargazers)
+[![Release](https://img.shields.io/github/release/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/releases)
+[![Contributors](https://img.shields.io/github/contributors/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/graphs/contributors)
+[![Issues](https://img.shields.io/github/issues/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/pulls)
+[![Stars](https://img.shields.io/github/stars/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/stargazers)
 [![Badge](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=159&style=flat)](https://www.linkedin.com/in/ramachandran-nellaiyappan/)
 
 # Journey Rest API
