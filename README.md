@@ -7,6 +7,7 @@
 [![Badge](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=159&style=flat)](https://www.linkedin.com/in/ramachandran-nellaiyappan/)
 
 # Journey Rest API
+<hr />
 
 This is a [Java](https://dev.java/) based Backend For Frontend(BFF) service which is built with [Spring Framework](https://spring.io/).
 The service is designed mainly to handle requests from frontend [Journeys](https://nramc.github.io/journeys/) Single Page Application(SPA).
@@ -15,9 +16,10 @@ The Service use [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-
 
 Since application uses geographical information, data is being stored in [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946) format with help of library [Commons GeoJson](https://github.com/nramc/commons).
 
-#### [Journeys Application](https://nramc.github.io/journeys/)
-#### [REST API Documentation](https://journey-api-nxm5.onrender.com/doc/swagger-ui.html)
-#### [REST Open API YML Configuration](https://journey-api-nxm5.onrender.com/doc/openapi)
+## Helpful Links
+- [Journeys Application](https://nramc.github.io/journeys/)
+- [REST API Documentation](https://journey-api-nxm5.onrender.com/doc/swagger-ui.html)
+- [REST Open API YML Configuration](https://journey-api-nxm5.onrender.com/doc/openapi)
 
 ## Getting Started
 Please find below steps to setup and run application in your workstation.
@@ -61,11 +63,11 @@ You can also simply open an issue with the tag "enhancement".
 6. When build successful, creates Docker image and publish it to [Docker Hub](https://hub.docker.com/)
 7. Finally triggers [Render](https://dashboard.render.com/) webhook for deployment
 
-### Contact
+## Contact
 Ramachandran Nellaiyappan [Website](https://github.com/nramc) | [Twitter](https://twitter.com/ram_n_74) | [E-Mail](mailto:ramachandrannellai@gmail.com)
 
 
-### Credits
+## Credits
 Sincere Thanks to following open source community for their wonderful efforts to make our life much easier.
 
 - [Spring IO](https://spring.io/) - Java Web Framework
@@ -76,5 +78,5 @@ Sincere Thanks to following open source community for their wonderful efforts to
 - [Testcontainers](https://testcontainers.com/) - Run containers on-demand for development and testing
 
 
-### Show your support
+## Show your support
 Give a ⭐️ if you like this project!
