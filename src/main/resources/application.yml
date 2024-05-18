@@ -25,6 +25,10 @@ app:
         - path: /**
           allowed-origins: https://nramc.github.io
           allowed-methods: GET, POST, PUT, OPTIONS, DELETE
+          allowed-headers:
+            - Authorization
+            - Content-Type
+          allow-credentials: true
 
 
 jwt:
