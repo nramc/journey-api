@@ -30,8 +30,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 import static com.github.nramc.dev.journey.api.security.Role.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Role.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Role.GUEST_USER;
@@ -175,7 +173,8 @@ public class WebSecurityConfig {
             CorsConfiguration configuration = new CorsConfiguration();
             configuration.setAllowedOrigins(corsProperty.allowedOrigins());
             configuration.setAllowedMethods(corsProperty.allowedMethods());
-            configuration.setAllowedHeaders(List.of("*"));
+            configuration.setAllowedHeaders(corsProperty.allowedHeaders());
+            configuration.setAllowCredentials(corsProperty.allowCredentials());
             source.registerCorsConfiguration(corsProperty.path(), configuration);
         });
         return source;
