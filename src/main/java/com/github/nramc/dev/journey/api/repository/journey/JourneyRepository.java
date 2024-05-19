@@ -27,7 +27,8 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
                     { $expr: { $eq: [?4, []] } },
                     { 'tags': { $in: ?4 } }
                   ]
-                }
+                },
+                { $or: [ { $expr:{$eq: [?5, '']} }, {'city' : ?5} ] }
               ]
             }
             """
@@ -38,6 +39,7 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
             Set<Boolean> publishedFlags,
             String searchText,
             List<String> tags,
+            String cityText,
             Pageable pageable
     );
 
