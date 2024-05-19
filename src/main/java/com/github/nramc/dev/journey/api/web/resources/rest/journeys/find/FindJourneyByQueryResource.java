@@ -49,6 +49,7 @@ public class FindJourneyByQueryResource {
             @RequestParam(name = "q", defaultValue = "") String searchText,
             @RequestParam(name = "tags", defaultValue = "") List<String> tags,
             @RequestParam(name = "city", defaultValue = "") String cityText,
+            @RequestParam(name = "country", defaultValue = "") String countryText,
             Authentication authentication) {
 
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
@@ -61,7 +62,7 @@ public class FindJourneyByQueryResource {
 
         Page<JourneyEntity> entityPage = journeyRepository.findAllBy(
                 visibilities, username, publishedFlags, searchText, tagsInLowerCase,
-                cityText,
+                cityText, countryText,
                 pageable);
         Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 
