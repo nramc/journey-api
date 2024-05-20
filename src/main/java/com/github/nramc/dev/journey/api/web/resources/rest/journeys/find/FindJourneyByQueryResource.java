@@ -48,6 +48,8 @@ public class FindJourneyByQueryResource {
             @RequestParam(name = "publishedOnly", defaultValue = "false") boolean publishedOnly,
             @RequestParam(name = "q", defaultValue = "") String searchText,
             @RequestParam(name = "tags", defaultValue = "") List<String> tags,
+            @RequestParam(name = "city", defaultValue = "") String cityText,
+            @RequestParam(name = "country", defaultValue = "") String countryText,
             Authentication authentication) {
 
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
@@ -57,8 +59,11 @@ public class FindJourneyByQueryResource {
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
 
         List<String> tagsInLowerCase = tags.stream().map(StringUtils::lowerCase).toList();
+
         Page<JourneyEntity> entityPage = journeyRepository.findAllBy(
-                visibilities, username, publishedFlags, searchText, tagsInLowerCase, pageable);
+                visibilities, username, publishedFlags, searchText, tagsInLowerCase,
+                cityText, countryText,
+                pageable);
         Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",
