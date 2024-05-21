@@ -44,6 +44,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_STATISTICS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CHECK;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
@@ -123,6 +124,8 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, FIND_JOURNEYS).access(readOnlyAuthorizationManager)
                         .requestMatchers(GET, FIND_JOURNEY_BY_ID).access(readOnlyAuthorizationManager)
                         .requestMatchers(GET, FIND_PUBLISHED_JOURNEYS).access(readOnlyAuthorizationManager)
+                        .requestMatchers(GET, GET_STATISTICS).access(readOnlyAuthorizationManager)
+
 
                         .requestMatchers(POST, NEW_JOURNEY).access(readAndWriteAuthorizationManager)
                         .requestMatchers(PUT, UPDATE_JOURNEY).access(readAndWriteAuthorizationManager)

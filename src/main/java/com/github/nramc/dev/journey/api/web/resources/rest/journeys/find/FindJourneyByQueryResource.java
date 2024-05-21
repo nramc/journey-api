@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
+import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 
 @RestController
 @Slf4j
@@ -50,6 +52,8 @@ public class FindJourneyByQueryResource {
             @RequestParam(name = "tags", defaultValue = "") List<String> tags,
             @RequestParam(name = "city", defaultValue = "") String cityText,
             @RequestParam(name = "country", defaultValue = "") String countryText,
+            @RequestParam(name = "category", defaultValue = "") String categoryText,
+            @RequestParam(name = "year", required = false) Long year,
             Authentication authentication) {
 
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
@@ -59,10 +63,14 @@ public class FindJourneyByQueryResource {
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
 
         List<String> tagsInLowerCase = tags.stream().map(StringUtils::lowerCase).toList();
+        LocalDate journeyStartDate = year != null ? LocalDate.of(year.intValue(), 1, 1) : null;
+        LocalDate journeyLastDate = year != null ? journeyStartDate.with(lastDayOfYear()) : null;
 
         Page<JourneyEntity> entityPage = journeyRepository.findAllBy(
                 visibilities, username, publishedFlags, searchText, tagsInLowerCase,
-                cityText, countryText,
+                cityText, countryText, categoryText,
+                journeyStartDate,
+                journeyLastDate,
                 pageable);
         Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 

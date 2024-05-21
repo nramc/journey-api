@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +30,10 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
                   ]
                 },
                 { $or: [ { $expr:{$eq: [?5, '']} }, {'city' : ?5} ] },
-                { $or: [ { $expr:{$eq: [?6, '']} }, {'country' : ?6} ] }
+                { $or: [ { $expr:{$eq: [?6, '']} }, {'country' : ?6} ] },
+                { $or: [ { $expr:{$eq: [?7, '']} }, {'category' : ?7} ] },
+                { $or: [ { $expr:{$eq: [?8, null]} }, { 'journeyDate': { $gte: ?8 } } ] },
+                { $or: [ { $expr:{$eq: [?9, null]} }, { 'journeyDate': { $lte: ?9 } } ] }
               ]
             }
             """
@@ -42,8 +46,24 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
             List<String> tags,
             String cityText,
             String countryText,
+            String categoryText,
+            LocalDate journeyStartDate,
+            LocalDate journeyEndDate,
             Pageable pageable
     );
 
     List<CategoryOnly> findDistinctByCategoryContainingIgnoreCaseOrderByCategory(String category, Limit limit);
+
+    @Query("""
+            { $and: [
+                { $or: [ {'createdBy' : ?1}, {'visibilities': {$in: ?0}} ] },
+                { 'isPublished': true },
+              ]
+            }
+            """
+    )
+    List<JourneyEntity> getAllBy(
+            Set<Visibility> visibilities,
+            String username
+    );
 }
