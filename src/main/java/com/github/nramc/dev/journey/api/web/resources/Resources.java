@@ -16,6 +16,8 @@ public class Resources {
     public static final String FIND_JOURNEY_BY_ID = "/rest/journey/{id}";
     public static final String FIND_JOURNEYS = "/rest/journeys";
     public static final String FIND_PUBLISHED_JOURNEYS = "/rest/journeys/published";
+    public static final String GET_STATISTICS = "/rest/journeys/statistics";
+
     public static final String UPDATE_JOURNEY = "/rest/journey/{id}";
 
     public static final String NEW_USER = "/rest/user/new";

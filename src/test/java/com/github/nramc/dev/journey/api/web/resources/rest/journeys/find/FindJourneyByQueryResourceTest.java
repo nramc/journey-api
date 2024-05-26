@@ -406,4 +406,46 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(jsonPath("$.totalElements").value("1"));
     }
 
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void find_whenCategoryGiven_thenShouldFilterResultByGivenValue() throws Exception {
+        // setup data
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).category("Category_" + index).build()));
+        journeyRepository.findAll().forEach(System.out::println);
+
+        // Request result with page number 1 (second page) and order by id ascending
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+                        .queryParam("category", "Category_5")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.totalPages").value("1"))
+                .andExpect(jsonPath("$.totalElements").value("1"));
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void find_whenYearGiven_thenShouldFilterResultByGivenValue() throws Exception {
+        // setup data
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+                VALID_JOURNEY.toBuilder().id("ID_" + index).journeyDate(LocalDate.now().plusYears(index)).build()));
+        journeyRepository.findAll().forEach(System.out::println);
+
+        // Request result with page number 1 (second page) and order by id ascending
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+                        .queryParam("year", String.valueOf(LocalDate.now().getYear()))
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.totalPages").value("1"))
+                .andExpect(jsonPath("$.totalElements").value("1"));
+    }
+
 }
