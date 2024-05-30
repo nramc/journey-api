@@ -39,6 +39,7 @@ public class TimelineResource {
     @GetMapping(value = GET_TIMELINE_DATA, produces = APPLICATION_JSON_VALUE)
     public TimelineData getTimelineData(
             @RequestParam(name = "IDs", defaultValue = "") List<String> journeyIDs,
+            @RequestParam(name = "city", defaultValue = "") List<String> cities,
             Authentication authentication) {
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
         String username = authentication.getName();
@@ -52,6 +53,9 @@ public class TimelineResource {
         );
         if (CollectionUtils.isNotEmpty(journeyIDs)) {
             query.addCriteria(Criteria.where("id").in(journeyIDs));
+        }
+        if(CollectionUtils.isNotEmpty(cities)) {
+            query.addCriteria(Criteria.where("city").in(cities));
         }
 
         List<JourneyEntity> entities = mongoTemplate.find(query, JourneyEntity.class);
