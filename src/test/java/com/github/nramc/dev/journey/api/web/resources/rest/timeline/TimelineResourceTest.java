@@ -187,4 +187,37 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }
 
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void getTimelineData_withCountries_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+        // setup data
+        IntStream.range(0, 5).forEach(index -> journeyRepository.save(
+                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                                .id("ID_" + index)
+                                .createdDate(LocalDate.now().plusDays(index))
+                                .visibilities(Set.of(MYSELF))
+                                .isPublished(true)
+                                .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index % 2))
+                                .category("Category_" + index)
+                                .city("City_" + index)
+                                .country("Country_" + index)
+                                .build()
+                )
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
+                        .queryParam("country", "Country_1, Country_2")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.heading").value("timeline-heading"))
+                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1", "title 1")))
+                .andExpect(jsonPath("$.images[0].args").isMap())
+                .andExpect(jsonPath("$.images[1].args").isMap());
+    }
+
 }
