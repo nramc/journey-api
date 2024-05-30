@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -36,7 +37,9 @@ public class TimelineResource {
 
     @Operation(summary = "Get Timeline data")
     @GetMapping(value = GET_TIMELINE_DATA, produces = APPLICATION_JSON_VALUE)
-    public TimelineData getTimelineData(Authentication authentication) {
+    public TimelineData getTimelineData(
+            @RequestParam(name = "IDs", defaultValue = "") List<String> journeyIDs,
+            Authentication authentication) {
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
         String username = authentication.getName();
 
@@ -47,7 +50,9 @@ public class TimelineResource {
                         Criteria.where("createdBy").is(username)
                 )
         );
-
+        if (CollectionUtils.isNotEmpty(journeyIDs)) {
+            query.addCriteria(Criteria.where("id").in(journeyIDs));
+        }
 
         List<JourneyEntity> entities = mongoTemplate.find(query, JourneyEntity.class);
 
