@@ -3,6 +3,9 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys;
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.security.Visibility;
 import lombok.experimental.UtilityClass;
 
@@ -46,4 +49,45 @@ public class JourneyData {
             .visibilities(Set.of(Visibility.MYSELF))
             .createdBy("test-user")
             .build();
+
+    public static final JourneyEntity JOURNEY_EXTENDED_ENTITY = JourneyEntity.builder()
+            .name("First Flight Experience")
+            .title("One of the most beautiful experience ever in my life")
+            .description("Travelled first time for work deputation to Germany, Munich city")
+            .category("Travel")
+            .city("Munich")
+            .country("Germany")
+            .tags(List.of("travel", "germany", "munich"))
+            .thumbnail("valid image id")
+            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
+            .icon("home")
+            .createdDate(LocalDate.of(2024, 3, 27))
+            .journeyDate(LocalDate.of(2024, 3, 27))
+            .visibilities(Set.of(Visibility.MYSELF))
+            .createdBy("test-user")
+            .extended(JourneyExtendedEntity.builder()
+                    .imagesDetails(getImagesDetailsEntity())
+                    .build())
+            .build();
+
+    private static JourneyImagesDetailsEntity getImagesDetailsEntity() {
+        return JourneyImagesDetailsEntity.builder()
+                .images(List.of(
+                        JourneyImageDetailEntity.builder()
+                                .isThumbnail(true)
+                                .isFavorite(true)
+                                .title("title 1")
+                                .url("src_1")
+                                .assetId("assert 1")
+                                .build(),
+                        JourneyImageDetailEntity.builder()
+                                .isThumbnail(false)
+                                .isFavorite(false)
+                                .title("title 2")
+                                .url("src_2")
+                                .assetId("assert 2")
+                                .build()
+                ))
+                .build();
+    }
 }
