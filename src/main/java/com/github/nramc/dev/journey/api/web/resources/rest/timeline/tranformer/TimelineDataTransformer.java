@@ -29,6 +29,8 @@ public class TimelineDataTransformer {
             return UpcomingTimelineTransformer.transform(entities);
         } else if (CollectionUtils.isNotEmpty(years)) {
             return YearTimelineTransformer.transform(entities, years);
+        } else if (CollectionUtils.isNotEmpty(journeyIDs)) {
+            return JourneyTimelineTransformer.transform(entities);
         } else {
             return TimelineData.builder()
                     .heading(DEFAULT_HEADING)
