@@ -24,24 +24,12 @@ public class TimelineDataTransformer {
                                          Boolean today,
                                          Boolean upcoming) {
         if (CollectionUtils.isNotEmpty(years)) {
-            return TimelineData.builder()
-                    .heading(header(years))
-                    .images(getImagesForTimeline(entities))
-                    .build();
+            return YearTimelineTransformer.transform(entities, years);
         } else {
             return TimelineData.builder()
                     .heading(DEFAULT_HEADING)
-                    .title("timeline-title")
                     .images(getImagesForTimeline(entities))
                     .build();
-        }
-    }
-
-    private static String header(List<Long> years) {
-        if (CollectionUtils.isNotEmpty(years)) {
-            return CollectionUtils.size(years) == 1 ? String.valueOf(years.getFirst()) : years.getFirst() + " - " + years.getLast();
-        } else {
-            return DEFAULT_HEADING;
         }
     }
 

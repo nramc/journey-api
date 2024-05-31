@@ -30,6 +30,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMEL
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineResource.DAYS_FOR_UPCOMING_TIMELINE;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.DEFAULT_HEADING;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -250,8 +251,9 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("2024 - 2026"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(3)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].title").value(hasItems("2024", "2025", "2026")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }
