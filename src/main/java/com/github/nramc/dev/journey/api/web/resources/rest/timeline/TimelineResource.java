@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -70,8 +71,10 @@ public class TimelineResource {
             );
         }
         if (Boolean.TRUE.equals(today)) {
-            Criteria monthCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), LocalDate.now().getMonthValue())));
-            Criteria dayCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$dayOfMonth", "$journeyDate"), LocalDate.now().getDayOfMonth())));
+            // Date being stored in mongodb in UTC format, for workaround reduced 2 hours for now
+            LocalDateTime localDateTime = LocalDate.now().atStartOfDay().minusHours(2);
+            Criteria monthCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), localDateTime.getMonthValue())));
+            Criteria dayCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$dayOfMonth", "$journeyDate"), localDateTime.getDayOfMonth())));
             query.addCriteria(monthCriteria.andOperator(dayCriteria));
         }
         if (Boolean.TRUE.equals(upcoming)) {
