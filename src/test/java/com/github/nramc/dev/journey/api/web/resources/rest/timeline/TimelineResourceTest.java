@@ -246,17 +246,17 @@ class TimelineResourceTest {
         );
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
-                        .queryParam("year", "2024, 2025")
+                        .queryParam("year", "2024, 2025, 2026")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
+                .andExpect(jsonPath("$.heading").value("2024 - 2026"))
                 .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1", "title 1")))
+                .andExpect(jsonPath("$.images").value(hasSize(3)))
+                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }

@@ -1,12 +1,9 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.security.utils.AuthUtils;
-import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData.TimelineImage;
+import com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
@@ -79,37 +74,14 @@ public class TimelineResource {
             query.addCriteria(monthCriteria.andOperator(dayCriteria));
         }
         if (Boolean.TRUE.equals(upcoming)) {
-            query.addCriteria(
-                    Criteria.where("journeyDate").gt(LocalDate.now()).lte(LocalDate.now().plusDays(DAYS_FOR_UPCOMING_TIMELINE))
-            );
+            query.addCriteria(Criteria.where("journeyDate").gt(LocalDate.now()).lte(LocalDate.now().plusDays(DAYS_FOR_UPCOMING_TIMELINE)));
         }
 
         List<JourneyEntity> entities = mongoTemplate.find(query, JourneyEntity.class);
 
 
-        return TimelineData.builder()
-                .heading("timeline-heading")
-                .title("timeline-title")
-                .images(getFavoriteImagesForTimeline(entities))
-                .build();
+        return TimelineDataTransformer.transform(entities, journeyIDs, cities, countries, years, today, upcoming);
     }
 
-    private static List<TimelineImage> getFavoriteImagesForTimeline(List<JourneyEntity> entities) {
-        return CollectionUtils.emptyIfNull(entities).stream()
-                .map(JourneyEntity::getExtended)
-                .map(JourneyExtendedEntity::getImagesDetails)
-                .map(JourneyImagesDetailsEntity::getImages)
-                .flatMap(Collection::stream)
-                .filter(JourneyImageDetailEntity::isFavorite)
-                .map(TimelineResource::toTimelineImage)
-                .toList();
-    }
 
-    private static TimelineImage toTimelineImage(JourneyImageDetailEntity entity) {
-        return TimelineImage.builder()
-                .src(entity.getUrl())
-                .caption(entity.getTitle())
-                .args(Map.of())
-                .build();
-    }
 }
