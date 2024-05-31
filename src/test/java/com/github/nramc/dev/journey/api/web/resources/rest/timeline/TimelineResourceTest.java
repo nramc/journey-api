@@ -278,7 +278,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
+                .andExpect(jsonPath("$.heading").value("Today in History"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))

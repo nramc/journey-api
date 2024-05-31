@@ -23,7 +23,9 @@ public class TimelineDataTransformer {
                                          List<Long> years,
                                          Boolean today,
                                          Boolean upcoming) {
-        if (CollectionUtils.isNotEmpty(years)) {
+        if (Boolean.TRUE.equals(today)) {
+            return TodayTimelineTransformer.transform(entities);
+        } else if (CollectionUtils.isNotEmpty(years)) {
             return YearTimelineTransformer.transform(entities, years);
         } else {
             return TimelineData.builder()
