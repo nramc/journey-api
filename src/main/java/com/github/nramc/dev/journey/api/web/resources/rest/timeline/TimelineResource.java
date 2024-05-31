@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -30,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @Tag(name = "Timeline Resource")
 public class TimelineResource {
-    static final long DAYS_FOR_UPCOMING_TIMELINE = 7;
+    static final int DAYS_FOR_UPCOMING_TIMELINE = 7;
     private final MongoTemplate mongoTemplate;
 
     @Operation(summary = "Get Timeline data")
@@ -74,7 +75,14 @@ public class TimelineResource {
             query.addCriteria(monthCriteria.andOperator(dayCriteria));
         }
         if (Boolean.TRUE.equals(upcoming)) {
-            query.addCriteria(Criteria.where("journeyDate").gt(LocalDate.now()).lte(LocalDate.now().plusDays(DAYS_FOR_UPCOMING_TIMELINE)));
+            List<Integer> months = List.of(LocalDate.now().getMonthValue(), LocalDate.now().plusDays(DAYS_FOR_UPCOMING_TIMELINE).getMonthValue());
+            List<Integer> days = IntStream.range(1, DAYS_FOR_UPCOMING_TIMELINE + 1)
+                    .mapToObj(val -> LocalDate.now().plusDays(val))
+                    .map(LocalDate::getDayOfMonth)
+                    .toList();
+            Criteria monthCriteria = Criteria.where("$expr").is(new Document("$in", List.of(new Document("$month", "$journeyDate"), months)));
+            Criteria dayCriteria = Criteria.where("$expr").is(new Document("$in", List.of(new Document("$dayOfMonth", "$journeyDate"), days)));
+            query.addCriteria(monthCriteria.andOperator(dayCriteria));
         }
 
         List<JourneyEntity> entities = mongoTemplate.find(query, JourneyEntity.class);

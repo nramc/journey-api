@@ -28,7 +28,6 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINE
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
-import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineResource.DAYS_FOR_UPCOMING_TIMELINE;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.DEFAULT_HEADING;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -290,12 +289,12 @@ class TimelineResourceTest {
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void getTimelineData_forUpcomingDays_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
         // setup data
-        IntStream.range(0, 5).forEach(index -> journeyRepository.save(
+        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
                         JOURNEY_EXTENDED_ENTITY.toBuilder()
                                 .id("ID_" + index)
                                 .visibilities(Set.of(MYSELF))
                                 .isPublished(true)
-                                .journeyDate(LocalDate.now().plusDays(index * DAYS_FOR_UPCOMING_TIMELINE))
+                                .journeyDate(LocalDate.now().plusDays(index).minusYears(index))
                                 .build()
                 )
         );
@@ -306,9 +305,9 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
+                .andExpect(jsonPath("$.heading").value("Upcoming"))
                 .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(1)))
+                .andExpect(jsonPath("$.images").value(hasSize(7)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());

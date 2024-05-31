@@ -25,6 +25,8 @@ public class TimelineDataTransformer {
                                          Boolean upcoming) {
         if (Boolean.TRUE.equals(today)) {
             return TodayTimelineTransformer.transform(entities);
+        } else if (Boolean.TRUE.equals(upcoming)) {
+            return UpcomingTimelineTransformer.transform(entities);
         } else if (CollectionUtils.isNotEmpty(years)) {
             return YearTimelineTransformer.transform(entities, years);
         } else {
