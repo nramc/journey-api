@@ -29,6 +29,7 @@ import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineResource.DAYS_FOR_UPCOMING_TIMELINE;
+import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.DEFAULT_HEADING;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -87,8 +88,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").isEmpty());
     }
 
@@ -115,8 +115,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
@@ -149,8 +148,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
@@ -183,8 +181,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
@@ -217,8 +214,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
@@ -252,7 +248,6 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("2024 - 2026"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(3)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
@@ -281,8 +276,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
@@ -310,8 +304,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("timeline-heading"))
-                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))

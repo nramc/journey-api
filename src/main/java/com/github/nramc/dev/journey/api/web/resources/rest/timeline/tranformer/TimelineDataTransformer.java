@@ -26,7 +26,6 @@ public class TimelineDataTransformer {
         if (CollectionUtils.isNotEmpty(years)) {
             return TimelineData.builder()
                     .heading(header(years))
-                    .title("timeline-title")
                     .images(getImagesForTimeline(entities))
                     .build();
         } else {
