@@ -63,7 +63,7 @@ public class TimelineDataTransformer {
 
     public static List<JourneyImageDetailEntity> getImages(JourneyEntity journeyEntity) {
         List<JourneyImageDetailEntity> favoriteImages = getFavoriteImages(journeyEntity);
-        return favoriteImages.isEmpty() ? getFirstNImages(journeyEntity) : favoriteImages;
+        return favoriteImages.isEmpty() ? getFirstNImages(journeyEntity, MAX_IMAGES_PER_JOURNEY) : favoriteImages;
     }
 
     private static List<JourneyImageDetailEntity> getFavoriteImages(JourneyEntity journeyEntity) {
@@ -77,13 +77,13 @@ public class TimelineDataTransformer {
                 .toList();
     }
 
-    private static List<JourneyImageDetailEntity> getFirstNImages(JourneyEntity journeyEntity) {
+    public static List<JourneyImageDetailEntity> getFirstNImages(JourneyEntity journeyEntity, int maxImagesPerJourney) {
         return Stream.of(journeyEntity)
                 .map(JourneyEntity::getExtended)
                 .map(JourneyExtendedEntity::getImagesDetails)
                 .map(JourneyImagesDetailsEntity::getImages)
                 .flatMap(Collection::stream)
-                .limit(MAX_IMAGES_PER_JOURNEY)
+                .limit(maxImagesPerJourney)
                 .toList();
     }
 }

@@ -202,9 +202,9 @@ class TimelineResourceTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("First Flight Experience"))
                 .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(1)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images").value(hasSize(2)))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1", "src_2")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1", "title 2")))
                 .andExpect(jsonPath("$.images[*].title").value(hasItems("First Flight Experience")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }

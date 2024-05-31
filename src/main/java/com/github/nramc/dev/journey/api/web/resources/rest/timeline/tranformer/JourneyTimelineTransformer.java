@@ -10,6 +10,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.getFirstNImages;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.getImages;
 
 @UtilityClass
@@ -31,9 +32,22 @@ public class JourneyTimelineTransformer {
     }
 
     private static List<TimelineImage> images(List<JourneyEntity> entities) {
+        if (CollectionUtils.size(entities) == 1) {
+            return CollectionUtils.emptyIfNull(entities).stream()
+                    .map(JourneyTimelineTransformer::getAllImagesForJourney)
+                    .flatMap(List::stream)
+                    .toList();
+        }
+
         return CollectionUtils.emptyIfNull(entities).stream()
                 .map(JourneyTimelineTransformer::getImagesForJourney)
                 .flatMap(List::stream)
+                .toList();
+    }
+
+    private static List<TimelineImage> getAllImagesForJourney(JourneyEntity journeyEntity) {
+        return getFirstNImages(journeyEntity, Integer.MAX_VALUE).stream()
+                .map(imageEntity -> toTimelineImage(imageEntity, journeyEntity))
                 .toList();
     }
 
