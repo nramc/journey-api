@@ -366,7 +366,7 @@ class TimelineResourceTest {
                                 .id("ID_" + index)
                                 .visibilities(Set.of(MYSELF))
                                 .isPublished(true)
-                                .journeyDate(LocalDate.now().plusDays(index))
+                                .journeyDate(LocalDate.now().minusYears(index))
                                 .build()
                 )
         );
@@ -379,7 +379,7 @@ class TimelineResourceTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("Today in History"))
                 .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(1)))
+                .andExpect(jsonPath("$.images").value(hasSize(5)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
