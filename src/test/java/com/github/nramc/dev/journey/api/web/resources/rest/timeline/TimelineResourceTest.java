@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,8 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINE
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineResource.DAYS_FOR_UPCOMING_TIMELINE;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -97,7 +100,7 @@ class TimelineResourceTest {
                         JOURNEY_EXTENDED_ENTITY.toBuilder()
                                 .id("ID_" + index)
                                 .createdDate(LocalDate.now().plusDays(index))
-                                .visibilities(Set.of(MYSELF))
+                                .visibilities(Set.of(MYSELF, Visibility.MAINTAINER))
                                 .isPublished(true)
                                 .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index % 2))
                                 .category("Category_" + index)
@@ -115,6 +118,7 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("timeline-heading"))
                 .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1", "title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
@@ -148,6 +152,7 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("timeline-heading"))
                 .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1", "title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
@@ -181,6 +186,7 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("timeline-heading"))
                 .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1", "title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
@@ -214,6 +220,7 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("timeline-heading"))
                 .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1", "title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
@@ -247,6 +254,7 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("timeline-heading"))
                 .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1", "src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1", "title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
@@ -276,6 +284,36 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("timeline-heading"))
                 .andExpect(jsonPath("$.title").value("timeline-title"))
                 .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(1)))
+                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
+                .andExpect(jsonPath("$.images[0].args").isMap());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    void getTimelineData_forUpcomingDays_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+        // setup data
+        IntStream.range(0, 5).forEach(index -> journeyRepository.save(
+                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                                .id("ID_" + index)
+                                .visibilities(Set.of(MYSELF))
+                                .isPublished(true)
+                                .journeyDate(LocalDate.now().plusDays(index * DAYS_FOR_UPCOMING_TIMELINE))
+                                .build()
+                )
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
+                        .queryParam("upcoming", "true")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.heading").value("timeline-heading"))
+                .andExpect(jsonPath("$.title").value("timeline-title"))
+                .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(1)))
                 .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
