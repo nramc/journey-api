@@ -45,7 +45,7 @@ public class CountryTimelineTransformer {
 
     private static TimelineImage toTimelineImage(JourneyImageDetailEntity imageDetail, JourneyEntity journey) {
         return TimelineImage.builder()
-                .title(journey.getCity())
+                .title(journey.getCountry())
                 .src(imageDetail.getUrl())
                 .caption(imageDetail.getTitle())
                 .args(Map.of())
