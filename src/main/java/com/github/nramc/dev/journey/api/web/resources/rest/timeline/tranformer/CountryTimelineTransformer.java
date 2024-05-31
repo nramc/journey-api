@@ -7,35 +7,32 @@ import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.DEFAULT_HEADING;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.getImages;
 
 @UtilityClass
-public class YearTimelineTransformer {
+public class CountryTimelineTransformer {
 
-    public TimelineData transform(List<JourneyEntity> entities, List<Long> years) {
+    public TimelineData transform(List<JourneyEntity> entities, List<String> countries) {
         return TimelineData.builder()
-                .heading(header(years))
+                .heading(header(countries))
                 .images(images(entities))
                 .build();
     }
 
-    private static String header(List<Long> years) {
-        if (CollectionUtils.isNotEmpty(years)) {
-            return CollectionUtils.size(years) == 1 ? String.valueOf(years.getFirst()) : years.getFirst() + " - " + years.getLast();
+    private static String header(List<String> countries) {
+        if (CollectionUtils.isNotEmpty(countries) && CollectionUtils.size(countries) == 1) {
+            return countries.getFirst();
         } else {
-            return DEFAULT_HEADING;
+            return "Countries";
         }
     }
 
     private static List<TimelineImage> images(List<JourneyEntity> entities) {
         return CollectionUtils.emptyIfNull(entities).stream()
-                .map(YearTimelineTransformer::getImagesForJourney)
+                .map(CountryTimelineTransformer::getImagesForJourney)
                 .flatMap(List::stream)
                 .toList();
     }
@@ -47,9 +44,8 @@ public class YearTimelineTransformer {
     }
 
     private static TimelineImage toTimelineImage(JourneyImageDetailEntity imageDetail, JourneyEntity journey) {
-        String title = Optional.ofNullable(journey.getJourneyDate()).map(LocalDate::getYear).map(String::valueOf).orElse(null);
         return TimelineImage.builder()
-                .title(title)
+                .title(journey.getCity())
                 .src(imageDetail.getUrl())
                 .caption(imageDetail.getTitle())
                 .args(Map.of())
