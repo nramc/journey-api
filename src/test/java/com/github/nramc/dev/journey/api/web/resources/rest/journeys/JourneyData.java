@@ -70,24 +70,23 @@ public class JourneyData {
                     .build())
             .build();
 
-    private static JourneyImagesDetailsEntity getImagesDetailsEntity() {
+    public static JourneyImagesDetailsEntity getImagesDetailsEntity() {
         return JourneyImagesDetailsEntity.builder()
                 .images(List.of(
-                        JourneyImageDetailEntity.builder()
-                                .isThumbnail(true)
-                                .isFavorite(true)
-                                .title("title 1")
-                                .url("src_1")
-                                .assetId("assert 1")
-                                .build(),
-                        JourneyImageDetailEntity.builder()
-                                .isThumbnail(false)
-                                .isFavorite(false)
-                                .title("title 2")
-                                .url("src_2")
-                                .assetId("assert 2")
-                                .build()
+                        newImageDetailEntityWith("src_1", "asset 1", "title 1")
+                                .toBuilder().isFavorite(true).build(),
+                        newImageDetailEntityWith("src_2", "asset 2", "title 2")
                 ))
+                .build();
+    }
+
+    public static JourneyImageDetailEntity newImageDetailEntityWith(String url, String assetId, String title) {
+        return JourneyImageDetailEntity.builder()
+                .isThumbnail(false)
+                .isFavorite(false)
+                .title(title)
+                .url(url)
+                .assetId(assetId)
                 .build();
     }
 }

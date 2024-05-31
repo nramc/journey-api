@@ -1,8 +1,10 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline;
 
+import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.security.Visibility;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -28,6 +31,7 @@ import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINE
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.newImageDetailEntityWith;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.DEFAULT_HEADING;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -108,8 +112,42 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[0].args").isMap())
+                .andExpect(jsonPath("$.images[1].args").isMap());
+    }
+
+    @Test
+    @WithMockUser(username = "new-user", password = "test-password", authorities = {MAINTAINER})
+    void getTimelineData_whenNotFavoriteImageExists_shouldTakeFirstNImages() throws Exception {
+        // setup data
+        List<JourneyImageDetailEntity> images = List.of(
+                newImageDetailEntityWith("src_1", "asset 1", "title 1"),
+                newImageDetailEntityWith("src_2", "asset 2", "title 2"),
+                newImageDetailEntityWith("src_3", "asset 3", "title 3"),
+                newImageDetailEntityWith("src_4", "asset 4", "title 4"),
+                newImageDetailEntityWith("src_5", "asset 5", "title 5")
+        );
+        journeyRepository.save(
+                JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        .id("ID_12345")
+                        .visibilities(Set.of(MYSELF, Visibility.MAINTAINER))
+                        .isPublished(true)
+                        .extended(JourneyExtendedEntity.builder().imagesDetails(JourneyImagesDetailsEntity.builder().images(images).build()).build())
+                        .build()
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
+                .andExpect(jsonPath("$.images").exists())
+                .andExpect(jsonPath("$.images").value(hasSize(3)))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1", "src_2", "src_3")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1", "title 2", "title 3")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }
@@ -136,9 +174,9 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("Journeys"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
-                .andExpect(jsonPath("$.images[*].title").value(CoreMatchers.hasItems("First Flight Experience")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].title").value(hasItems("First Flight Experience")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }
@@ -165,9 +203,9 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("First Flight Experience"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
-                .andExpect(jsonPath("$.images[*].title").value(CoreMatchers.hasItems("First Flight Experience")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].title").value(hasItems("First Flight Experience")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }
 
@@ -194,9 +232,9 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("Cities"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
-                .andExpect(jsonPath("$.images[*].title").value(CoreMatchers.hasItems("City_1", "City_2")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].title").value(hasItems("City_1", "City_2")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }
@@ -224,9 +262,9 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("City_1"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
-                .andExpect(jsonPath("$.images[*].title").value(CoreMatchers.hasItems("City_1")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].title").value(hasItems("City_1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }
 
@@ -253,9 +291,9 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("Countries"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
-                .andExpect(jsonPath("$.images[*].title").value(CoreMatchers.hasItems("Country_1", "Country_1")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].title").value(hasItems("Country_1", "Country_1")))
                 .andExpect(jsonPath("$.images[0].args").isMap())
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }
@@ -283,9 +321,9 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("Country_1"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
-                .andExpect(jsonPath("$.images[*].title").value(CoreMatchers.hasItems("Country_1")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].title").value(hasItems("Country_1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }
 
@@ -342,8 +380,8 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("Today in History"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }
 
@@ -370,8 +408,8 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.heading").value("Upcoming"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(7)))
-                .andExpect(jsonPath("$.images[*].src").value(CoreMatchers.hasItems("src_1")))
-                .andExpect(jsonPath("$.images[*].caption").value(CoreMatchers.hasItems("title 1")))
+                .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
+                .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }
 
