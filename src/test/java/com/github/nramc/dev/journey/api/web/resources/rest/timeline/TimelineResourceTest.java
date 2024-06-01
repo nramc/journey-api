@@ -23,8 +23,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -368,7 +366,7 @@ class TimelineResourceTest {
                                 .id("ID_" + index)
                                 .visibilities(Set.of(MYSELF))
                                 .isPublished(true)
-                                .journeyDate(ZonedDateTime.now().minusYears(index).toLocalDate())
+                                .journeyDate(LocalDate.now().minusYears(index))
                                 .build()
                 )
         );
