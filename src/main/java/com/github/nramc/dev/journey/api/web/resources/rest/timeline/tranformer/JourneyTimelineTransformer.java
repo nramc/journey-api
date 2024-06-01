@@ -60,7 +60,6 @@ public class JourneyTimelineTransformer {
 
     private static TimelineImage toTimelineImage(JourneyImageDetailEntity imageDetail, JourneyEntity journey) {
         return TimelineImage.builder()
-                .title(journey.getName())
                 .src(imageDetail.getUrl())
                 .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
                 .args(Map.of())

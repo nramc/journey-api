@@ -176,7 +176,8 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("First Flight Experience")))
+                .andExpect(jsonPath("$.images[0].title").isEmpty())
+                .andExpect(jsonPath("$.images[1].title").isEmpty())
                 .andExpect(jsonPath("$.images[0].args").isMap())
                 .andExpect(jsonPath("$.images[1].args").isMap());
     }
@@ -205,7 +206,7 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1", "src_2")))
                 .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1", "title 2")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("First Flight Experience")))
+                .andExpect(jsonPath("$.images[0].title").isEmpty())
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }
 
@@ -229,7 +230,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Cities"))
+                .andExpect(jsonPath("$.heading").value("City"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
@@ -259,7 +260,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("City_1"))
+                .andExpect(jsonPath("$.heading").value("City"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
@@ -288,7 +289,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Countries"))
+                .andExpect(jsonPath("$.heading").value("Country"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(2)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
@@ -318,7 +319,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Country_1"))
+                .andExpect(jsonPath("$.heading").value("Country"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(1)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
@@ -407,7 +408,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Upcoming Events"))
+                .andExpect(jsonPath("$.heading").value("Upcoming Anniversary"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(7)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))

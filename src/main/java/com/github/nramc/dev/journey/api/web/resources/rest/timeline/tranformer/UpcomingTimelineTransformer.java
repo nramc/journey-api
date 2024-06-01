@@ -21,7 +21,7 @@ public class UpcomingTimelineTransformer {
 
     public TimelineData transform(List<JourneyEntity> entities) {
         return TimelineData.builder()
-                .heading("Upcoming Events")
+                .heading("Upcoming Anniversary")
                 .images(images(entities))
                 .build();
     }
@@ -50,9 +50,6 @@ public class UpcomingTimelineTransformer {
     }
 
     private static String title(LocalDate journeyDate) {
-        return LocalDate.now()
-                .withDayOfMonth(journeyDate.getDayOfMonth())
-                .withMonth(journeyDate.getMonthValue())
-                .format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return journeyDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }

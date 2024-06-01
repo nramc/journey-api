@@ -28,7 +28,7 @@ public class YearTimelineTransformer {
 
     private static String header(List<Long> years) {
         if (CollectionUtils.isNotEmpty(years)) {
-            return CollectionUtils.size(years) == 1 ? String.valueOf(years.getFirst()) : years.getFirst() + " - " + years.getLast();
+            return CollectionUtils.size(years) == 1 ? "Year" : years.getFirst() + " - " + years.getLast();
         } else {
             return DEFAULT_HEADING;
         }

@@ -16,19 +16,11 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranf
 @UtilityClass
 public class CityTimelineTransformer {
 
-    public TimelineData transform(List<JourneyEntity> entities, List<String> cities) {
+    public TimelineData transform(List<JourneyEntity> entities) {
         return TimelineData.builder()
-                .heading(header(cities))
+                .heading("City")
                 .images(images(entities))
                 .build();
-    }
-
-    private static String header(List<String> cities) {
-        if (CollectionUtils.isNotEmpty(cities) && CollectionUtils.size(cities) == 1) {
-            return cities.getFirst();
-        } else {
-            return "Cities";
-        }
     }
 
     private static List<TimelineImage> images(List<JourneyEntity> entities) {

@@ -16,19 +16,11 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranf
 @UtilityClass
 public class CountryTimelineTransformer {
 
-    public TimelineData transform(List<JourneyEntity> entities, List<String> countries) {
+    public TimelineData transform(List<JourneyEntity> entities) {
         return TimelineData.builder()
-                .heading(header(countries))
+                .heading("Country")
                 .images(images(entities))
                 .build();
-    }
-
-    private static String header(List<String> countries) {
-        if (CollectionUtils.isNotEmpty(countries) && CollectionUtils.size(countries) == 1) {
-            return countries.getFirst();
-        } else {
-            return "Countries";
-        }
     }
 
     private static List<TimelineImage> images(List<JourneyEntity> entities) {
