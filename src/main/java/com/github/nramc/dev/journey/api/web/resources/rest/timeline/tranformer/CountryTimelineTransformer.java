@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData.TimelineImage;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -15,19 +16,11 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranf
 @UtilityClass
 public class CountryTimelineTransformer {
 
-    public TimelineData transform(List<JourneyEntity> entities, List<String> countries) {
+    public TimelineData transform(List<JourneyEntity> entities) {
         return TimelineData.builder()
-                .heading(header(countries))
+                .heading("Country")
                 .images(images(entities))
                 .build();
-    }
-
-    private static String header(List<String> countries) {
-        if (CollectionUtils.isNotEmpty(countries) && CollectionUtils.size(countries) == 1) {
-            return countries.getFirst();
-        } else {
-            return "Countries";
-        }
     }
 
     private static List<TimelineImage> images(List<JourneyEntity> entities) {
@@ -47,7 +40,7 @@ public class CountryTimelineTransformer {
         return TimelineImage.builder()
                 .title(journey.getCountry())
                 .src(imageDetail.getUrl())
-                .caption(imageDetail.getTitle())
+                .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
                 .args(Map.of())
                 .build();
     }

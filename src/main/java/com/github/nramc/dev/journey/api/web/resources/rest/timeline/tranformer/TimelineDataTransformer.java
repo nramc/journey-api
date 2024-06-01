@@ -34,9 +34,9 @@ public class TimelineDataTransformer {
         } else if (CollectionUtils.isNotEmpty(journeyIDs)) {
             return JourneyTimelineTransformer.transform(entities);
         } else if (CollectionUtils.isNotEmpty(cities)) {
-            return CityTimelineTransformer.transform(entities, cities);
+            return CityTimelineTransformer.transform(entities);
         } else if (CollectionUtils.isNotEmpty(countries)) {
-            return CountryTimelineTransformer.transform(entities, countries);
+            return CountryTimelineTransformer.transform(entities);
         } else {
             return TimelineData.builder()
                     .heading(DEFAULT_HEADING)

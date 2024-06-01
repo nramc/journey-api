@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData.TimelineImage;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +21,7 @@ public class UpcomingTimelineTransformer {
 
     public TimelineData transform(List<JourneyEntity> entities) {
         return TimelineData.builder()
-                .heading("Upcoming")
+                .heading("Upcoming Anniversary")
                 .images(images(entities))
                 .build();
     }
@@ -43,15 +44,12 @@ public class UpcomingTimelineTransformer {
         return TimelineImage.builder()
                 .title(title)
                 .src(imageDetail.getUrl())
-                .caption(imageDetail.getTitle())
+                .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
                 .args(Map.of())
                 .build();
     }
 
     private static String title(LocalDate journeyDate) {
-        return LocalDate.now()
-                .withDayOfMonth(journeyDate.getDayOfMonth())
-                .withMonth(journeyDate.getMonthValue())
-                .format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return journeyDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }
