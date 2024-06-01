@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData.TimelineImage;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,7 +52,7 @@ public class YearTimelineTransformer {
         return TimelineImage.builder()
                 .title(title)
                 .src(imageDetail.getUrl())
-                .caption(imageDetail.getTitle())
+                .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
                 .args(Map.of())
                 .build();
     }

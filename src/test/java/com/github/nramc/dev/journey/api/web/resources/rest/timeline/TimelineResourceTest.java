@@ -407,7 +407,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Upcoming"))
+                .andExpect(jsonPath("$.heading").value("Upcoming Events"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(7)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))

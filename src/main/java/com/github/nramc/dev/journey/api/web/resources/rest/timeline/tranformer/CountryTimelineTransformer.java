@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData.TimelineImage;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class CountryTimelineTransformer {
         return TimelineImage.builder()
                 .title(journey.getCountry())
                 .src(imageDetail.getUrl())
-                .caption(imageDetail.getTitle())
+                .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
                 .args(Map.of())
                 .build();
     }
