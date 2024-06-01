@@ -6,7 +6,6 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsE
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.security.Visibility;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,6 +23,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -360,7 +361,6 @@ class TimelineResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    @Disabled("Disabled to due to timezone bug. Test success in local but failing in CI")
     void getTimelineData_forToday_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
@@ -368,10 +368,12 @@ class TimelineResourceTest {
                                 .id("ID_" + index)
                                 .visibilities(Set.of(MYSELF))
                                 .isPublished(true)
-                                .journeyDate(LocalDate.now().minusYears(index))
+                                .journeyDate(ZonedDateTime.now().minusYears(index).toLocalDate())
                                 .build()
                 )
         );
+
+        journeyRepository.findAll().forEach(System.out::println);
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
                         .queryParam("today", "true")
