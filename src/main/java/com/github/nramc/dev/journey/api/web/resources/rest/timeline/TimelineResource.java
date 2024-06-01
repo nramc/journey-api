@@ -42,6 +42,7 @@ public class TimelineResource {
             @RequestParam(name = "IDs", defaultValue = "") List<String> journeyIDs,
             @RequestParam(name = "city", defaultValue = "") List<String> cities,
             @RequestParam(name = "country", defaultValue = "") List<String> countries,
+            @RequestParam(name = "category", defaultValue = "") List<String> categories,
             @RequestParam(name = "year", required = false) List<Long> years,
             @RequestParam(name = "today", required = false) Boolean today,
             @RequestParam(name = "upcoming", required = false) Boolean upcoming,
@@ -64,6 +65,9 @@ public class TimelineResource {
         }
         if (CollectionUtils.isNotEmpty(countries)) {
             query.addCriteria(Criteria.where("country").in(countries));
+        }
+        if (CollectionUtils.isNotEmpty(categories)) {
+            query.addCriteria(Criteria.where("category").in(categories));
         }
         if (CollectionUtils.isNotEmpty(years)) {
             query.addCriteria(
@@ -90,7 +94,7 @@ public class TimelineResource {
         List<JourneyEntity> entities = mongoTemplate.find(query, JourneyEntity.class);
 
 
-        return TimelineDataTransformer.transform(entities, journeyIDs, cities, countries, years, today, upcoming);
+        return TimelineDataTransformer.transform(entities, journeyIDs, cities, countries, categories, years, today, upcoming);
     }
 
 

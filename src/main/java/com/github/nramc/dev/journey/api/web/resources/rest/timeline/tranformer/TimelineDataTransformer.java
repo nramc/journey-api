@@ -18,10 +18,12 @@ public class TimelineDataTransformer {
     private static final int MAX_IMAGES_PER_JOURNEY = 3;
     public static final String DEFAULT_HEADING = "Timeline";
 
+    @SuppressWarnings("java:S107")
     public static TimelineData transform(List<JourneyEntity> entities,
                                          List<String> journeyIDs,
                                          List<String> cities,
                                          List<String> countries,
+                                         List<String> categories,
                                          List<Long> years,
                                          Boolean today,
                                          Boolean upcoming) {
@@ -37,6 +39,8 @@ public class TimelineDataTransformer {
             return CityTimelineTransformer.transform(entities);
         } else if (CollectionUtils.isNotEmpty(countries)) {
             return CountryTimelineTransformer.transform(entities);
+        } else if (CollectionUtils.isNotEmpty(categories)) {
+            return CategoryTimelineTransformer.transform(entities);
         } else {
             return TimelineData.builder()
                     .heading(DEFAULT_HEADING)
