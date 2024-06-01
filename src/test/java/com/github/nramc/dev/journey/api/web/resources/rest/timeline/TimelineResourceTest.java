@@ -6,7 +6,6 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsE
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.security.Visibility;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -360,7 +359,6 @@ class TimelineResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    @Disabled("Disabled to due to timezone bug. Test success in local but failing in CI")
     void getTimelineData_forToday_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
@@ -372,6 +370,8 @@ class TimelineResourceTest {
                                 .build()
                 )
         );
+
+        journeyRepository.findAll().forEach(System.out::println);
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
                         .queryParam("today", "true")

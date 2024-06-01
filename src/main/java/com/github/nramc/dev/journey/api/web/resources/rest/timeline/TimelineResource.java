@@ -71,8 +71,7 @@ public class TimelineResource {
             );
         }
         if (Boolean.TRUE.equals(today)) {
-            // Date being stored in mongodb in UTC format, for workaround reduced 2 hours for now
-            LocalDateTime localDateTime = LocalDate.now().atStartOfDay().minusHours(2);
+            LocalDateTime localDateTime = LocalDate.now().atStartOfDay();
             Criteria monthCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), localDateTime.getMonthValue())));
             Criteria dayCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$dayOfMonth", "$journeyDate"), localDateTime.getDayOfMonth())));
             query.addCriteria(monthCriteria.andOperator(dayCriteria));
