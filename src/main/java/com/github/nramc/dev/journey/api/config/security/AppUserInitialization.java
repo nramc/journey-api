@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @EnableConfigurationProperties(ApplicationUserProperties.class)
+@Profile("!workspace")
 public class AppUserInitialization {
     private final AuthUserDetailsService authUserDetailsService;
     private final ApplicationUserProperties properties;

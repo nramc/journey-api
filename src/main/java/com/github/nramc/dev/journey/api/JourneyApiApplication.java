@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api;
 
-import com.github.nramc.dev.journey.api.repository.LocationRepository;
-import com.github.nramc.dev.journey.api.repository.entity.LocationEntity;
+import com.github.nramc.dev.journey.api.migration.journeys.HelloWorld;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,14 +16,12 @@ public class JourneyApiApplication {
     }
 
 
-    CommandLineRunner commandLineRunner(LocationRepository locationRepository) {
+    CommandLineRunner commandLineRunner(JourneyRepository journeyRepository) {
         return args -> {
-            LocationEntity entity = new LocationEntity("Munich");
-            locationRepository.save(entity);
-
-            log.info("Number of documents found: {}", locationRepository.count());
-
-            locationRepository.findAll().forEach(location -> log.info("Found: {}", location));
+            log.info("######## Migration support started ########");
+            HelloWorld helloWorld = new HelloWorld(journeyRepository);
+            helloWorld.run();
+            log.info("######## Migration support completed ########");
         };
     }
 
