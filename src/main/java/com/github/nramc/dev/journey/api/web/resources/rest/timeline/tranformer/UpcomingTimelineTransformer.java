@@ -21,7 +21,7 @@ public class UpcomingTimelineTransformer {
 
     public TimelineData transform(List<JourneyEntity> entities) {
         return TimelineData.builder()
-                .heading("Upcoming Anniversary")
+                .heading("Upcoming Journiversaries")
                 .images(images(entities))
                 .build();
     }

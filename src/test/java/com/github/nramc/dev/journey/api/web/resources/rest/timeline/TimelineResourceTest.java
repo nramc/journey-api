@@ -7,6 +7,8 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.security.Visibility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -418,11 +420,12 @@ class TimelineResourceTest {
                 .andExpect(jsonPath("$.images[0].args").isMap());
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"3", "5", "10", "15", "25", "31"})
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void getTimelineData_forUpcomingDays_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    void getTimelineData_forUpcomingDays_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult(String numberOfDays) throws Exception {
         // setup data
-        IntStream.range(0, 10).forEach(index -> journeyRepository.save(
+        IntStream.range(0, Integer.parseInt(numberOfDays+1)).forEach(index -> journeyRepository.save(
                         JOURNEY_EXTENDED_ENTITY.toBuilder()
                                 .id("ID_" + index)
                                 .visibilities(Set.of(MYSELF))
@@ -433,14 +436,14 @@ class TimelineResourceTest {
         );
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
-                        .queryParam("upcoming", "true")
+                        .queryParam("upcoming", numberOfDays)
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Upcoming Anniversary"))
+                .andExpect(jsonPath("$.heading").value("Upcoming Journiversaries"))
                 .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(7)))
+                .andExpect(jsonPath("$.images").value(hasSize(Integer.parseInt(numberOfDays))))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
                 .andExpect(jsonPath("$.images[*].caption").value(hasItems("title 1")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
