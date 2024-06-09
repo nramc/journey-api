@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -32,7 +31,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @Tag(name = "Timeline Resource")
 public class TimelineResource {
-    static final int DAYS_FOR_UPCOMING_TIMELINE = 7;
     private final MongoTemplate mongoTemplate;
 
     @Operation(summary = "Get Timeline data")
@@ -45,7 +43,7 @@ public class TimelineResource {
             @RequestParam(name = "category", defaultValue = "") List<String> categories,
             @RequestParam(name = "year", required = false) List<Long> years,
             @RequestParam(name = "today", required = false) Boolean today,
-            @RequestParam(name = "upcoming", required = false) Boolean upcoming,
+            @RequestParam(name = "upcoming", required = false) Integer upcomingJourneysTillDays,
             Authentication authentication) {
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
         String username = authentication.getName();
@@ -80,21 +78,43 @@ public class TimelineResource {
             Criteria dayCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$dayOfMonth", "$journeyDate"), localDateTime.getDayOfMonth())));
             query.addCriteria(monthCriteria.andOperator(dayCriteria));
         }
-        if (Boolean.TRUE.equals(upcoming)) {
-            List<Integer> months = List.of(LocalDate.now().getMonthValue(), LocalDate.now().plusDays(DAYS_FOR_UPCOMING_TIMELINE).getMonthValue());
-            List<Integer> days = IntStream.range(1, DAYS_FOR_UPCOMING_TIMELINE + 1)
-                    .mapToObj(val -> LocalDate.now().plusDays(val))
-                    .map(LocalDate::getDayOfMonth)
-                    .toList();
-            Criteria monthCriteria = Criteria.where("$expr").is(new Document("$in", List.of(new Document("$month", "$journeyDate"), months)));
-            Criteria dayCriteria = Criteria.where("$expr").is(new Document("$in", List.of(new Document("$dayOfMonth", "$journeyDate"), days)));
-            query.addCriteria(monthCriteria.andOperator(dayCriteria));
+        if (upcomingJourneysTillDays != null) {
+            query.addCriteria(getUpcomingDaysCriteria(upcomingJourneysTillDays));
         }
 
         List<JourneyEntity> entities = mongoTemplate.find(query, JourneyEntity.class);
 
 
-        return TimelineDataTransformer.transform(entities, journeyIDs, cities, countries, categories, years, today, upcoming);
+        return TimelineDataTransformer.transform(entities, journeyIDs, cities, countries, categories, years, today,
+                upcomingJourneysTillDays != null);
+    }
+
+    private Criteria getUpcomingDaysCriteria(int upcomingJourneysTillDays) {
+        Criteria criteria;
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(upcomingJourneysTillDays);
+
+        if (startDate.getMonthValue() == endDate.getMonthValue()) {
+            // Same month, just compare days
+            criteria = new Criteria().andOperator(
+                    Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth()))),
+                    Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$dayOfMonth", "$journeyDate"), endDate.getDayOfMonth()))),
+                    Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue())))
+            );
+        } else {
+            // Different months, compare both months and days
+            criteria = new Criteria().orOperator(
+                    new Criteria().andOperator(
+                            Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth()))),
+                            Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue())))
+                    ),
+                    new Criteria().andOperator(
+                            Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$dayOfMonth", "$journeyDate"), endDate.getDayOfMonth()))),
+                            Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), endDate.getMonthValue())))
+                    )
+            );
+        }
+        return criteria;
     }
 
 
