@@ -441,7 +441,7 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Upcoming Anniversary"))
+                .andExpect(jsonPath("$.heading").value("Upcoming Journiversaries"))
                 .andExpect(jsonPath("$.images").exists())
                 .andExpect(jsonPath("$.images").value(hasSize(Integer.parseInt(numberOfDays))))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("src_1")))
