@@ -5,6 +5,16 @@ spring:
     mongodb:
       database: journey-dev
       auto-index-creation: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${NOREPLY_EMAIL}
+    password: ${NOREPLY_EMAIL_PWD}
+    test-connection: true
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
 
 app:
   name: Journey API
