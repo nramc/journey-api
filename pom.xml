@@ -31,7 +31,7 @@
 
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
-        <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+        <maven-release-plugin.version>3.1.0</maven-release-plugin.version>
         <rewrite-maven-plugin.version>5.33.0</rewrite-maven-plugin.version>
         <rewrite-maven-plugin.skip>true</rewrite-maven-plugin.skip>
         <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
