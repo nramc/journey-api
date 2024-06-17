@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Journey</title>
+    <style layout:replace="~{layout/style.html :: styles}"></style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="cid:logo.png" alt="Journey">
+        <h1>Journey</h1>
+    </div>
+    <div class="content" layout:fragment="content">
+        <!-- Content will be inserted here -->
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 My Application. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>

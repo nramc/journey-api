@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/emailLayout.html}" lang="en">
+<head>
+    <title>Email</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <p th:text="'Hello, ' + ${name} + '!'"></p>
+    <p>Please find below your One-Time-Token(OTT) for your request.
+        Kindly keep it secret and do not share it with anyone.</p>
+    <p class="important" style="margin: 2rem" th:text="${ottPin}"></p>
+</div>
+</body>
+</html>
