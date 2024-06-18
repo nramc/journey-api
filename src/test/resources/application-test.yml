@@ -27,3 +27,11 @@ jwt:
   public-key: classpath:app.pub
   ttl: 1h
   issuer: self
+
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+  mail:
+    host: localhost
+    username: testuser@localhost.com
+    password: test
