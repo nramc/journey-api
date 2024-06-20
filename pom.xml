@@ -196,7 +196,7 @@
                         <goals>
                             <goal>dryRun</goal>
                         </goals>
-                        <phase>post-integration-test</phase>
+                        <phase>prepare-package</phase>
                     </execution>
                     <execution>
                         <id>run-open-rewrite-execution</id>
