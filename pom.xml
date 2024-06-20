@@ -26,6 +26,7 @@
                 <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
             </properties>
             <activation>
+                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env.CI</name>
                     <value>true</value>
@@ -195,7 +196,7 @@
                         <goals>
                             <goal>dryRun</goal>
                         </goals>
-                        <phase>verify</phase>
+                        <phase>post-integration-test</phase>
                     </execution>
                     <execution>
                         <id>run-open-rewrite-execution</id>
