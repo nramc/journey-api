@@ -37,7 +37,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    @ExceptionHandler({NonTechnicalException.class})
+    @ExceptionHandler({NonTechnicalException.class, RuntimeException.class})
     public ProblemDetail handleNonTechnicalExceptions(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
     }

@@ -53,6 +53,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
 import static org.springframework.http.HttpMethod.DELETE;
@@ -142,6 +143,8 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE, DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
+
+                        .requestMatchers(POST, SEND_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
 
                         .requestMatchers(GET, FETCH_ALL_CATEGORIES).access(readOnlyAuthorizationManager)
 

@@ -37,8 +37,8 @@ Authorization: Basic {{appUsername}} {{appUserPassword}}
 Content-Type: application/json
 
 {
-  "name": "Test User Name Updated",
-  "emailAddress": "updated-email-address@dummy.com"
+  "name": "Ramachandran Nellaiyappan",
+  "emailAddress": "ramachandrannellai@gmail.com"
 }
 
 ### GET My Account Details

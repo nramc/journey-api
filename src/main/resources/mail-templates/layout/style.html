@@ -2,7 +2,7 @@
 <head>
     <style layout:fragment="styles">
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, Verdana, sans-serif;
             background-color: #f0f0f0;
             margin: 0;
             padding: 0;
@@ -14,12 +14,13 @@
             margin: 0 auto;
             background-color: #ffffff;
             border: 1px solid #dddddd;
+            color: #333333;
         }
 
         .header, .footer {
             display: inline-flex;
             width: 100%;
-            background-color: #333333;
+            background-color: rgba(52, 89, 230, 1) !important;
             color: #ffffff;
             text-align: center;
             padding: 10px 0;
@@ -27,11 +28,32 @@
 
         .content {
             padding: 20px;
+            width: 100%;
+            color: rgb(68, 113, 181);
         }
 
         .important {
             font-weight: bold;
             color: #3459e6;
+        }
+
+        .align-center {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+
+        .fs-large {
+            font-size: 2rem;
+        }
+
+        .fs-small {
+            font-size: 0.5rem;
+        }
+
+        .fw-bold {
+            font-weight: bold;
         }
     </style>
     <title>Common styles goes here</title>

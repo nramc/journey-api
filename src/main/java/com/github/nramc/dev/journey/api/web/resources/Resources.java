@@ -31,6 +31,8 @@ public class Resources {
     public static final String CHANGE_MY_PASSWORD = "/rest/my-account/changePassword";
     public static final String UPDATE_MY_ACCOUNT = "/rest/my-account";
 
+    public static final String SEND_EMAIL_CODE = "/rest/sendEmailCode";
+
     public static final String FETCH_ALL_CATEGORIES = "/rest/categories";
 
     @UtilityClass

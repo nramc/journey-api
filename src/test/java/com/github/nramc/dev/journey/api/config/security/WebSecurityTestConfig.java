@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
@@ -21,7 +22,7 @@ public class WebSecurityTestConfig {
     @Qualifier("testUserDetailsService")
     public UserDetailsService testUserDetailsService(PasswordEncoder passwordEncoder) {
         // The builder will ensure the passwords are encoded before saving in memory
-        UserDetails user = AuthUser.builder()
+        UserDetails testUser = AuthUser.builder()
                 .username("test-user")
                 .password(passwordEncoder.encode("test-password"))
                 .roles(Set.of(Role.AUTHENTICATED_USER))
@@ -33,7 +34,23 @@ public class WebSecurityTestConfig {
                 .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
                 .name("Administrator")
                 .build();
-        return new InMemoryUserDetailsManager(user, admin);
+        UserDetails authenticatedUser = AuthUser.builder()
+                .username("auth-user")
+                .password(passwordEncoder.encode("test"))
+                .roles(Set.of(Role.AUTHENTICATED_USER))
+                .name("Authenticated User")
+                .emailAddress("authenticated.user@gmail.com")
+                .build();
+        return new InMemoryUserDetailsManager(testUser, authenticatedUser, admin) {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                return switch (username) {
+                    case "test-admin" -> admin;
+                    case "auth-user" -> authenticatedUser;
+                    default -> testUser;
+                };
+            }
+        };
     }
 
 }

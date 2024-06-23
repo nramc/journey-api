@@ -7,9 +7,18 @@
 <body>
 <div layout:fragment="content">
     <p th:text="'Hello, ' + ${name} + '!'"></p>
-    <p>Please find below your One-Time-Token(OTT) for your request.
-        Kindly keep it secret and do not share it with anyone.</p>
-    <p class="important" style="margin: 2rem" th:text="${ottPin}"></p>
+    <p>Good day,</p>
+    <p>Please find below your One-Time-Token(OTT) for your request.</p>
+    <p>Kindly keep it secret and do not share it with anyone.</p>
+    <p class="important align-center fs-large" style="margin: 2rem" th:text="${ottPin}"></p>
+
+    <br/>
+    <br/>
+    <div class="fw-bold">
+        <p>Regards</p>
+        <p>Your Journey Team</p>
+    </div>
+
 </div>
 </body>
 </html>

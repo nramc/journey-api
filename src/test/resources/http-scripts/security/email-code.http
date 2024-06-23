@@ -1,0 +1,17 @@
+
+### Login as Application user
+POST {{baseUrl}}/login
+Authorization: Basic {{appUsername}} {{appUserPassword}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token !== null, "Redirect URL is empty");
+        client.global.set("jwtToken", response.body.token)
+    });
+%}
+
+### Send Email Verification Code
+POST {{baseUrl}}/sendEmailCode
+Authorization: Bearer {{jwtToken}}
+
