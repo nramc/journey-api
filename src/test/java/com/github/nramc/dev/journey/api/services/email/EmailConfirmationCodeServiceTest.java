@@ -6,7 +6,6 @@ import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepo
 import com.github.nramc.dev.journey.api.services.MailService;
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
 import jakarta.mail.MessagingException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -20,11 +19,11 @@ import static com.github.nramc.dev.journey.api.services.confirmationcode.Confirm
 import static com.github.nramc.dev.journey.api.services.email.EmailConfirmationCodeService.CODE_LENGTH;
 import static com.github.nramc.dev.journey.api.services.email.EmailConfirmationCodeService.EMAIL_CODE_TEMPLATE_HTML;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.ArgumentMatchers.eq;
@@ -91,14 +90,14 @@ class EmailConfirmationCodeServiceTest {
     @Test
     void send_whenSendingEmailCodeFailed_shouldThrowError() throws MessagingException {
         doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
-        assertThrows(TechnicalException.class, () -> emailConfirmationCodeService.send(AUTH_USER, VERIFY_EMAIL_ADDRESS));
+        assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailConfirmationCodeService.send(AUTH_USER, VERIFY_EMAIL_ADDRESS));
         verifyNoInteractions(codeRepository);
     }
 
     @RepeatedTest(10)
     void generateEmailCode() {
         String code = emailConfirmationCodeService.generateEmailCode().code();
-        Assertions.assertThat(code).asString()
+        assertThat(code).asString()
                 .isNotBlank()
                 .containsOnlyDigits()
                 .doesNotContainAnyWhitespaces()
@@ -109,7 +108,7 @@ class EmailConfirmationCodeServiceTest {
     void verify_whenEmailCodeValid_shouldReturnSuccessAndInvalidAllExistingCodes() {
         when(codeRepository.findByUsernameAndCode(anyString(), anyString())).thenReturn(VALID_CODE_ENTITY);
         boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER, VERIFY_EMAIL_ADDRESS);
-        assertTrue(valid);
+        assertThat(valid).isTrue();
         verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
         verify(codeRepository).deleteAll(any());
     }
@@ -118,7 +117,7 @@ class EmailConfirmationCodeServiceTest {
     void verify_whenEmailCodeNotValid_shouldReturnError() {
         when(codeRepository.findByUsernameAndCode(anyString(), anyString())).thenReturn(VALID_CODE_ENTITY.toBuilder().isActive(false).build());
         boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER, VERIFY_EMAIL_ADDRESS);
-        assertFalse(valid);
+        assertThat(valid).isFalse();
         verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
         verify(codeRepository, never()).deleteAll(any());
     }

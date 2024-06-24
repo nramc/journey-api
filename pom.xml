@@ -23,10 +23,9 @@
         <profile>
             <id>ci-profile</id>
             <properties>
-                <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
+                <rewrite-maven-plugin.skip>true</rewrite-maven-plugin.skip>
             </properties>
             <activation>
-                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env.CI</name>
                     <value>true</value>
@@ -41,7 +40,7 @@
         <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.1.0</maven-release-plugin.version>
         <rewrite-maven-plugin.version>5.34.1</rewrite-maven-plugin.version>
-        <rewrite-maven-plugin.skip>true</rewrite-maven-plugin.skip>
+        <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
         <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
     </properties>
     <dependencies>
@@ -191,22 +190,23 @@
                 <artifactId>rewrite-maven-plugin</artifactId>
                 <version>${rewrite-maven-plugin.version}</version>
                 <executions>
-                    <execution>
-                        <id>dry-run-open-rewrite-execution</id>
-                        <goals>
-                            <goal>dryRun</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                    </execution>
+
                     <execution>
                         <id>run-open-rewrite-execution</id>
                         <goals>
-                            <goal>runNoFork</goal>
+                            <goal>run</goal>
                         </goals>
                         <phase>pre-integration-test</phase>
                         <configuration>
                             <rewriteSkip>${rewrite-maven-plugin.skip}</rewriteSkip>
                         </configuration>
+                    </execution>
+                    <execution>
+                        <id>dry-run-open-rewrite-execution</id>
+                        <goals>
+                            <goal>dryRun</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
                     </execution>
                 </executions>
                 <configuration>

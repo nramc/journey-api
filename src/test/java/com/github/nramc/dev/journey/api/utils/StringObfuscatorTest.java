@@ -4,7 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StringObfuscatorTest {
 
@@ -15,13 +15,13 @@ class StringObfuscatorTest {
             "Test123, T******",
     })
     void obfuscate_WhenNumberOfVisibleCharactersNotSpecified_shouldConsiderDefaultVisibleCharacters(String string, String expectedObfuscatedString) {
-        assertEquals(expectedObfuscatedString, StringObfuscator.obfuscate(string));
+        assertThat(StringObfuscator.obfuscate(string)).isEqualTo(expectedObfuscatedString);
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void obfuscate_whenStringNull_shouldReturnEmptyStringGracefully(String string) {
-        assertEquals("", StringObfuscator.obfuscate(string));
+        assertThat(StringObfuscator.obfuscate(string)).isEmpty();
     }
 
     @ParameterizedTest
@@ -31,14 +31,14 @@ class StringObfuscatorTest {
     })
     void obfuscate_whenNumberOfVisibleCharactersSpecified_shouldConsiderThem(String string, String expectedObfuscatedString) {
         int numberOfVisibleCharacters = 8;
-        assertEquals(expectedObfuscatedString, StringObfuscator.obfuscate(string, numberOfVisibleCharacters));
+        assertThat(StringObfuscator.obfuscate(string, numberOfVisibleCharacters)).isEqualTo(expectedObfuscatedString);
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void obfuscate_WhenNumberOfVisibleCharactersSpecified_butStringValueIsNullOrBlank_shouldReturnEmptyValueGracefully(String string) {
         int numberOfVisibleCharacters = 8;
-        assertEquals("", StringObfuscator.obfuscate(string, numberOfVisibleCharacters));
+        assertThat(StringObfuscator.obfuscate(string, numberOfVisibleCharacters)).isEmpty();
     }
 
 }
