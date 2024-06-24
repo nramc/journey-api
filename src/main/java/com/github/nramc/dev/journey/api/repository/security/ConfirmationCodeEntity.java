@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.security;
 
 import com.github.nramc.dev.journey.api.models.core.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,5 +25,5 @@ public class ConfirmationCodeEntity {
     private LocalDateTime createdAt;
     private boolean isActive;
     private String receiver;
-    private String useCase;
+    private ConfirmationUseCase useCase;
 }

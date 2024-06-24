@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.account.security;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase;
 import com.github.nramc.dev.journey.api.services.email.EmailConfirmationCodeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,7 +42,7 @@ public class EmailAddressVerificationResource {
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 
         validate(authUser);
-        emailConfirmationCodeService.send(authUser, "Journey: Email Verification Request");
+        emailConfirmationCodeService.send(authUser, ConfirmationUseCase.VERIFY_EMAIL_ADDRESS);
 
         log.info("Email Code has been sent successfully");
     }

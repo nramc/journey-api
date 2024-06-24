@@ -19,8 +19,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -44,7 +45,7 @@ class EmailAddressVerificationResourceTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
-        verify(emailConfirmationCodeService).send(any(AuthUser.class), anyString());
+        verify(emailConfirmationCodeService).send(any(AuthUser.class), eq(VERIFY_EMAIL_ADDRESS));
     }
 
     @Test

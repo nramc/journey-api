@@ -4,8 +4,8 @@ import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 
 public interface ConfirmationCodeService {
 
-    void send(AuthUser authUser, String useCase);
+    void send(AuthUser authUser, ConfirmationUseCase useCase);
 
-    boolean verify(ConfirmationCode confirmationCode, AuthUser authUser);
+    boolean verify(ConfirmationCode confirmationCode, AuthUser authUser, ConfirmationUseCase useCase);
 
 }
