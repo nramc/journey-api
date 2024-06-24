@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class WebSecurityTestConfig {
     @Bean
     @Primary
     @Qualifier("testUserDetailsService")
-    public UserDetailsService testUserDetailsService(PasswordEncoder passwordEncoder) {
+    public UserDetailsManager testUserDetailsService(PasswordEncoder passwordEncoder) {
         // The builder will ensure the passwords are encoded before saving in memory
         UserDetails testUser = AuthUser.builder()
                 .username("test-user")

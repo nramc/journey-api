@@ -32,6 +32,7 @@ public class Resources {
     public static final String UPDATE_MY_ACCOUNT = "/rest/my-account";
 
     public static final String SEND_EMAIL_CODE = "/rest/sendEmailCode";
+    public static final String VERIFY_EMAIL_CODE = "/rest/verifyEmailCode";
 
     public static final String FETCH_ALL_CATEGORIES = "/rest/categories";
 

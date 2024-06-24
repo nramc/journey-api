@@ -32,6 +32,7 @@ public class AuthUser implements UserDetails {
     private LocalDateTime lastLoggedIn;
     private boolean enabled;
     private Set<Role> roles;
+    private boolean isEmailAddressVerified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
