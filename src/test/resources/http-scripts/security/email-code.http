@@ -11,7 +11,15 @@ Authorization: Basic {{appUsername}} {{appUserPassword}}
     });
 %}
 
-### Send Email Verification Code
+### Send Email Code
 POST {{baseUrl}}/sendEmailCode
 Authorization: Bearer {{jwtToken}}
 
+### Verify Email Code
+POST {{baseUrl}}/verifyEmailCode
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "code": "202872"
+}
