@@ -69,3 +69,11 @@ springdoc:
       packages-to-scan:
         - com.github.nramc.dev.journey.api.web.resources.rest.api
 
+service:
+  cloudinary:
+    api-key: ${CLOUDINARY_API_KEY}
+    api-secret: ${CLOUDINARY_API_SECRET}
+    cloud-name: ${CLOUDINARY_CLOUD_NAME}
+    additional-properties:
+      secure: true
+
