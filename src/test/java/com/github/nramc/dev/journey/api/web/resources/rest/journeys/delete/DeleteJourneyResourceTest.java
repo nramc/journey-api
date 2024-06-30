@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.delete;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.security.Visibility;
 import com.github.nramc.dev.journey.api.services.cloudinary.CloudinaryService;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
@@ -84,6 +86,22 @@ class DeleteJourneyResourceTest {
         verify(cloudinaryService, never()).deleteJourney(any());
         Optional<JourneyEntity> optionalJourney = journeyRepository.findById(JOURNEY_EXTENDED_ENTITY.getId());
         assertThat(optionalJourney).isNotEmpty();
+    }
+
+    @Test
+    @WithMockUser(username = "test-admin", password = "test-password", authorities = {MAINTAINER})
+    void delete_whenJourneyAccessibleWithSharedRole_shouldAllowDeletion() throws Exception {
+        JourneyEntity journey = JOURNEY_EXTENDED_ENTITY.toBuilder()
+                .visibilities(Set.of(Visibility.MYSELF, Visibility.MAINTAINER))
+                .build();
+        journeyRepository.save(journey);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, journey.getId()))
+                .andDo(print())
+                .andExpect(status().isOk());
+        verify(cloudinaryService).deleteJourney(any());
+        Optional<JourneyEntity> optionalJourney = journeyRepository.findById(journey.getId());
+        assertThat(optionalJourney).isEmpty();
     }
 
     @Test
