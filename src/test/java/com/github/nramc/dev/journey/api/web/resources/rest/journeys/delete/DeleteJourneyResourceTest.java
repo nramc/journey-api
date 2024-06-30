@@ -58,7 +58,7 @@ class DeleteJourneyResourceTest {
     }
 
     @Test
-    void testContext() {
+    void context() {
         assertThat(mockMvc).isNotNull();
     }
 

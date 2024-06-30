@@ -131,9 +131,9 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, GET_STATISTICS).access(readOnlyAuthorizationManager)
                         .requestMatchers(GET, GET_TIMELINE_DATA).access(readOnlyAuthorizationManager)
 
-                        // todo enable below functionality for all authenticated users
-                        .requestMatchers(POST, NEW_JOURNEY).access(readAndWriteAuthorizationManager)
-                        .requestMatchers(PUT, UPDATE_JOURNEY).access(readAndWriteAuthorizationManager)
+
+                        .requestMatchers(POST, NEW_JOURNEY).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(PUT, UPDATE_JOURNEY).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_JOURNEY).access(authenticatedUserAuthorizationManager)
 
                         // Users resources
