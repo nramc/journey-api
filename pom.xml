@@ -40,7 +40,7 @@
         <maven-release-plugin.version>3.1.0</maven-release-plugin.version>
         <rewrite-maven-plugin.version>5.34.1</rewrite-maven-plugin.version>
         <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
-        <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
     </properties>
     <dependencies>
         <dependency>
