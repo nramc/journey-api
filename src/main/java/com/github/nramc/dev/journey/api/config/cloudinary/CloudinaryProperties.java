@@ -11,7 +11,8 @@ public record CloudinaryProperties(
         @NotBlank String cloudName,
         @NotBlank String apiKey,
         @NotBlank String apiSecret,
-        @NotEmpty Map<String, String> additionalProperties
+        @NotEmpty Map<String, String> additionalProperties,
+        @NotBlank String rootDirectory
 ) {
 
 }

@@ -76,4 +76,5 @@ service:
     cloud-name: ${CLOUDINARY_CLOUD_NAME}
     additional-properties:
       secure: true
+    root-directory: journey/journey-dev
 

@@ -36,6 +36,7 @@ import static com.github.nramc.dev.journey.api.security.Role.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Role.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSION;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FETCH_ALL_CATEGORIES;
@@ -131,8 +132,9 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, GET_TIMELINE_DATA).access(readOnlyAuthorizationManager)
 
 
-                        .requestMatchers(POST, NEW_JOURNEY).access(readAndWriteAuthorizationManager)
-                        .requestMatchers(PUT, UPDATE_JOURNEY).access(readAndWriteAuthorizationManager)
+                        .requestMatchers(POST, NEW_JOURNEY).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(PUT, UPDATE_JOURNEY).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(DELETE, DELETE_JOURNEY).access(authenticatedUserAuthorizationManager)
 
                         // Users resources
                         .requestMatchers(POST, NEW_USER).access(adminOnlyAuthorizationManager)

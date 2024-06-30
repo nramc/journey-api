@@ -4,4 +4,3 @@ spring:
       database: ${DATABASE_NAME}
       uri: ${MONGODB_CONNECTION_URL}
 
-
