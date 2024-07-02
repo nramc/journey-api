@@ -142,7 +142,7 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminOnlyAuthorizationManager)
 
 
-                        .requestMatchers(GET, FIND_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(GET, FIND_MY_ACCOUNT).access(readOnlyAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
