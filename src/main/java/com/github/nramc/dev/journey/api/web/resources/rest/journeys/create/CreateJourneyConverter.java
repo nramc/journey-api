@@ -10,13 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.security.Visibility.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 
 
 @UtilityClass
 class CreateJourneyConverter {
-    private static final Set<Visibility> DEFAULT_VISIBILITIES = Set.of(MYSELF, ADMINISTRATOR);
+    private static final Set<Visibility> DEFAULT_VISIBILITIES = Set.of(MYSELF);
 
     public static JourneyEntity convert(CreateJourneyRequest request, AuthUser authUser) {
         return JourneyEntity.builder()
