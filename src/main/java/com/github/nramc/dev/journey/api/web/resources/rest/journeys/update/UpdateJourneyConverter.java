@@ -72,9 +72,11 @@ public class UpdateJourneyConverter {
         return JourneyImageDetailEntity.builder()
                 .url(imageDetail.url())
                 .assetId(imageDetail.assetId())
+                .publicId(imageDetail.publicId())
                 .title(imageDetail.title())
                 .isFavorite(imageDetail.isFavorite())
                 .isThumbnail(imageDetail.isThumbnail())
+                .eventDate(imageDetail.eventDate())
                 .build();
     }
 
