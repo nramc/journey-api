@@ -8,7 +8,6 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.security.Visibility.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.security.Visibility.MYSELF;
 
 public class ValidateVisibilitiesValidator implements ConstraintValidator<ValidateVisibilities, Set<Visibility>> {
@@ -19,6 +18,6 @@ public class ValidateVisibilitiesValidator implements ConstraintValidator<Valida
     }
 
     private boolean isDefaultVisibilityExists(Set<Visibility> visibilities) {
-        return visibilities.containsAll(Set.of(MYSELF, ADMINISTRATOR));
+        return visibilities.contains(MYSELF);
     }
 }
