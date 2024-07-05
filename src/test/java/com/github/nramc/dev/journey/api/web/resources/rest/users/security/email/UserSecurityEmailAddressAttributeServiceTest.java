@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 class UserSecurityEmailAddressAttributeServiceTest {
-    private final static AuthUser USER = AuthUser.builder()
+    private static final AuthUser USER = AuthUser.builder()
             .username("test-user")
             .id(ObjectId.get())
             .build();

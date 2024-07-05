@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SecurityAttributesUtilsTest {
-    private final static AuthUser USER = AuthUser.builder()
+    private static final AuthUser USER = AuthUser.builder()
             .username("test-user")
             .id(ObjectId.get())
             .build();
