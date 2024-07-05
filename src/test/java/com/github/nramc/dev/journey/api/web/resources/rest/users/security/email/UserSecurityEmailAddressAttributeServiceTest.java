@@ -1,9 +1,11 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.provider;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email;
 
+import com.github.nramc.dev.journey.api.models.core.EmailAddress;
 import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesEntity;
+import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
+import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
-class UserSecurityAttributesProviderTest {
+class UserSecurityEmailAddressAttributeServiceTest {
     private final static AuthUser USER = AuthUser.builder()
             .username("test-user")
             .id(ObjectId.get())
@@ -42,11 +44,11 @@ class UserSecurityAttributesProviderTest {
     static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:latest"))
             .withExposedPorts(27017);
 
-    private UserSecurityAttributesProvider provider;
+    private UserSecurityEmailAddressAttributeService service;
 
     @BeforeEach
     void setup() {
-        provider = new UserSecurityAttributesProvider(userSecurityAttributesRepository);
+        service = new UserSecurityEmailAddressAttributeService(userSecurityAttributesRepository);
         userSecurityAttributesRepository.deleteAll();
     }
 
@@ -57,32 +59,32 @@ class UserSecurityAttributesProviderTest {
 
     @Test
     void provide_whenNoAttributesExists_shouldReturnEmptyList() {
-        List<UserSecurityAttributesEntity> attributesEntities = provider.provide(USER);
+        List<UserSecurityAttributeEntity> attributesEntities = service.provide(USER);
         assertThat(attributesEntities).isNotNull().isEmpty();
     }
 
     @Test
     void provide_whenAlreadyAttributesExists_shouldReturnList() {
-        UserSecurityAttributesEntity emailAddressAttribute = SecurityAttributesUtils.newEmailAttribute(USER).toBuilder()
+        UserSecurityAttributeEntity emailAddressAttribute = SecurityAttributesUtils.newEmailAttribute(USER).toBuilder()
                 .type(SecurityAttributeType.EMAIL_ADDRESS)
                 .value("test-email-addressgmail.com")
                 .build();
 
         userSecurityAttributesRepository.save(emailAddressAttribute);
 
-        List<UserSecurityAttributesEntity> attributesEntities = provider.provide(USER);
+        List<UserSecurityAttributeEntity> attributesEntities = service.provide(USER);
         assertThat(attributesEntities).isNotNull().isNotEmpty().hasSize(1);
     }
 
     @Test
     void provideEmailAttributeIfExists_whenAlreadyAttributesExists_shouldReturnIt() {
-        UserSecurityAttributesEntity emailAddressAttribute = SecurityAttributesUtils.newEmailAttribute(USER).toBuilder()
+        UserSecurityAttributeEntity emailAddressAttribute = SecurityAttributesUtils.newEmailAttribute(USER).toBuilder()
                 .value("test-email-address@gmail.com")
                 .build();
 
         userSecurityAttributesRepository.save(emailAddressAttribute);
 
-        Optional<UserSecurityAttributesEntity> entityOptional = provider.provideEmailAttributeIfExists(USER);
+        Optional<UserSecurityAttributeEntity> entityOptional = service.provideEmailAttributeIfExists(USER);
         assertThat(entityOptional).isNotEmpty().get()
                 .satisfies(attribute -> assertThat(attribute.getType()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
                 .satisfies(attribute -> assertThat(attribute.getValue()).isEqualTo(emailAddressAttribute.getValue()));
@@ -90,8 +92,29 @@ class UserSecurityAttributesProviderTest {
 
     @Test
     void provideEmailAttributeIfExists_whenAttributesNotExists_shouldReturnEmptyOptional() {
-        Optional<UserSecurityAttributesEntity> entityOptional = provider.provideEmailAttributeIfExists(USER);
+        Optional<UserSecurityAttributeEntity> entityOptional = service.provideEmailAttributeIfExists(USER);
         assertThat(entityOptional).isEmpty();
+    }
+
+    @Test
+    void saveSecurityEmailAddress_shouldSaveAttribute() {
+        EmailAddress emailAddress = EmailAddress.valueOf("example.email.address@gmail.com");
+        UserSecurityAttribute saved = service.saveSecurityEmailAddress(USER, emailAddress);
+        assertThat(saved).isNotNull()
+                .satisfies(attribute -> assertThat(attribute.value()).isEqualTo(emailAddress.value()))
+                .satisfies(attribute -> assertThat(attribute.type()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
+                .satisfies(attribute -> assertThat(attribute.enabled()).isTrue())
+                .satisfies(attribute -> assertThat(attribute.verified()).isFalse())
+                .satisfies(attribute -> assertThat(attribute.creationDate()).isNotNull())
+                .satisfies(attribute -> assertThat(attribute.lastUpdateDate()).isNotNull());
+        assertThat(service.provideEmailAttributeIfExists(USER)).isNotEmpty().get()
+                .satisfies(entity -> assertThat(entity.getValue()).isEqualTo(saved.value()))
+                .satisfies(entity -> assertThat(entity.getType()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
+                .satisfies(entity -> assertThat(entity.isEnabled()).isTrue())
+                .satisfies(entity -> assertThat(entity.isVerified()).isFalse())
+                .satisfies(entity -> assertThat(entity.getUserId()).isEqualTo(USER.getId().toHexString()))
+                .satisfies(entity -> assertThat(entity.getUsername()).isEqualTo(USER.getUsername()))
+        ;
     }
 
 }

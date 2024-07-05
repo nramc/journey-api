@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class UserSecurityAttributesEntity {
+public class UserSecurityAttributeEntity {
     private @MongoId ObjectId id;
     private String userId;
     private String username;

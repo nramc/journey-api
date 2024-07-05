@@ -31,6 +31,7 @@ public class Resources {
     public static final String DELETE_MY_ACCOUNT = "/rest/my-account";
     public static final String CHANGE_MY_PASSWORD = "/rest/my-account/changePassword";
     public static final String UPDATE_MY_ACCOUNT = "/rest/my-account";
+    public static final String GET_MY_EMAIL_ADDRESS = "/rest/my-account/emailAddress";
     public static final String UPDATE_MY_EMAIL_ADDRESS = "/rest/my-account/emailAddress";
 
     public static final String SEND_EMAIL_CODE = "/rest/sendEmailCode";

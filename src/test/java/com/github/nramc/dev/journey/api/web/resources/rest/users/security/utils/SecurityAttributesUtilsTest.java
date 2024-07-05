@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils
 
 import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesEntity;
+import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class SecurityAttributesUtilsTest {
 
     @Test
     void newEmailAttribute_shouldHaveExpectedValues() {
-        UserSecurityAttributesEntity newEmailAttribute = SecurityAttributesUtils.newEmailAttribute(USER);
+        UserSecurityAttributeEntity newEmailAttribute = SecurityAttributesUtils.newEmailAttribute(USER);
         assertThat(newEmailAttribute).isNotNull()
                 .satisfies(newed -> assertThat(newed.getUsername()).isEqualTo(USER.getUsername()))
                 .satisfies(newed -> assertThat(newed.getUserId()).isEqualTo(USER.getId().toHexString()))

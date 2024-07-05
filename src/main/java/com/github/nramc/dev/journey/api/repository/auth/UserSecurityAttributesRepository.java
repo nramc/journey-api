@@ -5,10 +5,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface UserSecurityAttributesRepository extends MongoRepository<UserSecurityAttributesEntity, String> {
+public interface UserSecurityAttributesRepository extends MongoRepository<UserSecurityAttributeEntity, String> {
 
-    List<UserSecurityAttributesEntity> findAllByUserId(String userId);
+    List<UserSecurityAttributeEntity> findAllByUserId(String userId);
 
-    List<UserSecurityAttributesEntity> findAllByUserIdAndType(String userId, SecurityAttributeType type);
+    List<UserSecurityAttributeEntity> findAllByUserIdAndType(String userId, SecurityAttributeType type);
 
 }
