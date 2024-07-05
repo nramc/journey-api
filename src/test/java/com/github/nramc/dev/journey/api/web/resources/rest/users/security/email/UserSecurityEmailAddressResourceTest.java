@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email;
 
-import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,10 +41,6 @@ class UserSecurityEmailAddressResourceTest {
             .withExposedPorts(27017);
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
-    @Autowired
-    private UserRepository userRepository;
 
     @Test
     void context() {
