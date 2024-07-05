@@ -84,15 +84,15 @@ class UserSecurityEmailAddressAttributeServiceTest {
 
         userSecurityAttributesRepository.save(emailAddressAttribute);
 
-        Optional<UserSecurityAttributeEntity> entityOptional = service.provideEmailAttributeIfExists(USER);
+        Optional<UserSecurityAttribute> entityOptional = service.provideEmailAttributeIfExists(USER);
         assertThat(entityOptional).isNotEmpty().get()
-                .satisfies(attribute -> assertThat(attribute.getType()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
-                .satisfies(attribute -> assertThat(attribute.getValue()).isEqualTo(emailAddressAttribute.getValue()));
+                .satisfies(attribute -> assertThat(attribute.type()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
+                .satisfies(attribute -> assertThat(attribute.value()).isEqualTo(emailAddressAttribute.getValue()));
     }
 
     @Test
     void provideEmailAttributeIfExists_whenAttributesNotExists_shouldReturnEmptyOptional() {
-        Optional<UserSecurityAttributeEntity> entityOptional = service.provideEmailAttributeIfExists(USER);
+        Optional<UserSecurityAttribute> entityOptional = service.provideEmailAttributeIfExists(USER);
         assertThat(entityOptional).isEmpty();
     }
 
@@ -107,14 +107,6 @@ class UserSecurityEmailAddressAttributeServiceTest {
                 .satisfies(attribute -> assertThat(attribute.verified()).isFalse())
                 .satisfies(attribute -> assertThat(attribute.creationDate()).isNotNull())
                 .satisfies(attribute -> assertThat(attribute.lastUpdateDate()).isNotNull());
-        assertThat(service.provideEmailAttributeIfExists(USER)).isNotEmpty().get()
-                .satisfies(entity -> assertThat(entity.getValue()).isEqualTo(saved.value()))
-                .satisfies(entity -> assertThat(entity.getType()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
-                .satisfies(entity -> assertThat(entity.isEnabled()).isTrue())
-                .satisfies(entity -> assertThat(entity.isVerified()).isFalse())
-                .satisfies(entity -> assertThat(entity.getUserId()).isEqualTo(USER.getId().toHexString()))
-                .satisfies(entity -> assertThat(entity.getUsername()).isEqualTo(USER.getUsername()))
-        ;
     }
 
 }

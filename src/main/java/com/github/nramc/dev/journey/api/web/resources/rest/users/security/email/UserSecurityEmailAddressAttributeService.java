@@ -25,16 +25,25 @@ public class UserSecurityEmailAddressAttributeService {
         return userSecurityAttributesRepository.findAllByUserId(authUser.getId().toHexString());
     }
 
-    public Optional<UserSecurityAttributeEntity> provideEmailAttributeIfExists(AuthUser authUser) {
+    public Optional<UserSecurityAttribute> provideEmailAttributeIfExists(AuthUser authUser) {
         List<UserSecurityAttributeEntity> attributesEntities = userSecurityAttributesRepository
                 .findAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.EMAIL_ADDRESS);
 
-        return Optional.of(attributesEntities).filter(CollectionUtils::isNotEmpty).map(List::getFirst);
+        return Optional.of(attributesEntities)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(List::getFirst)
+                .map(UserSecurityAttributeConverter::toModel);
     }
 
     public UserSecurityAttribute saveSecurityEmailAddress(AuthUser authUser, EmailAddress emailAddress) {
-        UserSecurityAttributeEntity emailAttribute = this.provideEmailAttributeIfExists(authUser)
+        List<UserSecurityAttributeEntity> attributesEntities = userSecurityAttributesRepository
+                .findAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.EMAIL_ADDRESS);
+
+        UserSecurityAttributeEntity emailAttribute = Optional.of(attributesEntities)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(List::getFirst)
                 .orElse(SecurityAttributesUtils.newEmailAttribute(authUser));
+
         UserSecurityAttributeEntity updatedAttribute = emailAttribute.toBuilder()
                 .value(emailAddress.value())
                 .enabled(true)
