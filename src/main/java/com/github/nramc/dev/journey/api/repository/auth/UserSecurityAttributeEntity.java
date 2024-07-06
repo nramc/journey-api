@@ -22,7 +22,7 @@ public class UserSecurityAttributeEntity {
     private String username;
     private SecurityAttributeType type;
     private String value;
-    private boolean enabled = true;
+    private boolean enabled;
     private boolean verified;
     private LocalDate creationDate;
     private LocalDate lastUpdateDate;
