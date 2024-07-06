@@ -51,6 +51,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOG
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CHECK;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_EMAIL;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
@@ -146,6 +147,8 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE, DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(POST, MY_SECURITY_ATTRIBUTE_EMAIL).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(GET, MY_SECURITY_ATTRIBUTE_EMAIL).access(authenticatedUserAuthorizationManager)
 
                         .requestMatchers(POST, SEND_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, VERIFY_EMAIL_CODE).access(authenticatedUserAuthorizationManager)

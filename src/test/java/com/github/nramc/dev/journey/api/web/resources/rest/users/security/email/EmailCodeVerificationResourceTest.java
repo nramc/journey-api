@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.account.security;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email;
 
 import com.github.nramc.dev.journey.api.config.ApplicationProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.VERIFY_EMAIL_CODE;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -37,11 +36,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(EmailAddressVerificationResource.class)
+@WebMvcTest(EmailCodeVerificationResource.class)
 @Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
 @ActiveProfiles({"prod", "test"})
 @EnableConfigurationProperties({ApplicationProperties.class})
-class EmailAddressVerificationResourceTest {
+class EmailCodeVerificationResourceTest {
     private static final String VERIFICATION_REQUEST_PAYLOAD = """
             { "code": "123456" }
             """;
@@ -52,43 +51,6 @@ class EmailAddressVerificationResourceTest {
     @SpyBean
     private UserDetailsManager userDetailsManager;
 
-    @Test
-    @WithMockUser(username = "auth-user", authorities = {MAINTAINER})
-    void sendEmailCode_whenUserHasAccess_shouldSendEmailCode() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk());
-        verify(emailConfirmationCodeService).send(any(AuthUser.class), eq(VERIFY_EMAIL_ADDRESS));
-    }
-
-    @Test
-    @WithMockUser(username = "test-user", authorities = {MAINTAINER})
-    void sendEmailCode_whenEmailNotExists_shouldThrowError() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-        verifyNoInteractions(emailConfirmationCodeService);
-    }
-
-    @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
-    void sendEmailCode_whenUserDoesNotHaveAccess_shouldThrowError() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isForbidden());
-        verifyNoInteractions(emailConfirmationCodeService);
-    }
-
-    @Test
-    void sendEmailCode_whenUserNotAuthenticated_shouldThrowError() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE))
-                .andDo(print())
-                .andExpect(status().isUnauthorized());
-        verifyNoInteractions(emailConfirmationCodeService);
-    }
 
     @Test
     @WithMockUser(username = "auth-user", authorities = {MAINTAINER})
