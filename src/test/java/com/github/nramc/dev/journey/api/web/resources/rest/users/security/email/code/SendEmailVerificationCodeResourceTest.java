@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email.code;
 
 import com.github.nramc.dev.journey.api.config.ApplicationProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
