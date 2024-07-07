@@ -37,7 +37,6 @@ public class UpdateUserResource {
     private AuthUser updateWith(AuthUser authUser, UpdateUserRequest request) {
         return authUser.toBuilder()
                 .name(request.name())
-                .emailAddress(request.emailAddress())
                 .build();
     }
 }

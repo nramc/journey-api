@@ -48,7 +48,6 @@ public class CreateUserResource {
                 .username(userRequest.username())
                 .password(passwordEncoder.encode(userRequest.password()))
                 .roles(userRequest.roles())
-                .emailAddress(userRequest.emailAddress())
                 .build();
     }
 

@@ -100,7 +100,6 @@ class CreateUserResourceTest {
                 .satisfies(u -> assertThat(u.getPassword()).isNotBlank())
                 .satisfies(u -> assertThat(u.getCreatedDate()).isBeforeOrEqualTo(LocalDateTime.now()))
                 .satisfies(u -> assertThat(u.getSecret()).isBlank())
-                .satisfies(u -> assertThat(u.getEmailAddress()).isEqualTo(EMAIL_ADDRESS))
                 .satisfies(u -> assertThat(u.getRoles()).isEqualTo(Set.of(Role.AUTHENTICATED_USER)))
                 .satisfies(u -> assertThat(u.isEnabled()).isTrue());
     }

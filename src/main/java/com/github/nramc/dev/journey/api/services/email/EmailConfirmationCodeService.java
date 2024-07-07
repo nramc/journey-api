@@ -8,7 +8,10 @@ import com.github.nramc.dev.journey.api.services.MailService;
 import com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationCode;
 import com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationCodeService;
 import com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase;
+import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.email.UserSecurityEmailAddressAttributeService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,7 @@ public class EmailConfirmationCodeService implements ConfirmationCodeService {
     private final MailService mailService;
     private final ConfirmationCodeRepository codeRepository;
     private final EmailCodeValidator emailCodeValidator;
+    private final UserSecurityEmailAddressAttributeService emailAddressAttributeService;
 
     /**
      * Generate Email code securely
@@ -44,13 +48,20 @@ public class EmailConfirmationCodeService implements ConfirmationCodeService {
     @Override
     public void send(AuthUser authUser, ConfirmationUseCase useCase) {
 
+        UserSecurityAttribute emailAttribute = getUserEmailSecurityAttribute(authUser);
+
         EmailCode emailCode = generateEmailCode();
 
-        sendEmailCode(useCase, emailCode, authUser);
+        sendEmailCode(useCase, emailCode, authUser, emailAttribute);
 
-        saveEmailCode(useCase, emailCode, authUser);
+        saveEmailCode(useCase, emailCode, authUser, emailAttribute);
 
         log.info("Email Code has been sent to registered email address");
+    }
+
+    private UserSecurityAttribute getUserEmailSecurityAttribute(AuthUser authUser) {
+        return emailAddressAttributeService.provideEmailAttributeIfExists(authUser)
+                .orElseThrow(() -> new BusinessException("email.not.exists", "Email not registered"));
     }
 
     /**
@@ -68,6 +79,7 @@ public class EmailConfirmationCodeService implements ConfirmationCodeService {
         boolean isEmailCodeValid = emailCodeValidator.isValid(confirmationCode, authUser);
 
         if (isEmailCodeValid) {
+            emailAddressAttributeService.setVerifiedStatus(true, authUser);
             invalidateAllCodes(authUser);
             log.info("Email Code verified successfully and all codes invalidated");
         }
@@ -80,25 +92,26 @@ public class EmailConfirmationCodeService implements ConfirmationCodeService {
         return EmailCode.valueOf(code);
     }
 
-    private void sendEmailCode(ConfirmationUseCase useCase, EmailCode emailCode, AuthUser authUser) {
+    private void sendEmailCode(ConfirmationUseCase useCase, EmailCode emailCode, AuthUser authUser,
+                               UserSecurityAttribute emailAttribute) {
         try {
             Map<String, Object> parameters = new HashedMap<>();
             parameters.put("name", authUser.getName());
             parameters.put("ottPin", emailCode.code());
 
-            mailService.sendEmailUsingTemplate(EMAIL_CODE_TEMPLATE_HTML, authUser.getEmailAddress(), getSubject(useCase), parameters);
+            mailService.sendEmailUsingTemplate(EMAIL_CODE_TEMPLATE_HTML, emailAttribute.value(), getSubject(useCase), parameters);
         } catch (RuntimeException | MessagingException ex) {
             throw new TechnicalException("Unable to send Email Code", ex);
         }
     }
 
-    private void saveEmailCode(ConfirmationUseCase useCase, EmailCode code, AuthUser authUser) {
+    private void saveEmailCode(ConfirmationUseCase useCase, EmailCode code, AuthUser authUser, UserSecurityAttribute emailAttribute) {
         ConfirmationCodeEntity entity = ConfirmationCodeEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .type(ConfirmationCodeType.EMAIL_CODE)
                 .code(code.code())
                 .username(authUser.getUsername())
-                .receiver(authUser.getEmailAddress())
+                .receiver(emailAttribute.value())
                 .isActive(true)
                 .createdAt(LocalDateTime.now().minusMinutes(2))
                 .useCase(useCase)

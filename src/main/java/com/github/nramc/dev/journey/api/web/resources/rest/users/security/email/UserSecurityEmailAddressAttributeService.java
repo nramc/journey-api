@@ -7,6 +7,7 @@ import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEnt
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttributeConverter;
+import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,23 @@ public class UserSecurityEmailAddressAttributeService {
                 .build();
         UserSecurityAttributeEntity savedEntity = userSecurityAttributesRepository.save(updatedAttribute);
         return UserSecurityAttributeConverter.toModel(savedEntity);
+    }
+
+    public void setVerifiedStatus(boolean status, AuthUser authUser) {
+        List<UserSecurityAttributeEntity> attributesEntities = userSecurityAttributesRepository
+                .findAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.EMAIL_ADDRESS);
+
+        UserSecurityAttributeEntity emailAttribute = Optional.of(attributesEntities)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(List::getFirst)
+                .orElseThrow(() -> new BusinessException("Email Security Attribute not exists", "email.not.exists"));
+
+        UserSecurityAttributeEntity updatedAttribute = emailAttribute.toBuilder()
+                .enabled(status)
+                .verified(status)
+                .lastUpdateDate(LocalDate.now())
+                .build();
+        userSecurityAttributesRepository.save(updatedAttribute);
     }
 
 }

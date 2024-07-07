@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email.code;
 
 import com.github.nramc.dev.journey.api.config.ApplicationProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
@@ -46,16 +46,6 @@ class SendEmailVerificationCodeResourceTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         verify(emailConfirmationCodeService).send(any(AuthUser.class), eq(VERIFY_EMAIL_ADDRESS));
-    }
-
-    @Test
-    @WithMockUser(username = "test-user", authorities = {MAINTAINER})
-    void sendEmailCode_whenEmailNotExists_shouldThrowError() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-        verifyNoInteractions(emailConfirmationCodeService);
     }
 
     @Test

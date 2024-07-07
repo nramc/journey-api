@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.email.code;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.services.email.EmailConfirmationCodeService;
@@ -15,7 +15,6 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
@@ -40,7 +39,6 @@ public class SendEmailVerificationCodeResource {
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 
-        Objects.requireNonNull(authUser.getEmailAddress(), "Email address not exists for the user");
         emailConfirmationCodeService.send(authUser, VERIFY_EMAIL_ADDRESS);
 
         log.info("Email Code has been sent successfully");

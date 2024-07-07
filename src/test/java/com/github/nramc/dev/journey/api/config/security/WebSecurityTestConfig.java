@@ -39,7 +39,6 @@ public class WebSecurityTestConfig {
                 .password(passwordEncoder.encode("test"))
                 .roles(Set.of(Role.AUTHENTICATED_USER))
                 .name("Authenticated User")
-                .emailAddress("authenticated.user@gmail.com")
                 .build();
         return new InMemoryUserDetailsManager(testUser, authenticatedUser, admin) {
             @Override

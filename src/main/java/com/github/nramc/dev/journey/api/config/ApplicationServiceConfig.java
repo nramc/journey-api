@@ -19,17 +19,20 @@ public class ApplicationServiceConfig {
     }
 
     @Bean
-    public EmailCodeValidator emailCodeValidator(ConfirmationCodeRepository codeRepository) {
-        return new EmailCodeValidator(codeRepository);
+    public EmailCodeValidator emailCodeValidator(
+            ConfirmationCodeRepository codeRepository,
+            UserSecurityEmailAddressAttributeService emailAddressAttributeService) {
+        return new EmailCodeValidator(codeRepository, emailAddressAttributeService);
     }
 
     @Bean
     public EmailConfirmationCodeService emailCodeService(
             MailService mailService,
             ConfirmationCodeRepository codeRepository,
-            EmailCodeValidator codeValidator) {
+            EmailCodeValidator codeValidator,
+            UserSecurityEmailAddressAttributeService emailAddressAttributeService) {
 
-        return new EmailConfirmationCodeService(mailService, codeRepository, codeValidator);
+        return new EmailConfirmationCodeService(mailService, codeRepository, codeValidator, emailAddressAttributeService);
     }
 
 }
