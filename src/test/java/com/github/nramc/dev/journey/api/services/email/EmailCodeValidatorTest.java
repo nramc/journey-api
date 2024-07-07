@@ -4,6 +4,7 @@ import com.github.nramc.dev.journey.api.models.core.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.email.UserSecurityEmailAddressAttributeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,12 +12,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.services.email.EmailCodeValidator.EMAIL_CODE_VALIDITY_MINUTES;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,16 +38,20 @@ class EmailCodeValidatorTest {
             .build();
     @Mock
     private ConfirmationCodeRepository codeRepository;
+    @Mock
+    private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
     private EmailCodeValidator emailCodeValidator;
 
     @BeforeEach
     void setup() {
-        emailCodeValidator = new EmailCodeValidator(codeRepository);
+        emailCodeValidator = new EmailCodeValidator(codeRepository, emailAddressAttributeService);
     }
 
     @Test
     void isValid_whenCodeValid_shouldReturnTrue() {
         when(codeRepository.findByUsernameAndCode(VALID_USER.getUsername(), VALID_CODE.code())).thenReturn(VALID_CODE_ENTITY);
+        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
+                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         assertThat(emailCodeValidator.isValid(VALID_CODE, VALID_USER)).isTrue();
     }
 

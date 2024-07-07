@@ -12,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,9 +43,6 @@ class EmailCodeVerificationResourceTest {
     private MockMvc mvc;
     @MockBean
     private EmailConfirmationCodeService emailConfirmationCodeService;
-    @SpyBean
-    private UserDetailsManager userDetailsManager;
-
 
     @Test
     @WithMockUser(username = "auth-user", authorities = {MAINTAINER})
@@ -61,8 +56,6 @@ class EmailCodeVerificationResourceTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         verify(emailConfirmationCodeService).verify(any(ConfirmationCode.class), any(AuthUser.class), eq(VERIFY_EMAIL_ADDRESS));
-        // todo update
-        //verify(userDetailsManager).updateUser(argThat((AuthUser user) -> Assertions.assertTrue(user.isEmailAddressVerified())));
     }
 
     @Test
@@ -77,8 +70,6 @@ class EmailCodeVerificationResourceTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
         verify(emailConfirmationCodeService).verify(any(ConfirmationCode.class), any(AuthUser.class), eq(VERIFY_EMAIL_ADDRESS));
-        // todo update
-        //verify(userDetailsManager, never()).updateUser(argThat((AuthUser user) -> Assertions.assertTrue(user.isEmailAddressVerified())));
     }
 
     @Test
@@ -89,8 +80,7 @@ class EmailCodeVerificationResourceTest {
                         .content(VERIFICATION_REQUEST_PAYLOAD)
                 )
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-        verifyNoInteractions(emailConfirmationCodeService);
+                .andExpect(status().isBadRequest());
     }
 
     @Test

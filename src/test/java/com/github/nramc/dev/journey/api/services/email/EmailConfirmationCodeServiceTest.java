@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
@@ -65,7 +66,7 @@ class EmailConfirmationCodeServiceTest {
     @BeforeEach
     void setup() {
         emailConfirmationCodeService = new EmailConfirmationCodeService(mailService, codeRepository,
-                new EmailCodeValidator(codeRepository), emailAddressAttributeService);
+                new EmailCodeValidator(codeRepository, emailAddressAttributeService), emailAddressAttributeService);
     }
 
     @Test
@@ -118,10 +119,13 @@ class EmailConfirmationCodeServiceTest {
     @Test
     void verify_whenEmailCodeValid_shouldReturnSuccessAndInvalidAllExistingCodes() {
         when(codeRepository.findByUsernameAndCode(anyString(), anyString())).thenReturn(VALID_CODE_ENTITY);
+        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
+                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER, VERIFY_EMAIL_ADDRESS);
         assertThat(valid).isTrue();
         verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
         verify(codeRepository).deleteAll(any());
+        verify(emailAddressAttributeService).setVerifiedStatus(eq(true), any(AuthUser.class));
     }
 
     @Test
@@ -131,6 +135,7 @@ class EmailConfirmationCodeServiceTest {
         assertThat(valid).isFalse();
         verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
         verify(codeRepository, never()).deleteAll(any());
+        verify(emailAddressAttributeService, never()).setVerifiedStatus(anyBoolean(), any());
     }
 
 }

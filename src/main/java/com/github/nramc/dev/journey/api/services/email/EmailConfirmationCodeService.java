@@ -61,7 +61,7 @@ public class EmailConfirmationCodeService implements ConfirmationCodeService {
 
     private UserSecurityAttribute getUserEmailSecurityAttribute(AuthUser authUser) {
         return emailAddressAttributeService.provideEmailAttributeIfExists(authUser)
-                .orElseThrow(() -> new BusinessException("email.not.exists", "Email not registred"));
+                .orElseThrow(() -> new BusinessException("email.not.exists", "Email not registered"));
     }
 
     /**
@@ -79,6 +79,7 @@ public class EmailConfirmationCodeService implements ConfirmationCodeService {
         boolean isEmailCodeValid = emailCodeValidator.isValid(confirmationCode, authUser);
 
         if (isEmailCodeValid) {
+            emailAddressAttributeService.setVerifiedStatus(true, authUser);
             invalidateAllCodes(authUser);
             log.info("Email Code verified successfully and all codes invalidated");
         }

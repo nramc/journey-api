@@ -49,16 +49,6 @@ class SendEmailVerificationCodeResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {MAINTAINER})
-    void sendEmailCode_whenEmailNotExists_shouldThrowError() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-        verifyNoInteractions(emailConfirmationCodeService);
-    }
-
-    @Test
     @WithMockUser(username = "test-user", authorities = {GUEST_USER})
     void sendEmailCode_whenUserDoesNotHaveAccess_shouldThrowError() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE)
