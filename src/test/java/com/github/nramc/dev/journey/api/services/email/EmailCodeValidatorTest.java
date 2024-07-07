@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import static com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.services.email.EmailCodeValidator.EMAIL_CODE_VALIDITY_MINUTES;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +29,7 @@ class EmailCodeValidatorTest {
             .username(VALID_USER.getUsername())
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(VALID_CODE.code())
-            .receiver(VALID_USER.getEmailAddress())
+            .receiver(EMAIL_ATTRIBUTE.value())
             .useCase(VERIFY_EMAIL_ADDRESS)
             .createdAt(LocalDateTime.now())
             .build();
@@ -56,13 +57,6 @@ class EmailCodeValidatorTest {
     void isValid_whenCodeNotActive_shouldReturnFalse() {
         when(codeRepository.findByUsernameAndCode(VALID_USER.getUsername(), VALID_CODE.code()))
                 .thenReturn(VALID_CODE_ENTITY.toBuilder().isActive(false).build());
-        assertThat(emailCodeValidator.isValid(VALID_CODE, VALID_USER)).isFalse();
-    }
-
-    @Test
-    void isValid_whenReceivedEmailAddressNotMatched_shouldReturnFalse() {
-        when(codeRepository.findByUsernameAndCode(VALID_USER.getUsername(), VALID_CODE.code()))
-                .thenReturn(VALID_CODE_ENTITY.toBuilder().receiver("email-changed-after-code-generated@gmail.com").build());
         assertThat(emailCodeValidator.isValid(VALID_CODE, VALID_USER)).isFalse();
     }
 

@@ -96,7 +96,6 @@ class UpdateUserResourceTest {
                 .andExpect(status().isOk());
         AuthUser user = userRepository.findUserByUsername("admin");
         assertThat(user.getName()).isEqualTo("Updated Valid Name");
-        assertThat(user.getEmailAddress()).isEqualTo("updated-valid-email-addresss@gmail.com");
     }
 
 }

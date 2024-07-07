@@ -40,7 +40,6 @@ public class SendEmailVerificationCodeResource {
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 
-        Objects.requireNonNull(authUser.getEmailAddress(), "Email address not exists for the user");
         emailConfirmationCodeService.send(authUser, VERIFY_EMAIL_ADDRESS);
 
         log.info("Email Code has been sent successfully");

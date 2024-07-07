@@ -27,9 +27,10 @@ public class ApplicationServiceConfig {
     public EmailConfirmationCodeService emailCodeService(
             MailService mailService,
             ConfirmationCodeRepository codeRepository,
-            EmailCodeValidator codeValidator) {
+            EmailCodeValidator codeValidator,
+            UserSecurityEmailAddressAttributeService emailAddressAttributeService) {
 
-        return new EmailConfirmationCodeService(mailService, codeRepository, codeValidator);
+        return new EmailConfirmationCodeService(mailService, codeRepository, codeValidator, emailAddressAttributeService);
     }
 
 }

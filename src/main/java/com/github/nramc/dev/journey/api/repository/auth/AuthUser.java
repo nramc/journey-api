@@ -26,13 +26,11 @@ public class AuthUser implements UserDetails {
     private String username;
     private String password;
     private String name;
-    private String emailAddress;
     private String secret;
     private LocalDateTime createdDate;
     private LocalDateTime lastLoggedIn;
     private boolean enabled;
     private Set<Role> roles;
-    private boolean isEmailAddressVerified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

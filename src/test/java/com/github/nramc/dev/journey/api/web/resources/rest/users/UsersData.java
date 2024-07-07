@@ -1,8 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users;
 
+import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.security.Role.AUTHENTICATED_USER;
@@ -13,8 +16,15 @@ public class UsersData {
             .username("test-user")
             .password("test")
             .name("Test User")
-            .emailAddress("test.user@gmail.com")
             .roles(Set.of(AUTHENTICATED_USER))
             .enabled(true)
+            .build();
+    public static final UserSecurityAttribute EMAIL_ATTRIBUTE = UserSecurityAttribute.builder()
+            .value("test.user@gmail.com")
+            .type(SecurityAttributeType.EMAIL_ADDRESS)
+            .verified(false)
+            .enabled(true)
+            .creationDate(LocalDate.now())
+            .lastUpdateDate(LocalDate.now())
             .build();
 }

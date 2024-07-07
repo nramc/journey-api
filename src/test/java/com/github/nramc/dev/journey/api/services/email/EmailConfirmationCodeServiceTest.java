@@ -1,10 +1,12 @@
 package com.github.nramc.dev.journey.api.services.email;
 
 import com.github.nramc.dev.journey.api.models.core.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.services.MailService;
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.email.UserSecurityEmailAddressAttributeService;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -14,11 +16,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.services.email.EmailConfirmationCodeService.CODE_LENGTH;
 import static com.github.nramc.dev.journey.api.services.email.EmailConfirmationCodeService.EMAIL_CODE_TEMPLATE_HTML;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -45,7 +49,7 @@ class EmailConfirmationCodeServiceTest {
             .username(AUTH_USER.getUsername())
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(VALID_CODE.code())
-            .receiver(AUTH_USER.getEmailAddress())
+            .receiver(EMAIL_ATTRIBUTE.value())
             .useCase(VERIFY_EMAIL_ADDRESS)
             .createdAt(LocalDateTime.now())
             .build();
@@ -53,23 +57,28 @@ class EmailConfirmationCodeServiceTest {
     private MailService mailService;
     @Mock
     private ConfirmationCodeRepository codeRepository;
+    @Mock
+    private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
     private EmailConfirmationCodeService emailConfirmationCodeService;
 
 
     @BeforeEach
     void setup() {
-        emailConfirmationCodeService = new EmailConfirmationCodeService(mailService, codeRepository, new EmailCodeValidator(codeRepository));
+        emailConfirmationCodeService = new EmailConfirmationCodeService(mailService, codeRepository,
+                new EmailCodeValidator(codeRepository), emailAddressAttributeService);
     }
 
     @Test
     void send_whenDataValid_shouldSendEmailCodeSuccessfully() throws MessagingException {
         doNothing().when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
+        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
+                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
 
         assertDoesNotThrow(() -> emailConfirmationCodeService.send(AUTH_USER, VERIFY_EMAIL_ADDRESS));
 
         verify(mailService).sendEmailUsingTemplate(
                 eq(EMAIL_CODE_TEMPLATE_HTML),
-                eq(AUTH_USER.getEmailAddress()),
+                eq(EMAIL_ATTRIBUTE.value()),
                 eq("Journey: Email Verification Request"),
                 assertArg(params -> {
                     assertEquals(AUTH_USER.getName(), params.get("name"));
@@ -78,7 +87,7 @@ class EmailConfirmationCodeServiceTest {
         );
         verify(codeRepository).save(assertArg(entity -> {
             assertEquals(AUTH_USER.getUsername(), entity.getUsername());
-            assertEquals(AUTH_USER.getEmailAddress(), entity.getReceiver());
+            assertEquals(EMAIL_ATTRIBUTE.value(), entity.getReceiver());
             assertEquals(VERIFY_EMAIL_ADDRESS, entity.getUseCase());
             assertEquals(ConfirmationCodeType.EMAIL_CODE, entity.getType());
             assertNotNull(entity.getId());
@@ -90,6 +99,8 @@ class EmailConfirmationCodeServiceTest {
     @Test
     void send_whenSendingEmailCodeFailed_shouldThrowError() throws MessagingException {
         doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
+        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
+                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailConfirmationCodeService.send(AUTH_USER, VERIFY_EMAIL_ADDRESS));
         verifyNoInteractions(codeRepository);
     }
