@@ -33,6 +33,8 @@ app:
     totp:
       number-of-digits: 6
       secret-length: 32
+      totp-algorithm: sha1
+      time-step-size-in-seconds: 30
     cors:
       properties:
         - path: /**
