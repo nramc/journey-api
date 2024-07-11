@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.security.totp;
 
 import com.github.nramc.dev.journey.api.security.totp.config.TotpProperties;
+import com.github.nramc.dev.journey.api.security.totp.model.TotpSecret;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base32;
 
@@ -12,8 +13,8 @@ public class TotpSecretGenerator {
     private static final Base32 encoder = new Base32();
     private final TotpProperties properties;
 
-    public String generate() {
-        return new String(encoder.encode(getRandomBytes()));
+    public TotpSecret generate() {
+        return TotpSecret.valueOf(new String(encoder.encode(getRandomBytes())));
     }
 
     private byte[] getRandomBytes() {

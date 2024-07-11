@@ -1,6 +1,8 @@
 package com.github.nramc.dev.journey.api.security.totp;
 
 import com.github.nramc.dev.journey.api.security.totp.config.TotpProperties;
+import com.github.nramc.dev.journey.api.security.totp.model.TotpCode;
+import com.github.nramc.dev.journey.api.security.totp.model.TotpSecret;
 import com.github.nramc.dev.journey.api.web.exceptions.NonTechnicalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +21,10 @@ public class TotpCodeGenerator {
     private final TotpProperties properties;
     private final TotpTimeStepWindowProvider timeStepWindowProvider;
 
-    public TotpCode generate(String totpSecret) {
+    public TotpCode generate(TotpSecret totpSecret) {
         try {
             long timeStepWindow = timeStepWindowProvider.provide();
-            byte[] key = Base64.getDecoder().decode(totpSecret);
+            byte[] key = Base64.getDecoder().decode(totpSecret.secret());
             byte[] data = ByteBuffer.allocate(8).putLong(timeStepWindow).array();
 
             Mac mac = Mac.getInstance(properties.totpAlgorithm().getHmacAlgorithm());

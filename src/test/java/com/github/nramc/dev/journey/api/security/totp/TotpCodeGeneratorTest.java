@@ -1,7 +1,8 @@
 package com.github.nramc.dev.journey.api.security.totp;
 
 import com.github.nramc.dev.journey.api.security.totp.config.TotpProperties;
-import org.assertj.core.api.Assertions;
+import com.github.nramc.dev.journey.api.security.totp.model.TotpCode;
+import com.github.nramc.dev.journey.api.security.totp.model.TotpSecret;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -9,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,7 +23,7 @@ class TotpCodeGeneratorTest {
             .timeStepSizeInSeconds(30)
             .build();
 
-    private TotpCode generateCode(TotpAlgorithm algorithm, String secret, int time, int codeLength) {
+    private TotpCode generateCode(TotpAlgorithm algorithm, TotpSecret secret, int time, int codeLength) {
         TotpProperties properties = TOTP_PROPERTIES.toBuilder()
                 .totpAlgorithm(algorithm)
                 .numberOfDigits(codeLength)
@@ -46,16 +48,16 @@ class TotpCodeGeneratorTest {
 
     @ParameterizedTest
     @MethodSource("expectedCodesProvider")
-    void generate_whenDataValid_shouldGenerateCodeAsExpected(String secret, int time, TotpAlgorithm algorithm, String expectedCode) {
+    void generate_whenDataValid_shouldGenerateCodeAsExpected(TotpSecret secret, int time, TotpAlgorithm algorithm, String expectedCode) {
         TotpCode totpCode = generateCode(algorithm, secret, time, 6);
-        Assertions.assertThat(totpCode).isNotNull().extracting(TotpCode::code).isEqualTo(expectedCode);
+        assertThat(totpCode).isNotNull().extracting(TotpCode::code).isEqualTo(expectedCode);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {4, 6, 8})
     void generate_whenCodeLengthProvided_shouldGenerateCodeAsExpected(int codeLength) {
-        TotpCode totpCode = generateCode(TotpAlgorithm.SHA1, "W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY", 1567631536, codeLength);
-        Assertions.assertThat(totpCode).isNotNull().extracting(TotpCode::code).asString().hasSize(codeLength);
+        TotpCode totpCode = generateCode(TotpAlgorithm.SHA1, TotpSecret.valueOf("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY"), 1567631536, codeLength);
+        assertThat(totpCode).isNotNull().extracting(TotpCode::code).asString().hasSize(codeLength);
     }
 
 }
