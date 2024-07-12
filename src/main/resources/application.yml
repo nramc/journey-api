@@ -35,6 +35,7 @@ app:
       secret-length: 32
       totp-algorithm: sha1
       time-step-size-in-seconds: 30
+      max-allowed-time-step-discrepancy: 1
     cors:
       properties:
         - path: /**

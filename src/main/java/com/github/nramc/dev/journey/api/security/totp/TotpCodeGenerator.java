@@ -22,8 +22,12 @@ public class TotpCodeGenerator {
     private final TotpTimeStepWindowProvider timeStepWindowProvider;
 
     public TotpCode generate(TotpSecret totpSecret) {
+        long timeStepWindow = timeStepWindowProvider.provide();
+        return generate(totpSecret, timeStepWindow);
+    }
+
+    public TotpCode generate(TotpSecret totpSecret, long timeStepWindow) {
         try {
-            long timeStepWindow = timeStepWindowProvider.provide();
             byte[] key = Base64.getDecoder().decode(totpSecret.secret());
             byte[] data = ByteBuffer.allocate(8).putLong(timeStepWindow).array();
 

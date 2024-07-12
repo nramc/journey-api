@@ -21,6 +21,7 @@ class TotpCodeGeneratorTest {
             .secretLength(32)
             .totpAlgorithm(TotpAlgorithm.SHA1)
             .timeStepSizeInSeconds(30)
+            .maxAllowedTimeStepDiscrepancy(1)
             .build();
 
     private TotpCode generateCode(TotpAlgorithm algorithm, TotpSecret secret, int time, int codeLength) {

@@ -16,6 +16,7 @@ public record TotpProperties(
         @Positive @Min(6) @Max(16) int numberOfDigits,
         @Positive @Min(32) @Max(256) int secretLength,
         @NotNull TotpAlgorithm totpAlgorithm,
-        @Positive @Min(30) long timeStepSizeInSeconds
+        @Positive @Min(30) long timeStepSizeInSeconds,
+        @Positive @Min(0) @Max(5) int maxAllowedTimeStepDiscrepancy
 ) {
 }

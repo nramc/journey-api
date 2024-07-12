@@ -15,11 +15,12 @@ public class TotpDemo {
                 .numberOfDigits(6)
                 .timeStepSizeInSeconds(30)
                 .secretLength(32)
+                .maxAllowedTimeStepDiscrepancy(0)
                 .build();
         TotpSecretGenerator secretGenerator = new TotpSecretGenerator(totpProperties);
         TotpTimeStepWindowProvider totpTimeStepWindowProvider = new TotpTimeStepWindowProvider(totpProperties);
         TotpCodeGenerator totpCodeGenerator = new TotpCodeGenerator(totpProperties, totpTimeStepWindowProvider);
-        TotpCodeVerifier totpCodeVerifier = new TotpCodeVerifier(totpCodeGenerator);
+        TotpCodeVerifier totpCodeVerifier = new TotpCodeVerifier(totpProperties, totpCodeGenerator, totpTimeStepWindowProvider);
 
         // Example secret key (base32 encoded)
         TotpSecret secretKey = secretGenerator.generate();
