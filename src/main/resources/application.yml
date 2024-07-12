@@ -36,6 +36,10 @@ app:
       totp-algorithm: sha1
       time-step-size-in-seconds: 30
       max-allowed-time-step-discrepancy: 1
+      qr-type: totp
+      qr-width: 500
+      qr-height: 500
+      qr-issuer: Journey Issuer
     cors:
       properties:
         - path: /**

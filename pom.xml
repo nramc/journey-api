@@ -41,6 +41,8 @@
         <rewrite-maven-plugin.version>5.35.0</rewrite-maven-plugin.version>
         <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
+        <cloudinary-http.version>1.38.0</cloudinary-http.version>
+        <zxing-qr.version>3.4.0</zxing-qr.version>
     </properties>
     <dependencies>
         <dependency>
@@ -102,11 +104,20 @@
             <artifactId>commons-geojson</artifactId>
             <version>${commons-geojson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http45</artifactId>
-            <version>1.38.0</version>
+            <version>${cloudinary-http.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${zxing-qr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${zxing-qr.version}</version>
         </dependency>
 
         <dependency>
