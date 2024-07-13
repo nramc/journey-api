@@ -52,6 +52,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CH
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_EMAIL;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
@@ -152,6 +153,7 @@ public class WebSecurityConfig {
 
                         .requestMatchers(POST, SEND_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, VERIFY_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP).access(authenticatedUserAuthorizationManager)
 
                         .requestMatchers(GET, FETCH_ALL_CATEGORIES).access(readOnlyAuthorizationManager)
 

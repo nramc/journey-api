@@ -13,7 +13,7 @@ public record QRCodeData(
         String issuer,
         String algorithm,
         int digits,
-        int period,
+        long period,
         int width,
         int height) {
     public String getUri() {
@@ -33,5 +33,20 @@ public record QRCodeData(
         }
         return URLEncoder.encode(text, StandardCharsets.UTF_8)
                 .replace("\\+", "%20");
+    }
+
+    @Override
+    public String toString() {
+        return "QRCodeData{" +
+                "type='" + type + '\'' +
+                ", label='" + label + '\'' +
+                ", secret='***" + '\'' +
+                ", issuer='" + issuer + '\'' +
+                ", algorithm='" + algorithm + '\'' +
+                ", digits=" + digits +
+                ", period=" + period +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
     }
 }

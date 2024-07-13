@@ -27,7 +27,7 @@ class QRCodeGeneratorTest {
             .issuer(TOTP_PROPERTIES.qrIssuer())
             .algorithm(TOTP_PROPERTIES.totpAlgorithm().getHmacAlgorithm())
             .digits(TOTP_PROPERTIES.numberOfDigits())
-            .period((int) TOTP_PROPERTIES.timeStepSizeInSeconds())
+            .period(TOTP_PROPERTIES.timeStepSizeInSeconds())
             .width(TOTP_PROPERTIES.qrWidth())
             .height(TOTP_PROPERTIES.qrHeight())
             .secret("EX47GINFPBK5GNLYLILGD2H6ZLGJNNWB")
