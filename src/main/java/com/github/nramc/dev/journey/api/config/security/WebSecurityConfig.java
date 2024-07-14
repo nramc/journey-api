@@ -82,10 +82,6 @@ public class WebSecurityConfig {
             hasAnyAuthority(GUEST_USER.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
             hasAnyScope(GUEST_USER.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
     );
-    AuthorizationManager<RequestAuthorizationContext> readAndWriteAuthorizationManager = anyOf(
-            hasAnyAuthority(MAINTAINER.name(), ADMINISTRATOR.name()),
-            hasAnyScope(MAINTAINER.name(), ADMINISTRATOR.name())
-    );
     AuthorizationManager<RequestAuthorizationContext> adminOnlyAuthorizationManager = anyOf(
             hasAnyAuthority(ADMINISTRATOR.name()), hasAnyScope(ADMINISTRATOR.name())
     );
