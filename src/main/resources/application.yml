@@ -33,7 +33,7 @@ app:
     totp:
       number-of-digits: 6
       secret-length: 32
-      totp-algorithm: sha1
+      totp-algorithm: SHA1
       time-step-size-in-seconds: 30
       max-allowed-time-step-discrepancy: 1
       qr-type: totp

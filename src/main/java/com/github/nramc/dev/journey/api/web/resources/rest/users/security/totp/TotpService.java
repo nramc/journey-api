@@ -64,7 +64,7 @@ public class TotpService {
     private QRCodeData toQRCodeData(TotpSecret secret, AuthUser authUser) {
         return QRCodeData.builder()
                 .type(totpProperties.qrType())
-                .algorithm(totpProperties.totpAlgorithm().getHmacAlgorithm())
+                .algorithm(totpProperties.totpAlgorithm().getFriendlyName())
                 .digits(totpProperties.numberOfDigits())
                 .period(totpProperties.timeStepSizeInSeconds())
                 .issuer(totpProperties.qrIssuer())

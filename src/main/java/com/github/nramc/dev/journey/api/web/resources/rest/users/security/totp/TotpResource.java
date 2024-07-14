@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
 
 @RestController
 @Slf4j
@@ -53,6 +54,15 @@ public class TotpResource {
                 TotpCode.valueOf(activationRequest.code()),
                 TotpSecret.valueOf(activationRequest.secretKey())
         );
+    }
+
+    @Operation(summary = "Status of TOTP 2FA for the user")
+    @RestDocCommonResponse
+    @ApiResponse(responseCode = "200", description = "2FA TOTP Status")
+    @GetMapping(value = MY_SECURITY_ATTRIBUTE_TOTP_STATUS, produces = MediaType.APPLICATION_JSON_VALUE)
+    public TotpStatus totpStatus(Authentication authentication) {
+        AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
+        return new TotpStatus(totpService.getTotpAttributeIfExists(authUser).isPresent());
     }
 
 
