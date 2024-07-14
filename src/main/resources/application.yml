@@ -39,7 +39,7 @@ app:
       qr-type: totp
       qr-width: 500
       qr-height: 500
-      qr-issuer: Journey Issuer
+      qr-issuer: Journey
     cors:
       properties:
         - path: /**
