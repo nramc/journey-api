@@ -10,6 +10,6 @@ public class TotpTimeStepWindowProvider {
     private final TotpProperties totpProperties;
 
     public long provide() {
-        return Instant.now().getEpochSecond() / totpProperties.timeStepSizeInSeconds();
+        return Math.floorDiv(Instant.now().getEpochSecond(), totpProperties.timeStepSizeInSeconds());
     }
 }

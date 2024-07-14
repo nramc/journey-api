@@ -18,7 +18,7 @@ public record TotpProperties(
         @Positive @Min(32) @Max(256) int secretLength,
         @NotNull TotpAlgorithm totpAlgorithm,
         @Positive @Min(30) long timeStepSizeInSeconds,
-        @Positive @Min(0) @Max(5) int maxAllowedTimeStepDiscrepancy,
+        @Positive @Min(0) int maxAllowedTimeStepDiscrepancy,
         @NotBlank String qrType,
         @NotBlank String qrIssuer,
         @Positive @Min(50) int qrWidth,
