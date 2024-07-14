@@ -20,4 +20,16 @@ public class SecurityAttributesUtils {
                 .verified(false)
                 .build();
     }
+
+    public static UserSecurityAttributeEntity newTotpAttribute(AuthUser authUser) {
+        return UserSecurityAttributeEntity.builder()
+                .type(SecurityAttributeType.TOTP)
+                .userId(authUser.getId().toHexString())
+                .username(authUser.getUsername())
+                .creationDate(LocalDate.now())
+                .lastUpdateDate(LocalDate.now())
+                .enabled(true)
+                .verified(false)
+                .build();
+    }
 }
