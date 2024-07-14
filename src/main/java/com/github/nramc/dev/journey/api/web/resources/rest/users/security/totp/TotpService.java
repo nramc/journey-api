@@ -17,6 +17,7 @@ import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +59,10 @@ public class TotpService {
     public Optional<UserSecurityAttribute> getTotpAttributeIfExists(AuthUser authUser) {
         List<UserSecurityAttributeEntity> attributes = attributesRepository.findAllByUserIdAndType(
                 authUser.getId().toHexString(), SecurityAttributeType.TOTP);
-        return Optional.ofNullable(attributes).map(List::getFirst).map(UserSecurityAttributeConverter::toModel);
+        return Optional.ofNullable(attributes)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(List::getFirst)
+                .map(UserSecurityAttributeConverter::toModel);
     }
 
     private QRCodeData toQRCodeData(TotpSecret secret, AuthUser authUser) {
