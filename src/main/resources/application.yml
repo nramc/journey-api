@@ -30,6 +30,16 @@ app:
         roles: GUEST_USER
         name: Guest
   security:
+    totp:
+      number-of-digits: 6
+      secret-length: 32
+      totp-algorithm: SHA1
+      time-step-size-in-seconds: 30
+      max-allowed-time-step-discrepancy: 1
+      qr-type: totp
+      qr-width: 500
+      qr-height: 500
+      qr-issuer: Journey
     cors:
       properties:
         - path: /**
