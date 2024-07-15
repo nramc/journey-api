@@ -15,7 +15,7 @@ public class TotpDemo {
                 .numberOfDigits(6)
                 .timeStepSizeInSeconds(30)
                 .secretLength(32)
-                .maxAllowedTimeStepDiscrepancy(0)
+                .maxAllowedTimeStepDiscrepancy(1)
                 .build();
         TotpSecretGenerator secretGenerator = new TotpSecretGenerator(totpProperties);
         TotpTimeStepWindowProvider totpTimeStepWindowProvider = new TotpTimeStepWindowProvider(totpProperties);

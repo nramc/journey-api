@@ -65,6 +65,21 @@ public class TotpService {
                 .map(UserSecurityAttributeConverter::toModel);
     }
 
+    public boolean verify(AuthUser authUser, TotpCode code) {
+        Optional<UserSecurityAttribute> totpAttributeIfExists = getTotpAttributeIfExists(authUser);
+        return totpAttributeIfExists
+                .map(UserSecurityAttribute::value)
+                .map(TotpSecret::valueOf)
+                .map(secret -> codeVerifier.verify(secret, code))
+                .orElse(false);
+
+    }
+
+    public void deactivateTotp(AuthUser authUser) {
+        getTotpAttributeIfExists(authUser).ifPresent(attribute ->
+                attributesRepository.deleteAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.TOTP));
+    }
+
     private QRCodeData toQRCodeData(TotpSecret secret, AuthUser authUser) {
         return QRCodeData.builder()
                 .type(totpProperties.qrType())

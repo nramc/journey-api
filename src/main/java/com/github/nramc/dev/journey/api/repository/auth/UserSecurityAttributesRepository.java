@@ -11,4 +11,6 @@ public interface UserSecurityAttributesRepository extends MongoRepository<UserSe
 
     List<UserSecurityAttributeEntity> findAllByUserIdAndType(String userId, SecurityAttributeType type);
 
+    void deleteAllByUserIdAndType(String userId, SecurityAttributeType type);
+
 }
