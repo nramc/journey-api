@@ -4,6 +4,7 @@ import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.security.totp.model.TotpCode;
 import com.github.nramc.dev.journey.api.security.totp.model.TotpSecret;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.totp.dto.TotpDeactivationRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.totp.dto.VerifyTotpCodeRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.totp.dto.VerifyTotpCodeResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_DEACTIVATE;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -70,6 +72,16 @@ public class TotpResource {
 
 
     // 3. deactivate totp
+    @Operation(summary = "Deactivate TOTP 2FA for the user")
+    @RestDocCommonResponse
+    @ApiResponse(responseCode = "200", description = "2FA TOTP activated")
+    @PostMapping(value = MY_SECURITY_ATTRIBUTE_TOTP_DEACTIVATE, consumes = APPLICATION_JSON_VALUE)
+    public void deactivate(
+            @RequestBody @Valid TotpDeactivationRequest deactivationRequest,
+            Authentication authentication) {
+        AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
+        totpService.deactivateTotp(authUser, TotpCode.valueOf(deactivationRequest.code()));
+    }
 
     // 4. verify totp
     @Operation(summary = "Verify Code for the user")

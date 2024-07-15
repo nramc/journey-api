@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.totp;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.security.totp.model.TotpCode;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,12 @@ import java.util.Optional;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_DEACTIVATE;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -50,6 +53,9 @@ class TotpResourceTest {
             }
             """;
     private static final String VERIFY_REQUEST_PAYLOAD = """
+            { "code": "%s" }
+            """;
+    private static final String DEACTIVATE_REQUEST_PAYLOAD = """
             { "code": "%s" }
             """;
     @Container
@@ -149,6 +155,27 @@ class TotpResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.success").value(Is.is(false)));
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", authorities = {AUTHENTICATED_USER})
+    void deactivate_whenCodeValid_shouldDeactivateTotp() throws Exception {
+        mockMvc.perform(post(MY_SECURITY_ATTRIBUTE_TOTP_DEACTIVATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(DEACTIVATE_REQUEST_PAYLOAD.formatted("123456"))
+                ).andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", authorities = {AUTHENTICATED_USER})
+    void deactivate_whenCodeInvalid_shouldThrowError() throws Exception {
+        doThrow(new BusinessException("mocked", "totp.code.invalid")).when(totpService).deactivateTotp(any(AuthUser.class), any(TotpCode.class));
+        mockMvc.perform(post(MY_SECURITY_ATTRIBUTE_TOTP_DEACTIVATE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(DEACTIVATE_REQUEST_PAYLOAD.formatted("123456"))
+                ).andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
 }
