@@ -37,13 +37,13 @@ class TotpCodeGeneratorTest {
 
     static Stream<Arguments> expectedCodesProvider() {
         return Stream.of(
-                arguments("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY", 1567631536, TotpAlgorithm.SHA1, "258392"),
-                arguments("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY", 1567631536, TotpAlgorithm.SHA256, "212467"),
-                arguments("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY", 1567631536, TotpAlgorithm.SHA512, "013456"),
+                arguments("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY", 1567631536, TotpAlgorithm.SHA1, "082371"),
+                arguments("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY", 1567631536, TotpAlgorithm.SHA256, "272978"),
+                arguments("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY", 1567631536, TotpAlgorithm.SHA512, "325200"),
 
-                arguments("makrzl2hict4ojeji2iah4kndmq6sgka", 1582750403, TotpAlgorithm.SHA1, "757835"),
-                arguments("makrzl2hict4ojeji2iah4kndmq6sgka", 1582750403, TotpAlgorithm.SHA256, "285275"),
-                arguments("makrzl2hict4ojeji2iah4kndmq6sgka", 1582750403, TotpAlgorithm.SHA512, "769302")
+                arguments("makrzl2hict4ojeji2iah4kndmq6sgka", 1582750403, TotpAlgorithm.SHA1, "848586"),
+                arguments("makrzl2hict4ojeji2iah4kndmq6sgka", 1582750403, TotpAlgorithm.SHA256, "965726"),
+                arguments("makrzl2hict4ojeji2iah4kndmq6sgka", 1582750403, TotpAlgorithm.SHA512, "741306")
         );
     }
 

@@ -6,14 +6,12 @@ import com.github.nramc.dev.journey.api.security.totp.model.TotpSecret;
 import com.github.nramc.dev.journey.api.web.exceptions.NonTechnicalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.codec.binary.Base32;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -28,23 +26,44 @@ public class TotpCodeGenerator {
 
     public TotpCode generate(TotpSecret totpSecret, long timeStepWindow) {
         try {
-            byte[] key = Base64.getDecoder().decode(totpSecret.secret());
-            byte[] data = ByteBuffer.allocate(8).putLong(timeStepWindow).array();
-
-            Mac mac = Mac.getInstance(properties.totpAlgorithm().getHmacAlgorithm());
-            mac.init(new SecretKeySpec(key, properties.totpAlgorithm().getHmacAlgorithm()));
-            byte[] hash = mac.doFinal(data);
-
-            int offset = hash[hash.length - 1] & 0xF;
-            int binary = ((hash[offset] & 0x7F) << 24) | ((hash[offset + 1] & 0xFF) << 16) | ((hash[offset + 2] & 0xFF) << 8) | (hash[offset + 3] & 0xFF);
-            int otp = binary % (int) Math.pow(10, properties.numberOfDigits());
-
-            return TotpCode.valueOf(StringUtils.leftPad(String.valueOf(otp), properties.numberOfDigits(), "0"));
+            byte[] hash = generateHash(totpSecret.secret(), timeStepWindow);
+            return TotpCode.valueOf(getDigitsFromHash(hash));
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            log.error(ex.getMessage(), ex);
-            throw new NonTechnicalException(ex.getMessage());
+            throw new NonTechnicalException("Could not generate TotpCode:" + ex.getMessage());
+        }
+    }
+
+    private byte[] generateHash(String key, long counter) throws NoSuchAlgorithmException, InvalidKeyException {
+        byte[] data = new byte[8];
+        long value = counter;
+        for (int i = 8; i-- > 0; value >>>= 8) {
+            data[i] = (byte) value;
         }
 
+        Base32 codec = new Base32();
+        byte[] decodedKey = codec.decode(key);
+        SecretKeySpec signKey = new SecretKeySpec(decodedKey, properties.totpAlgorithm().getHmacAlgorithm());
+        Mac mac = Mac.getInstance(properties.totpAlgorithm().getHmacAlgorithm());
+        mac.init(signKey);
+
+        return mac.doFinal(data);
+    }
+
+    private String getDigitsFromHash(byte[] hash) {
+        int offset = hash[hash.length - 1] & 0xF;
+
+        long truncatedHash = 0;
+
+        for (int i = 0; i < 4; ++i) {
+            truncatedHash <<= 8;
+            truncatedHash |= (hash[offset + i] & 0xFF);
+        }
+
+        truncatedHash &= 0x7FFFFFFF;
+        truncatedHash %= (long) Math.pow(10L, properties.numberOfDigits());
+
+        // Left pad with 0s for a n-digit code
+        return String.format("%0" + properties.numberOfDigits() + "d", truncatedHash);
     }
 
 }
