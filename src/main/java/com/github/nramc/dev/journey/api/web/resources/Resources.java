@@ -35,7 +35,6 @@ public class Resources {
     public static final String MY_SECURITY_ATTRIBUTE_TOTP = "/rest/my-account/securityAttribute/totp";
     public static final String MY_SECURITY_ATTRIBUTE_TOTP_STATUS = "/rest/my-account/securityAttribute/totp/status";
     public static final String MY_SECURITY_ATTRIBUTE_TOTP_VERIFY = "/rest/my-account/securityAttribute/totp/verify";
-    public static final String MY_SECURITY_ATTRIBUTE_TOTP_DEACTIVATE = "/rest/my-account/securityAttribute/totp/deactivate";
 
     public static final String SEND_EMAIL_CODE = "/rest/sendEmailCode";
     public static final String VERIFY_EMAIL_CODE = "/rest/verifyEmailCode";

@@ -75,13 +75,9 @@ public class TotpService {
 
     }
 
-    public void deactivateTotp(AuthUser authUser, TotpCode code) {
-        if (verify(authUser, code)) {
-            attributesRepository.deleteAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.TOTP);
-        } else {
-            throw new BusinessException("Code not valid", "totp.code.invalid");
-        }
-
+    public void deactivateTotp(AuthUser authUser) {
+        getTotpAttributeIfExists(authUser).ifPresent(attribute ->
+                attributesRepository.deleteAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.TOTP));
     }
 
     private QRCodeData toQRCodeData(TotpSecret secret, AuthUser authUser) {
