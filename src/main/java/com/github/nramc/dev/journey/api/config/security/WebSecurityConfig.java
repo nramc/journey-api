@@ -147,12 +147,12 @@ public class WebSecurityConfig {
                         .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, MY_SECURITY_ATTRIBUTE_EMAIL).access(authenticatedUserAuthorizationManager)
-                        .requestMatchers(GET, MY_SECURITY_ATTRIBUTE_EMAIL).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(GET, MY_SECURITY_ATTRIBUTE_EMAIL).access(readOnlyAuthorizationManager)
 
                         .requestMatchers(POST, SEND_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, VERIFY_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP).access(authenticatedUserAuthorizationManager)
-                        .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP_STATUS).access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP_STATUS).access(readOnlyAuthorizationManager)
                         .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP_VERIFY).access(authenticatedUserAuthorizationManager)
 
                         .requestMatchers(GET, FETCH_ALL_CATEGORIES).access(readOnlyAuthorizationManager)

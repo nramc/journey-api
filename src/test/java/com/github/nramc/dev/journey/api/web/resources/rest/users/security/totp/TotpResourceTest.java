@@ -129,6 +129,15 @@ class TotpResourceTest {
     }
 
     @Test
+    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
+    void status_whenUserGuest_shouldBePermitted() throws Exception {
+        mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_TOTP_STATUS)).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.active").value(Is.is(false)));
+    }
+
+    @Test
     @WithMockUser(username = "test-user", authorities = {AUTHENTICATED_USER})
     void verify_whenCodeValid_shouldReturnSuccess() throws Exception {
         when(totpService.verify(any(AuthUser.class), any(TotpCode.class))).thenReturn(true);

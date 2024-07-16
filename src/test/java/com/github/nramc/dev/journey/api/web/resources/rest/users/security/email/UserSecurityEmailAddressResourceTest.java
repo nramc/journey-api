@@ -100,6 +100,14 @@ class UserSecurityEmailAddressResourceTest {
 
     @Test
     @WithMockUser(username = "test-user", authorities = {GUEST_USER})
+    void getEmailAddress_whenUserGuest_thenShouldBePermitted() throws Exception {
+        mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_EMAIL))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "test-user", authorities = {"ROLE_USER"})
     void getEmailAddress_whenUserNotAuthorized_thenShouldThrowError() throws Exception {
         mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_EMAIL))
                 .andDo(print())
