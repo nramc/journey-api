@@ -35,7 +35,7 @@ public class TotpService {
         TotpSecret secret = secretGenerator.generate();
 
         QRCodeData qrCodeData = toQRCodeData(secret, authUser);
-        byte[] qrImageData = qrCodeGenerator.generate(qrCodeData);
+        byte[] qrImageData = qrCodeGenerator.generateWithLogo(qrCodeData);
 
         return QRImageDetails.builder()
                 .secretKey(secret.secret())
