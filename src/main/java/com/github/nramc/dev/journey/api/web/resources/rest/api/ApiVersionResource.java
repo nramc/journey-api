@@ -21,7 +21,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSI
 public class ApiVersionResource {
     private final ApplicationProperties applicationProperties;
 
-    @Operation(summary = "stats current API version")
+    @Operation(summary = "Get application name and version")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Return application Name and Version",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApiVersionResponse.class))})})
     @RestDocCommonResponse

@@ -24,7 +24,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURI
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Manage User Security Email Address Resource")
+@Tag(name = "My Account Security - Email Address Settings")
 public class UserSecurityEmailAddressResource {
     private final UserDetailsService userDetailsService;
     private final UserSecurityEmailAddressAttributeService userSecurityEmailAddressAttributeService;

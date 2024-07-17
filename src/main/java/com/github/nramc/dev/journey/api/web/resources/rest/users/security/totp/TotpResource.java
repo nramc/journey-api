@@ -29,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Manage User Security TOTP Settings Resource")
+@Tag(name = "My Account Security - Totp Settings")
 @Validated
 public class TotpResource {
     private final UserDetailsService userDetailsService;

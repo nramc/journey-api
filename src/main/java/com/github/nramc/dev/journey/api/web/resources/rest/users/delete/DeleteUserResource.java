@@ -5,7 +5,6 @@ import com.github.nramc.dev.journey.api.services.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,11 +18,10 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_US
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Delete Application User Resource")
 public class DeleteUserResource {
     private final AuthUserDetailsService userDetailsService;
 
-    @Operation(summary = "Delete application user")
+    @Operation(summary = "Delete application user", tags = {"Administrator Features"})
     @RestDocCommonResponse
     @DeleteMapping(DELETE_USER_BY_USERNAME)
     @ApiResponse(responseCode = "200", description = "Application User deleted permanently")
@@ -31,7 +29,7 @@ public class DeleteUserResource {
         userDetailsService.deleteUser(username);
     }
 
-    @Operation(summary = "Delete my account")
+    @Operation(summary = "Delete my account", tags = {"My Account Features"})
     @ApiResponse(responseCode = "200", description = "Application User inactivated and soon will be removed from system")
     @RestDocCommonResponse
     @DeleteMapping(DELETE_MY_ACCOUNT)

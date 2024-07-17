@@ -10,7 +10,6 @@ import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResp
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -34,11 +33,10 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Find Journey by Search Query Resource")
 public class FindJourneyByQueryResource {
     private final JourneyRepository journeyRepository;
 
-    @Operation(summary = "Find Journeys for given query")
+    @Operation(summary = "Find Journeys for given query", tags = {"Search Journey"})
     @RestDocCommonResponse
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returns available Journeys for given query")})
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)

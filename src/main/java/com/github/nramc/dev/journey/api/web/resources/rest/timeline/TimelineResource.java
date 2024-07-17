@@ -29,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Timeline Resource")
+@Tag(name = "Timeline")
 public class TimelineResource {
     private final MongoTemplate mongoTemplate;
 

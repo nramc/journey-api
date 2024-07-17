@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Create New Application User Resource")
+@Tag(name = "Administrator Features")
 public class CreateUserResource {
     private final AuthUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;

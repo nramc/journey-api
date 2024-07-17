@@ -23,7 +23,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAI
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Sending Email Address Verification Code Resource", description = "Verify security email address with email code verification")
+@Tag(name = "My Account Security - Email Address Settings")
 public class SendEmailVerificationCodeResource {
     private final UserDetailsManager userDetailsService;
     private final EmailConfirmationCodeService emailConfirmationCodeService;

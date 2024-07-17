@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +31,10 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Find Journey by ID Resource")
 public class FindJourneyByIdResource {
     private final JourneyRepository journeyRepository;
 
-    @Operation(summary = "Find Journey for given ID if exists, else throw error.")
+    @Operation(summary = "Find Journey for given ID if exists, else throw error.", tags = {"Search Journey"})
     @RestDocCommonResponse
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Journey created successfully",
