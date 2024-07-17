@@ -40,4 +40,11 @@ class QRCodeGeneratorTest {
         Assertions.assertNotNull(tempFile);
     }
 
+    @Test
+    void testQRCodeGenerator() throws IOException {
+        QRCodeGenerator generator = new QRCodeGenerator();
+        Path tempFile = Files.write(Files.createTempFile("qr_test", ".png"), generator.generateWithLogo(QR_DATA));
+        Assertions.assertNotNull(tempFile);
+    }
+
 }
