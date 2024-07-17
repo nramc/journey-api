@@ -26,7 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Get Statistics Resource")
+@Tag(name = "Statistics")
 public class StatisticsResource {
     private final JourneyRepository journeyRepository;
 

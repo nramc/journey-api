@@ -24,11 +24,10 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FETCH_ALL
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Categories Resource")
 public class FetchAllCategoriesResource {
     private final JourneyRepository journeyRepository;
 
-    @Operation(summary = "Get available categories from Journeys")
+    @Operation(summary = "Get available categories from Journeys", tags = {"Others"})
     @RestDocCommonResponse
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Available categories")})
     @GetMapping(value = FETCH_ALL_CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE)

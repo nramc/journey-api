@@ -27,12 +27,12 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.VERIFY_EM
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Account Email Address Verification Resource", description = "Verify account email address with email code verification")
+@Tag(name = "My Account Security - Email Address Settings")
 public class EmailCodeVerificationResource {
     private final UserDetailsManager userDetailsService;
     private final EmailConfirmationCodeService emailConfirmationCodeService;
 
-    @Operation(summary = "Send Email Confirmation Code to registered email address")
+    @Operation(summary = "Verify Email Confirmation code which was sent to registered email address")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Email code has been send successfully")})
     @RestDocCommonResponse
     @PostMapping(value = VERIFY_EMAIL_CODE)

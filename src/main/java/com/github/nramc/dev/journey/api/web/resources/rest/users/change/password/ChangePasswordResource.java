@@ -21,7 +21,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Change My Password Resource")
+@Tag(name = "My Account Features")
 public class ChangePasswordResource {
     private final AuthUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;

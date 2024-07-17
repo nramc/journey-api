@@ -78,6 +78,9 @@ springdoc:
     - group: API Info
       packages-to-scan:
         - com.github.nramc.dev.journey.api.web.resources.rest.api
+    - group: Timeline
+      packages-to-scan:
+        - com.github.nramc.dev.journey.api.web.resources.rest.timeline
 
 service:
   cloudinary:

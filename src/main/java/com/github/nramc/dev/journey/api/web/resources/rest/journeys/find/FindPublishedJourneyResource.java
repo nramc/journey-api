@@ -8,7 +8,6 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.security.JourneyAuthorizationManager;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyFeatureConverter;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
@@ -24,11 +23,10 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "GeoJSON Resource")
 public class FindPublishedJourneyResource {
     private final JourneyRepository journeyRepository;
 
-    @Operation(summary = "Find all published Journeys and return result as GeoJSON")
+    @Operation(summary = "Find all published Journeys and return result as GeoJSON", tags = {"Search Journey"})
     @GetMapping(value = FIND_PUBLISHED_JOURNEYS, produces = JOURNEYS_GEO_JSON)
     public GeoJson find(
             Authentication authentication

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +25,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Find Users Resource")
 public class FindUsersResource {
     private final UserRepository userRepository;
 
-    @Operation(summary = "Find user by ID")
+    @Operation(summary = "Get all available user details", tags = {"Administrator Features"})
     @RestDocCommonResponse
     @ApiResponse(responseCode = "200", description = "Available user details")
     @GetMapping(value = FIND_USERS, produces = APPLICATION_JSON_VALUE)
@@ -39,7 +37,7 @@ public class FindUsersResource {
         return ResponseEntity.ok(UserConverter.toUsers(users));
     }
 
-    @Operation(summary = "Get my details")
+    @Operation(summary = "Get my account details", tags = {"My Account Features"})
     @RestDocCommonResponse
     @ApiResponse(responseCode = "200", description = "User details", content = {
             @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))
