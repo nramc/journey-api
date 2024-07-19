@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.security.totp.model.TotpCode;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
-import org.hamcrest.core.Is;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -116,7 +116,7 @@ class TotpResourceTest {
         mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_TOTP_STATUS)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.active").value(Is.is(true)));
+                .andExpect(jsonPath("$.active").value(Matchers.is(true)));
     }
 
     @Test
@@ -125,7 +125,7 @@ class TotpResourceTest {
         mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_TOTP_STATUS)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.active").value(Is.is(false)));
+                .andExpect(jsonPath("$.active").value(Matchers.is(false)));
     }
 
     @Test
@@ -134,7 +134,7 @@ class TotpResourceTest {
         mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_TOTP_STATUS)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.active").value(Is.is(false)));
+                .andExpect(jsonPath("$.active").value(Matchers.is(false)));
     }
 
     @Test
@@ -147,7 +147,7 @@ class TotpResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.success").value(Is.is(true)));
+                .andExpect(jsonPath("$.success").value(Matchers.is(true)));
     }
 
     @Test
@@ -160,7 +160,7 @@ class TotpResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.success").value(Is.is(false)));
+                .andExpect(jsonPath("$.success").value(Matchers.is(false)));
     }
 
     @Test

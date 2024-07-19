@@ -12,8 +12,12 @@ public record QRImageDetails(
 ) {
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         QRImageDetails that = (QRImageDetails) o;
         return Objects.deepEquals(data, that.data) && Objects.equals(secretKey, that.secretKey);
     }

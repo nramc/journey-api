@@ -2,12 +2,13 @@ package com.github.nramc.dev.journey.api.security.totp;
 
 import com.github.nramc.dev.journey.api.security.totp.config.TotpProperties;
 import com.github.nramc.dev.journey.api.security.totp.model.QRCodeData;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class QRCodeGeneratorTest {
     private static final TotpProperties TOTP_PROPERTIES = TotpProperties.builder()
@@ -21,7 +22,7 @@ class QRCodeGeneratorTest {
             .qrWidth(500)
             .qrHeight(500)
             .build();
-    private final QRCodeData QR_DATA = QRCodeData.builder()
+    private static final QRCodeData QR_DATA = QRCodeData.builder()
             .type(TOTP_PROPERTIES.qrType())
             .label("username")
             .issuer(TOTP_PROPERTIES.qrIssuer())
@@ -34,17 +35,17 @@ class QRCodeGeneratorTest {
             .build();
 
     @Test
-    void testSomething() throws IOException {
+    void something() throws IOException {
         QRCodeGenerator generator = new QRCodeGenerator();
         Path tempFile = Files.write(Files.createTempFile("qr_test", ".png"), generator.generate(QR_DATA));
-        Assertions.assertNotNull(tempFile);
+        assertThat(tempFile).isNotNull();
     }
 
     @Test
-    void testQRCodeGenerator() throws IOException {
+    void qRCodeGenerator() throws IOException {
         QRCodeGenerator generator = new QRCodeGenerator();
         Path tempFile = Files.write(Files.createTempFile("qr_test", ".png"), generator.generateWithLogo(QR_DATA));
-        Assertions.assertNotNull(tempFile);
+        assertThat(tempFile).isNotNull();
     }
 
 }

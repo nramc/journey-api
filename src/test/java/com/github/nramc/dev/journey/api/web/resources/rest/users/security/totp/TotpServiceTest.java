@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.assertArg;
@@ -96,7 +96,7 @@ class TotpServiceTest {
     void activateTotp_whenCodeInvalid_shouldNotActivateTotp() {
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
-        assertThrows(BusinessException.class, () -> totpService.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET));
+        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> totpService.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET));
 
         verifyNoInteractions(attributesRepository);
     }

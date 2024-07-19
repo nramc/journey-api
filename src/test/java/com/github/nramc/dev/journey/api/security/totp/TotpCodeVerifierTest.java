@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.security.totp;
 import com.github.nramc.dev.journey.api.security.totp.config.TotpProperties;
 import com.github.nramc.dev.journey.api.security.totp.model.TotpCode;
 import com.github.nramc.dev.journey.api.security.totp.model.TotpSecret;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class TotpCodeVerifierTest {
@@ -49,7 +50,7 @@ class TotpCodeVerifierTest {
 
         boolean result = codeVerifier.verify(TOTP_SECRET, codeCreatedAtCurrentTimeWindow);
 
-        Assertions.assertTrue(result);
+        assertThat(result).isTrue();
     }
 
     static Stream<Arguments> verify_whenCodeCreatedWithinAllowedWindowSize_shouldAccepted() {
@@ -70,7 +71,7 @@ class TotpCodeVerifierTest {
 
         boolean result = codeVerifier.verify(TOTP_SECRET, codeCreatedAtCurrentTimeWindow);
 
-        Assertions.assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     static Stream<Arguments> verify_whenCodeCreatedOutOfAllowedWindowSize_shouldBeRejected() {
