@@ -7,6 +7,7 @@ import com.github.nramc.dev.journey.api.web.exceptions.NonTechnicalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -63,7 +64,7 @@ public class TotpCodeGenerator {
         truncatedHash %= (long) Math.pow(10L, properties.numberOfDigits());
 
         // Left pad with 0s for a n-digit code
-        return String.format("%0" + properties.numberOfDigits() + "d", truncatedHash);
+        return StringUtils.leftPad(Long.toString(truncatedHash), properties.numberOfDigits(), '0');
     }
 
 }
