@@ -21,8 +21,8 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.util.UUID;
 
-import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

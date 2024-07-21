@@ -1,7 +1,9 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.totp;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.security.totp.model.TotpCode;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.QRImageDetails;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpCode;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import org.hamcrest.Matchers;
@@ -22,8 +24,8 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;

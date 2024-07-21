@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.repository.auth;
 
-import com.github.nramc.dev.journey.api.security.Role;
+import com.github.nramc.dev.journey.api.config.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class AuthUser implements UserDetails {
     private String username;
     private String password;
     private String name;
-    private String secret;
+    private boolean mfaEnabled;
     private LocalDateTime createdDate;
     private LocalDateTime lastLoggedIn;
     private boolean enabled;

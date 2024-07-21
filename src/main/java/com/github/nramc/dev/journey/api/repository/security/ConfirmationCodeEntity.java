@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.security;
 
 import com.github.nramc.dev.journey.api.models.core.ConfirmationCodeType;
-import com.github.nramc.dev.journey.api.services.confirmationcode.ConfirmationUseCase;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

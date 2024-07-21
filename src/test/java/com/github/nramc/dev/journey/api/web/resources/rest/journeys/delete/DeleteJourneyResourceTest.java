@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.delete;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.security.Visibility;
+import com.github.nramc.dev.journey.api.config.security.Visibility;
 import com.github.nramc.dev.journey.api.services.cloudinary.CloudinaryService;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,9 +24,9 @@ import org.testcontainers.utility.DockerImageName;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.security.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.any;

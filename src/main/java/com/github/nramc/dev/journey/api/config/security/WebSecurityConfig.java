@@ -30,10 +30,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static com.github.nramc.dev.journey.api.security.Role.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.security.Role.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Role.GUEST_USER;
-import static com.github.nramc.dev.journey.api.security.Role.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Role.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.config.security.Role.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.GUEST_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSION;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_JOURNEY;

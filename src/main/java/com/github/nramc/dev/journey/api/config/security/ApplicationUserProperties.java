@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.config.security;
 
-import com.github.nramc.dev.journey.api.security.Role;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;

@@ -2,7 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
@@ -21,6 +22,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.MFA_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
@@ -45,7 +47,7 @@ class LoginResourceTest {
     static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:latest"))
             .withExposedPorts(27017);
     @Autowired
-    private UserRepository userRepository;
+    private AuthUserDetailsService userDetailsService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -59,7 +61,7 @@ class LoginResourceTest {
     @Test
     void operationalUserShouldExistsInDatabase() {
         assertDoesNotThrow(() -> {
-            AuthUser operationalUser = userRepository.findUserByUsername("admin");
+            AuthUser operationalUser = (AuthUser) userDetailsService.loadUserByUsername("admin");
             assertThat(operationalUser).isNotNull();
         });
     }
@@ -75,7 +77,17 @@ class LoginResourceTest {
                 .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.name").value("Administrator"))
                 .andExpect(jsonPath("$.authorities").value(hasItems("MAINTAINER", "AUTHENTICATED_USER")));
+    }
 
+    @Test
+    void login_whenUserHasActiveMfa_thenShouldAskMfa() throws Exception {
+        userDetailsService.createUser(MFA_USER);
+        mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
+                        .with(httpBasic("mfa-user", "test"))
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        ;
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.create;
 
-import com.github.nramc.dev.journey.api.security.Role;
+import com.github.nramc.dev.journey.api.config.security.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
