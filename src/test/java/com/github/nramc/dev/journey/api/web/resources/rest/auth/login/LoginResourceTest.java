@@ -85,7 +85,9 @@ class LoginResourceTest {
                 .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.name").value("Administrator"))
-                .andExpect(jsonPath("$.authorities").value(hasItems("MAINTAINER", "AUTHENTICATED_USER")));
+                .andExpect(jsonPath("$.authorities").value(hasItems("MAINTAINER", "AUTHENTICATED_USER")))
+                .andExpect(jsonPath("$.additionalFactorRequired").value(false))
+                .andExpect(jsonPath("$.securityAttributes").doesNotExist());
     }
 
     @Test

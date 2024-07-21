@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN_MFA;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class MultiFactorAuthenticationResource {
     @RestDocCommonResponse
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))})})
-    @PostMapping(LOGIN_MFA)
+    @PostMapping(value = LOGIN_MFA, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public LoginResponse mfa(@AuthenticationPrincipal AuthUser userDetails,
                              @Valid @RequestBody MultiFactorAuthenticationRequest request) {
         AuthUser authenticatedUser = (AuthUser) userDetailsService.loadUserByUsername(userDetails.getUsername());
