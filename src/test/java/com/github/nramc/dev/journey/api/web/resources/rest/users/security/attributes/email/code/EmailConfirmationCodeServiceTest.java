@@ -7,6 +7,7 @@ import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepo
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -121,7 +122,7 @@ class EmailConfirmationCodeServiceTest {
         when(codeRepository.findByUsernameAndCode(anyString(), anyString())).thenReturn(VALID_CODE_ENTITY);
         when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
                 .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
-        boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER, VERIFY_EMAIL_ADDRESS);
+        boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER);
         assertThat(valid).isTrue();
         verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
         verify(codeRepository).deleteAll(any());
@@ -131,7 +132,7 @@ class EmailConfirmationCodeServiceTest {
     @Test
     void verify_whenEmailCodeNotValid_shouldReturnError() {
         when(codeRepository.findByUsernameAndCode(anyString(), anyString())).thenReturn(VALID_CODE_ENTITY.toBuilder().isActive(false).build());
-        boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER, VERIFY_EMAIL_ADDRESS);
+        boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER);
         assertThat(valid).isFalse();
         verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
         verify(codeRepository, never()).deleteAll(any());

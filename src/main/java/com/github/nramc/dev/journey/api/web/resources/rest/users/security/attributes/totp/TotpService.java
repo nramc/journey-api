@@ -6,7 +6,7 @@ import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEnt
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.QRCodeData;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpCode;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttributeConverter;

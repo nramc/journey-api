@@ -1,6 +1,5 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCode;
 import jakarta.validation.constraints.NotBlank;
 
 public record EmailCode(@NotBlank String code) implements ConfirmationCode {
@@ -14,8 +13,4 @@ public record EmailCode(@NotBlank String code) implements ConfirmationCode {
         return "EmailCode{code='***'}";
     }
 
-    @Override
-    public String getConfirmationCode() {
-        return code;
-    }
 }

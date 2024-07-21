@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.dto.VerifyTotpCodeRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.dto.VerifyTotpCodeResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpCode;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;

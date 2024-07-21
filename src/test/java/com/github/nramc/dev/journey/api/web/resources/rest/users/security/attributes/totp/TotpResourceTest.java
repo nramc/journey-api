@@ -1,9 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.QRImageDetails;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpCode;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import org.hamcrest.Matchers;

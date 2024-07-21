@@ -3,15 +3,9 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.QRCodeGenerator;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.QRImageDetails;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpAlgorithm;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpCodeVerifier;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpSecretGenerator;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.QRCodeData;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpCode;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;

@@ -11,6 +11,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attrib
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +73,7 @@ public class EmailConfirmationCodeService {
      *
      * @return true if email code matched otherwise false
      */
-    public boolean verify(ConfirmationCode confirmationCode, AuthUser authUser, ConfirmationUseCase useCase) {
+    public boolean verify(ConfirmationCode confirmationCode, AuthUser authUser) {
         boolean isEmailCodeValid = emailCodeValidator.isValid(confirmationCode, authUser);
 
         if (isEmailCodeValid) {

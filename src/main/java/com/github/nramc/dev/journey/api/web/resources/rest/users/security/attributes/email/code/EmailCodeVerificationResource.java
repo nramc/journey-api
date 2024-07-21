@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.VERIFY_EMAIL_CODE;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +44,7 @@ public class EmailCodeVerificationResource {
 
         boolean isValid = emailConfirmationCodeService.verify(
                 EmailCode.valueOf(Integer.parseInt(request.code())),
-                authUser, VERIFY_EMAIL_ADDRESS);
+                authUser);
 
         if (isValid) {
             log.info("Email Code has been verified successfully");
