@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users;
 
+import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import lombok.experimental.UtilityClass;
 import org.bson.types.ObjectId;
@@ -33,11 +33,11 @@ public class UsersData {
             .build();
     public static final AuthUser MFA_USER = AuthUser.builder()
             .username("mfa-user")
-            .password("{noop}test")
+            .password("test")
             .roles(Set.of(Role.AUTHENTICATED_USER))
             .name("Multi Factor User")
             .enabled(true)
-            .mfaEnabled(false)
+            .mfaEnabled(true)
             .createdDate(LocalDateTime.now())
             .build();
 }
