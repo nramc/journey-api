@@ -105,10 +105,9 @@ class LoginResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
-                .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
-                .andExpect(jsonPath("$.name").value(MFA_USER.getName()))
-                .andExpect(jsonPath("$.authorities").value(hasItems("AUTHENTICATED_USER")));
+                .andExpect(jsonPath("$.token").doesNotExist())
+                .andExpect(jsonPath("$.additionalFactorRequired").value(true))
+                .andExpect(jsonPath("$.securityAttributes").value(hasItems(EMAIL_ADDRESS.name())));
     }
 
     @Test
