@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsS
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCodeVerifier;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
@@ -67,6 +68,15 @@ class MultiFactorAuthenticationResourceTest {
     @MockBean
     private ConfirmationCodeVerifier confirmationCodeVerifier;
 
+    @BeforeEach
+    void setup() {
+        if (!userDetailsService.userExists(MFA_USER.getUsername())) {
+            userDetailsService.createUser(
+                    MFA_USER.toBuilder().password(passwordEncoder.encode(MFA_USER.getPassword())).build()
+            );
+        }
+    }
+
     @Test
     void test() {
         assertDoesNotThrow(() -> {
@@ -76,9 +86,6 @@ class MultiFactorAuthenticationResourceTest {
 
     @Test
     void mfa_whenConfirmationCodeValid_shouldProvideToken() throws Exception {
-        userDetailsService.createUser(
-                MFA_USER.toBuilder().password(passwordEncoder.encode(MFA_USER.getPassword())).build()
-        );
         AuthUser mfaUser = (AuthUser) userDetailsService.loadUserByUsername(MFA_USER.getUsername());
         attributesRepository.save(SecurityAttributesUtils.newEmailAttribute(mfaUser).toBuilder()
                 .verified(true)
@@ -105,9 +112,6 @@ class MultiFactorAuthenticationResourceTest {
 
     @Test
     void mfa_whenConfirmationCodeInvalid_shouldThrowError() throws Exception {
-        userDetailsService.createUser(
-                MFA_USER.toBuilder().password(passwordEncoder.encode(MFA_USER.getPassword())).build()
-        );
         AuthUser mfaUser = (AuthUser) userDetailsService.loadUserByUsername(MFA_USER.getUsername());
         attributesRepository.save(SecurityAttributesUtils.newEmailAttribute(mfaUser).toBuilder()
                 .verified(true)

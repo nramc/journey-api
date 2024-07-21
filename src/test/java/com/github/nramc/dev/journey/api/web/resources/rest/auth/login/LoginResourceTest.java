@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRe
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
@@ -60,6 +61,15 @@ class LoginResourceTest {
     @Autowired
     private UserSecurityAttributesRepository attributesRepository;
 
+    @BeforeEach
+    void setup() {
+        if (!userDetailsService.userExists(MFA_USER.getUsername())) {
+            userDetailsService.createUser(
+                    MFA_USER.toBuilder().password(passwordEncoder.encode(MFA_USER.getPassword())).build()
+            );
+        }
+    }
+
     @Test
     void test() {
         assertDoesNotThrow(() -> {
@@ -92,9 +102,6 @@ class LoginResourceTest {
 
     @Test
     void login_whenUserHasActiveMfa_thenShouldAskMfa() throws Exception {
-        userDetailsService.createUser(
-                MFA_USER.toBuilder().password(passwordEncoder.encode(MFA_USER.getPassword())).build()
-        );
         AuthUser mfaUser = (AuthUser) userDetailsService.loadUserByUsername(MFA_USER.getUsername());
         attributesRepository.save(SecurityAttributesUtils.newEmailAttribute(mfaUser).toBuilder()
                 .verified(true)
@@ -114,9 +121,6 @@ class LoginResourceTest {
 
     @Test
     void login_whenUserHasActiveMfaAndHaveMultipleAttributes_thenShouldList() throws Exception {
-        userDetailsService.createUser(
-                MFA_USER.toBuilder().password(passwordEncoder.encode(MFA_USER.getPassword())).build()
-        );
         AuthUser mfaUser = (AuthUser) userDetailsService.loadUserByUsername(MFA_USER.getUsername());
         attributesRepository.save(SecurityAttributesUtils.newEmailAttribute(mfaUser).toBuilder()
                 .verified(false)
