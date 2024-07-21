@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
 import com.github.nramc.dev.journey.api.models.core.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
@@ -7,6 +7,8 @@ import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepo
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase;
 import jakarta.mail.MessagingException;

@@ -1,14 +1,11 @@
-package com.github.nramc.dev.journey.api.services.email;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
 import com.github.nramc.dev.journey.api.models.core.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailCodeValidator;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailConfirmationCodeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,22 +18,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailConfirmationCodeService.CODE_LENGTH;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailConfirmationCodeService.EMAIL_CODE_TEMPLATE_HTML;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService.CODE_LENGTH;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService.EMAIL_CODE_TEMPLATE_HTML;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -142,3 +139,4 @@ class EmailConfirmationCodeServiceTest {
     }
 
 }
+

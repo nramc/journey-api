@@ -7,8 +7,8 @@ import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attrib
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailCodeValidator;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailConfirmationCodeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailCodeValidator;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpService;

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCode;
 import jakarta.validation.constraints.NotBlank;

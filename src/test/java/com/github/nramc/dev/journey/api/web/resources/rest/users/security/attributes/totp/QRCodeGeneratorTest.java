@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.security.totp;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.QRCodeGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpAlgorithm;

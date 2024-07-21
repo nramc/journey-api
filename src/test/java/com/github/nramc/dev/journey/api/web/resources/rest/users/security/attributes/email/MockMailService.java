@@ -1,6 +1,5 @@
-package com.github.nramc.dev.journey.api.services;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
