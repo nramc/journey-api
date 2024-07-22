@@ -51,7 +51,7 @@ public class UpdateUserResource {
             AuthUser updatedDetails = authUser.toBuilder().mfaEnabled(mfaStatus.status()).build();
             userDetailsService.updateUser(updatedDetails);
         } else {
-            throw new BusinessException("", "mfa.invalid.attributes");
+            throw new BusinessException("Unable to enable mf due to absence of security attributes", "mfa.invalid.attributes");
         }
     }
 
