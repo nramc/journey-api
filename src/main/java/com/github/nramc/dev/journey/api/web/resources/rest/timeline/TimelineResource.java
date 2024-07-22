@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.security.Visibility;
-import com.github.nramc.dev.journey.api.security.utils.AuthUtils;
+import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

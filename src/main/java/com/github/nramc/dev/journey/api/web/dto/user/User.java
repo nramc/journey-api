@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.dto.user;
 
-import com.github.nramc.dev.journey.api.security.Role;
+import com.github.nramc.dev.journey.api.config.security.Role;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

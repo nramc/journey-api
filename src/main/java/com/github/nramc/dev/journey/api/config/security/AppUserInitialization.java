@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.config.security;
 
 import com.github.nramc.dev.journey.api.config.security.ApplicationUserProperties.ApplicationUser;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.services.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;

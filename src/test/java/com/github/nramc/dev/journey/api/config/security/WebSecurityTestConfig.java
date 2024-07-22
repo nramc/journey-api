@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.config.security;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.security.Role;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +12,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 
 import java.util.Set;
+
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.MFA_USER;
 
 @TestConfiguration
 public class WebSecurityTestConfig {
@@ -40,12 +41,14 @@ public class WebSecurityTestConfig {
                 .roles(Set.of(Role.AUTHENTICATED_USER))
                 .name("Authenticated User")
                 .build();
+
         return new InMemoryUserDetailsManager(testUser, authenticatedUser, admin) {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 return switch (username) {
                     case "test-admin" -> admin;
                     case "auth-user" -> authenticatedUser;
+                    case "mfa-user" -> MFA_USER;
                     default -> testUser;
                 };
             }

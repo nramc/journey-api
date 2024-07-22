@@ -1,7 +1,8 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.services.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,11 +35,11 @@ public class GuestLoginResource {
     public LoginResponse guestLogin() {
         AuthUser userDetails = authUserDetailsService.getGuestUserDetails();
         Jwt jwt = jwtGenerator.generate(userDetails);
-        return new LoginResponse(
-                jwt.getTokenValue(),
-                jwt.getExpiresAt(),
-                Set.of(jwt.getClaimAsString("scope").split(" ")),
-                userDetails.getName()
-        );
+        return LoginResponse.builder()
+                .token(jwt.getTokenValue())
+                .expiredAt(jwt.getExpiresAt())
+                .authorities(Set.of(jwt.getClaimAsString("scope").split(" ")))
+                .name(userDetails.getName())
+                .build();
     }
 }

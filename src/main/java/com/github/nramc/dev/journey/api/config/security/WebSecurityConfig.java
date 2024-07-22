@@ -30,10 +30,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static com.github.nramc.dev.journey.api.security.Role.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.security.Role.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.security.Role.GUEST_USER;
-import static com.github.nramc.dev.journey.api.security.Role.MAINTAINER;
+import static com.github.nramc.dev.journey.api.config.security.Role.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.config.security.Role.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.GUEST_USER;
+import static com.github.nramc.dev.journey.api.config.security.Role.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSION;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_JOURNEY;
@@ -51,6 +51,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOG
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HEALTH_CHECK;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.HOME;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN_MFA;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_EMAIL;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
@@ -124,6 +125,7 @@ public class WebSecurityConfig {
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()
                         .requestMatchers(POST, LOGIN).authenticated()
+                        .requestMatchers(POST, LOGIN_MFA).authenticated()
 
                         .requestMatchers(GET, FIND_JOURNEYS).access(readOnlyAuthorizationManager)
                         .requestMatchers(GET, FIND_JOURNEY_BY_ID).access(readOnlyAuthorizationManager)

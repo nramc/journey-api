@@ -2,20 +2,27 @@ package com.github.nramc.dev.journey.api.config;
 
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.security.totp.QRCodeGenerator;
-import com.github.nramc.dev.journey.api.security.totp.TotpCodeVerifier;
-import com.github.nramc.dev.journey.api.security.totp.TotpSecretGenerator;
-import com.github.nramc.dev.journey.api.security.totp.config.TotpProperties;
-import com.github.nramc.dev.journey.api.services.MailService;
-import com.github.nramc.dev.journey.api.services.email.EmailCodeValidator;
-import com.github.nramc.dev.journey.api.services.email.EmailConfirmationCodeService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.email.UserSecurityEmailAddressAttributeService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.totp.TotpService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailCodeValidator;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.QRCodeGenerator;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpCodeVerifier;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpSecretGenerator;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCodeVerifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ApplicationServiceConfig {
+
+    @Bean
+    public UserSecurityAttributeService userSecurityAttributeService(UserSecurityAttributesRepository attributesRepository) {
+        return new UserSecurityAttributeService(attributesRepository);
+    }
 
     @Bean
     public UserSecurityEmailAddressAttributeService userSecurityAttributesProvider(
@@ -53,6 +60,12 @@ public class ApplicationServiceConfig {
             TotpCodeVerifier codeVerifier,
             UserSecurityAttributesRepository attributeRepository) {
         return new TotpService(properties, secretGenerator, qrCodeGenerator, codeVerifier, attributeRepository);
+    }
+
+    @Bean
+    public ConfirmationCodeVerifier confirmationCodeVerifier(
+            TotpService totpService, EmailConfirmationCodeService emailConfirmationCodeService) {
+        return new ConfirmationCodeVerifier(totpService, emailConfirmationCodeService);
     }
 
 }
