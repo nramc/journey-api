@@ -74,13 +74,13 @@ class FindUsersResourceTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].username").hasJsonPath())
                 .andExpect(jsonPath("$[0].name").hasJsonPath())
-                .andExpect(jsonPath("$[0].emailAddress").hasJsonPath())
                 .andExpect(jsonPath("$[0].createdDate").hasJsonPath())
                 .andExpect(jsonPath("$[0].lastLoggedIn").hasJsonPath())
                 .andExpect(jsonPath("$[0].enabled").hasJsonPath())
                 .andExpect(jsonPath("$[0].roles").hasJsonPath())
                 .andExpect(jsonPath("$[0].password").doesNotHaveJsonPath())
-                .andExpect(jsonPath("$[0].secret").doesNotHaveJsonPath());
+                .andExpect(jsonPath("$[0].secret").doesNotHaveJsonPath())
+                .andExpect(jsonPath("$[0].mfaEnabled").hasJsonPath());
     }
 
     @Test
@@ -107,13 +107,13 @@ class FindUsersResourceTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.username").hasJsonPath())
                 .andExpect(jsonPath("$.name").hasJsonPath())
-                .andExpect(jsonPath("$.emailAddress").hasJsonPath())
                 .andExpect(jsonPath("$.createdDate").hasJsonPath())
                 .andExpect(jsonPath("$.lastLoggedIn").hasJsonPath())
                 .andExpect(jsonPath("$.enabled").hasJsonPath())
                 .andExpect(jsonPath("$.roles").hasJsonPath())
                 .andExpect(jsonPath("$.password").doesNotHaveJsonPath())
-                .andExpect(jsonPath("$.secret").doesNotHaveJsonPath());
+                .andExpect(jsonPath("$.secret").doesNotHaveJsonPath())
+                .andExpect(jsonPath("$.mfaEnabled").hasJsonPath());
     }
 
 }
