@@ -23,6 +23,7 @@ public class UserConverter {
                 .lastLoggedIn(authUser.getLastLoggedIn())
                 .createdDate(authUser.getCreatedDate())
                 .enabled(authUser.isEnabled())
+                .mfaEnabled(authUser.isMfaEnabled())
                 .build();
     }
 

@@ -10,10 +10,10 @@ import java.util.Set;
 public record User(
         String username,
         String name,
-        String emailAddress,
         LocalDateTime createdDate,
         LocalDateTime lastLoggedIn,
         boolean enabled,
-        Set<Role> roles
+        Set<Role> roles,
+        boolean mfaEnabled
 ) {
 }
