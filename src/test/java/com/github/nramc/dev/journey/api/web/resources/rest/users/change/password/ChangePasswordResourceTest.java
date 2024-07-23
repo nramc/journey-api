@@ -18,12 +18,15 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.time.temporal.ChronoUnit;
+
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,6 +100,7 @@ class ChangePasswordResourceTest {
                 .andExpect(status().isOk());
         AuthUser user = userRepository.findUserByUsername("admin");
         assertThat(passwordEncoder.matches("valid-new-password", user.getPassword())).isTrue();
+        assertThat(user.getPasswordChangedAt()).isNotNull().isCloseToUtcNow(within(1, ChronoUnit.MINUTES));
     }
 
 }

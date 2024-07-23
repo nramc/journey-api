@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Service
 public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPasswordService {
@@ -27,6 +29,7 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
     public UserDetails updatePassword(UserDetails user, String newPassword) {
         AuthUser authUser = userRepository.findUserByUsername(user.getUsername());
         authUser.setPassword(newPassword);
+        authUser.setPasswordChangedAt(LocalDateTime.now());
         userRepository.save(authUser);
         return authUser;
     }

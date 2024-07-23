@@ -28,7 +28,7 @@ public class AuthUser implements UserDetails {
     private String name;
     private boolean mfaEnabled;
     private LocalDateTime createdDate;
-    private LocalDateTime lastLoggedIn;
+    private LocalDateTime passwordChangedAt;
     private boolean enabled;
     private Set<Role> roles;
 

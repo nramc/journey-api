@@ -20,7 +20,7 @@ public class UserConverter {
                 .name(authUser.getName())
                 .username(authUser.getUsername())
                 .roles(authUser.getRoles())
-                .lastLoggedIn(authUser.getLastLoggedIn())
+                .passwordChangedAt(authUser.getPasswordChangedAt())
                 .createdDate(authUser.getCreatedDate())
                 .enabled(authUser.isEnabled())
                 .mfaEnabled(authUser.isMfaEnabled())

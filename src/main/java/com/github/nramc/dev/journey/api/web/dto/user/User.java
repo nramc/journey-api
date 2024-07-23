@@ -11,7 +11,7 @@ public record User(
         String username,
         String name,
         LocalDateTime createdDate,
-        LocalDateTime lastLoggedIn,
+        LocalDateTime passwordChangedAt,
         boolean enabled,
         Set<Role> roles,
         boolean mfaEnabled
