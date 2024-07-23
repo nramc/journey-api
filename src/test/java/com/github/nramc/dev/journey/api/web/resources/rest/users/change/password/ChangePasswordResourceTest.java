@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ChangePasswordResourceTest {
     private static final String REQUEST_TEMPLATE = """
             {
-             "oldPassword": "%s",
              "newPassword": "%s"
             }""";
     @Autowired
@@ -57,7 +56,7 @@ class ChangePasswordResourceTest {
     void find_whenUserNotAuthenticated_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CHANGE_MY_PASSWORD)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(REQUEST_TEMPLATE.formatted("valid-old-password", "valid-new-password"))
+                        .content(REQUEST_TEMPLATE.formatted("valid-new-password"))
                 ).andDo(print())
                 .andExpect(status().isUnauthorized());
     }
@@ -67,7 +66,7 @@ class ChangePasswordResourceTest {
     void find_whenUserNotAuthorized_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CHANGE_MY_PASSWORD)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(REQUEST_TEMPLATE.formatted("valid-old-password", "valid-new-password"))
+                        .content(REQUEST_TEMPLATE.formatted("valid-new-password"))
                 ).andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -93,7 +92,7 @@ class ChangePasswordResourceTest {
     private void changePassword() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CHANGE_MY_PASSWORD)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(REQUEST_TEMPLATE.formatted("valid-old-password", "valid-new-password"))
+                        .content(REQUEST_TEMPLATE.formatted("valid-new-password"))
                 ).andDo(print())
                 .andExpect(status().isOk());
         AuthUser user = userRepository.findUserByUsername("admin");
