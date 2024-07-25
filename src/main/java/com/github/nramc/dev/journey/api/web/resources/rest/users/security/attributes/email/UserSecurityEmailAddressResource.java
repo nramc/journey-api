@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 import com.github.nramc.dev.journey.api.models.core.EmailAddress;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttributeConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_EMAIL;
 
@@ -37,8 +40,9 @@ public class UserSecurityEmailAddressResource {
                                                     Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
 
-        return userSecurityEmailAddressAttributeService.saveSecurityEmailAddress(
+        UserSecurityAttribute securityAttribute = userSecurityEmailAddressAttributeService.saveSecurityEmailAddress(
                 authUser, EmailAddress.valueOf(emailAddressRequest.emailAddress()));
+        return UserSecurityAttributeConverter.toResponse(securityAttribute);
     }
 
     @Operation(summary = "Get my Security Email Address")
@@ -48,7 +52,8 @@ public class UserSecurityEmailAddressResource {
     public ResponseEntity<UserSecurityAttribute> getEmailAddress(Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
 
-        return userSecurityEmailAddressAttributeService.provideEmailAttributeIfExists(authUser)
+        Optional<UserSecurityAttribute> emailAttributeIfExists = userSecurityEmailAddressAttributeService.provideEmailAttributeIfExists(authUser);
+        return emailAttributeIfExists.map(UserSecurityAttributeConverter::toResponse)
                 .map(ResponseEntity::ok).orElse(ResponseEntity.ok().build());
     }
 }
