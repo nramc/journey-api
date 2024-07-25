@@ -76,7 +76,7 @@ class UserSecurityEmailAddressResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.type").value("EMAIL_ADDRESS"))
-                .andExpect(jsonPath("$.value").value("updated-valid-email-addresss@gmail.com"))
+                .andExpect(jsonPath("$.value").value("u***************************@gmail.com"))
                 .andExpect(jsonPath("$.enabled").value("true"))
                 .andExpect(jsonPath("$.verified").value("false"));
     }
@@ -128,7 +128,7 @@ class UserSecurityEmailAddressResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.type").value("EMAIL_ADDRESS"))
-                .andExpect(jsonPath("$.value").value("example.email@example.com"))
+                .andExpect(jsonPath("$.value").value("e************@example.com"))
                 .andExpect(jsonPath("$.enabled").value("true"))
                 .andExpect(jsonPath("$.verified").value("false"));
     }
