@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
@@ -9,15 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOGIN;
@@ -33,18 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestContainersConfiguration.class)
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 @AutoConfigureJson
 class GuestLoginResourceTest {
     @Autowired
     private MockMvc mockMvc;
-    @Container
-    @ServiceConnection
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:latest"))
-            .withExposedPorts(27017);
     @Autowired
     private UserRepository userRepository;
     @Autowired
