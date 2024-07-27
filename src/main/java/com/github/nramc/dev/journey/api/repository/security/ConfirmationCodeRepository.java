@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface ConfirmationCodeRepository extends MongoRepository<ConfirmationCodeEntity, String> {
 
-    ConfirmationCodeEntity findByUsernameAndCode(String username, String code);
-
     List<ConfirmationCodeEntity> findAllByUsername(String username);
 
 }
