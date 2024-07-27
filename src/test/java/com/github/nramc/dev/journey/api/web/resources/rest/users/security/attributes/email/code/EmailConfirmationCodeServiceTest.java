@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
@@ -35,6 +36,7 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -119,22 +121,24 @@ class EmailConfirmationCodeServiceTest {
 
     @Test
     void verify_whenEmailCodeValid_shouldReturnSuccessAndInvalidAllExistingCodes() {
-        when(codeRepository.findByUsernameAndCode(anyString(), anyString())).thenReturn(VALID_CODE_ENTITY);
+        when(codeRepository.findAllByUsername(anyString())).thenReturn(List.of(VALID_CODE_ENTITY));
         when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
                 .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER);
         assertThat(valid).isTrue();
-        verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
+        verify(codeRepository, atLeastOnce()).findAllByUsername(AUTH_USER.getUsername());
         verify(codeRepository).deleteAll(any());
         verify(emailAddressAttributeService).setVerifiedStatus(eq(true), any(AuthUser.class));
     }
 
     @Test
     void verify_whenEmailCodeNotValid_shouldReturnError() {
-        when(codeRepository.findByUsernameAndCode(anyString(), anyString())).thenReturn(VALID_CODE_ENTITY.toBuilder().isActive(false).build());
+        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
+                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
+        when(codeRepository.findAllByUsername(anyString())).thenReturn(List.of(VALID_CODE_ENTITY.toBuilder().isActive(false).build()));
         boolean valid = emailConfirmationCodeService.verify(VALID_CODE, AUTH_USER);
         assertThat(valid).isFalse();
-        verify(codeRepository).findByUsernameAndCode(AUTH_USER.getUsername(), VALID_CODE.code());
+        verify(codeRepository).findAllByUsername(AUTH_USER.getUsername());
         verify(codeRepository, never()).deleteAll(any());
         verify(emailAddressAttributeService, never()).setVerifiedStatus(anyBoolean(), any());
     }

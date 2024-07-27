@@ -10,9 +10,12 @@ import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confir
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -28,15 +31,19 @@ public class EmailCodeValidator {
      * @return true if code valid otherwise false
      */
     public boolean isValid(ConfirmationCode confirmationCode, AuthUser authUser) {
-        EmailCode emailCode = (EmailCode) confirmationCode;
-        ConfirmationCodeEntity confirmationCodeEntity = codeRepository.findByUsernameAndCode(authUser.getUsername(), emailCode.code());
         Optional<UserSecurityAttribute> emailAttributeIfExists = emailAddressAttributeService.provideEmailAttributeIfExists(authUser);
-
         if (emailAttributeIfExists.isEmpty()) {
             log.info("Email Code verification failed. Reason:[email address not exists]");
             return false;
         }
-        if (confirmationCodeEntity == null) { // Email Code does not exists for user
+
+        EmailCode code = (EmailCode) confirmationCode;
+        List<ConfirmationCodeEntity> codes = codeRepository.findAllByUsername(authUser.getUsername());
+
+        ConfirmationCodeEntity confirmationCodeEntity = CollectionUtils.emptyIfNull(codes).stream()
+                .filter(entity -> StringUtils.equals(entity.getCode(), code.code())).findFirst().orElse(null);
+
+        if (CollectionUtils.isEmpty(codes) || confirmationCodeEntity == null) { // Email Code does not exists for user
             log.info("Email Code verification failed. Reason:[code not exists]");
             return false;
         }
