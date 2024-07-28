@@ -21,8 +21,8 @@ public class RecoveryCodeGenerator {
 
     private final Random random = new SecureRandom();
 
-    public List<String> generate(int amount) {
-        return IntStream.range(0, amount).boxed().map(index -> generateCode()).toList();
+    public List<String> generate(int numberOfRecoveryCodes) {
+        return IntStream.range(0, numberOfRecoveryCodes).boxed().map(index -> generateCode()).toList();
     }
 
     private String generateCode() {

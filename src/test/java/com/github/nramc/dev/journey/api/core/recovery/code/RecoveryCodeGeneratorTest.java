@@ -38,7 +38,7 @@ class RecoveryCodeGeneratorTest {
     }
 
     @Test
-    void testInvalidNumberThrowsException() {
+    void generate_whenNumberOfCodesInputInvalid_shouldProvideEmptyListGracefully() {
         List<String> codes = recoveryCodeGenerator.generate(-1);
         assertThat(codes).isNullOrEmpty();
     }
