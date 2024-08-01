@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.dto;
 
-import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

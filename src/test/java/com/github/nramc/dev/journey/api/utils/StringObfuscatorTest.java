@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.utils;
 
+import com.github.nramc.dev.journey.api.core.utils.StringObfuscator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;

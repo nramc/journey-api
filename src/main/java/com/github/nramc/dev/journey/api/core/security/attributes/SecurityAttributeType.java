@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.models.core;
+package com.github.nramc.dev.journey.api.core.security.attributes;
 
 public enum SecurityAttributeType {
     EMAIL_ADDRESS,

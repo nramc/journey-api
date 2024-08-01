@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils;
 
-import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import lombok.experimental.UtilityClass;

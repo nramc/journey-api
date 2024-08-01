@@ -21,7 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.github.nramc.dev.journey.api.models.core.SecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN_MFA;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.MFA_USER;
 import static org.assertj.core.api.Assertions.assertThat;

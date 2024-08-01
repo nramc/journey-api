@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.repository.auth;
 
-import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

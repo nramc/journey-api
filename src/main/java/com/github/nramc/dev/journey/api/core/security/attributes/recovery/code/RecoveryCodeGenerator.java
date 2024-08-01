@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.recovery.code;
+package com.github.nramc.dev.journey.api.core.security.attributes.recovery.code;
 
 import java.security.SecureRandom;
 import java.util.List;

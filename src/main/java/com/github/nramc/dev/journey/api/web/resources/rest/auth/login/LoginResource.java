@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
-import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.utils;
+package com.github.nramc.dev.journey.api.core.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

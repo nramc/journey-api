@@ -1,6 +1,6 @@
-package com.github.nramc.dev.journey.api.models.core;
+package com.github.nramc.dev.journey.api.core.security.attributes;
 
-import com.github.nramc.dev.journey.api.utils.EmailAddressObfuscator;
+import com.github.nramc.dev.journey.api.core.utils.EmailAddressObfuscator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 

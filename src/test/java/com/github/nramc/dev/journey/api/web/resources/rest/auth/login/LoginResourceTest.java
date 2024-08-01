@@ -24,8 +24,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static com.github.nramc.dev.journey.api.models.core.SecurityAttributeType.EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.models.core.SecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.TOTP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.MFA_USER;

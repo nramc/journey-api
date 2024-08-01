@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.core.recovery.code;
 
+import com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.RecoveryCodeGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

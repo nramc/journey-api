@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
 
-import com.github.nramc.dev.journey.api.models.core.EmailAddress;
-import com.github.nramc.dev.journey.api.models.core.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.security.attributes.EmailAddress;
+import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;

@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
-import com.github.nramc.dev.journey.api.models.core.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;

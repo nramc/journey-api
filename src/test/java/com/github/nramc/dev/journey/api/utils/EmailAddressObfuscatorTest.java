@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.utils;
 
-import com.github.nramc.dev.journey.api.models.core.EmailAddress;
+import com.github.nramc.dev.journey.api.core.security.attributes.EmailAddress;
+import com.github.nramc.dev.journey.api.core.utils.EmailAddressObfuscator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
