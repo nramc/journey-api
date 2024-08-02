@@ -61,6 +61,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURN
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.SIGNUP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.VERIFY_EMAIL_CODE;
@@ -120,6 +121,7 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
 
                         .requestMatchers(HOME).permitAll()
+                        .requestMatchers(SIGNUP).permitAll()
                         .requestMatchers(GET, API_VERSION).permitAll()
                         .requestMatchers(REST_DOC).permitAll()
 
