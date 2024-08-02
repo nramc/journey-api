@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt;
+package com.github.nramc.dev.journey.api.core.jwt;
 
 import com.github.nramc.dev.journey.api.config.security.JwtProperties;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
