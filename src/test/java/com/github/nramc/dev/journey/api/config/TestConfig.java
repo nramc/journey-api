@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -21,31 +22,41 @@ public class TestConfig {
             .password("test-password")
             .roles(Set.of(Role.AUTHENTICATED_USER))
             .name("USER")
+            .enabled(true)
             .build();
     public static final AuthUser ADMIN_USER = AuthUser.builder()
             .username("test-admin")
-            .password("test-password")
+            .password("{noop}test-password")
             .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
             .name("Administrator")
+            .enabled(true)
+            .mfaEnabled(true)
             .build();
     public static final AuthUser AUTHENTICATED_USER = AuthUser.builder()
             .username("auth-user")
             .password("test")
             .roles(Set.of(Role.AUTHENTICATED_USER))
             .name("Authenticated User")
+            .enabled(true)
             .build();
     public static final AuthUser GUEST_USER = AuthUser.builder()
             .username("GUEST")
             .password("test")
             .roles(Set.of(Role.GUEST_USER))
             .name("Guest")
+            .enabled(true)
             .build();
 
     @Bean
     @Lazy
-    public UserDetailsManager inMemoryUserDetailsManager() {
+    public UserDetailsManager inMemoryUserDetailsManager(PasswordEncoder passwordEncoder) {
 
-        return new InMemoryUserDetailsManager(TEST_USER, AUTHENTICATED_USER, ADMIN_USER, GUEST_USER) {
+        return new InMemoryUserDetailsManager(
+                TEST_USER.toBuilder().password(passwordEncoder.encode(TEST_USER.getPassword())).build(),
+                AUTHENTICATED_USER.toBuilder().password(passwordEncoder.encode(AUTHENTICATED_USER.getPassword())).build(),
+                ADMIN_USER.toBuilder().password(passwordEncoder.encode(ADMIN_USER.getPassword())).build(),
+                GUEST_USER.toBuilder().password(passwordEncoder.encode(GUEST_USER.getPassword())).build()
+        ) {
             @Override
             @SuppressWarnings("unchecked")
             public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {
