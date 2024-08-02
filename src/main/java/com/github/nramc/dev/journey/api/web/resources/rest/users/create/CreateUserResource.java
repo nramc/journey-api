@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.create;
 import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +26,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 public class CreateUserResource {
-    private final AuthUserDetailsService userDetailsService;
+    private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
 
     @Operation(summary = "Create new application user with corresponding roles")
@@ -36,7 +36,7 @@ public class CreateUserResource {
     @Tag(name = "Administrator Features")
     public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequest userRequest) {
         AuthUser user = toModel(userRequest);
-        userDetailsService.createUser(user);
+        userDetailsManager.createUser(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -48,7 +48,7 @@ public class CreateUserResource {
     @Tag(name = "Registration")
     public ResponseEntity<Void> signup(@RequestBody @Valid SignupRequest signupRequest) {
         AuthUser user = toModel(signupRequest);
-        userDetailsService.createUser(user);
+        userDetailsManager.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
