@@ -1,29 +1,27 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.mfa;
 
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.config.TestConfig;
+import com.github.nramc.dev.journey.api.config.security.JwtProperties;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCodeVerifier;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.github.nramc.dev.journey.api.config.TestConfig.ADMIN_USER;
 import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN_MFA;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.MFA_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
@@ -38,10 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebMvcTest(controllers = {MultiFactorAuthenticationResource.class})
+@Import({TestConfig.class, JwtGenerator.class, WebSecurityConfig.class})
+@EnableConfigurationProperties({JwtProperties.class})
 @ActiveProfiles({"test"})
-@Import(TestContainersConfiguration.class)
-@AutoConfigureMockMvc
 @AutoConfigureJson
 class MultiFactorAuthenticationResourceTest {
     private static final EmailCode EMAIL_CODE = EmailCode.valueOf(123456);
@@ -52,23 +50,8 @@ class MultiFactorAuthenticationResourceTest {
             }""";
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private AuthUserDetailsService userDetailsService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserSecurityAttributesRepository attributesRepository;
     @MockBean
     private ConfirmationCodeVerifier confirmationCodeVerifier;
-
-    @BeforeEach
-    void setup() {
-        if (!userDetailsService.userExists(MFA_USER.getUsername())) {
-            userDetailsService.createUser(
-                    MFA_USER.toBuilder().password(passwordEncoder.encode(MFA_USER.getPassword())).build()
-            );
-        }
-    }
 
     @Test
     void test() {
@@ -79,17 +62,10 @@ class MultiFactorAuthenticationResourceTest {
 
     @Test
     void mfa_whenConfirmationCodeValid_shouldProvideToken() throws Exception {
-        AuthUser mfaUser = (AuthUser) userDetailsService.loadUserByUsername(MFA_USER.getUsername());
-        attributesRepository.save(SecurityAttributesUtils.newEmailAttribute(mfaUser).toBuilder()
-                .verified(true)
-                .value("example@gmaiil.com")
-                .build()
-        );
-
         when(confirmationCodeVerifier.verify(eq(EMAIL_CODE), any(AuthUser.class))).thenReturn(true);
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN_MFA)
-                        .with(httpBasic(MFA_USER.getUsername(), MFA_USER.getPassword()))
+                        .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(REQUEST_PAYLOAD.formatted(EMAIL_ADDRESS, "123456"))
                 ).andDo(print())
@@ -97,25 +73,18 @@ class MultiFactorAuthenticationResourceTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
-                .andExpect(jsonPath("$.name").value(MFA_USER.getName()))
-                .andExpect(jsonPath("$.authorities").value(hasItems("AUTHENTICATED_USER")))
+                .andExpect(jsonPath("$.name").value(ADMIN_USER.getName()))
+                .andExpect(jsonPath("$.authorities").value(hasItems("AUTHENTICATED_USER", "MAINTAINER")))
                 .andExpect(jsonPath("$.additionalFactorRequired").value(false))
                 .andExpect(jsonPath("$.securityAttributes").doesNotExist());
     }
 
     @Test
     void mfa_whenConfirmationCodeInvalid_shouldThrowError() throws Exception {
-        AuthUser mfaUser = (AuthUser) userDetailsService.loadUserByUsername(MFA_USER.getUsername());
-        attributesRepository.save(SecurityAttributesUtils.newEmailAttribute(mfaUser).toBuilder()
-                .verified(true)
-                .value("example@gmaiil.com")
-                .build()
-        );
-
         when(confirmationCodeVerifier.verify(eq(EMAIL_CODE), any(AuthUser.class))).thenReturn(false);
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN_MFA)
-                        .with(httpBasic(MFA_USER.getUsername(), MFA_USER.getPassword()))
+                        .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(REQUEST_PAYLOAD.formatted(EMAIL_ADDRESS, "123456"))
                 ).andDo(print())
