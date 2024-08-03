@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.config;
 
 import com.github.nramc.dev.journey.api.config.security.JwtProperties;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.JwtGenerator;
+import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.validator.JourneyValidator;
 import jakarta.validation.Validator;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

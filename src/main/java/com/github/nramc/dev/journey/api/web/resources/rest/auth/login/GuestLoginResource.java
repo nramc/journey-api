@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.jwt.JwtGenerator;
+import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

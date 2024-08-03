@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.services.cloudinary;
+package com.github.nramc.dev.journey.api.core.services.cloudinary;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

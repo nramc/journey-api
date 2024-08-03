@@ -17,31 +17,46 @@ import java.util.Set;
 
 @TestConfiguration
 public class TestConfig {
+    public static final AuthUser TEST_USER = AuthUser.builder()
+            .username("test-user")
+            .password("test-password")
+            .roles(Set.of(Role.AUTHENTICATED_USER))
+            .name("USER")
+            .enabled(true)
+            .build();
+    public static final AuthUser ADMIN_USER = AuthUser.builder()
+            .username("test-admin")
+            .password("{noop}test-password")
+            .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
+            .name("Administrator")
+            .enabled(true)
+            .mfaEnabled(true)
+            .build();
+    public static final AuthUser AUTHENTICATED_USER = AuthUser.builder()
+            .username("auth-user")
+            .password("test")
+            .roles(Set.of(Role.AUTHENTICATED_USER))
+            .name("Authenticated User")
+            .enabled(true)
+            .build();
+    public static final AuthUser GUEST_USER = AuthUser.builder()
+            .username("GUEST")
+            .password("test")
+            .roles(Set.of(Role.GUEST_USER))
+            .name("Guest")
+            .enabled(true)
+            .build();
 
     @Bean
     @Lazy
     public UserDetailsManager inMemoryUserDetailsManager(PasswordEncoder passwordEncoder) {
-        // The builder will ensure the passwords are encoded before saving in memory
-        UserDetails testUser = AuthUser.builder()
-                .username("test-user")
-                .password(passwordEncoder.encode("test-password"))
-                .roles(Set.of(Role.AUTHENTICATED_USER))
-                .name("USER")
-                .build();
-        UserDetails admin = AuthUser.builder()
-                .username("test-admin")
-                .password(passwordEncoder.encode("test-password"))
-                .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
-                .name("Administrator")
-                .build();
-        UserDetails authenticatedUser = AuthUser.builder()
-                .username("auth-user")
-                .password(passwordEncoder.encode("test"))
-                .roles(Set.of(Role.AUTHENTICATED_USER))
-                .name("Authenticated User")
-                .build();
 
-        return new InMemoryUserDetailsManager(testUser, authenticatedUser, admin) {
+        return new InMemoryUserDetailsManager(
+                TEST_USER.toBuilder().password(passwordEncoder.encode(TEST_USER.getPassword())).build(),
+                AUTHENTICATED_USER.toBuilder().password(passwordEncoder.encode(AUTHENTICATED_USER.getPassword())).build(),
+                ADMIN_USER.toBuilder().password(passwordEncoder.encode(ADMIN_USER.getPassword())).build(),
+                GUEST_USER.toBuilder().password(passwordEncoder.encode(GUEST_USER.getPassword())).build()
+        ) {
             @Override
             @SuppressWarnings("unchecked")
             public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {

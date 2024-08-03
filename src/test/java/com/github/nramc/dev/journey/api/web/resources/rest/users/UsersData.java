@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users;
 
 import com.github.nramc.dev.journey.api.config.security.Role;
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import lombok.experimental.UtilityClass;
@@ -12,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.config.security.Role.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.TOTP;
 
 @UtilityClass
 public class UsersData {
@@ -25,7 +26,15 @@ public class UsersData {
             .build();
     public static final UserSecurityAttribute EMAIL_ATTRIBUTE = UserSecurityAttribute.builder()
             .value("test.user@gmail.com")
-            .type(SecurityAttributeType.EMAIL_ADDRESS)
+            .type(EMAIL_ADDRESS)
+            .verified(false)
+            .enabled(true)
+            .creationDate(LocalDate.now())
+            .lastUpdateDate(LocalDate.now())
+            .build();
+    public static final UserSecurityAttribute TOTP_ATTRIBUTE = UserSecurityAttribute.builder()
+            .value("SECRET_KEY")
+            .type(TOTP)
             .verified(false)
             .enabled(true)
             .creationDate(LocalDate.now())
