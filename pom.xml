@@ -34,6 +34,9 @@
     </profiles>
     <properties>
         <java.version>21</java.version>
+        <sonar.organization>nramc</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
 
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
