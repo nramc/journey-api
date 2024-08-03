@@ -210,7 +210,7 @@
                     <execution>
                         <id>run-open-rewrite-execution</id>
                         <goals>
-                            <goal>run</goal>
+                            <goal>runNoFork</goal>
                         </goals>
                         <phase>pre-integration-test</phase>
                         <configuration>
@@ -220,9 +220,9 @@
                     <execution>
                         <id>dry-run-open-rewrite-execution</id>
                         <goals>
-                            <goal>dryRun</goal>
+                            <goal>dryRunNoFork</goal>
                         </goals>
-                        <phase>post-integration-test</phase>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
                 <configuration>
