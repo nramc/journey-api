@@ -18,14 +18,14 @@ import java.util.Set;
 @TestConfiguration
 public class TestConfig {
     public static final AuthUser TEST_USER = AuthUser.builder()
-            .username("test-user")
+            .username("arlanda_cuffkut@toddler.xbx")
             .password("test-password")
             .roles(Set.of(Role.AUTHENTICATED_USER))
             .name("USER")
             .enabled(true)
             .build();
     public static final AuthUser ADMIN_USER = AuthUser.builder()
-            .username("test-admin")
+            .username("tacoma_dominguezkt@muscle.wrp")
             .password("{noop}test-password")
             .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
             .name("Administrator")
@@ -33,7 +33,7 @@ public class TestConfig {
             .mfaEnabled(true)
             .build();
     public static final AuthUser AUTHENTICATED_USER = AuthUser.builder()
-            .username("auth-user")
+            .username("tomie_esserhhjg@reward.hc")
             .password("test")
             .roles(Set.of(Role.AUTHENTICATED_USER))
             .name("Authenticated User")
