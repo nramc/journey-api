@@ -1,4 +1,5 @@
 app:
+  ui-app-url: http://localhost:4200
   operational:
     users:
       - name: localDevAdmin
