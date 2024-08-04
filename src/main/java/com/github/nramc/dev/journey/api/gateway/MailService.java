@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
+package com.github.nramc.dev.journey.api.gateway;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

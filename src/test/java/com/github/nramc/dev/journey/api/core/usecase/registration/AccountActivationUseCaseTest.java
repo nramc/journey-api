@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
+import com.github.nramc.dev.journey.api.gateway.MailService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
