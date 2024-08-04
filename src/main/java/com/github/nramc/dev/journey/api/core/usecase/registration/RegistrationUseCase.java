@@ -24,6 +24,7 @@ public class RegistrationUseCase {
     private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
     private final Validator validator;
+    private final AccountActivationUseCase accountActivationUseCase;
 
     public AppUser register(AppUser user) {
         validate(user);
@@ -32,7 +33,9 @@ public class RegistrationUseCase {
         AuthUser userEntity = toEntity(onboardingUser);
         userDetailsManager.createUser(userEntity);
         AuthUser registeredUserEntity = (AuthUser) userDetailsManager.loadUserByUsername(userEntity.getUsername());
-        return AppUserConvertor.toDomain(registeredUserEntity);
+        AppUser registeredUser = AppUserConvertor.toDomain(registeredUserEntity);
+        accountActivationUseCase.sendActivationEmail(registeredUser);
+        return registeredUser;
     }
 
     public AppUser create(AppUser user) {

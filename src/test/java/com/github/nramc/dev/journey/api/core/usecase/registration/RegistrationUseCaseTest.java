@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -46,12 +47,14 @@ class RegistrationUseCaseTest {
     private Validator validator;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @MockBean
+    private AccountActivationUseCase accountActivationUseCase;
 
     private RegistrationUseCase registrationUseCase;
 
     @BeforeEach
     void setUp() {
-        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator);
+        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase);
     }
 
     @Test
