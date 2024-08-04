@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.config.security.Role;
+import com.github.nramc.dev.journey.api.core.converters.AppUserConvertor;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
@@ -24,20 +25,24 @@ public class RegistrationUseCase {
     private final PasswordEncoder passwordEncoder;
     private final Validator validator;
 
-    public void register(AppUser user) {
+    public AppUser register(AppUser user) {
         validate(user);
 
         AppUser onboardingUser = setDefaultValuesForRegistration(user);
         AuthUser userEntity = toEntity(onboardingUser);
         userDetailsManager.createUser(userEntity);
+        AuthUser registeredUserEntity = (AuthUser) userDetailsManager.loadUserByUsername(userEntity.getUsername());
+        return AppUserConvertor.toDomain(registeredUserEntity);
     }
 
-    public void create(AppUser user) {
+    public AppUser create(AppUser user) {
         validate(user);
 
         AppUser onboardingUser = setDefaultValuesForCreation(user);
         AuthUser userEntity = toEntity(onboardingUser);
         userDetailsManager.createUser(userEntity);
+        AuthUser registeredUserEntity = (AuthUser) userDetailsManager.loadUserByUsername(userEntity.getUsername());
+        return AppUserConvertor.toDomain(registeredUserEntity);
     }
 
     private void validate(AppUser user) {

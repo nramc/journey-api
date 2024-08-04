@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 import com.github.nramc.dev.journey.api.config.TestConfig;
 import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -57,16 +56,15 @@ class RegistrationUseCaseTest {
 
     @Test
     void register_whenRegistrationDataValid_thenShouldRegisterUser() {
-        registrationUseCase.register(ONBOARDING_USER);
-        AuthUser registeredUserEntity = (AuthUser) userDetailsManager.loadUserByUsername(ONBOARDING_USER.username());
-        assertThat(registeredUserEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getName()).isEqualTo(ONBOARDING_USER.name()))
-                .satisfies(entity -> assertThat(entity.getUsername()).isEqualTo(ONBOARDING_USER.username()))
-                .satisfies(entity -> assertThat(entity.getPassword()).isNotBlank())
-                .satisfies(entity -> assertThat(entity.getRoles()).isEqualTo(Set.of(Role.AUTHENTICATED_USER)))
-                .satisfies(entity -> assertThat(entity.isEnabled()).isFalse())
-                .satisfies(entity -> assertThat(entity.isMfaEnabled()).isFalse())
-                .satisfies(entity -> assertThat(entity.getCreatedDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
+        AppUser registeredUser = registrationUseCase.register(ONBOARDING_USER);
+        assertThat(registeredUser).isNotNull()
+                .satisfies(user -> assertThat(user.name()).isEqualTo(ONBOARDING_USER.name()))
+                .satisfies(user -> assertThat(user.username()).isEqualTo(ONBOARDING_USER.username()))
+                .satisfies(user -> assertThat(user.password()).isNullOrEmpty())
+                .satisfies(user -> assertThat(user.roles()).isEqualTo(Set.of(Role.AUTHENTICATED_USER)))
+                .satisfies(user -> assertThat(user.enabled()).isFalse())
+                .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
+                .satisfies(user -> assertThat(user.createdDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
     }
 
     @Test
@@ -83,16 +81,15 @@ class RegistrationUseCaseTest {
 
     @Test
     void create_whenRegistrationDataValid_thenShouldRegisterUser() {
-        registrationUseCase.create(NEW_USER);
-        AuthUser registeredUserEntity = (AuthUser) userDetailsManager.loadUserByUsername(NEW_USER.username());
-        assertThat(registeredUserEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getName()).isEqualTo(NEW_USER.name()))
-                .satisfies(entity -> assertThat(entity.getUsername()).isEqualTo(NEW_USER.username()))
-                .satisfies(entity -> assertThat(entity.getPassword()).isNotBlank())
-                .satisfies(entity -> assertThat(entity.getRoles()).isEqualTo(NEW_USER.roles()))
-                .satisfies(entity -> assertThat(entity.isEnabled()).isTrue())
-                .satisfies(entity -> assertThat(entity.isMfaEnabled()).isFalse())
-                .satisfies(entity -> assertThat(entity.getCreatedDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
+        AppUser createdUser = registrationUseCase.create(NEW_USER);
+        assertThat(createdUser).isNotNull()
+                .satisfies(user -> assertThat(user.name()).isEqualTo(NEW_USER.name()))
+                .satisfies(user -> assertThat(user.username()).isEqualTo(NEW_USER.username()))
+                .satisfies(user -> assertThat(user.password()).isNullOrEmpty())
+                .satisfies(user -> assertThat(user.roles()).isEqualTo(NEW_USER.roles()))
+                .satisfies(user -> assertThat(user.enabled()).isTrue())
+                .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
+                .satisfies(user -> assertThat(user.createdDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
     }
 
     @Test
