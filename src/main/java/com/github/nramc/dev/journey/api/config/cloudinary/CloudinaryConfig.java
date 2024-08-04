@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.config.cloudinary;
 
 import com.cloudinary.Cloudinary;
-import com.github.nramc.dev.journey.api.core.services.cloudinary.CloudinaryService;
+import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
