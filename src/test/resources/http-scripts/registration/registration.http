@@ -1,0 +1,8 @@
+POST http://localhost:8080/rest/signup
+Content-Type: application/json
+
+{
+  "name": "Ramachandran Nellaiyappan",
+  "username": "{{$random.email}}",
+  "password": "{{$random.alphanumeric(10)}}1!"
+}
