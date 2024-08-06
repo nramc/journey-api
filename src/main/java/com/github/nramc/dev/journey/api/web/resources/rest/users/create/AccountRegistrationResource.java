@@ -23,7 +23,7 @@ import java.util.Set;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class CreateUserResource {
+public class AccountRegistrationResource {
     private final RegistrationUseCase registrationUseCase;
 
     @Operation(summary = "Sign up new account")

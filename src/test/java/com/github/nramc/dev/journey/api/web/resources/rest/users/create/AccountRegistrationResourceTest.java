@@ -24,11 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = {CreateUserResource.class})
+@WebMvcTest(controllers = {AccountRegistrationResource.class})
 @Import({TestConfig.class, WebSecurityConfig.class})
 @ActiveProfiles({"test"})
 @MockBean({RegistrationUseCase.class})
-class CreateUserResourceTest {
+class AccountRegistrationResourceTest {
     private static final String SIGNUP_REQUEST_TEMPLATE = """
             {
              "username": "%s",
