@@ -1,9 +1,10 @@
 package com.github.nramc.dev.journey.api.config;
 
+import com.github.nramc.dev.journey.api.core.services.EmailTokenService;
+import com.github.nramc.dev.journey.api.gateway.MailService;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailCodeValidator;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService;
@@ -18,6 +19,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ApplicationServiceConfig {
+
+    @Bean
+    public EmailTokenService emailTokenService(ConfirmationCodeRepository codeRepository) {
+        return new EmailTokenService(codeRepository);
+    }
+
 
     @Bean
     public UserSecurityAttributeService userSecurityAttributeService(UserSecurityAttributesRepository attributesRepository) {

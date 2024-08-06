@@ -1,4 +1,5 @@
 app:
+  ui-app-url: http://localhost:4200
   operational:
     users:
       - name: localDevAdmin
@@ -38,3 +39,14 @@ jwt:
   public-key: classpath:app.pub
   ttl: 1h
   issuer: self
+
+spring:
+  mail:
+    username: noreply@journey.com
+    password: test-password
+    host: localhost
+    port: 1025
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+      mail.smtp.starttls.required: false

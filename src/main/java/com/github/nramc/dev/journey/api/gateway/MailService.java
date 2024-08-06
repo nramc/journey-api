@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
+package com.github.nramc.dev.journey.api.gateway;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -29,10 +29,10 @@ public class MailService {
         log.info("Simple Email has been sent successfully");
     }
 
-    public void sendEmailUsingTemplate(String template, String to, String subject, Map<String, Object> variables)
+    public void sendEmailUsingTemplate(String template, String to, String subject, Map<String, Object> placeholders)
             throws MessagingException {
         Context context = new Context();
-        context.setVariables(variables);
+        context.setVariables(placeholders);
 
         String htmlBody = templateEngine.process(template, context);
 

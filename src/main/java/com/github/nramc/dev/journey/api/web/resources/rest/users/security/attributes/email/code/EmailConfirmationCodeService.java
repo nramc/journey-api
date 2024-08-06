@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepo
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
+import com.github.nramc.dev.journey.api.gateway.MailService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase;

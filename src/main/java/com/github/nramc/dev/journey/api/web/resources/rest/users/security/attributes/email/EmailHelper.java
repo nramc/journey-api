@@ -8,6 +8,7 @@ public class EmailHelper {
 
     public static String getSubject(ConfirmationUseCase useCase) {
         return switch (useCase) {
+            case UNKNOWN -> "Journey: Confirmation Required";
             case VERIFY_EMAIL_ADDRESS -> "Journey: Email Verification Request";
         };
     }

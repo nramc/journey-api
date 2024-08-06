@@ -1,9 +1,12 @@
 package com.github.nramc.dev.journey.api.config;
 
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "app")
 public record ApplicationProperties(
-        String name,
-        String version) {
+        @NotBlank String name,
+        @NotBlank String version,
+        @NotBlank @URL String uiAppUrl) {
 }

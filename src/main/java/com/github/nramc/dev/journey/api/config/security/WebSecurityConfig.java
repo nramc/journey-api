@@ -34,6 +34,7 @@ import static com.github.nramc.dev.journey.api.config.security.Role.ADMINISTRATO
 import static com.github.nramc.dev.journey.api.config.security.Role.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.GUEST_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.MAINTAINER;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.ACTIVATE_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSION;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_JOURNEY;
@@ -58,7 +59,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURI
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_MFA;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SIGNUP;
@@ -121,9 +121,12 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
 
                         .requestMatchers(HOME).permitAll()
-                        .requestMatchers(SIGNUP).permitAll()
                         .requestMatchers(GET, API_VERSION).permitAll()
                         .requestMatchers(REST_DOC).permitAll()
+
+                        // Registration Resources
+                        .requestMatchers(SIGNUP).permitAll()
+                        .requestMatchers(ACTIVATE_ACCOUNT).permitAll()
 
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()
@@ -142,7 +145,6 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE, DELETE_JOURNEY).access(authenticatedUserAuthorizationManager)
 
                         // Users resources
-                        .requestMatchers(POST, NEW_USER).access(adminOnlyAuthorizationManager)
                         .requestMatchers(GET, FIND_USERS).access(adminOnlyAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminOnlyAuthorizationManager)
 

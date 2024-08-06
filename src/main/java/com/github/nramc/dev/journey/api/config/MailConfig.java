@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.config;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.MailService;
+import com.github.nramc.dev.journey.api.gateway.MailService;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
