@@ -15,8 +15,6 @@ import java.util.List;
 import static com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType.EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType.EMAIL_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.assertArg;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +53,7 @@ class EmailTokenServiceTest {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE)
         );
-        assertTrue(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER));
+        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isTrue();
     }
 
     @Test
@@ -63,7 +61,7 @@ class EmailTokenServiceTest {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of()
         );
-        assertFalse(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER));
+        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
     @Test
@@ -71,7 +69,7 @@ class EmailTokenServiceTest {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE.toBuilder().isActive(false).build())
         );
-        assertFalse(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER));
+        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
     @Test
@@ -79,7 +77,7 @@ class EmailTokenServiceTest {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE.toBuilder().type(EMAIL_CODE).build())
         );
-        assertFalse(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER));
+        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
     @Test
@@ -87,7 +85,7 @@ class EmailTokenServiceTest {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE.toBuilder().code("078275ea-e9ff-4043-9275-50a84802f205").build())
         );
-        assertFalse(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER));
+        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
 }

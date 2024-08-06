@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.config.TestConfig.AUTHENTICATED_USER;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.Mockito.argThat;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
@@ -38,7 +38,7 @@ class AccountActivationUseCaseTest {
     private static final AuthUser ONBOARDING_USER_ENTITY = AUTHENTICATED_USER.toBuilder()
             .username(USERNAME)
             .build();
-    private final static EmailToken EMAIL_TOKEN = EmailToken.valueOf("2fbbd48c-c16a-4638-9bce-988502cc6f11");
+    private static final EmailToken EMAIL_TOKEN = EmailToken.valueOf("2fbbd48c-c16a-4638-9bce-988502cc6f11");
     private static final String JOURNEY_UI_BASE_URL = "https://nramc.github.io/journeys";
     @Mock
     private ApplicationProperties applicationProperties;
@@ -73,7 +73,7 @@ class AccountActivationUseCaseTest {
     void activateAccount_whenTokenNotExistsOrInvalid_shouldThrowError() {
         when(emailTokenService.isTokenExistsAndValid(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
 
-        assertThrows(BusinessException.class, () -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER));
+        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER));
     }
 
     @Test
