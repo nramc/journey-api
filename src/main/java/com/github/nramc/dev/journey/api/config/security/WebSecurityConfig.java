@@ -34,6 +34,7 @@ import static com.github.nramc.dev.journey.api.config.security.Role.ADMINISTRATO
 import static com.github.nramc.dev.journey.api.config.security.Role.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.GUEST_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.MAINTAINER;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.ACTIVATE_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSION;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_JOURNEY;
@@ -120,9 +121,12 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
 
                         .requestMatchers(HOME).permitAll()
-                        .requestMatchers(SIGNUP).permitAll()
                         .requestMatchers(GET, API_VERSION).permitAll()
                         .requestMatchers(REST_DOC).permitAll()
+
+                        // Registration Resources
+                        .requestMatchers(SIGNUP).permitAll()
+                        .requestMatchers(ACTIVATE_ACCOUNT).permitAll()
 
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()
