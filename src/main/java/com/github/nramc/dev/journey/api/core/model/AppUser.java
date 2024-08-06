@@ -33,7 +33,6 @@ public record AppUser(
     public String toString() {
         return "AppUser{" +
                 "username='" + username + '\'' +
-                ", password='***'" +
                 ", name='" + name + '\'' +
                 ", createdDate=" + createdDate +
                 ", passwordChangedAt=" + passwordChangedAt +
