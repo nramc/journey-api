@@ -25,7 +25,6 @@ public class Resources {
     public static final String DELETE_JOURNEY = "/rest/journey/{id}";
 
     public static final String SIGNUP = "/rest/signup";
-    public static final String NEW_USER = "/rest/user/new";
     public static final String FIND_USERS = "/rest/users";
     public static final String DELETE_USER_BY_USERNAME = "/rest/user/{username}";
 

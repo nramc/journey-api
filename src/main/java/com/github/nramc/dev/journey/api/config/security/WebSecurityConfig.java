@@ -58,7 +58,6 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURI
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_MFA;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SIGNUP;
@@ -142,7 +141,6 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE, DELETE_JOURNEY).access(authenticatedUserAuthorizationManager)
 
                         // Users resources
-                        .requestMatchers(POST, NEW_USER).access(adminOnlyAuthorizationManager)
                         .requestMatchers(GET, FIND_USERS).access(adminOnlyAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminOnlyAuthorizationManager)
 

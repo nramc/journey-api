@@ -1,7 +1,5 @@
 package com.github.nramc.dev.journey.api.core.usecase.registration;
 
-import com.github.nramc.dev.journey.api.config.security.Role;
-import com.github.nramc.dev.journey.api.core.converters.AppUserConvertor;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
@@ -29,23 +27,20 @@ public class RegistrationUseCase {
     public AppUser register(AppUser user) {
         validate(user);
 
-        AppUser onboardingUser = setDefaultValuesForRegistration(user);
+        AppUser onboardingUser = user.toBuilder()
+                .username(user.username().toLowerCase())
+                .password(passwordEncoder.encode(user.password()))
+                .roles(user.roles())
+                .enabled(false)
+                .createdDate(LocalDateTime.now())
+                .passwordChangedAt(LocalDateTime.now())
+                .build();
+
         AuthUser userEntity = toEntity(onboardingUser);
         userDetailsManager.createUser(userEntity);
-        AuthUser registeredUserEntity = (AuthUser) userDetailsManager.loadUserByUsername(userEntity.getUsername());
-        AppUser registeredUser = AppUserConvertor.toDomain(registeredUserEntity);
-        accountActivationUseCase.sendActivationEmail(registeredUser);
-        return registeredUser;
-    }
+        accountActivationUseCase.sendActivationEmail(onboardingUser);
 
-    public AppUser create(AppUser user) {
-        validate(user);
-
-        AppUser onboardingUser = setDefaultValuesForCreation(user);
-        AuthUser userEntity = toEntity(onboardingUser);
-        userDetailsManager.createUser(userEntity);
-        AuthUser registeredUserEntity = (AuthUser) userDetailsManager.loadUserByUsername(userEntity.getUsername());
-        return AppUserConvertor.toDomain(registeredUserEntity);
+        return onboardingUser;
     }
 
     private void validate(AppUser user) {
@@ -56,26 +51,6 @@ public class RegistrationUseCase {
         if (userDetailsManager.userExists(user.username())) {
             throw new BusinessException("Username already exists", "user.exists");
         }
-    }
-
-    private AppUser setDefaultValuesForRegistration(AppUser user) {
-        return user.toBuilder()
-                .username(user.username().toLowerCase())
-                .password(passwordEncoder.encode(user.password()))
-                .roles(Set.of(Role.AUTHENTICATED_USER))
-                .enabled(false)
-                .createdDate(LocalDateTime.now())
-                .passwordChangedAt(LocalDateTime.now())
-                .build();
-    }
-
-    private AppUser setDefaultValuesForCreation(AppUser user) {
-        return user.toBuilder()
-                .username(user.username().toLowerCase())
-                .password(passwordEncoder.encode(user.password()))
-                .enabled(true)
-                .createdDate(LocalDateTime.now())
-                .build();
     }
 
 }

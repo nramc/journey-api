@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.create;
 
+import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
@@ -17,28 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 public class CreateUserResource {
     private final RegistrationUseCase registrationUseCase;
-
-    @Operation(summary = "Create new application user with corresponding roles")
-    @RestDocCommonResponse
-    @ApiResponse(responseCode = "201", description = "User created successfully")
-    @PostMapping(value = Resources.NEW_USER, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Tag(name = "Administrator Features")
-    public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequest userRequest) {
-        registrationUseCase.create(AppUser.builder()
-                .username(userRequest.username())
-                .password(userRequest.password())
-                .name(userRequest.name())
-                .roles(userRequest.roles())
-                .build()
-        );
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
 
     @Operation(summary = "Sign up new account")
     @RestDocCommonResponse
@@ -51,6 +37,7 @@ public class CreateUserResource {
                         .username(signupRequest.username())
                         .password(signupRequest.password())
                         .name(signupRequest.name())
+                        .roles(Set.of(Role.AUTHENTICATED_USER))
                         .build()
         );
         return ResponseEntity.status(HttpStatus.CREATED).build();

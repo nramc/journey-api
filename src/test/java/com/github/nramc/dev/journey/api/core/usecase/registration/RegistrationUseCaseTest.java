@@ -34,12 +34,7 @@ class RegistrationUseCaseTest {
             .name("Chalese Bitner")
             .username("juniper_eliasxcsx@cultural.ycw")
             .password("3GBWiBosweeZX7VSdnKgIBSp!")
-            .build();
-    private static final AppUser NEW_USER = AppUser.builder()
-            .name("Denika Sublett")
-            .username("latavia_hellmandczl@tribute.lgh")
-            .password("ElLpNbOJ25M71SZGyaXsz5H!")
-            .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
+            .roles(Set.of(Role.AUTHENTICATED_USER))
             .build();
     @Autowired
     private UserDetailsManager userDetailsManager;
@@ -63,7 +58,7 @@ class RegistrationUseCaseTest {
         assertThat(registeredUser).isNotNull()
                 .satisfies(user -> assertThat(user.name()).isEqualTo(ONBOARDING_USER.name()))
                 .satisfies(user -> assertThat(user.username()).isEqualTo(ONBOARDING_USER.username()))
-                .satisfies(user -> assertThat(user.password()).isNullOrEmpty())
+                .satisfies(user -> assertThat(user.password()).isNotBlank())
                 .satisfies(user -> assertThat(user.roles()).isEqualTo(Set.of(Role.AUTHENTICATED_USER)))
                 .satisfies(user -> assertThat(user.enabled()).isFalse())
                 .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
@@ -80,31 +75,6 @@ class RegistrationUseCaseTest {
     void register_whenUserAlreadyExists_thenShouldThrowException() {
         assertThatExceptionOfType(BusinessException.class).isThrownBy(() ->
                 registrationUseCase.register(ONBOARDING_USER.toBuilder().username(AUTHENTICATED_USER.getUsername()).build()));
-    }
-
-    @Test
-    void create_whenRegistrationDataValid_thenShouldRegisterUser() {
-        AppUser createdUser = registrationUseCase.create(NEW_USER);
-        assertThat(createdUser).isNotNull()
-                .satisfies(user -> assertThat(user.name()).isEqualTo(NEW_USER.name()))
-                .satisfies(user -> assertThat(user.username()).isEqualTo(NEW_USER.username()))
-                .satisfies(user -> assertThat(user.password()).isNullOrEmpty())
-                .satisfies(user -> assertThat(user.roles()).isEqualTo(NEW_USER.roles()))
-                .satisfies(user -> assertThat(user.enabled()).isTrue())
-                .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
-                .satisfies(user -> assertThat(user.createdDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
-    }
-
-    @Test
-    void create_whenRegistrationDetailsNotValid_thenShouldThrowException() {
-        assertThatExceptionOfType(ConstraintViolationException.class).isThrownBy(() ->
-                registrationUseCase.create(NEW_USER.toBuilder().username("invalid-user-name").build()));
-    }
-
-    @Test
-    void create_whenUserAlreadyExists_thenShouldThrowException() {
-        assertThatExceptionOfType(BusinessException.class).isThrownBy(() ->
-                registrationUseCase.create(NEW_USER.toBuilder().username(AUTHENTICATED_USER.getUsername()).build()));
     }
 
 }
