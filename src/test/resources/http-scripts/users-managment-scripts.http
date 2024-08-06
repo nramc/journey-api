@@ -12,21 +12,6 @@ Authorization: Basic {{adminUsername}} {{adminUserPassword}}
     });
 %}
 
-
-### Create User
-POST {{baseUrl}}/user/new
-Authorization: Bearer {{jwtToken}}
-Content-Type: application/json
-Origin: https://nramc.github.io
-
-{
-  "username": "app-user001",
-  "password": "dummy-001",
-  "name": "App User 001",
-  "emailAddress": "app-user@dummy.com",
-  "roles": ["ADMINISTRATOR", "AUTHENTICATED_USER", "MAINTAINER"]
-}
-
 ### Find all users
 GET {{baseUrl}}/users
 Authorization: Bearer {{jwtToken}}

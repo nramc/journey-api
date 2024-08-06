@@ -1,3 +1,4 @@
+### Account Registration
 POST http://localhost:8080/rest/signup
 Content-Type: application/json
 
@@ -5,4 +6,13 @@ Content-Type: application/json
   "name": "Ramachandran Nellaiyappan",
   "username": "{{$random.email}}",
   "password": "{{$random.alphanumeric(10)}}1!"
+}
+
+### Account Activation
+POST http://127.0.0.1:8080/rest/activate
+Content-Type: application/json
+
+{
+  "username": "",
+  "emailToken": ""
 }
