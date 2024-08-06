@@ -3,9 +3,14 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 import com.github.nramc.dev.journey.api.config.ApplicationProperties;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.core.model.EmailToken;
+import com.github.nramc.dev.journey.api.core.security.attributes.EmailAddress;
 import com.github.nramc.dev.journey.api.core.services.EmailTokenService;
 import com.github.nramc.dev.journey.api.gateway.MailService;
+import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +26,29 @@ public class AccountActivationUseCase {
     private final ApplicationProperties applicationProperties;
     private final EmailTokenService emailTokenService;
     private final MailService mailService;
+    private final AuthUserDetailsService userDetailsService;
+    private final UserSecurityEmailAddressAttributeService emailAddressAttributeService;
 
     public void sendActivationEmail(AppUser user) {
         EmailToken emailToken = emailTokenService.generateEmailToken(user);
         String activationUrl = getActivationUrl(emailToken, user);
         sendActivationEmail(activationUrl, user);
+    }
+
+    public void activateAccount(EmailToken emailToken, AppUser user) {
+        if (emailTokenService.isTokenExistsAndValid(emailToken, user)) {
+            activate(user);
+        } else {
+            throw new BusinessException("", "token.invalid.not.exists");
+        }
+    }
+
+    private void activate(AppUser user) {
+        AuthUser userEntity = (AuthUser) userDetailsService.loadUserByUsername(user.username());
+        AuthUser updatedUserEntity = userEntity.toBuilder().enabled(true).build();
+        userDetailsService.updateUser(updatedUserEntity);
+
+        emailAddressAttributeService.saveSecurityEmailAddress(updatedUserEntity, EmailAddress.valueOf(userEntity.getUsername()));
     }
 
     private void sendActivationEmail(String activationUrl, AppUser user) {
@@ -41,7 +64,7 @@ public class AccountActivationUseCase {
 
     private String getActivationUrl(EmailToken emailToken, AppUser user) {
         return UriComponentsBuilder.fromHttpUrl(applicationProperties.uiAppUrl())
-                .path("/activate")
+                .path("/activation")
                 .queryParam("identifier", user.username())
                 .queryParam("token", emailToken.token())
                 .build().toUriString();

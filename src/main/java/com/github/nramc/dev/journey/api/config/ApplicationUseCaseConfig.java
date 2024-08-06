@@ -4,6 +4,8 @@ import com.github.nramc.dev.journey.api.core.services.EmailTokenService;
 import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
 import com.github.nramc.dev.journey.api.gateway.MailService;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import jakarta.validation.Validator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +16,10 @@ import org.springframework.security.provisioning.UserDetailsManager;
 public class ApplicationUseCaseConfig {
 
     @Bean
-    public AccountActivationUseCase accountActivationUseCase(ApplicationProperties properties, EmailTokenService emailTokenService, MailService mailService) {
-        return new AccountActivationUseCase(properties, emailTokenService, mailService);
+    public AccountActivationUseCase accountActivationUseCase(
+            ApplicationProperties properties, EmailTokenService emailTokenService, MailService mailService,
+            AuthUserDetailsService userDetailsService, UserSecurityEmailAddressAttributeService emailAddressAttributeService) {
+        return new AccountActivationUseCase(properties, emailTokenService, mailService, userDetailsService, emailAddressAttributeService);
     }
 
     @Bean
