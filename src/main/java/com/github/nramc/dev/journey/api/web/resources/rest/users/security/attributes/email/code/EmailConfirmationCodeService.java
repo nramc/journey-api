@@ -30,7 +30,7 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.users.security
 @Slf4j
 public class EmailConfirmationCodeService {
     static final int CODE_LENGTH = 6;
-    static final String EMAIL_CODE_TEMPLATE_HTML = "email-code-template.html";
+    public static final String EMAIL_CODE_TEMPLATE_HTML = "email-code-template.html";
     private static final SecureRandom RANDOM = new SecureRandom();
     private final MailService mailService;
     private final ConfirmationCodeRepository codeRepository;

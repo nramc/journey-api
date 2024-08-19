@@ -6,8 +6,8 @@ spring:
       database: journey-dev
       auto-index-creation: true
   mail:
-    host: smtp.gmail.com
-    port: 587
+    host:
+    port:
     username: ${NOREPLY_EMAIL}
     password: ${NOREPLY_EMAIL_PWD}
     test-connection: true

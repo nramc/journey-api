@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.gateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -14,7 +15,7 @@ public class MockMailService extends MailService {
     }
 
     @Override
-    public void sendSimpleEmail(String to, String subject, String body) {
+    public void sendSimpleEmail(List<String> toAddresses, String subject, String body) {
         log.info("No operation required for sendSimpleEmail()");
     }
 

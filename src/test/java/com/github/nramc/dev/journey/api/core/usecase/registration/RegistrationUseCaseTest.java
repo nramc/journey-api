@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 import com.github.nramc.dev.journey.api.config.TestConfig;
 import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
+import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -26,6 +27,7 @@ import static com.github.nramc.dev.journey.api.config.TestConfig.AUTHENTICATED_U
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfig.class, ValidationAutoConfiguration.class, BCryptPasswordEncoder.class})
@@ -44,12 +46,14 @@ class RegistrationUseCaseTest {
     private PasswordEncoder passwordEncoder;
     @MockBean
     private AccountActivationUseCase accountActivationUseCase;
+    @MockBean
+    private EmailNotificationUseCase emailNotificationUseCase;
 
     private RegistrationUseCase registrationUseCase;
 
     @BeforeEach
     void setUp() {
-        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase);
+        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase, emailNotificationUseCase);
     }
 
     @Test
@@ -63,6 +67,7 @@ class RegistrationUseCaseTest {
                 .satisfies(user -> assertThat(user.enabled()).isFalse())
                 .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
                 .satisfies(user -> assertThat(user.createdDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
+        verify(emailNotificationUseCase).notifyAdmin("New User signup - juniper_eliasxcsx@cultural.ycw");
     }
 
     @Test

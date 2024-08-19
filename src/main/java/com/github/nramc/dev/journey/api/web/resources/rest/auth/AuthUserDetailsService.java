@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth;
 
+import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -58,4 +61,9 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
     public boolean userExists(String username) {
         return userRepository.findUserByUsername(username) != null;
     }
+
+    public List<AuthUser> findAllAdministratorUsers() {
+        return userRepository.findByRolesContainingAndEnabled(Set.of(Role.ADMINISTRATOR), true);
+    }
+
 }

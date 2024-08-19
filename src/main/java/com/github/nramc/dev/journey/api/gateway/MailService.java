@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -20,9 +21,9 @@ public class MailService {
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
 
-    public void sendSimpleEmail(String to, String subject, String body) {
+    public void sendSimpleEmail(List<String> toAddresses, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
+        message.setTo(toAddresses.toArray(new String[0]));
         message.setSubject(subject);
         message.setText(body);
         emailSender.send(message);

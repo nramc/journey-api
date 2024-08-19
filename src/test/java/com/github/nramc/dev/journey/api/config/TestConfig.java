@@ -27,7 +27,7 @@ public class TestConfig {
     public static final AuthUser ADMIN_USER = AuthUser.builder()
             .username("tacoma_dominguezkt@muscle.wrp")
             .password("{noop}test-password")
-            .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
+            .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER, Role.ADMINISTRATOR))
             .name("Administrator")
             .enabled(true)
             .mfaEnabled(true)

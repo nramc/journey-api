@@ -5,6 +5,7 @@ import com.github.nramc.dev.journey.api.config.security.Role;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.core.model.EmailToken;
 import com.github.nramc.dev.journey.api.core.services.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.gateway.MailService;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
@@ -50,6 +51,8 @@ class AccountActivationUseCaseTest {
     private AuthUserDetailsService userDetailsService;
     @Mock
     private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
+    @Mock
+    private EmailNotificationUseCase emailNotificationUseCase;
     @InjectMocks
     private AccountActivationUseCase accountActivationUseCase;
 
@@ -84,6 +87,7 @@ class AccountActivationUseCaseTest {
         accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER);
         verify(userDetailsService).updateUser(argThat(entity -> entity.isEnabled() && USERNAME.equals(entity.getUsername())));
         verify(emailAddressAttributeService).saveSecurityEmailAddress(eq(ONBOARDING_USER_ENTITY), argThat(emailAddress -> USERNAME.equals(emailAddress.value())));
+        verify(emailNotificationUseCase).notifyAdmin("User completed onboarding - " + USERNAME);
     }
 
 }
