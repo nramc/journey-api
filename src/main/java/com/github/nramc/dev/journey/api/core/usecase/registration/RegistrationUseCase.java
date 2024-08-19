@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.core.model.AppUser;
+import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolation;
@@ -23,6 +24,7 @@ public class RegistrationUseCase {
     private final PasswordEncoder passwordEncoder;
     private final Validator validator;
     private final AccountActivationUseCase accountActivationUseCase;
+    private final EmailNotificationUseCase emailNotificationUseCase;
 
     public AppUser register(AppUser user) {
         validate(user);
@@ -39,6 +41,7 @@ public class RegistrationUseCase {
         AuthUser userEntity = toEntity(onboardingUser);
         userDetailsManager.createUser(userEntity);
         accountActivationUseCase.sendActivationEmail(onboardingUser);
+        emailNotificationUseCase.notifyAdmin("New User signup - " + onboardingUser.username());
 
         return onboardingUser;
     }

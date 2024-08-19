@@ -5,6 +5,7 @@ import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.core.model.EmailToken;
 import com.github.nramc.dev.journey.api.core.security.attributes.EmailAddress;
 import com.github.nramc.dev.journey.api.core.services.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.gateway.MailService;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
@@ -28,6 +29,7 @@ public class AccountActivationUseCase {
     private final MailService mailService;
     private final AuthUserDetailsService userDetailsService;
     private final UserSecurityEmailAddressAttributeService emailAddressAttributeService;
+    private final EmailNotificationUseCase emailNotificationUseCase;
 
     public void sendActivationEmail(AppUser user) {
         EmailToken emailToken = emailTokenService.generateEmailToken(user);
@@ -49,6 +51,7 @@ public class AccountActivationUseCase {
         userDetailsService.updateUser(updatedUserEntity);
 
         emailAddressAttributeService.saveSecurityEmailAddress(updatedUserEntity, EmailAddress.valueOf(userEntity.getUsername()));
+        emailNotificationUseCase.notifyAdmin("User completed onboarding - " + userEntity.getUsername());
     }
 
     private void sendActivationEmail(String activationUrl, AppUser user) {
