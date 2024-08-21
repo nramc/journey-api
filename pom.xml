@@ -72,7 +72,7 @@
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
-        <rewrite-maven-plugin.version>5.39.0</rewrite-maven-plugin.version>
+        <rewrite-maven-plugin.version>5.39.1</rewrite-maven-plugin.version>
         <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
