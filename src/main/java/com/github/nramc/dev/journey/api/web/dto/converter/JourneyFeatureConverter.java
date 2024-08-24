@@ -20,6 +20,7 @@ public class JourneyFeatureConverter {
 
         properties.put("name", entity.getName());
         properties.put("category", entity.getCategory());
+        properties.put("title", entity.getTitle());
         properties.put("description", entity.getDescription());
 
         properties.put("city", entity.getCity());
