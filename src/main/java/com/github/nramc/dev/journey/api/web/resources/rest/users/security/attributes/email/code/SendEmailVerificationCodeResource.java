@@ -24,7 +24,7 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.users.security
 @Slf4j
 @Tag(name = "My Account Security - Email Address Settings")
 public class SendEmailVerificationCodeResource {
-    private final UserDetailsManager userDetailsService;
+    private final UserDetailsManager userDetailsManager;
     private final EmailConfirmationCodeService emailConfirmationCodeService;
 
     @Operation(summary = "Send Email Confirmation Code to registered email address")
@@ -34,7 +34,7 @@ public class SendEmailVerificationCodeResource {
     public void sendEmailCode(Authentication authentication) {
         AuthUser authUser = Optional.of(authentication)
                 .map(Authentication::getName)
-                .map(userDetailsService::loadUserByUsername)
+                .map(userDetailsManager::loadUserByUsername)
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 

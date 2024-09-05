@@ -27,7 +27,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.VERIFY_EM
 @Slf4j
 @Tag(name = "My Account Security - Email Address Settings")
 public class EmailCodeVerificationResource {
-    private final UserDetailsManager userDetailsService;
+    private final UserDetailsManager userDetailsManager;
     private final EmailConfirmationCodeService emailConfirmationCodeService;
 
     @Operation(summary = "Verify Email Confirmation code which was sent to registered email address")
@@ -38,7 +38,7 @@ public class EmailCodeVerificationResource {
                                                 @RequestBody @Valid EmailCodeVerificationRequest request) {
         AuthUser authUser = Optional.of(authentication)
                 .map(Authentication::getName)
-                .map(userDetailsService::loadUserByUsername)
+                .map(userDetailsManager::loadUserByUsername)
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 
