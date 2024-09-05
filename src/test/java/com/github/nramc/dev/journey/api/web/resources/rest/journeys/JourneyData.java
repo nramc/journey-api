@@ -51,6 +51,7 @@ public class JourneyData {
             .build();
 
     public static final JourneyEntity JOURNEY_EXTENDED_ENTITY = JourneyEntity.builder()
+            .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .name("First Flight Experience")
             .title("One of the most beautiful experience ever in my life")
             .description("Travelled first time for work deputation to Germany, Munich city")
