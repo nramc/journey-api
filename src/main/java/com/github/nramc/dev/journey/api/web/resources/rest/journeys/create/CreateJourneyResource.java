@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.create;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "Create Journey")
 public class CreateJourneyResource {
     private final JourneyRepository journeyRepository;
-    private final AuthUserDetailsService userDetailsService;
+    private final UserDetailsManager userDetailsManager;
 
     @Operation(summary = "Create new Journey with basic details")
     @RestDocCommonResponse
@@ -44,7 +44,7 @@ public class CreateJourneyResource {
             @RequestBody @Valid CreateJourneyRequest request) {
         AuthUser authUser = Optional.of(authentication)
                 .map(Authentication::getName)
-                .map(userDetailsService::loadUserByUsername)
+                .map(userDetailsManager::loadUserByUsername)
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 

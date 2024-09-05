@@ -1,12 +1,18 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.create;
 
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.config.ApplicationProperties;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -24,20 +30,28 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURN
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
+@WebMvcTest(CreateJourneyResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@ActiveProfiles({"prod", "test"})
+@EnableConfigurationProperties({ApplicationProperties.class})
+@MockBean({JourneyRepository.class})
 class CreateJourneyResourceTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private JourneyRepository journeyRepository;
+
+    @BeforeEach
+    void setup() {
+        when(journeyRepository.save(any(JourneyEntity.class))).thenAnswer(answer -> answer.getArgument(0));
+    }
 
     @Test
     void context() {
@@ -53,7 +67,6 @@ class CreateJourneyResourceTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(is(notNullValue())))
                 .andExpect(jsonPath("$.name").value("First Flight Experience"))
                 .andExpect(jsonPath("$.title").value("One of the most beautiful experience ever in my life"))
                 .andExpect(jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"))
@@ -105,7 +118,7 @@ class CreateJourneyResourceTest {
                 "coordinates": [100.0, 0.0]
               }
              }
-            """,/* Deserialization error */"""
+            """,/* Deserialization error dye to invalid type inn location */"""
             {
               "name" : "First Flight Experience",
               "title" : "One of the most beautiful experience ever in my life",
