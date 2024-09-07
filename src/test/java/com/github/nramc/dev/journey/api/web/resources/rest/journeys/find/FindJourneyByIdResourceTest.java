@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
-import com.github.nramc.dev.journey.api.config.ApplicationProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
@@ -8,7 +7,6 @@ import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -34,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(FindJourneyByIdResource.class)
 @Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
 @ActiveProfiles({"prod", "test"})
-@EnableConfigurationProperties({ApplicationProperties.class})
 @MockBean({JourneyRepository.class})
 class FindJourneyByIdResourceTest {
     @Autowired
