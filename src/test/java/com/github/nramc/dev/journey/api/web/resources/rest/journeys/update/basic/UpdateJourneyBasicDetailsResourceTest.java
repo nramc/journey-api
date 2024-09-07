@@ -1,15 +1,13 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basic;
 
-import com.github.nramc.commons.geojson.domain.Point;
-import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,39 +17,28 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
+@WebMvcTest(UpdateJourneyBasicDetailsResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@ActiveProfiles({"prod", "test"})
+@MockBean({JourneyRepository.class})
 class UpdateJourneyBasicDetailsResourceTest {
-    private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
-            .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
-            .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
-            .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("https://example.com/thumbnail.png")
-            .icon("home")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-            .createdDate(LocalDate.of(2024, 3, 27))
-            .journeyDate(LocalDate.of(2024, 3, 27))
-            .build();
     private static final String VALID_REQUEST = """
             {
               "name" : "First Internation Flight Experience",
@@ -82,13 +69,10 @@ class UpdateJourneyBasicDetailsResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void updateBasicDetails() throws Exception {
-        // setup data
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
+        when(journeyRepository.findById(anyString())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
                         .content(VALID_REQUEST)
                 )
@@ -112,12 +96,9 @@ class UpdateJourneyBasicDetailsResourceTest {
     @Test
     @WithAnonymousUser
     void updateBasicDetails_whenNotAuthenticated_throwError() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
                         .content(VALID_REQUEST)
                 )
@@ -126,14 +107,11 @@ class UpdateJourneyBasicDetailsResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST_USER})
+    @WithMockUser(username = "guest-user", password = "test-password", authorities = {GUEST_USER})
     void updateBasicDetails_whenNotAuthorized_throwError() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
                         .content(VALID_REQUEST)
                 )
