@@ -41,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"prod", "test"})
 @EnableConfigurationProperties({ApplicationProperties.class})
 @MockBean({JourneyRepository.class})
+@SuppressWarnings("unchecked")
 class FindPublishedJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
