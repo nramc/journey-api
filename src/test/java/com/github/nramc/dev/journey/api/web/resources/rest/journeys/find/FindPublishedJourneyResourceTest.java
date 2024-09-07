@@ -2,16 +2,20 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.config.ApplicationProperties;
 import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Example;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,15 +29,18 @@ import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GU
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
+@WebMvcTest(FindPublishedJourneyResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@ActiveProfiles({"prod", "test"})
+@EnableConfigurationProperties({ApplicationProperties.class})
+@MockBean({JourneyRepository.class})
 class FindPublishedJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
@@ -57,11 +64,9 @@ class FindPublishedJourneyResourceTest {
     @Autowired
     private JourneyRepository journeyRepository;
 
-
     @Test
     @WithMockUser(username = "test-user", authorities = {MAINTAINER})
     void find_whenNoPublishedJourneyExists_ShouldReturnEmptyCollection() throws Exception {
-        journeyRepository.deleteAll();
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS)
                         .accept(JOURNEYS_GEO_JSON)
                 ).andDo(print())
@@ -74,9 +79,11 @@ class FindPublishedJourneyResourceTest {
     @Test
     @WithMockUser(username = "test-user", authorities = {GUEST_USER})
     void find_whenPublishedJourneyExists_butDoesNNotHavePermission_ShouldReturnEmptyCollection() throws Exception {
-        journeyRepository.save(VALID_JOURNEY.toBuilder()
+        List<JourneyEntity> journeyEntities = List.of(VALID_JOURNEY.toBuilder()
                 .isPublished(true)
                 .build());
+        when(journeyRepository.findAll(any(Example.class))).thenReturn(journeyEntities);
+
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS)
                         .accept(JOURNEYS_GEO_JSON)
                 ).andDo(print())
@@ -89,9 +96,10 @@ class FindPublishedJourneyResourceTest {
     @Test
     @WithMockUser(username = "test-user", authorities = {MAINTAINER})
     void find_whenPublishedJourneyExists_ShouldReturnValidGeoJson() throws Exception {
-        journeyRepository.save(VALID_JOURNEY.toBuilder()
-                .isPublished(true)
-                .build());
+        List<JourneyEntity> journeyEntities = List.of(
+                VALID_JOURNEY.toBuilder().isPublished(true).build()
+        );
+        when(journeyRepository.findAll(any(Example.class))).thenReturn(journeyEntities);
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS, VALID_UUID)
                         .accept(JOURNEYS_GEO_JSON)
