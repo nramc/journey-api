@@ -1,13 +1,16 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.config.ApplicationProperties;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -16,20 +19,23 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
+@WebMvcTest(FindJourneyByIdResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@ActiveProfiles({"prod", "test"})
+@EnableConfigurationProperties({ApplicationProperties.class})
+@MockBean({JourneyRepository.class})
 class FindJourneyByIdResourceTest {
     @Autowired
     private MockMvc mockMvc;
@@ -39,7 +45,7 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void find_whenJourneyExists_ShouldReturnValidJson() throws Exception {
-        journeyRepository.save(JOURNEY_ENTITY);
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, JOURNEY_ENTITY.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -68,7 +74,7 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithMockUser(username = "guest-user", password = "test-password", authorities = {GUEST_USER})
     void find_whenJourneyExists_butDoesNotHavePermission_ShouldThrowError() throws Exception {
-        journeyRepository.save(JOURNEY_ENTITY);
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, JOURNEY_ENTITY.getId())
                         .accept(MediaType.APPLICATION_JSON)
