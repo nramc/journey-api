@@ -24,7 +24,7 @@ public class JourneyData {
               "city" : "Munich",
               "country" : "Germany",
               "tags" : ["travel", "germany", "munich"],
-              "thumbnail" : "valid image id",
+              "thumbnail" : "https://example.com/thumbnail.png",
               "icon": "home",
               "location" : {
                 "type": "Point",
@@ -42,7 +42,7 @@ public class JourneyData {
             .city("Munich")
             .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("valid image id")
+            .thumbnail("https://example.com/thumbnail.png")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .icon("home")
             .createdDate(LocalDate.of(2024, 3, 27))
@@ -60,7 +60,7 @@ public class JourneyData {
             .city("Munich")
             .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("valid image id")
+            .thumbnail("https://example.com/thumbnail.png")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .icon("home")
             .createdDate(LocalDate.of(2024, 3, 27))
