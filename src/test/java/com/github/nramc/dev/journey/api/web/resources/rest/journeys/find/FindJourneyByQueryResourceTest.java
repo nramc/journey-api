@@ -50,7 +50,7 @@ class FindJourneyByQueryResourceTest {
             .city("Munich")
             .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("valid image id")
+            .thumbnail("https://example.com/thumbnail.png")
             .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))

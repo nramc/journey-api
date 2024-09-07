@@ -71,7 +71,7 @@ class CreateJourneyResourceTest {
                 .andExpect(jsonPath("$.city").value("Munich"))
                 .andExpect(jsonPath("$.country").value("Germany"))
                 .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich")))
-                .andExpect(jsonPath("$.thumbnail").value("valid image id"))
+                .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
                 .andExpect(jsonPath("$.icon").value("home"))
                 .andExpect(jsonPath("$.location.type").value("Point"))
                 .andExpect(jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)))
@@ -109,7 +109,7 @@ class CreateJourneyResourceTest {
               "city" : "Munich",
               "country" : "Germany",
               "tags" : ["travel", "germany", "munich"],
-              "thumbnail" : "valid image id",
+              "thumbnail" : "https://example.com/thumbnail.png",
               "location" : {
                 "type": "Point",
                 "coordinates": [100.0, 0.0]
@@ -124,7 +124,7 @@ class CreateJourneyResourceTest {
               "city" : "Munich",
               "country" : "Germany",
               "tags" : ["travel", "germany", "munich"],
-              "thumbnail" : "valid image id",
+              "thumbnail" : "https://example.com/thumbnail.png",
               "location" : {
                 "type": "Invalid Type",
                 "coordinates": [100.0, 0.0]

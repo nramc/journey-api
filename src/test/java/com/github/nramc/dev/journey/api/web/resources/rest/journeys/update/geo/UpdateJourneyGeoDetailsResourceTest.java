@@ -1,15 +1,14 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo;
 
-import com.github.nramc.commons.geojson.domain.Point;
-import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,38 +20,25 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
+@WebMvcTest(UpdateJourneyGeoDetailsResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@ActiveProfiles({"prod", "test"})
+@MockBean({JourneyRepository.class})
 class UpdateJourneyGeoDetailsResourceTest {
-    private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
-            .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
-            .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
-            .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("https://example.com/thumbnail.png")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-            .createdDate(LocalDate.of(2024, 3, 27))
-            .journeyDate(LocalDate.of(2024, 3, 27))
-            .build();
     private static final ResultMatcher[] STATUS_AND_CONTENT_TYPE_MATCH = new ResultMatcher[]{
             status().isOk(),
             content().contentType(MediaType.APPLICATION_JSON)
@@ -83,17 +69,14 @@ class UpdateJourneyGeoDetailsResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void updateGeoDetails() throws Exception {
-        // setup data
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
                 { "geoJson": %s }
                 """;
         String geoJson = Files.readString(Path.of("src/test/resources/data/geojson/geometry-collection.json"));
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS)
                         .content(jsonRequestTemplate.formatted(geoJson))
                 )
@@ -108,17 +91,11 @@ class UpdateJourneyGeoDetailsResourceTest {
     @Test
     @WithAnonymousUser
     void updateGeoDetails_whenNotAuthenticated_shouldThrowError() throws Exception {
-        // setup data
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
-
         String jsonRequestTemplate = """
                 { "geoJson": %s }
                 """;
         String geoJson = Files.readString(Path.of("src/test/resources/data/geojson/geometry-collection.json"));
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS)
                         .content(jsonRequestTemplate.formatted(geoJson))
                 )
@@ -129,17 +106,11 @@ class UpdateJourneyGeoDetailsResourceTest {
     @Test
     @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST_USER})
     void updateGeoDetails_whenNotAuthorized_shouldThrowError() throws Exception {
-        // setup data
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
-
         String jsonRequestTemplate = """
                 { "geoJson": %s }
                 """;
         String geoJson = Files.readString(Path.of("src/test/resources/data/geojson/geometry-collection.json"));
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS)
                         .content(jsonRequestTemplate.formatted(geoJson))
                 )
