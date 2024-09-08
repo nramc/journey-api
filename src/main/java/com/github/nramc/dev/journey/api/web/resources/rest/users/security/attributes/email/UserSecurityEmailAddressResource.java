@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURI
 @RequiredArgsConstructor
 @Tag(name = "My Account Security - Email Address Settings")
 public class UserSecurityEmailAddressResource {
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsManager userDetailsManager;
     private final UserSecurityEmailAddressAttributeService userSecurityEmailAddressAttributeService;
 
     @Operation(summary = "Add/Update Security Email Address to my account")
@@ -38,7 +38,7 @@ public class UserSecurityEmailAddressResource {
     @PostMapping(value = MY_SECURITY_ATTRIBUTE_EMAIL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserSecurityAttribute updateEmailAddress(@RequestBody @Valid UpdateEmailAddressRequest emailAddressRequest,
                                                     Authentication authentication) {
-        AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
+        AuthUser authUser = (AuthUser) userDetailsManager.loadUserByUsername(authentication.getName());
 
         UserSecurityAttribute securityAttribute = userSecurityEmailAddressAttributeService.saveSecurityEmailAddress(
                 authUser, EmailAddress.valueOf(emailAddressRequest.emailAddress()));
@@ -50,7 +50,7 @@ public class UserSecurityEmailAddressResource {
     @ApiResponse(responseCode = "200", description = "Fetch Security Email Address for my account")
     @GetMapping(value = MY_SECURITY_ATTRIBUTE_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserSecurityAttribute> getEmailAddress(Authentication authentication) {
-        AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
+        AuthUser authUser = (AuthUser) userDetailsManager.loadUserByUsername(authentication.getName());
 
         Optional<UserSecurityAttribute> emailAttributeIfExists = userSecurityEmailAddressAttributeService.provideEmailAttributeIfExists(authUser);
         return emailAttributeIfExists.map(UserSecurityAttributeConverter::toResponse)
