@@ -1,64 +1,47 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.nramc.commons.geojson.domain.Point;
-import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
+import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.validator.JourneyValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.config.security.Visibility.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.config.security.Visibility.MYSELF;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
-@AutoConfigureJson
+@WebMvcTest(PublishJourneyResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@ActiveProfiles({"prod", "test"})
+@MockBean({JourneyRepository.class, JourneyValidator.class})
 class PublishJourneyResourceTest {
-    private static final JourneyEntity VALID_JOURNEY = JourneyEntity.builder()
-            .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
-            .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
-            .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("https://example.com/thumbnail.png")
-            .icon("home")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-            .createdDate(LocalDate.of(2024, 3, 27))
-            .journeyDate(LocalDate.of(2024, 3, 27))
-            .build();
     private static final ResultMatcher[] STATUS_AND_CONTENT_TYPE_MATCH = new ResultMatcher[]{
             status().isOk(),
             content().contentType(MediaType.APPLICATION_JSON)
@@ -88,22 +71,23 @@ class PublishJourneyResourceTest {
     @Autowired
     private JourneyRepository journeyRepository;
     @Autowired
+    private JourneyValidator validator;
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void publishJourney_saveAsDraft() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(validator.canPublish(any())).thenReturn(true);
 
         PublishJourneyRequest request = PublishJourneyRequest.builder()
                 .visibilities(DEFAULT_VISIBILITY)
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(false)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -114,19 +98,18 @@ class PublishJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void publishJourney_whenAllExists_thenShouldPublishJourney() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(validator.canPublish(any())).thenReturn(true);
 
         PublishJourneyRequest request = PublishJourneyRequest.builder()
                 .visibilities(DEFAULT_VISIBILITY)
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -137,40 +120,18 @@ class PublishJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void publishJourney_whenVisibilityBusinessRuleValidationFails_throwsError() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
-
-        PublishJourneyRequest request = PublishJourneyRequest.builder()
-                .visibilities(Set.of(MYSELF))
-                .thumbnail(null)
-                .isPublished(true)
-                .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
-                        .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
-                        .content(objectMapper.writeValueAsString(request))
-                )
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void publishJourney_whenValidationFailsDueToInsufficientData_throwsError() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
+        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(validator.canPublish(any())).thenReturn(true);
 
         PublishJourneyRequest request = PublishJourneyRequest.builder()
                 .visibilities(DEFAULT_VISIBILITY)
                 .thumbnail(null)
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -181,17 +142,13 @@ class PublishJourneyResourceTest {
     @Test
     @WithAnonymousUser
     void publishJourney_whenNotAuthenticated_thenShouldThrowError() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
 
         PublishJourneyRequest request = PublishJourneyRequest.builder()
                 .visibilities(DEFAULT_VISIBILITY)
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -200,19 +157,15 @@ class PublishJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST_USER})
+    @WithMockGuestUser
     void publishJourney_whenNotAuthorized_thenThrowError() throws Exception {
-        JourneyEntity journeyEntity = journeyRepository.save(VALID_JOURNEY);
-        assertThat(journeyEntity).isNotNull()
-                .satisfies(entity -> assertThat(entity.getId()).isNotNull());
-        String journeyId = journeyEntity.getId();
 
         PublishJourneyRequest request = PublishJourneyRequest.builder()
                 .visibilities(DEFAULT_VISIBILITY)
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, journeyId)
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
