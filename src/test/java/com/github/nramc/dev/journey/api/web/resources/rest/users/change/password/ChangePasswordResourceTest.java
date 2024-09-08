@@ -1,36 +1,37 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.change.password;
 
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.temporal.ChronoUnit;
-
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.assertArg;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
+@WebMvcTest(ChangePasswordResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class, BCryptPasswordEncoder.class})
+@ActiveProfiles({"prod", "test"})
+@MockBean({AuthUserDetailsService.class})
 class ChangePasswordResourceTest {
     private static final String REQUEST_TEMPLATE = """
             {
@@ -39,9 +40,10 @@ class ChangePasswordResourceTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+    @SpyBean
+    private AuthUserDetailsService authUserDetailsService;
+
 
     @Test
     void context() {
@@ -58,7 +60,7 @@ class ChangePasswordResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
+    @WithMockGuestUser
     void find_whenUserNotAuthorized_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(CHANGE_MY_PASSWORD)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -68,32 +70,35 @@ class ChangePasswordResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {MAINTAINER})
+    @WithMockMaintainerUser
     void find_whenUserMaintainer_thenCanChangePassword() throws Exception {
         changePassword();
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {AUTHENTICATED_USER})
+    @WithMockAuthenticatedUser
     void find_whenUserAuthenticatedUser_thenCanChangePassword() throws Exception {
         changePassword();
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {ADMINISTRATOR})
+    @WithMockAdministratorUser
     void find_whenUserAdministrator_thenCanChangePassword() throws Exception {
         changePassword();
     }
 
     private void changePassword() throws Exception {
+        String newPassword = "valid-new-password";
         mockMvc.perform(MockMvcRequestBuilders.post(CHANGE_MY_PASSWORD)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(REQUEST_TEMPLATE.formatted("valid-new-password"))
+                        .content(REQUEST_TEMPLATE.formatted(newPassword))
                 ).andDo(print())
                 .andExpect(status().isOk());
-        AuthUser user = userRepository.findUserByUsername("admin");
-        assertThat(passwordEncoder.matches("valid-new-password", user.getPassword())).isTrue();
-        assertThat(user.getPasswordChangedAt()).isNotNull().isCloseToUtcNow(within(1, ChronoUnit.MINUTES));
+
+        verify(authUserDetailsService).updatePassword(
+                any(),
+                assertArg(password -> assertThat(passwordEncoder.matches(newPassword, password)).isTrue())
+        );
     }
 
 }
