@@ -1,11 +1,16 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.find;
 
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -13,7 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.ADMINISTRATOR;
+import java.util.List;
+
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
@@ -21,15 +27,16 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_A
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
-@ActiveProfiles({"test"})
-@AutoConfigureMockMvc
+@WebMvcTest(FindUsersResource.class)
+@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@ActiveProfiles({"prod", "test"})
+@MockBean({UserRepository.class})
 class FindUsersResourceTest {
     @Autowired
     private MockMvc mockMvc;
@@ -59,8 +66,9 @@ class FindUsersResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {ADMINISTRATOR})
+    @WithMockAdministratorUser
     void find_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
+        when(userRepository.findAll()).thenReturn(List.of(UsersData.AUTH_USER, UsersData.MFA_USER));
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_USERS))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -84,7 +92,7 @@ class FindUsersResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST_USER})
+    @WithMockGuestUser
     void findMyAccount_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_MY_ACCOUNT))
                 .andDo(print())
@@ -92,8 +100,9 @@ class FindUsersResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {AUTHENTICATED_USER})
+    @WithMockAuthenticatedUser
     void findMyAccount_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
+        when(userRepository.findUserByUsername(UsersData.AUTH_USER.getUsername())).thenReturn(UsersData.AUTH_USER);
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_MY_ACCOUNT))
                 .andDo(print())
                 .andExpect(status().isOk())
