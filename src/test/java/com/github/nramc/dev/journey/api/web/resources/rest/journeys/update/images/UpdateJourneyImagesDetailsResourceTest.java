@@ -2,6 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.imag
 
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
@@ -13,15 +15,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -67,7 +66,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     private JourneyRepository journeyRepository;
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void updateImagesDetails_whenOptionalFieldDoesNotExists_thenShouldUpdateWithDefaultValues() throws Exception {
         when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -96,7 +95,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void updateImagesDetails_whenOptionalFieldHaveValues_thenShouldUpdateWithGivenValues() throws Exception {
         when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -125,7 +124,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void updateImagesDetails_whenIsThumbnailFlagEnabled_thenShouldUpdateThumbnailField() throws Exception {
         when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -190,7 +189,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST_USER})
+    @WithMockGuestUser
     void updateImagesDetails_whenNotAuthorized_shouldThrowError() throws Exception {
         when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.empty());
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
