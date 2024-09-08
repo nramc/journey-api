@@ -35,6 +35,12 @@ public class WebSecurityTestConfig {
                 .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
                 .name("Administrator")
                 .build();
+        UserDetails maintainer = AuthUser.builder()
+                .username("test-maintainer")
+                .password(passwordEncoder.encode("test-password"))
+                .roles(Set.of(Role.AUTHENTICATED_USER, Role.MAINTAINER))
+                .name("Maintainer")
+                .build();
         UserDetails authenticatedUser = AuthUser.builder()
                 .username("auth-user")
                 .password(passwordEncoder.encode("test"))
@@ -42,13 +48,14 @@ public class WebSecurityTestConfig {
                 .name("Authenticated User")
                 .build();
 
-        return new InMemoryUserDetailsManager(testUser, authenticatedUser, admin) {
+        return new InMemoryUserDetailsManager(testUser, authenticatedUser, admin, maintainer) {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 return switch (username) {
                     case "test-admin" -> admin;
                     case "auth-user" -> authenticatedUser;
                     case "mfa-user" -> MFA_USER;
+                    case "test-maintainer" -> maintainer;
                     default -> testUser;
                 };
             }

@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.update;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +27,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY
 @Slf4j
 @RequiredArgsConstructor
 public class UpdateUserResource {
-    private final AuthUserDetailsService userDetailsService;
+    private final UserDetailsManager userDetailsManager;
     private final UserSecurityAttributeService attributeService;
 
     @Operation(summary = "Update my account details", tags = {"My Account Features"})
@@ -35,9 +35,9 @@ public class UpdateUserResource {
     @ApiResponse(responseCode = "200", description = "User details updated successfully")
     @PostMapping(value = UPDATE_MY_ACCOUNT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void change(@RequestBody @Valid UpdateUserRequest updateUserRequest, Authentication authentication) {
-        AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
+        AuthUser authUser = (AuthUser) userDetailsManager.loadUserByUsername(authentication.getName());
         AuthUser updatedDetails = updateWith(authUser, updateUserRequest);
-        userDetailsService.updateUser(updatedDetails);
+        userDetailsManager.updateUser(updatedDetails);
     }
 
     @Operation(summary = "Enable/Disable Multi-factor authentication", tags = {"My Account Features"})
@@ -45,11 +45,11 @@ public class UpdateUserResource {
     @ApiResponse(responseCode = "200", description = "MFA feature updated successfully")
     @PostMapping(value = MY_SECURITY_MFA, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateMfaStatus(@RequestBody @Valid MfaStatus mfaStatus, Authentication authentication) {
-        AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
+        AuthUser authUser = (AuthUser) userDetailsManager.loadUserByUsername(authentication.getName());
 
         if (valid(mfaStatus, authUser)) {
             AuthUser updatedDetails = authUser.toBuilder().mfaEnabled(mfaStatus.status()).build();
-            userDetailsService.updateUser(updatedDetails);
+            userDetailsManager.updateUser(updatedDetails);
         } else {
             throw new BusinessException("Unable to enable mf due to absence of security attributes", "mfa.invalid.attributes");
         }
