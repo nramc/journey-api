@@ -11,7 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @UtilityClass
 public class TimelineDataTransformer {
@@ -71,22 +71,26 @@ public class TimelineDataTransformer {
     }
 
     private static List<JourneyImageDetailEntity> getFavoriteImages(JourneyEntity journeyEntity) {
-        return Stream.of(journeyEntity)
+        return Optional.of(journeyEntity)
                 .map(JourneyEntity::getExtended)
                 .map(JourneyExtendedEntity::getImagesDetails)
                 .map(JourneyImagesDetailsEntity::getImages)
-                .flatMap(Collection::stream)
+                .filter(CollectionUtils::isNotEmpty)
+                .orElse(List.of())
+                .stream()
                 .filter(JourneyImageDetailEntity::isFavorite)
                 .limit(MAX_IMAGES_PER_JOURNEY)
                 .toList();
     }
 
     public static List<JourneyImageDetailEntity> getFirstNImages(JourneyEntity journeyEntity, int maxImagesPerJourney) {
-        return Stream.of(journeyEntity)
+        return Optional.of(journeyEntity)
                 .map(JourneyEntity::getExtended)
                 .map(JourneyExtendedEntity::getImagesDetails)
                 .map(JourneyImagesDetailsEntity::getImages)
-                .flatMap(Collection::stream)
+                .filter(CollectionUtils::isNotEmpty)
+                .orElse(List.of())
+                .stream()
                 .limit(maxImagesPerJourney)
                 .toList();
     }
