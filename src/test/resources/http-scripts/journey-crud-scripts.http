@@ -2,7 +2,7 @@
 
 ### Login
 POST {{baseUrl}}/login
-Authorization: Basic {{appUsername}} {{appUserPassword}}
+Authorization: Basic {{adminUsername}} {{adminUserPassword}}
 
 > {%
     client.test("Request executed successfully", function () {
