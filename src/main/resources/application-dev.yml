@@ -2,18 +2,10 @@ app:
   ui-app-url: http://localhost:4200
   operational:
     users:
-      - name: localDevAdmin
-        username: admin
-        password: password
-        roles: AUTHENTICATED_USER, MAINTAINER, ADMINISTRATOR
       - username: GUEST
         password: <placeholder>
         roles: GUEST_USER
         name: Guest
-      - username: test-user-001
-        password: test-password-001
-        roles: AUTHENTICATED_USER, MAINTAINER
-        name: Test User 001
   security:
     cors:
       properties:
