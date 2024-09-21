@@ -4,10 +4,6 @@
 [![Release](https://img.shields.io/github/release/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/releases)
 [![Documentation](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=black&style=for-the-badge)](https://journey-api-nxm5.onrender.com/doc/swagger-ui.html)
 [![Docker](https://img.shields.io/badge/Docker-2CA5E0?logo=docker&logoColor=white&style=flat)](https://hub.docker.com/r/codewithram/journey-api)
-[![Contributors](https://img.shields.io/github/contributors/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/graphs/contributors)
-[![Issues](https://img.shields.io/github/issues/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/pulls)
-[![Stars](https://img.shields.io/github/stars/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/stargazers)
 [![Badge](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=159&style=flat)](https://www.linkedin.com/in/ramachandran-nellaiyappan/)
 
 # Journey Rest API
