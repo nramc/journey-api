@@ -26,6 +26,6 @@ public final class StringObfuscator {
     }
 
     private static String getVisibleCharacters(String string, int numberOfVisibleCharacters) {
-        return StringUtils.substring(string,0, numberOfVisibleCharacters);
+        return StringUtils.substring(string, 0, numberOfVisibleCharacters);
     }
 }

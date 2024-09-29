@@ -17,15 +17,15 @@ public record QRCodeData(
         int width,
         int height) {
     public String getUri() {
-        return "otpauth://" +
-                uriEncode(type) + "/" +
-                uriEncode(label) + "?" +
-                "secret=" + uriEncode(secret) +
-                "&issuer=" + uriEncode(issuer) +
-                "&algorithm=" + uriEncode(algorithm) +
-                "&digits=" + digits +
-                "&period=" + period +
-                "&image=" + uriEncode("https://nramc.github.io/journeys/assets/journey-logo.png");
+        return "otpauth://"
+                + uriEncode(type) + "/"
+                + uriEncode(label) + "?"
+                + "secret=" + uriEncode(secret)
+                + "&issuer=" + uriEncode(issuer)
+                + "&algorithm=" + uriEncode(algorithm)
+                + "&digits=" + digits
+                + "&period=" + period
+                + "&image=" + uriEncode("https://nramc.github.io/journeys/assets/journey-logo.png");
     }
 
     private String uriEncode(String text) {
@@ -38,16 +38,16 @@ public record QRCodeData(
 
     @Override
     public String toString() {
-        return "QRCodeData{" +
-                "type='" + type + '\'' +
-                ", label='" + label + '\'' +
-                ", secret='***" + '\'' +
-                ", issuer='" + issuer + '\'' +
-                ", algorithm='" + algorithm + '\'' +
-                ", digits=" + digits +
-                ", period=" + period +
-                ", width=" + width +
-                ", height=" + height +
-                '}';
+        return "QRCodeData{"
+                + "type='" + type + '\''
+                + ", label='" + label + '\''
+                + ", secret='***" + '\''
+                + ", issuer='" + issuer + '\''
+                + ", algorithm='" + algorithm + '\''
+                + ", digits=" + digits
+                + ", period=" + period
+                + ", width=" + width
+                + ", height=" + height
+                + '}';
     }
 }

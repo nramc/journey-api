@@ -29,9 +29,9 @@ public record QRImageDetails(
 
     @Override
     public String toString() {
-        return "QRImageDetails{" +
-                "data='***'" +
-                ", secretKey='***" + '\'' +
-                '}';
+        return "QRImageDetails{"
+                + "data='***'"
+                + ", secretKey='***" + '\''
+                + '}';
     }
 }
