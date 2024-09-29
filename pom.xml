@@ -5,7 +5,8 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath />
+        <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.nramc.dev.journey</groupId>
     <artifactId>journey-api</artifactId>
@@ -18,51 +19,6 @@
         <developerConnection>scm:git:https://github.com/nramc/journey-api.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    <profiles>
-        <profile>
-            <id>ci-profile</id>
-            <properties>
-                <rewrite-maven-plugin.skip.run-execution>true</rewrite-maven-plugin.skip.run-execution>
-            </properties>
-            <activation>
-                <property>
-                    <name>env.CI</name>
-                    <value>true</value>
-                </property>
-            </activation>
-        </profile>
-        <profile>
-            <id>coverage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>prepare-agent</id>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                                <configuration>
-                                    <formats>
-                                        <format>XML</format>
-                                    </formats>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <properties>
         <java.version>21</java.version>
         <sonar.organization>nramc</sonar.organization>
@@ -134,7 +90,6 @@
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
-            <version>3.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -197,19 +152,16 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mongodb</artifactId>
-            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
-            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -220,7 +172,6 @@
         </dependency>
 
     </dependencies>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -314,5 +265,51 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>ci-profile</id>
+            <properties>
+                <rewrite-maven-plugin.skip.run-execution>true</rewrite-maven-plugin.skip.run-execution>
+            </properties>
+            <activation>
+                <property>
+                    <name>env.CI</name>
+                    <value>true</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <formats>
+                                        <format>XML</format>
+                                    </formats>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

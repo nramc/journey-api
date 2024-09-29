@@ -417,7 +417,7 @@ class TimelineResourceTest {
     @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
     void getTimelineData_forUpcomingDays_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult(String numberOfDays) throws Exception {
         // setup data
-        IntStream.range(0, Integer.parseInt(numberOfDays+1)).forEach(index -> journeyRepository.save(
+        IntStream.range(0, Integer.parseInt(numberOfDays + 1)).forEach(index -> journeyRepository.save(
                         JOURNEY_EXTENDED_ENTITY.toBuilder()
                                 .id("ID_" + index)
                                 .visibilities(Set.of(MYSELF))
