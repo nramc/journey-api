@@ -5,7 +5,8 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath />
+        <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.nramc.dev.journey</groupId>
     <artifactId>journey-api</artifactId>
@@ -18,62 +19,24 @@
         <developerConnection>scm:git:https://github.com/nramc/journey-api.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    <profiles>
-        <profile>
-            <id>ci-profile</id>
-            <properties>
-                <rewrite-maven-plugin.skip>true</rewrite-maven-plugin.skip>
-            </properties>
-            <activation>
-                <property>
-                    <name>env.CI</name>
-                    <value>true</value>
-                </property>
-            </activation>
-        </profile>
-        <profile>
-            <id>coverage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>prepare-agent</id>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                                <configuration>
-                                    <formats>
-                                        <format>XML</format>
-                                    </formats>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <properties>
         <java.version>21</java.version>
         <sonar.organization>nramc</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.exclusions>**/com/github/nramc/dev/journey/api/migration/**</sonar.coverage.exclusions>
 
+        <!-- open-rewrite disable recipes execution  -->
+        <rewrite-maven-plugin.skip.run-execution>false</rewrite-maven-plugin.skip.run-execution>
+        <rewrite-maven-plugin.skip.dry-run-execution>false</rewrite-maven-plugin.skip.dry-run-execution>
+
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+        <rewrite-java-security.version>2.12.0</rewrite-java-security.version>
         <rewrite-maven-plugin.version>5.41.0</rewrite-maven-plugin.version>
-        <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
+        <rewrite-recommendations.version>1.9.0</rewrite-recommendations.version>
+        <rewrite-static-analysis.version>1.16.0</rewrite-static-analysis.version>
+        <rewrite-testing-frameworks.version>2.18.0</rewrite-testing-frameworks.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.3</zxing-qr.version>
@@ -127,7 +90,6 @@
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
-            <version>3.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -190,19 +152,16 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mongodb</artifactId>
-            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
-            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -213,7 +172,6 @@
         </dependency>
 
     </dependencies>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -256,9 +214,9 @@
                         <goals>
                             <goal>runNoFork</goal>
                         </goals>
-                        <phase>pre-integration-test</phase>
+                        <phase>process-sources</phase>
                         <configuration>
-                            <rewriteSkip>${rewrite-maven-plugin.skip}</rewriteSkip>
+                            <rewriteSkip>${rewrite-maven-plugin.skip.run-execution}</rewriteSkip>
                         </configuration>
                     </execution>
                     <execution>
@@ -266,13 +224,17 @@
                         <goals>
                             <goal>dryRunNoFork</goal>
                         </goals>
-                        <phase>verify</phase>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <rewriteSkip>${rewrite-maven-plugin.skip.dry-run-execution}</rewriteSkip>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <failOnDryRunResults>true</failOnDryRunResults>
                     <activeRecipes>
-                        <recipe>com.github.nramc.recipes.common</recipe>
+                        <recipe>com.github.nramc.recipes.sources</recipe>
+                        <recipe>org.openrewrite.java.security.OwaspTopTen.customized</recipe>
                         <recipe>com.github.nramc.recipes.testing</recipe>
                     </activeRecipes>
                     <activeStyles>
@@ -283,21 +245,72 @@
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-static-analysis</artifactId>
-                        <version>1.17.0</version>
+                        <version>${rewrite-static-analysis.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-recommendations</artifactId>
-                        <version>1.10.0</version>
+                        <version>${rewrite-recommendations.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-testing-frameworks</artifactId>
-                        <version>2.19.0</version>
+                        <version>${rewrite-testing-frameworks.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-java-security</artifactId>
+                        <version>${rewrite-java-security.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>ci-profile</id>
+            <properties>
+                <rewrite-maven-plugin.skip.run-execution>true</rewrite-maven-plugin.skip.run-execution>
+            </properties>
+            <activation>
+                <property>
+                    <name>env.CI</name>
+                    <value>true</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <formats>
+                                        <format>XML</format>
+                                    </formats>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

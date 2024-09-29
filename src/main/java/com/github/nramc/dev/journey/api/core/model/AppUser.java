@@ -31,14 +31,14 @@ public record AppUser(
 
     @Override
     public String toString() {
-        return "AppUser{" +
-                "username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", createdDate=" + createdDate +
-                ", passwordChangedAt=" + passwordChangedAt +
-                ", enabled=" + enabled +
-                ", roles=" + roles +
-                ", mfaEnabled=" + mfaEnabled +
-                '}';
+        return "AppUser{"
+                + "username='" + username + '\''
+                + ", name='" + name + '\''
+                + ", createdDate=" + createdDate
+                + ", passwordChangedAt=" + passwordChangedAt
+                + ", enabled=" + enabled
+                + ", roles=" + roles
+                + ", mfaEnabled=" + mfaEnabled
+                + '}';
     }
 }

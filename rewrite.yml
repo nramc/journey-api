@@ -1,22 +1,56 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.github.nramc.recipes.common
+name: com.github.nramc.recipes.sources
 recipeList:
   - org.openrewrite.staticanalysis.CommonStaticAnalysis
+  - org.openrewrite.staticanalysis.CodeCleanup
+  - org.openrewrite.java.security.JavaSecurityBestPractices
   - org.openrewrite.java.RemoveUnusedImports
   - org.openrewrite.recommendations.CodeHealth
   - org.openrewrite.recommendations.DependencyManagement
+  - org.openrewrite.maven.BestPractices
   - org.openrewrite.recipes.JavaRecipeBestPractices
 #  - org.openrewrite.java.AddApache2LicenseHeader
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.github.nramc.recipes.testing
+name: org.openrewrite.java.security.OwaspTopTen.customized
+displayName: "Remediate vulnerabilities from the OWASP Top Ten"
+description: "[ OWASP ](https://owasp.org) publishes a list of the most impactful common security vulnerabilities. These recipes identify and remediate vulnerabilities from the OWASP Top Ten."
 recipeList:
-  - org.openrewrite.java.testing.assertj.Assertj
-  - org.openrewrite.recipes.RecipeTestingBestPractices
-  - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
-  - org.openrewrite.java.testing.cleanup.BestPractices
-  - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices
+  - org.openrewrite.java.security.OwaspA01
+  - org.openrewrite.java.security.OwaspA02
+  - org.openrewrite.java.security.OwaspA03
+  - org.openrewrite.java.security.OwaspA05
+  - org.openrewrite.java.security.OwaspA06
+  #  Customized OwaspA08 to exclude CSRF protection recipe
+  #  - org.openrewrite.java.security.OwaspA08
+  - org.openrewrite.java.security.marshalling.InsecureJmsDeserialization
+  - org.openrewrite.java.security.marshalling.SecureSnakeYamlConstructor
+  - org.openrewrite.java.security.marshalling.SecureJacksonDefaultTyping
+  - org.openrewrite.java.security.search.FindJacksonDefaultTypeMapping
+  - org.openrewrite.java.security.search.FindVulnerableJacksonJsonTypeInfo
+  - org.openrewrite.java.security.SecureTempFileCreation
+  - org.openrewrite.java.security.FindTextDirectionChanges
+  - org.openrewrite.java.security.UseFilesCreateTempDirectory
+#  Excluded CSRF protection recipe due to stateless session
+#  - org.openrewrite.java.security.spring.CsrfProtection
 
 ---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.github.nramc.recipes.testing
+recipeList:
+# Since some o f the Mockito.eq(), Mockito.any() and Mockito.when removed as unused, this is seems to be bug. Therefore below is disabled for now
+#  - org.openrewrite.java.testing.mockito.MockitoBestPractices
+  - org.openrewrite.java.testing.junit5.CleanupAssertions
+  - org.openrewrite.java.testing.assertj.Assertj
+  - org.openrewrite.java.testing.junit5.StaticImports
+  - org.openrewrite.recipes.RecipeTestingBestPractices
+  - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
+  # BestPractices contains both TestsShouldIncludeAssertions and RemoveTestPrefix
+  # Since TestsShouldIncludeAssertions does not recognize mockito verify and assertJ,
+  # commented our BestPractices and explicitly mentioned RemoveTestPrefix below
+  #  - org.openrewrite.java.testing.cleanup.BestPractices
+  - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
+  - org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe
+  - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices

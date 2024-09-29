@@ -29,8 +29,8 @@ public final class EmailAddressObfuscator {
 
     private static String obfuscateLocalPart(String emailAddress) {
         String localPart = getLocalPart(emailAddress);
-        return StringUtils.substring(localPart, 0, NO_VISIBLE_LOCAL_PART_CHARS) +
-                StringUtils.repeat(MASK_CHAR, StringUtils.length(localPart) - NO_VISIBLE_LOCAL_PART_CHARS);
+        return StringUtils.substring(localPart, 0, NO_VISIBLE_LOCAL_PART_CHARS)
+                + StringUtils.repeat(MASK_CHAR, StringUtils.length(localPart) - NO_VISIBLE_LOCAL_PART_CHARS);
     }
 
     private static String getObfuscateValue(String emailAddress) {

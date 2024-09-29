@@ -55,7 +55,7 @@ public class TotpCodeGenerator {
 
         long truncatedHash = 0;
 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; i++) {
             truncatedHash <<= 8;
             truncatedHash |= hash[offset + i] & 0xFF;
         }

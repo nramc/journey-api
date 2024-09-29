@@ -53,4 +53,3 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 }
-
