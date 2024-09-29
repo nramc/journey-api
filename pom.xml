@@ -22,7 +22,7 @@
         <profile>
             <id>ci-profile</id>
             <properties>
-                <rewrite-maven-plugin.skip>true</rewrite-maven-plugin.skip>
+                <rewrite-maven-plugin.skip.run-execution>true</rewrite-maven-plugin.skip.run-execution>
             </properties>
             <activation>
                 <property>
@@ -69,11 +69,14 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.exclusions>**/com/github/nramc/dev/journey/api/migration/**</sonar.coverage.exclusions>
 
+        <!-- open-rewrite disable recipes execution  -->
+        <rewrite-maven-plugin.skip.run-execution>false</rewrite-maven-plugin.skip.run-execution>
+        <rewrite-maven-plugin.skip.dry-run-execution>false</rewrite-maven-plugin.skip.dry-run-execution>
+
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <rewrite-maven-plugin.version>5.41.0</rewrite-maven-plugin.version>
-        <rewrite-maven-plugin.skip>false</rewrite-maven-plugin.skip>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.3</zxing-qr.version>
@@ -256,9 +259,9 @@
                         <goals>
                             <goal>runNoFork</goal>
                         </goals>
-                        <phase>pre-integration-test</phase>
+                        <phase>process-sources</phase>
                         <configuration>
-                            <rewriteSkip>${rewrite-maven-plugin.skip}</rewriteSkip>
+                            <rewriteSkip>${rewrite-maven-plugin.skip.run-execution}</rewriteSkip>
                         </configuration>
                     </execution>
                     <execution>
@@ -266,7 +269,10 @@
                         <goals>
                             <goal>dryRunNoFork</goal>
                         </goals>
-                        <phase>verify</phase>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <rewriteSkip>${rewrite-maven-plugin.skip.dry-run-execution}</rewriteSkip>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>

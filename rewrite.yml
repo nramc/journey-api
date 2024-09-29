@@ -3,9 +3,13 @@ type: specs.openrewrite.org/v1beta/recipe
 name: com.github.nramc.recipes.common
 recipeList:
   - org.openrewrite.staticanalysis.CommonStaticAnalysis
+  - org.openrewrite.staticanalysis.CodeCleanup
+  - org.openrewrite.java.security.JavaSecurityBestPractices
+  - org.openrewrite.java.security.OwaspTopTen
   - org.openrewrite.java.RemoveUnusedImports
   - org.openrewrite.recommendations.CodeHealth
   - org.openrewrite.recommendations.DependencyManagement
+  - org.openrewrite.maven.BestPractices
   - org.openrewrite.recipes.JavaRecipeBestPractices
 #  - org.openrewrite.java.AddApache2LicenseHeader
 
@@ -13,10 +17,13 @@ recipeList:
 type: specs.openrewrite.org/v1beta/recipe
 name: com.github.nramc.recipes.testing
 recipeList:
+  - org.openrewrite.java.testing.mockito.MockitoBestPractices
+  - org.openrewrite.java.testing.junit5.CleanupAssertions
   - org.openrewrite.java.testing.assertj.Assertj
+  - org.openrewrite.java.testing.junit5.StaticImports
   - org.openrewrite.recipes.RecipeTestingBestPractices
   - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
   - org.openrewrite.java.testing.cleanup.BestPractices
+  - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
+  - org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe
   - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices
-
----
