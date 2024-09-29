@@ -23,7 +23,10 @@ recipeList:
   - org.openrewrite.java.testing.junit5.StaticImports
   - org.openrewrite.recipes.RecipeTestingBestPractices
   - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
-  - org.openrewrite.java.testing.cleanup.BestPractices
+  # BestPractices contains both TestsShouldIncludeAssertions and RemoveTestPrefix
+  # Since TestsShouldIncludeAssertions does not recognize mockito verify and assertJ,
+  # commented our BestPractices and explicitly mentioned RemoveTestPrefix below
+  #  - org.openrewrite.java.testing.cleanup.BestPractices
   - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
   - org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe
   - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices
