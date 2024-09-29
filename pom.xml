@@ -76,7 +76,11 @@
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+        <rewrite-java-security.version>2.12.0</rewrite-java-security.version>
         <rewrite-maven-plugin.version>5.41.0</rewrite-maven-plugin.version>
+        <rewrite-recommendations.version>1.9.0</rewrite-recommendations.version>
+        <rewrite-static-analysis.version>1.16.0</rewrite-static-analysis.version>
+        <rewrite-testing-frameworks.version>2.18.0</rewrite-testing-frameworks.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.3</zxing-qr.version>
@@ -289,17 +293,22 @@
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-static-analysis</artifactId>
-                        <version>1.17.0</version>
+                        <version>${rewrite-static-analysis.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-recommendations</artifactId>
-                        <version>1.10.0</version>
+                        <version>${rewrite-recommendations.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-testing-frameworks</artifactId>
-                        <version>2.19.0</version>
+                        <version>${rewrite-testing-frameworks.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-java-security</artifactId>
+                        <version>${rewrite-java-security.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
