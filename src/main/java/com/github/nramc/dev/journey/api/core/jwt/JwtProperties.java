@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.config.security;
+package com.github.nramc.dev.journey.api.core.jwt;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

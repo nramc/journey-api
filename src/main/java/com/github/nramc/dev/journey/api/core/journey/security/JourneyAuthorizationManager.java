@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.core.journey.security;
 
-import com.github.nramc.dev.journey.api.config.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;

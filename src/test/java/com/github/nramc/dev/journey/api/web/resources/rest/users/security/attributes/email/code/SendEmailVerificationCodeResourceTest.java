@@ -14,8 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static org.mockito.ArgumentMatchers.any;

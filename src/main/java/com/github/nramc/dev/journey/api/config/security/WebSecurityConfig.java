@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.config.security;
 
+import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -30,10 +31,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.config.security.Role.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.GUEST_USER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.ACTIVATE_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSION;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY_PASSWORD;

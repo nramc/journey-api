@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.config.security;
+package com.github.nramc.dev.journey.api.core.journey.security;
 
 public enum Visibility {
     MYSELF,

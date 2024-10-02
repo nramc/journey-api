@@ -2,8 +2,7 @@ package com.github.nramc.dev.journey.api.core.journey.security;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.config.security.Role;
-import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.core.user.security.Role;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.security.Visibility.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.config.security.Visibility.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.config.security.Visibility.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;

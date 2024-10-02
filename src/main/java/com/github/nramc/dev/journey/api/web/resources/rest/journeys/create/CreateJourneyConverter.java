@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.create;
 
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.security.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 
 
 @UtilityClass

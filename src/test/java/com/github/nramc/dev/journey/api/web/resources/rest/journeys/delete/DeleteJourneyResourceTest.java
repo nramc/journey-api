@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.delete;
 
-import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
@@ -20,9 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;

@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.config.ApplicationProperties;
-import com.github.nramc.dev.journey.api.config.security.Role;
+import com.github.nramc.dev.journey.api.core.user.security.Role;
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.core.model.EmailToken;
 import com.github.nramc.dev.journey.api.core.services.EmailTokenService;

@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.core.model;
 
-import com.github.nramc.dev.journey.api.config.security.Role;
+import com.github.nramc.dev.journey.api.core.user.security.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

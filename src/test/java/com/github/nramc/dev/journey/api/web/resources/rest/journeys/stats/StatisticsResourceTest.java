@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.core.user.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_STATISTICS;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;

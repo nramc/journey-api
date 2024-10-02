@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.core.jwt;
 
-import com.github.nramc.dev.journey.api.config.security.JwtProperties;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
