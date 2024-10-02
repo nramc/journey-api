@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.api;
 
-import com.github.nramc.dev.journey.api.config.ApplicationProperties;
+import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

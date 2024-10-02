@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.mvc.home;
 
-import com.github.nramc.dev.journey.api.config.ApplicationProperties;
+import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.repository.LocationRepository;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.config;
+package com.github.nramc.dev.journey.api.core.app;
 
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;

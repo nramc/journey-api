@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.config.security;
 
-import com.github.nramc.dev.journey.api.config.ApplicationProperties;
+import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.web.resources.mvc.home.HomeResource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
