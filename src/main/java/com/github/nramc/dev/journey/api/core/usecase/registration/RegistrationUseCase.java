@@ -15,7 +15,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.core.converters.AppUserConvertor.toEntity;
+import static com.github.nramc.dev.journey.api.core.user.converters.AppUserConvertor.toEntity;
 
 @Slf4j
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.converters;
+package com.github.nramc.dev.journey.api.core.user.converters;
 
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
