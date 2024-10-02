@@ -83,11 +83,11 @@ public class WebSecurityConfig {
             hasAnyAuthority(AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
             hasAnyScope(AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
     );
-    AuthorizationManager<RequestAuthorizationContext> readOnlyAuthorizationManager = anyOf(
+    AuthorizationManager<RequestAuthorizationContext> readAccessAuthorizationManager = anyOf(
             hasAnyAuthority(GUEST_USER.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
             hasAnyScope(GUEST_USER.name(), AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name())
     );
-    AuthorizationManager<RequestAuthorizationContext> adminOnlyAuthorizationManager = anyOf(
+    AuthorizationManager<RequestAuthorizationContext> adminAccessAuthorizationManager = anyOf(
             hasAnyAuthority(ADMINISTRATOR.name()), hasAnyScope(ADMINISTRATOR.name())
     );
 
@@ -134,11 +134,11 @@ public class WebSecurityConfig {
                         .requestMatchers(POST, LOGIN).authenticated()
                         .requestMatchers(POST, LOGIN_MFA).authenticated()
 
-                        .requestMatchers(GET, FIND_JOURNEYS).access(readOnlyAuthorizationManager)
-                        .requestMatchers(GET, FIND_JOURNEY_BY_ID).access(readOnlyAuthorizationManager)
-                        .requestMatchers(GET, FIND_PUBLISHED_JOURNEYS).access(readOnlyAuthorizationManager)
-                        .requestMatchers(GET, GET_STATISTICS).access(readOnlyAuthorizationManager)
-                        .requestMatchers(GET, GET_TIMELINE_DATA).access(readOnlyAuthorizationManager)
+                        .requestMatchers(GET, FIND_JOURNEYS).access(readAccessAuthorizationManager)
+                        .requestMatchers(GET, FIND_JOURNEY_BY_ID).access(readAccessAuthorizationManager)
+                        .requestMatchers(GET, FIND_PUBLISHED_JOURNEYS).access(readAccessAuthorizationManager)
+                        .requestMatchers(GET, GET_STATISTICS).access(readAccessAuthorizationManager)
+                        .requestMatchers(GET, GET_TIMELINE_DATA).access(readAccessAuthorizationManager)
 
 
                         .requestMatchers(POST, NEW_JOURNEY).access(authenticatedUserAuthorizationManager)
@@ -146,25 +146,25 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE, DELETE_JOURNEY).access(authenticatedUserAuthorizationManager)
 
                         // Users resources
-                        .requestMatchers(GET, FIND_USERS).access(adminOnlyAuthorizationManager)
-                        .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminOnlyAuthorizationManager)
+                        .requestMatchers(GET, FIND_USERS).access(adminAccessAuthorizationManager)
+                        .requestMatchers(DELETE, DELETE_USER_BY_USERNAME).access(adminAccessAuthorizationManager)
 
 
-                        .requestMatchers(GET, FIND_MY_ACCOUNT).access(readOnlyAuthorizationManager)
+                        .requestMatchers(GET, FIND_MY_ACCOUNT).access(readAccessAuthorizationManager)
                         .requestMatchers(DELETE, DELETE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, CHANGE_MY_PASSWORD).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, MY_SECURITY_ATTRIBUTE_EMAIL).access(authenticatedUserAuthorizationManager)
-                        .requestMatchers(GET, MY_SECURITY_ATTRIBUTE_EMAIL).access(readOnlyAuthorizationManager)
+                        .requestMatchers(GET, MY_SECURITY_ATTRIBUTE_EMAIL).access(readAccessAuthorizationManager)
 
                         .requestMatchers(POST, MY_SECURITY_MFA).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, SEND_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, VERIFY_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP).access(authenticatedUserAuthorizationManager)
-                        .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP_STATUS).access(readOnlyAuthorizationManager)
+                        .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP_STATUS).access(readAccessAuthorizationManager)
                         .requestMatchers(MY_SECURITY_ATTRIBUTE_TOTP_VERIFY).access(authenticatedUserAuthorizationManager)
 
-                        .requestMatchers(GET, FETCH_ALL_CATEGORIES).access(readOnlyAuthorizationManager)
+                        .requestMatchers(GET, FETCH_ALL_CATEGORIES).access(readAccessAuthorizationManager)
 
 
                         // disallow other paths, or authenticated(), permitAll()
