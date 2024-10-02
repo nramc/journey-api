@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.gateway;
 
 import com.github.nramc.dev.journey.api.config.MailConfig;
+import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;

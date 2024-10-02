@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.core.usecase.notification;
 
-import com.github.nramc.dev.journey.api.gateway.MailService;
+import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

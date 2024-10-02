@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.services;
+package com.github.nramc.dev.journey.api.core.services.token;
 
 import com.github.nramc.dev.journey.api.core.model.AppUser;
 import com.github.nramc.dev.journey.api.core.model.EmailToken;
