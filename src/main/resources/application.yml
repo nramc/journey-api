@@ -20,12 +20,6 @@ app:
   name: Journey API
   version: '@project.version@'
   ui-app-url: https://nramc.github.io/journeys
-  operational:
-    users:
-      - username: GUEST
-        password: <placeholder>
-        roles: GUEST_USER
-        name: Guest
   security:
     totp:
       number-of-digits: 6
