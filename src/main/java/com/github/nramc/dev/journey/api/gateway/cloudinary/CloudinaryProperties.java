@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.config.cloudinary;
+package com.github.nramc.dev.journey.api.gateway.cloudinary;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

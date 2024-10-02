@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 @Builder(toBuilder = true)
-public record CloudinaryResource(
+public record CloudinaryResourceRepresentation(
         @JsonProperty("asset_id") String assetID,
         @JsonProperty("public_id") String publicID,
         @JsonProperty("url") String url,
