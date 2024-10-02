@@ -1,7 +1,9 @@
-package com.github.nramc.dev.journey.api.config.security;
+package com.github.nramc.dev.journey.api.core.journey.security;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
+import com.github.nramc.dev.journey.api.config.security.Role;
+import com.github.nramc.dev.journey.api.config.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

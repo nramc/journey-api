@@ -5,7 +5,7 @@ import com.github.nramc.commons.geojson.domain.FeatureCollection;
 import com.github.nramc.commons.geojson.domain.GeoJson;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.config.security.JourneyAuthorizationManager;
+import com.github.nramc.dev.journey.api.core.journey.security.JourneyAuthorizationManager;
 import com.github.nramc.dev.journey.api.web.dto.converter.JourneyFeatureConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
