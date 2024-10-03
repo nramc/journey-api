@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.exceptions;
+package com.github.nramc.dev.journey.api.core.exceptions;
 
 public class TechnicalException extends RuntimeException {
 

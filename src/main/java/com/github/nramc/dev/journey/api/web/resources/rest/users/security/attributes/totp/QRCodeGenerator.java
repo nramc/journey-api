@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.QRCodeData;
-import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageConfig;

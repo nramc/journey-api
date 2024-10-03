@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEnt
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
-import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;

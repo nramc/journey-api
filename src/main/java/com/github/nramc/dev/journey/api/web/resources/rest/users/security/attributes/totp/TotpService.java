@@ -10,7 +10,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confir
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttributeConverter;
-import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

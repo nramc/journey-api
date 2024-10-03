@@ -6,7 +6,7 @@ import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUse
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
