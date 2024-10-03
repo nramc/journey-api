@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
@@ -27,7 +26,6 @@ class ConfirmationCodeRepositoryTest {
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(EMAIL_CODE)
             .receiver(EMAIL_ATTRIBUTE.value())
-            .useCase(VERIFY_EMAIL_ADDRESS)
             .createdAt(LocalDateTime.now())
             .build();
     @Autowired

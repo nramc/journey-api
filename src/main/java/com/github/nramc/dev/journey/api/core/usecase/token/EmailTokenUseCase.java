@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.UNKNOWN;
-
 @RequiredArgsConstructor
 @Slf4j
 public class EmailTokenUseCase {
@@ -44,7 +42,6 @@ public class EmailTokenUseCase {
                 .receiver(appUser.username())
                 .isActive(true)
                 .createdAt(LocalDateTime.now())
-                .useCase(UNKNOWN)
                 .build();
         codeRepository.save(entity);
     }

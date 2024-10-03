@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class SendEmailVerificationCodeResource {
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 
-        emailConfirmationCodeService.send(authUser, VERIFY_EMAIL_ADDRESS);
+        emailConfirmationCodeService.send(authUser);
 
         log.info("Email Code has been sent successfully");
     }

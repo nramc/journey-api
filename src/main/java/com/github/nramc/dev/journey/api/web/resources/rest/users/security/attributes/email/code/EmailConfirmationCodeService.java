@@ -1,16 +1,15 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
 import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
-import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
+import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.EmailHelper.getSubject;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -45,15 +42,15 @@ public class EmailConfirmationCodeService {
      *
      * @param authUser User to whom email code to be sent
      */
-    public void send(AuthUser authUser, ConfirmationUseCase useCase) {
+    public void send(AuthUser authUser) {
 
         UserSecurityAttribute emailAttribute = getUserEmailSecurityAttribute(authUser);
 
         EmailCode emailCode = generateEmailCode();
 
-        sendEmailCode(useCase, emailCode, authUser, emailAttribute);
+        sendEmailCode(emailCode, authUser, emailAttribute);
 
-        saveEmailCode(useCase, emailCode, authUser, emailAttribute);
+        saveEmailCode(emailCode, authUser, emailAttribute);
 
         log.info("Email Code has been sent to registered email address");
     }
@@ -90,20 +87,20 @@ public class EmailConfirmationCodeService {
         return EmailCode.valueOf(code);
     }
 
-    private void sendEmailCode(ConfirmationUseCase useCase, EmailCode emailCode, AuthUser authUser,
-                               UserSecurityAttribute emailAttribute) {
+    private void sendEmailCode(EmailCode emailCode, AuthUser authUser, UserSecurityAttribute emailAttribute) {
         try {
             Map<String, Object> parameters = new HashedMap<>();
             parameters.put("name", authUser.getName());
             parameters.put("ottPin", emailCode.code());
 
-            mailService.sendEmailUsingTemplate(EMAIL_CODE_TEMPLATE_HTML, emailAttribute.value(), getSubject(useCase), parameters);
+            mailService.sendEmailUsingTemplate(
+                    EMAIL_CODE_TEMPLATE_HTML, emailAttribute.value(), "Journey: Confirmation Required", parameters);
         } catch (RuntimeException | MessagingException ex) {
             throw new TechnicalException("Unable to send Email Code", ex);
         }
     }
 
-    private void saveEmailCode(ConfirmationUseCase useCase, EmailCode code, AuthUser authUser, UserSecurityAttribute emailAttribute) {
+    private void saveEmailCode(EmailCode code, AuthUser authUser, UserSecurityAttribute emailAttribute) {
         ConfirmationCodeEntity entity = ConfirmationCodeEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .type(ConfirmationCodeType.EMAIL_CODE)
@@ -112,7 +109,6 @@ public class EmailConfirmationCodeService {
                 .receiver(emailAttribute.value())
                 .isActive(true)
                 .createdAt(LocalDateTime.now().minusMinutes(2))
-                .useCase(useCase)
                 .build();
         codeRepository.save(entity);
     }

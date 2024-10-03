@@ -1,11 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
 import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
-import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import jakarta.mail.MessagingException;
@@ -24,7 +24,6 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersDat
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService.CODE_LENGTH;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService.EMAIL_CODE_TEMPLATE_HTML;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationUseCase.VERIFY_EMAIL_ADDRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -54,7 +53,6 @@ class EmailConfirmationCodeServiceTest {
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(VALID_CODE.code())
             .receiver(EMAIL_ATTRIBUTE.value())
-            .useCase(VERIFY_EMAIL_ADDRESS)
             .createdAt(LocalDateTime.now())
             .build();
     @Mock
@@ -78,12 +76,12 @@ class EmailConfirmationCodeServiceTest {
         when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
                 .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
 
-        assertDoesNotThrow(() -> emailConfirmationCodeService.send(AUTH_USER, VERIFY_EMAIL_ADDRESS));
+        assertDoesNotThrow(() -> emailConfirmationCodeService.send(AUTH_USER));
 
         verify(mailService).sendEmailUsingTemplate(
                 eq(EMAIL_CODE_TEMPLATE_HTML),
                 eq(EMAIL_ATTRIBUTE.value()),
-                eq("Journey: Email Verification Request"),
+                eq("Journey: Confirmation Required"),
                 assertArg(params -> {
                     assertEquals(AUTH_USER.getName(), params.get("name"));
                     assertTrue(params.containsKey("ottPin"));
@@ -92,7 +90,6 @@ class EmailConfirmationCodeServiceTest {
         verify(codeRepository).save(assertArg(entity -> {
             assertEquals(AUTH_USER.getUsername(), entity.getUsername());
             assertEquals(EMAIL_ATTRIBUTE.value(), entity.getReceiver());
-            assertEquals(VERIFY_EMAIL_ADDRESS, entity.getUseCase());
             assertEquals(ConfirmationCodeType.EMAIL_CODE, entity.getType());
             assertNotNull(entity.getId());
             assertNotNull(entity.getCode());
@@ -105,7 +102,7 @@ class EmailConfirmationCodeServiceTest {
         doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
         when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
                 .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
-        assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailConfirmationCodeService.send(AUTH_USER, VERIFY_EMAIL_ADDRESS));
+        assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailConfirmationCodeService.send(AUTH_USER));
         verifyNoInteractions(codeRepository);
     }
 
