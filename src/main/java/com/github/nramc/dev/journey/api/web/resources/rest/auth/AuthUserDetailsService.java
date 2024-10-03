@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth;
 
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;

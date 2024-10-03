@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.dto.VerifyTotpCodeRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.dto.VerifyTotpCodeResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;

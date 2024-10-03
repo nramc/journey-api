@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import io.swagger.v3.oas.annotations.Operation;

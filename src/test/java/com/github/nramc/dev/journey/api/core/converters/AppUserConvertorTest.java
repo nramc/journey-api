@@ -1,9 +1,9 @@
 package com.github.nramc.dev.journey.api.core.converters;
 
-import com.github.nramc.dev.journey.api.repository.auth.AppUserConvertor;
+import com.github.nramc.dev.journey.api.repository.user.AppUserConvertor;
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 

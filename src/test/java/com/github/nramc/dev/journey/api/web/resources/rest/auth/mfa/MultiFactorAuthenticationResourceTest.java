@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.config.TestConfig;
 import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCodeVerifier;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import org.junit.jupiter.api.Test;

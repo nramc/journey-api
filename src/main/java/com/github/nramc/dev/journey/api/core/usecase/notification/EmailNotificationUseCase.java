@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.core.usecase.notification;
 
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;

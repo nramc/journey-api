@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.config;
 
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;

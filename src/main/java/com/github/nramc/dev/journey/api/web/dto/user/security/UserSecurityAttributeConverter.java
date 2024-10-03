@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.dto.user.security;
 
-import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
+import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.core.utils.EmailAddressObfuscator;
 import lombok.experimental.UtilityClass;
 

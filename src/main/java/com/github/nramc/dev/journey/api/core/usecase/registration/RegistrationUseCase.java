@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -15,7 +15,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.repository.auth.AppUserConvertor.toEntity;
+import static com.github.nramc.dev.journey.api.repository.user.AppUserConvertor.toEntity;
 
 @Slf4j
 @RequiredArgsConstructor

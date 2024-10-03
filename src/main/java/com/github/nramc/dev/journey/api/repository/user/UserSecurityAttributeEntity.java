@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.repository.auth;
+package com.github.nramc.dev.journey.api.repository.user;
 
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import lombok.AllArgsConstructor;

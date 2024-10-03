@@ -2,9 +2,9 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 
 import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
-import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
+import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttributeConverter;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;

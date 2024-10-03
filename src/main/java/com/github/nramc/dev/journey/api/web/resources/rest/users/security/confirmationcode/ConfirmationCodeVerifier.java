@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpService;
 import lombok.RequiredArgsConstructor;

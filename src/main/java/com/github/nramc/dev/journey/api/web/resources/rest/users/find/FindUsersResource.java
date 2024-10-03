@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.find;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.UserRepository;
 import com.github.nramc.dev.journey.api.web.dto.user.User;
 import com.github.nramc.dev.journey.api.web.dto.user.UserConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;

@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.update;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;

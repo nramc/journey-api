@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
