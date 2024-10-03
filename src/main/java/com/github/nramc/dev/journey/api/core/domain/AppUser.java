@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.model;
+package com.github.nramc.dev.journey.api.core.domain;
 
 import com.github.nramc.dev.journey.api.core.user.security.Role;
 import jakarta.validation.constraints.Email;

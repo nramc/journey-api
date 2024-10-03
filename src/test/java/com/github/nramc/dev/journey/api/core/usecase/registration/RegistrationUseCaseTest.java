@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.config.TestConfig;
 import com.github.nramc.dev.journey.api.core.user.security.Role;
-import com.github.nramc.dev.journey.api.core.model.AppUser;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolationException;

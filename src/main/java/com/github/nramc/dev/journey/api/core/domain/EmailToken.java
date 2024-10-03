@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.model;
+package com.github.nramc.dev.journey.api.core.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.UUID;

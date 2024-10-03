@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.core.services.token;
 
-import com.github.nramc.dev.journey.api.core.model.AppUser;
-import com.github.nramc.dev.journey.api.core.model.EmailToken;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
+import com.github.nramc.dev.journey.api.core.domain.EmailToken;
 import com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
