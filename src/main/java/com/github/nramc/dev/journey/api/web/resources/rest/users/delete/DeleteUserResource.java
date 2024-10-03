@@ -18,7 +18,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_US
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class DeleteUserResource {
+class DeleteUserResource {
     private final UserDetailsManager userDetailsManager;
 
     @Operation(summary = "Delete application user", tags = {"Administrator Features"})
