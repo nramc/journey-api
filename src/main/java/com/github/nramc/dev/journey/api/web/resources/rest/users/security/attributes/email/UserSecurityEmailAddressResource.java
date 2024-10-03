@@ -1,9 +1,8 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
 
 import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttributeConverter;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -42,7 +41,7 @@ public class UserSecurityEmailAddressResource {
 
         UserSecurityAttribute securityAttribute = userSecurityEmailAddressAttributeService.saveSecurityEmailAddress(
                 authUser, EmailAddress.valueOf(emailAddressRequest.emailAddress()));
-        return UserSecurityAttributeConverter.toResponse(securityAttribute);
+        return securityAttribute.obfuscateSensitiveInformation();
     }
 
     @Operation(summary = "Get my Security Email Address")
@@ -53,7 +52,7 @@ public class UserSecurityEmailAddressResource {
         AuthUser authUser = (AuthUser) userDetailsManager.loadUserByUsername(authentication.getName());
 
         Optional<UserSecurityAttribute> emailAttributeIfExists = userSecurityEmailAddressAttributeService.provideEmailAttributeIfExists(authUser);
-        return emailAttributeIfExists.map(UserSecurityAttributeConverter::toResponse)
+        return emailAttributeIfExists.map(UserSecurityAttribute::obfuscateSensitiveInformation)
                 .map(ResponseEntity::ok).orElse(ResponseEntity.ok().build());
     }
 }
