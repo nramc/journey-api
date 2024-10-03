@@ -27,8 +27,8 @@ import java.util.List;
 
 import static com.github.nramc.dev.journey.api.config.TestConfig.ADMIN_USER;
 import static com.github.nramc.dev.journey.api.config.TestConfig.TEST_USER;
-import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;

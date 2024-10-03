@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
@@ -55,7 +55,7 @@ public class TotpService {
 
     public Optional<UserSecurityAttribute> getTotpAttributeIfExists(AuthUser authUser) {
         List<UserSecurityAttributeEntity> attributes = attributesRepository.findAllByUserIdAndType(
-                authUser.getId().toHexString(), SecurityAttributeType.TOTP);
+                authUser.getId().toHexString(), UserSecurityAttributeType.TOTP);
         return Optional.ofNullable(attributes)
                 .filter(CollectionUtils::isNotEmpty)
                 .map(List::getFirst)
@@ -74,7 +74,7 @@ public class TotpService {
 
     public void deactivateTotp(AuthUser authUser) {
         getTotpAttributeIfExists(authUser).ifPresent(attribute ->
-                attributesRepository.deleteAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.TOTP));
+                attributesRepository.deleteAllByUserIdAndType(authUser.getId().toHexString(), UserSecurityAttributeType.TOTP));
     }
 
     private QRCodeData toQRCodeData(TotpSecret secret, AuthUser authUser) {

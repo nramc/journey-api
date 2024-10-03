@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.core.user.security.Role.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
 
 @UtilityClass
 public class UsersData {

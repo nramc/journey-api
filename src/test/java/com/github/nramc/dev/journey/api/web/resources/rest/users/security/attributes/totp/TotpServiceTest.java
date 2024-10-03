@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
@@ -80,7 +80,7 @@ class TotpServiceTest {
         totpService.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET);
 
         verify(attributesRepository).save(assertArg(securityAttribute -> assertThat(securityAttribute).isNotNull()
-                .satisfies(attribute -> assertThat(attribute.getType()).isEqualTo(SecurityAttributeType.TOTP))
+                .satisfies(attribute -> assertThat(attribute.getType()).isEqualTo(UserSecurityAttributeType.TOTP))
                 .satisfies(attribute -> assertThat(attribute.getValue()).isEqualTo(TOTP_SECRET.secret()))
                 .satisfies(attribute -> assertThat(attribute.getUserId()).isEqualTo(AUTH_USER.getId().toHexString()))
                 .satisfies(attribute -> assertThat(attribute.getUsername()).isEqualTo(AUTH_USER.getUsername()))
@@ -99,7 +99,7 @@ class TotpServiceTest {
 
     @Test
     void getTotpAttributeIfExists_whenAttributeExists_shouldReturnTotpAttribute() {
-        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), SecurityAttributeType.TOTP))
+        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP))
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
 
         Optional<UserSecurityAttribute> attributeOptional = totpService.getTotpAttributeIfExists(AUTH_USER);
@@ -117,7 +117,7 @@ class TotpServiceTest {
 
     @Test
     void verify_whenAttributeExistsAndCodeValid_shouldReturnTrue() {
-        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), SecurityAttributeType.TOTP))
+        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP))
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(true);
 
@@ -126,7 +126,7 @@ class TotpServiceTest {
 
     @Test
     void verify_whenAttributeExistsAndCodeInvalid_shouldReturnFalse() {
-        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), SecurityAttributeType.TOTP))
+        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP))
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
@@ -140,18 +140,18 @@ class TotpServiceTest {
 
     @Test
     void deactivateTotp_whenAttributeExists_shouldDeactivateTotp() {
-        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), SecurityAttributeType.TOTP))
+        when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP))
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
 
         totpService.deactivateTotp(AUTH_USER);
 
-        verify(attributesRepository).deleteAllByUserIdAndType(AUTH_USER.getId().toHexString(), SecurityAttributeType.TOTP);
+        verify(attributesRepository).deleteAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP);
     }
 
     @Test
     void deactivateTotp_whenAttributeDoesNotExist_shouldBeGraceful() {
         totpService.deactivateTotp(AUTH_USER);
-        verify(attributesRepository, never()).deleteAllByUserIdAndType(anyString(), any(SecurityAttributeType.class));
+        verify(attributesRepository, never()).deleteAllByUserIdAndType(anyString(), any(UserSecurityAttributeType.class));
     }
 
 

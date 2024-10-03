@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.core.security.attributes.EmailAddress;
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
@@ -58,7 +58,7 @@ class UserSecurityEmailAddressAttributeServiceTest {
     @Test
     void provide_whenAlreadyAttributesExists_shouldReturnList() {
         UserSecurityAttributeEntity emailAddressAttribute = SecurityAttributesUtils.newEmailAttribute(USER).toBuilder()
-                .type(SecurityAttributeType.EMAIL_ADDRESS)
+                .type(UserSecurityAttributeType.EMAIL_ADDRESS)
                 .value("test-email-addressgmail.com")
                 .build();
 
@@ -78,7 +78,7 @@ class UserSecurityEmailAddressAttributeServiceTest {
 
         Optional<UserSecurityAttribute> entityOptional = service.provideEmailAttributeIfExists(USER);
         assertThat(entityOptional).isNotEmpty().get()
-                .satisfies(attribute -> assertThat(attribute.type()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
+                .satisfies(attribute -> assertThat(attribute.type()).isEqualTo(UserSecurityAttributeType.EMAIL_ADDRESS))
                 .satisfies(attribute -> assertThat(attribute.value()).isEqualTo(emailAddressAttribute.getValue()));
     }
 
@@ -94,7 +94,7 @@ class UserSecurityEmailAddressAttributeServiceTest {
         UserSecurityAttribute saved = service.saveSecurityEmailAddress(USER, emailAddress);
         assertThat(saved).isNotNull()
                 .satisfies(attribute -> assertThat(attribute.value()).isEqualTo(emailAddress.value()))
-                .satisfies(attribute -> assertThat(attribute.type()).isEqualTo(SecurityAttributeType.EMAIL_ADDRESS))
+                .satisfies(attribute -> assertThat(attribute.type()).isEqualTo(UserSecurityAttributeType.EMAIL_ADDRESS))
                 .satisfies(attribute -> assertThat(attribute.enabled()).isTrue())
                 .satisfies(attribute -> assertThat(attribute.verified()).isFalse())
                 .satisfies(attribute -> assertThat(attribute.creationDate()).isNotNull())

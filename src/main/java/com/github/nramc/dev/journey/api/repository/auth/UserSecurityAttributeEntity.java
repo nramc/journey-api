@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.repository.auth;
 
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,7 @@ public class UserSecurityAttributeEntity {
     private @MongoId ObjectId id;
     private String userId;
     private String username;
-    private SecurityAttributeType type;
+    private UserSecurityAttributeType type;
     private String value;
     private boolean enabled;
     private boolean verified;

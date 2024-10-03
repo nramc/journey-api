@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
@@ -51,7 +51,7 @@ public class LoginResource {
 
     private LoginResponse additionalFactorResponse(AuthUser userDetails) {
         List<UserSecurityAttribute> securityAttributes = attributeService.getAllAvailableUserSecurityAttributes(userDetails);
-        Set<SecurityAttributeType> availableAttributes = CollectionUtils.emptyIfNull(securityAttributes).stream()
+        Set<UserSecurityAttributeType> availableAttributes = CollectionUtils.emptyIfNull(securityAttributes).stream()
                 .map(UserSecurityAttribute::type)
                 .collect(Collectors.toSet());
         return LoginResponse.builder()

@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"prod", "test"})
 class UserSecurityEmailAddressResourceTest {
     private static final UserSecurityAttribute EMAIL_ATTRIBUTE = UserSecurityAttribute.builder()
-            .type(SecurityAttributeType.EMAIL_ADDRESS)
+            .type(UserSecurityAttributeType.EMAIL_ADDRESS)
             .value("u***************************@gmail.com")
             .enabled(true)
             .verified(false)

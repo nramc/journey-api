@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email;
 
-import com.github.nramc.dev.journey.api.core.security.attributes.EmailAddress;
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
@@ -28,7 +28,7 @@ public class UserSecurityEmailAddressAttributeService {
 
     public Optional<UserSecurityAttribute> provideEmailAttributeIfExists(AuthUser authUser) {
         List<UserSecurityAttributeEntity> attributesEntities = userSecurityAttributesRepository
-                .findAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.EMAIL_ADDRESS);
+                .findAllByUserIdAndType(authUser.getId().toHexString(), UserSecurityAttributeType.EMAIL_ADDRESS);
 
         return Optional.of(attributesEntities)
                 .filter(CollectionUtils::isNotEmpty)
@@ -38,7 +38,7 @@ public class UserSecurityEmailAddressAttributeService {
 
     public UserSecurityAttribute saveSecurityEmailAddress(AuthUser authUser, EmailAddress emailAddress) {
         List<UserSecurityAttributeEntity> attributesEntities = userSecurityAttributesRepository
-                .findAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.EMAIL_ADDRESS);
+                .findAllByUserIdAndType(authUser.getId().toHexString(), UserSecurityAttributeType.EMAIL_ADDRESS);
 
         UserSecurityAttributeEntity emailAttribute = Optional.of(attributesEntities)
                 .filter(CollectionUtils::isNotEmpty)
@@ -57,7 +57,7 @@ public class UserSecurityEmailAddressAttributeService {
 
     public void setVerifiedStatus(boolean status, AuthUser authUser) {
         List<UserSecurityAttributeEntity> attributesEntities = userSecurityAttributesRepository
-                .findAllByUserIdAndType(authUser.getId().toHexString(), SecurityAttributeType.EMAIL_ADDRESS);
+                .findAllByUserIdAndType(authUser.getId().toHexString(), UserSecurityAttributeType.EMAIL_ADDRESS);
 
         UserSecurityAttributeEntity emailAttribute = Optional.of(attributesEntities)
                 .filter(CollectionUtils::isNotEmpty)

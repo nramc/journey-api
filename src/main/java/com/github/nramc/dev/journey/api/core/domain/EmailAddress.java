@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.security.attributes;
+package com.github.nramc.dev.journey.api.core.domain;
 
 import com.github.nramc.dev.journey.api.core.utils.EmailAddressObfuscator;
 import jakarta.validation.constraints.Email;
