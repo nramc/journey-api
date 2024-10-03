@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.api;
 
-import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

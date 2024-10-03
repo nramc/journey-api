@@ -18,7 +18,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.API_VERSI
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "API Info", description = "Get Information about deployed API")
-public class ApiVersionResource {
+class ApiVersionResource {
     private final ApplicationProperties applicationProperties;
 
     @Operation(summary = "Get application name and version")
@@ -26,7 +26,7 @@ public class ApiVersionResource {
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApiVersionResponse.class))})})
     @RestDocCommonResponse
     @GetMapping(value = API_VERSION, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiVersionResponse version() {
+    ApiVersionResponse version() {
         return ApiVersionResponse.builder()
                 .name(applicationProperties.name())
                 .version(applicationProperties.version())
