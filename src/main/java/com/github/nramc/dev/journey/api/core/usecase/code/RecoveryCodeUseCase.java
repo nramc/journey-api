@@ -1,11 +1,11 @@
-package com.github.nramc.dev.journey.api.core.security.attributes.recovery.code;
+package com.github.nramc.dev.journey.api.core.usecase.code;
 
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class RecoveryCodeGenerator {
+public class RecoveryCodeUseCase {
 
     // Recovery code must reach a minimum entropy to be secured
     //   code entropy = log( {characters-count} ^ {code-length} ) / log(2)
