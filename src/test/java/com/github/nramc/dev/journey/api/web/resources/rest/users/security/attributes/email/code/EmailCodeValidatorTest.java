@@ -2,8 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 
 import com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeEntity;
-import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
+import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
 import org.junit.jupiter.api.BeforeEach;

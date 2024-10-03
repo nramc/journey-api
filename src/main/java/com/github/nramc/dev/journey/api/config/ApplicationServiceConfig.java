@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.config;
 import com.github.nramc.dev.journey.api.core.usecase.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailCodeValidator;

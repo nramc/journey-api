@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.repository.security;
+package com.github.nramc.dev.journey.api.repository.user;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
 import com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType;
