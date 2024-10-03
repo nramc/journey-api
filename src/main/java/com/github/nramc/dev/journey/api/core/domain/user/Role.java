@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.user.security;
+package com.github.nramc.dev.journey.api.core.domain.user;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;

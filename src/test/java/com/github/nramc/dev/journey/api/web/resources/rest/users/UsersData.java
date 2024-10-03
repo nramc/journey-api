@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users;
 
-import com.github.nramc.dev.journey.api.core.user.security.Role;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
 import lombok.experimental.UtilityClass;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.core.user.security.Role.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
 

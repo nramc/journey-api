@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.config.security;
 
-import com.github.nramc.dev.journey.api.core.user.security.Role;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;

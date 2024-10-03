@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.auth;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.core.user.security.Role;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

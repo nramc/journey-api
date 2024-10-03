@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth;
 
-import com.github.nramc.dev.journey.api.core.user.security.Role;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
 import lombok.RequiredArgsConstructor;

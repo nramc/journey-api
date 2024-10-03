@@ -1,7 +1,6 @@
-package com.github.nramc.dev.journey.api.core.user.converters;
+package com.github.nramc.dev.journey.api.repository.auth;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

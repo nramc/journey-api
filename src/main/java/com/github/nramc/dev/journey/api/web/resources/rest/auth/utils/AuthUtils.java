@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.utils;
 
-import com.github.nramc.dev.journey.api.core.user.security.Role;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
