@@ -7,7 +7,11 @@ import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
 
+/**
+ * @deprecated instead of utils, use Converter
+ */
 @UtilityClass
+@Deprecated(forRemoval = true)
 public class SecurityAttributesUtils {
     public static UserSecurityAttributeEntity newEmailAttribute(AuthUser authUser) {
         return UserSecurityAttributeEntity.builder()
