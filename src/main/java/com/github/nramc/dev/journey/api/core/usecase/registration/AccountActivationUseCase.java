@@ -3,15 +3,13 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
-import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
-import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
-import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
-import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.core.services.mail.MailService;
+import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +26,6 @@ public class AccountActivationUseCase {
     private final EmailTokenUseCase emailTokenUseCase;
     private final MailService mailService;
     private final AuthUserDetailsService userDetailsService;
-    private final UserSecurityEmailAddressAttributeService emailAddressAttributeService;
     private final EmailNotificationUseCase emailNotificationUseCase;
 
     public void sendActivationEmail(AppUser user) {
@@ -50,7 +47,6 @@ public class AccountActivationUseCase {
         AuthUser updatedUserEntity = userEntity.toBuilder().enabled(true).build();
         userDetailsService.updateUser(updatedUserEntity);
 
-        emailAddressAttributeService.saveSecurityEmailAddress(updatedUserEntity, EmailAddress.valueOf(userEntity.getUsername()));
         emailNotificationUseCase.notifyAdmin("User completed onboarding - " + userEntity.getUsername());
     }
 

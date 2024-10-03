@@ -1,16 +1,15 @@
 package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
+import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
-import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,8 +49,6 @@ class AccountActivationUseCaseTest {
     @Mock
     private AuthUserDetailsService userDetailsService;
     @Mock
-    private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
-    @Mock
     private EmailNotificationUseCase emailNotificationUseCase;
     @InjectMocks
     private AccountActivationUseCase accountActivationUseCase;
@@ -86,7 +83,6 @@ class AccountActivationUseCaseTest {
 
         accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER);
         verify(userDetailsService).updateUser(argThat(entity -> entity.isEnabled() && USERNAME.equals(entity.getUsername())));
-        verify(emailAddressAttributeService).saveSecurityEmailAddress(eq(ONBOARDING_USER_ENTITY), argThat(emailAddress -> USERNAME.equals(emailAddress.value())));
         verify(emailNotificationUseCase).notifyAdmin("User completed onboarding - " + USERNAME);
     }
 

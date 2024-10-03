@@ -1,13 +1,11 @@
 package com.github.nramc.dev.journey.api.core.usecase.codes.emailcode;
 
 import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
-import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCode;
 import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -16,14 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
 public class EmailCodeValidator {
     static final int EMAIL_CODE_VALIDITY_MINUTES = 15;
     private final ConfirmationCodeRepository codeRepository;
-    private final UserSecurityEmailAddressAttributeService emailAddressAttributeService;
 
     /**
      * @param confirmationCode code to be validated
@@ -31,12 +27,6 @@ public class EmailCodeValidator {
      * @return true if code valid otherwise false
      */
     public boolean isValid(ConfirmationCode confirmationCode, AuthUser authUser) {
-        Optional<UserSecurityAttribute> emailAttributeIfExists = emailAddressAttributeService.provideEmailAttributeIfExists(authUser);
-        if (emailAttributeIfExists.isEmpty()) {
-            log.info("Email Code verification failed. Reason:[email address not exists]");
-            return false;
-        }
-
         EmailCode code = (EmailCode) confirmationCode;
         List<ConfirmationCodeEntity> codes = codeRepository.findAllByUsername(authUser.getUsername());
 
@@ -51,7 +41,7 @@ public class EmailCodeValidator {
             log.info("Email Code verification failed. Reason:[code not active]");
             return false;
         }
-        if (!confirmationCodeEntity.getReceiver().equals(emailAttributeIfExists.get().value())) { // Email Address not matched
+        if (!confirmationCodeEntity.getReceiver().equals(authUser.getUsername())) { // Email Address not matched
             log.info("Email Code verification failed. Reason:[Email address not matched]");
             return false;
         }

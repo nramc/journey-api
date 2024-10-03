@@ -5,7 +5,6 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,13 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeValidator.EMAIL_CODE_VALIDITY_MINUTES;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,20 +35,16 @@ class EmailCodeValidatorTest {
             .build();
     @Mock
     private ConfirmationCodeRepository codeRepository;
-    @Mock
-    private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
     private EmailCodeValidator emailCodeValidator;
 
     @BeforeEach
     void setup() {
-        emailCodeValidator = new EmailCodeValidator(codeRepository, emailAddressAttributeService);
+        emailCodeValidator = new EmailCodeValidator(codeRepository);
     }
 
     @Test
     void isValid_whenCodeValid_shouldReturnTrue() {
         when(codeRepository.findAllByUsername(VALID_USER.getUsername())).thenReturn(List.of(VALID_CODE_ENTITY));
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         assertThat(emailCodeValidator.isValid(VALID_CODE, VALID_USER)).isTrue();
     }
 
@@ -62,8 +55,6 @@ class EmailCodeValidatorTest {
 
     @Test
     void isValid_whenCodeNotActive_shouldReturnFalse() {
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         when(codeRepository.findAllByUsername(VALID_USER.getUsername()))
                 .thenReturn(List.of(VALID_CODE_ENTITY.toBuilder().isActive(false).build()));
         assertThat(emailCodeValidator.isValid(VALID_CODE, VALID_USER)).isFalse();
@@ -71,8 +62,6 @@ class EmailCodeValidatorTest {
 
     @Test
     void isValid_whenConfirmationTypeNotMatched_shouldReturnFalse() {
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         when(codeRepository.findAllByUsername(VALID_USER.getUsername()))
                 .thenReturn(List.of(VALID_CODE_ENTITY.toBuilder().type(ConfirmationCodeType.EMAIL_TOKEN).build()));
         assertThat(emailCodeValidator.isValid(VALID_CODE, VALID_USER)).isFalse();
@@ -80,8 +69,6 @@ class EmailCodeValidatorTest {
 
     @Test
     void isValid_whenCodeExpired_shouldReturnFalse() {
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         when(codeRepository.findAllByUsername(VALID_USER.getUsername()))
                 .thenReturn(List.of(VALID_CODE_ENTITY.toBuilder().createdAt(LocalDateTime.now().minusMinutes(EMAIL_CODE_VALIDITY_MINUTES + 1)).build()));
         assertThat(emailCodeValidator.isValid(VALID_CODE, VALID_USER)).isFalse();

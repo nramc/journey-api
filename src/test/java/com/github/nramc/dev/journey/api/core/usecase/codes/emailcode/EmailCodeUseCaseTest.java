@@ -4,10 +4,8 @@ import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -18,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.CODE_LENGTH;
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
@@ -31,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.ArgumentMatchers.eq;
@@ -59,22 +55,17 @@ class EmailCodeUseCaseTest {
     private MailService mailService;
     @Mock
     private ConfirmationCodeRepository codeRepository;
-    @Mock
-    private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
     private EmailCodeUseCase emailCodeUseCase;
 
 
     @BeforeEach
     void setup() {
-        emailCodeUseCase = new EmailCodeUseCase(mailService, codeRepository,
-                new EmailCodeValidator(codeRepository, emailAddressAttributeService), emailAddressAttributeService);
+        emailCodeUseCase = new EmailCodeUseCase(mailService, codeRepository, new EmailCodeValidator(codeRepository));
     }
 
     @Test
     void send_whenDataValid_shouldSendEmailCodeSuccessfully() throws MessagingException {
         doNothing().when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
 
         assertDoesNotThrow(() -> emailCodeUseCase.send(AUTH_USER));
 
@@ -100,8 +91,6 @@ class EmailCodeUseCaseTest {
     @Test
     void send_whenSendingEmailCodeFailed_shouldThrowError() throws MessagingException {
         doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailCodeUseCase.send(AUTH_USER));
         verifyNoInteractions(codeRepository);
     }
@@ -119,25 +108,21 @@ class EmailCodeUseCaseTest {
     @Test
     void verify_whenEmailCodeValid_shouldReturnSuccessAndInvalidAllExistingCodes() {
         when(codeRepository.findAllByUsername(anyString())).thenReturn(List.of(VALID_CODE_ENTITY));
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
+
         boolean valid = emailCodeUseCase.verify(VALID_CODE, AUTH_USER);
+
         assertThat(valid).isTrue();
         verify(codeRepository, atLeastOnce()).findAllByUsername(AUTH_USER.getUsername());
         verify(codeRepository).deleteAll(any());
-        verify(emailAddressAttributeService).setVerifiedStatus(eq(true), any(AuthUser.class));
     }
 
     @Test
     void verify_whenEmailCodeNotValid_shouldReturnError() {
-        when(emailAddressAttributeService.provideEmailAttributeIfExists(any(AuthUser.class)))
-                .thenReturn(Optional.of(EMAIL_ATTRIBUTE));
         when(codeRepository.findAllByUsername(anyString())).thenReturn(List.of(VALID_CODE_ENTITY.toBuilder().isActive(false).build()));
         boolean valid = emailCodeUseCase.verify(VALID_CODE, AUTH_USER);
         assertThat(valid).isFalse();
         verify(codeRepository).findAllByUsername(AUTH_USER.getUsername());
         verify(codeRepository, never()).deleteAll(any());
-        verify(emailAddressAttributeService, never()).setVerifiedStatus(anyBoolean(), any());
     }
 
 }
