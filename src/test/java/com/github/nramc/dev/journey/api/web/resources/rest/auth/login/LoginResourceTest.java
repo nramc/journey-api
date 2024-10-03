@@ -8,7 +8,7 @@ import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.UserRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

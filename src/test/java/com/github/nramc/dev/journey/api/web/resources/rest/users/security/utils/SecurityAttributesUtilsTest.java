@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils
 
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeEntity;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 

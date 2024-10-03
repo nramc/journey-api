@@ -10,9 +10,9 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
-import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributesRepository;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

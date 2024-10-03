@@ -5,9 +5,9 @@ import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeTy
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeConverter;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeConverter;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeEntity;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -2,8 +2,8 @@ package com.github.nramc.dev.journey.api.core.usecase.codes.token;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
-import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
-import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeEntity;
+import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

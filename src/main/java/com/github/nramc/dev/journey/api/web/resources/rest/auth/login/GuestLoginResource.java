@@ -1,9 +1,9 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
+import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.repository.user;
+package com.github.nramc.dev.journey.api.repository.user.code;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

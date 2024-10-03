@@ -1,10 +1,7 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes;
+package com.github.nramc.dev.journey.api.repository.user.attributes;
 
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeConverter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 

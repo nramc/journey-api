@@ -6,7 +6,7 @@ import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUse
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
