@@ -33,6 +33,7 @@
         <commons-geojson.version>0.0.38</commons-geojson.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <rewrite-java-security.version>2.13.0</rewrite-java-security.version>
+        <rewrite-logging-frameworks.version>2.14.0</rewrite-logging-frameworks.version>
         <rewrite-maven-plugin.version>5.41.0</rewrite-maven-plugin.version>
         <rewrite-recommendations.version>1.10.0</rewrite-recommendations.version>
         <rewrite-static-analysis.version>1.17.0</rewrite-static-analysis.version>
@@ -261,6 +262,11 @@
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-java-security</artifactId>
                         <version>${rewrite-java-security.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-logging-frameworks</artifactId>
+                        <version>${rewrite-logging-frameworks.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
