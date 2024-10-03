@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.core.totp;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.code.TotpCode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

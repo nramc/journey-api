@@ -6,7 +6,7 @@ import com.github.nramc.dev.journey.api.core.totp.TotpCodeVerifier;
 import com.github.nramc.dev.journey.api.core.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.core.totp.TotpTimeStepWindowProvider;
 import com.github.nramc.dev.journey.api.core.totp.TotpProperties;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.code.TotpCode;
 import com.github.nramc.dev.journey.api.core.totp.TotpSecret;
 import lombok.experimental.UtilityClass;
 

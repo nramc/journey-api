@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.config;
 
 import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
-import com.github.nramc.dev.journey.api.core.usecase.token.EmailTokenUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.code.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;

@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
+import com.github.nramc.dev.journey.api.core.usecase.code.EmailCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

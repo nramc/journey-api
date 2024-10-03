@@ -5,7 +5,7 @@ import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeTy
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.code.TotpCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

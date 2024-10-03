@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode;
+package com.github.nramc.dev.journey.api.core.usecase.code;
 
 public record TotpCode(String code) implements ConfirmationCode {
     public static TotpCode valueOf(String code) {

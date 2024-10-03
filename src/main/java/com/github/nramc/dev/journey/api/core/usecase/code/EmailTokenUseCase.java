@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.usecase.token;
+package com.github.nramc.dev.journey.api.core.usecase.code;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;

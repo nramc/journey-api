@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeConverter;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.code.TotpCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

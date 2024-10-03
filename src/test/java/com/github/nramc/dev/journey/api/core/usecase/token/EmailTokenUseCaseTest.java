@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.core.usecase.token;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
+import com.github.nramc.dev.journey.api.core.usecase.code.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
 import org.junit.jupiter.api.Test;
