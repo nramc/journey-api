@@ -5,7 +5,7 @@ import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
-import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

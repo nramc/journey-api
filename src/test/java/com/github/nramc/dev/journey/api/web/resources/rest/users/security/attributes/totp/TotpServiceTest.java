@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attrib
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.QRCodeData;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
-import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import org.junit.jupiter.api.BeforeEach;

@@ -12,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType.EMAIL_CODE;
-import static com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType.EMAIL_TOKEN;
+import static com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType.EMAIL_CODE;
+import static com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType.EMAIL_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.assertArg;
 import static org.mockito.Mockito.verify;

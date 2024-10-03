@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.core.usecase.token;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
-import com.github.nramc.dev.journey.api.core.security.attributes.recovery.code.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
 import lombok.RequiredArgsConstructor;

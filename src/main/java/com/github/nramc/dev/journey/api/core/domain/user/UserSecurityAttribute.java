@@ -1,7 +1,6 @@
-package com.github.nramc.dev.journey.api.web.dto.user.security;
+package com.github.nramc.dev.journey.api.core.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
