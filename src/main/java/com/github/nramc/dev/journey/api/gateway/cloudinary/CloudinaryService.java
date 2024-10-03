@@ -34,7 +34,7 @@ public class CloudinaryService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<CloudinaryResourceRepresentation> allResources(Journey journey) {
+    public List<CloudinaryAsset> allResources(Journey journey) {
         try {
             ApiResponse apiResponse = cloudinary.api().resourcesByContext("id", journey.id(), Map.of());
             log.info("allResources: {}", apiResponse);
@@ -45,9 +45,9 @@ public class CloudinaryService {
         }
     }
 
-    private CloudinaryResourceRepresentation toCloudinaryResource(Map<String, Object> resources) {
+    private CloudinaryAsset toCloudinaryResource(Map<String, Object> resources) {
         if (resources != null && !resources.isEmpty()) {
-            return CloudinaryResourceRepresentation.builder()
+            return CloudinaryAsset.builder()
                     .url(resources.get("url").toString())
                     .publicID(resources.get(PUBLIC_ID).toString())
                     .assetID(resources.get("asset_id").toString())
@@ -67,7 +67,7 @@ public class CloudinaryService {
     }
 
     private void deleteAllResources(Journey journey) {
-        List<CloudinaryResourceRepresentation> resources = allResources(journey);
+        List<CloudinaryAsset> resources = allResources(journey);
         CollectionUtils.emptyIfNull(resources).forEach(resource -> deleteImage(resource.assetID()));
     }
 

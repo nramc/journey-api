@@ -1,6 +1,6 @@
-package com.github.nramc.dev.journey.api.web.validation;
+package com.github.nramc.dev.journey.api.core.validation;
 
-import com.github.nramc.dev.journey.api.web.validation.validator.ValidateVisibilitiesValidator;
+import com.github.nramc.dev.journey.api.core.validation.validator.ValidateVisibilitiesValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

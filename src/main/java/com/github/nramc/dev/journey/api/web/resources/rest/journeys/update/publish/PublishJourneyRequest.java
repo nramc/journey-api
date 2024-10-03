@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish;
 
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import com.github.nramc.dev.journey.api.web.validation.ValidateVisibilities;
+import com.github.nramc.dev.journey.api.core.validation.ValidateVisibilities;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
