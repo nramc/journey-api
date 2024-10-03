@@ -1,6 +1,5 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config;
+package com.github.nramc.dev.journey.api.core.totp;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpAlgorithm;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

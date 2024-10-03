@@ -1,16 +1,13 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
+package com.github.nramc.dev.journey.api.core.totp;
 
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeConverter;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.QRCodeData;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
-import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeConverter;
-import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +18,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
-public class TotpService {
+public class TotpUseCase {
     private final TotpProperties totpProperties;
     private final TotpSecretGenerator secretGenerator;
     private final QRCodeGenerator qrCodeGenerator;

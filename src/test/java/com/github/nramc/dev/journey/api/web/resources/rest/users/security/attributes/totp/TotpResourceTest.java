@@ -4,6 +4,8 @@ import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.core.totp.QRImageDetails;
+import com.github.nramc.dev.journey.api.core.totp.TotpUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
@@ -38,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TotpResource.class)
 @Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({TotpService.class})
+@MockBean({TotpUseCase.class})
 class TotpResourceTest {
     private static final String SECRET_KEY = "E6DCVTM46CLPRXOE6NNNXCPWAIR3L5QZss";
     private static final String TOTP_CODE = "123456";
@@ -54,7 +56,7 @@ class TotpResourceTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private TotpService totpService;
+    private TotpUseCase totpUseCase;
 
     @Test
     void context() {
@@ -79,7 +81,7 @@ class TotpResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void generateSecret_whenUserAuthenticated_shouldBeSuccessful() throws Exception {
-        when(totpService.newQRCodeData(any(AuthUser.class))).thenReturn(
+        when(totpUseCase.newQRCodeData(any(AuthUser.class))).thenReturn(
                 QRImageDetails.builder().data("image".getBytes()).secretKey(SECRET_KEY).build());
         mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_TOTP))
                 .andDo(print())
@@ -102,7 +104,7 @@ class TotpResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void status_whenUserAuthenticated_shouldBeSuccessful() throws Exception {
-        when(totpService.getTotpAttributeIfExists(any(AuthUser.class))).thenReturn(
+        when(totpUseCase.getTotpAttributeIfExists(any(AuthUser.class))).thenReturn(
                 Optional.of(UserSecurityAttribute.builder().build())
         );
         mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_TOTP_STATUS)).andDo(print())
@@ -132,7 +134,7 @@ class TotpResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void verify_whenCodeValid_shouldReturnSuccess() throws Exception {
-        when(totpService.verify(any(AuthUser.class), any(TotpCode.class))).thenReturn(true);
+        when(totpUseCase.verify(any(AuthUser.class), any(TotpCode.class))).thenReturn(true);
         mockMvc.perform(post(MY_SECURITY_ATTRIBUTE_TOTP_VERIFY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(VERIFY_REQUEST_PAYLOAD.formatted("123456"))
@@ -145,7 +147,7 @@ class TotpResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void verify_whenCodeInvalid_shouldReturnFailure() throws Exception {
-        when(totpService.verify(any(AuthUser.class), any(TotpCode.class))).thenReturn(false);
+        when(totpUseCase.verify(any(AuthUser.class), any(TotpCode.class))).thenReturn(false);
         mockMvc.perform(post(MY_SECURITY_ATTRIBUTE_TOTP_VERIFY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(VERIFY_REQUEST_PAYLOAD.formatted("123456"))
@@ -165,7 +167,7 @@ class TotpResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void deactivate_whenCodeInvalid_shouldThrowError() throws Exception {
-        doThrow(new BusinessException("mocked", "totp.code.invalid")).when(totpService).deactivateTotp(any(AuthUser.class));
+        doThrow(new BusinessException("mocked", "totp.code.invalid")).when(totpUseCase).deactivateTotp(any(AuthUser.class));
         mockMvc.perform(delete(MY_SECURITY_ATTRIBUTE_TOTP))
                 .andDo(print())
                 .andExpect(status().isBadRequest());

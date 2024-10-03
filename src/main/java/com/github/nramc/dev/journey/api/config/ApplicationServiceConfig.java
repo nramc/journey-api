@@ -8,11 +8,11 @@ import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attrib
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailCodeValidator;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.QRCodeGenerator;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpCodeVerifier;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpSecretGenerator;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.TotpService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
+import com.github.nramc.dev.journey.api.core.totp.QRCodeGenerator;
+import com.github.nramc.dev.journey.api.core.totp.TotpCodeVerifier;
+import com.github.nramc.dev.journey.api.core.totp.TotpSecretGenerator;
+import com.github.nramc.dev.journey.api.core.totp.TotpUseCase;
+import com.github.nramc.dev.journey.api.core.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCodeVerifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,19 +60,19 @@ public class ApplicationServiceConfig {
     }
 
     @Bean
-    public TotpService totpService(
+    public TotpUseCase totpService(
             TotpProperties properties,
             TotpSecretGenerator secretGenerator,
             QRCodeGenerator qrCodeGenerator,
             TotpCodeVerifier codeVerifier,
             UserSecurityAttributesRepository attributeRepository) {
-        return new TotpService(properties, secretGenerator, qrCodeGenerator, codeVerifier, attributeRepository);
+        return new TotpUseCase(properties, secretGenerator, qrCodeGenerator, codeVerifier, attributeRepository);
     }
 
     @Bean
     public ConfirmationCodeVerifier confirmationCodeVerifier(
-            TotpService totpService, EmailConfirmationCodeService emailConfirmationCodeService) {
-        return new ConfirmationCodeVerifier(totpService, emailConfirmationCodeService);
+            TotpUseCase totpUseCase, EmailConfirmationCodeService emailConfirmationCodeService) {
+        return new ConfirmationCodeVerifier(totpUseCase, emailConfirmationCodeService);
     }
 
 }

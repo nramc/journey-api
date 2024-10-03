@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model;
+package com.github.nramc.dev.journey.api.core.totp;
 
 public record TotpSecret(String secret) {
 

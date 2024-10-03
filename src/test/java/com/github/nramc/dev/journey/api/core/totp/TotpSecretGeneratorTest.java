@@ -1,7 +1,5 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
+package com.github.nramc.dev.journey.api.core.totp;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

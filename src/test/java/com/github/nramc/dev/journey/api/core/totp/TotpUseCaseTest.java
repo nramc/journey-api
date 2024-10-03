@@ -1,14 +1,11 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
+package com.github.nramc.dev.journey.api.core.totp;
 
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributeEntity;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.QRCodeData;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
-import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +28,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class TotpServiceTest {
+class TotpUseCaseTest {
     private static final TotpSecret TOTP_SECRET = TotpSecret.valueOf("W3C5B3WKR4AUKFVWYU2WNMYB756OAKWY");
     private static final TotpCode TOTP_CODE = TotpCode.valueOf("123456");
     private static final byte[] QR_IMG_BYTES = "QR_IMG_BYTES".getBytes();
@@ -55,11 +52,11 @@ class TotpServiceTest {
     @Mock
     private UserSecurityAttributesRepository attributesRepository;
 
-    private TotpService totpService;
+    private TotpUseCase totpUseCase;
 
     @BeforeEach
     void setUp() {
-        totpService = new TotpService(TOTP_PROPERTIES, secretGenerator, qrCodeGenerator, codeVerifier, attributesRepository);
+        totpUseCase = new TotpUseCase(TOTP_PROPERTIES, secretGenerator, qrCodeGenerator, codeVerifier, attributesRepository);
     }
 
     @Test
@@ -67,7 +64,7 @@ class TotpServiceTest {
         when(secretGenerator.generate()).thenReturn(TOTP_SECRET);
         when(qrCodeGenerator.generateWithLogo(any(QRCodeData.class))).thenReturn(QR_IMG_BYTES);
 
-        QRImageDetails qrImageDetails = totpService.newQRCodeData(AUTH_USER);
+        QRImageDetails qrImageDetails = totpUseCase.newQRCodeData(AUTH_USER);
         assertThat(qrImageDetails).isNotNull()
                 .satisfies(data -> assertThat(data.secretKey()).isNotBlank().isEqualTo(TOTP_SECRET.secret()))
                 .satisfies(data -> assertThat(data.data()).isEqualTo(QR_IMG_BYTES));
@@ -77,7 +74,7 @@ class TotpServiceTest {
     void activateTotp_whenCodeValid_shouldActivateTotp() {
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(true);
 
-        totpService.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET);
+        totpUseCase.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET);
 
         verify(attributesRepository).save(assertArg(securityAttribute -> assertThat(securityAttribute).isNotNull()
                 .satisfies(attribute -> assertThat(attribute.getType()).isEqualTo(UserSecurityAttributeType.TOTP))
@@ -92,7 +89,7 @@ class TotpServiceTest {
     void activateTotp_whenCodeInvalid_shouldNotActivateTotp() {
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
-        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> totpService.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET));
+        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> totpUseCase.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET));
 
         verifyNoInteractions(attributesRepository);
     }
@@ -102,7 +99,7 @@ class TotpServiceTest {
         when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP))
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
 
-        Optional<UserSecurityAttribute> attributeOptional = totpService.getTotpAttributeIfExists(AUTH_USER);
+        Optional<UserSecurityAttribute> attributeOptional = totpUseCase.getTotpAttributeIfExists(AUTH_USER);
 
         assertThat(attributeOptional).isNotEmpty()
                 .hasValueSatisfying(attribute -> assertThat(attribute).isNotNull());
@@ -110,7 +107,7 @@ class TotpServiceTest {
 
     @Test
     void getTotpAttributeIfExists_whenAttributeDoesNotExist_shouldReturnEmptyOptional() {
-        Optional<UserSecurityAttribute> attributeOptional = totpService.getTotpAttributeIfExists(AUTH_USER);
+        Optional<UserSecurityAttribute> attributeOptional = totpUseCase.getTotpAttributeIfExists(AUTH_USER);
 
         assertThat(attributeOptional).isEmpty();
     }
@@ -121,7 +118,7 @@ class TotpServiceTest {
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(true);
 
-        assertThat(totpService.verify(AUTH_USER, TOTP_CODE)).isTrue();
+        assertThat(totpUseCase.verify(AUTH_USER, TOTP_CODE)).isTrue();
     }
 
     @Test
@@ -130,12 +127,12 @@ class TotpServiceTest {
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
-        assertThat(totpService.verify(AUTH_USER, TOTP_CODE)).isFalse();
+        assertThat(totpUseCase.verify(AUTH_USER, TOTP_CODE)).isFalse();
     }
 
     @Test
     void verify_whenAttributeDoesNotExist_shouldReturnFalse() {
-        assertThat(totpService.verify(AUTH_USER, TOTP_CODE)).isFalse();
+        assertThat(totpUseCase.verify(AUTH_USER, TOTP_CODE)).isFalse();
     }
 
     @Test
@@ -143,14 +140,14 @@ class TotpServiceTest {
         when(attributesRepository.findAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP))
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
 
-        totpService.deactivateTotp(AUTH_USER);
+        totpUseCase.deactivateTotp(AUTH_USER);
 
         verify(attributesRepository).deleteAllByUserIdAndType(AUTH_USER.getId().toHexString(), UserSecurityAttributeType.TOTP);
     }
 
     @Test
     void deactivateTotp_whenAttributeDoesNotExist_shouldBeGraceful() {
-        totpService.deactivateTotp(AUTH_USER);
+        totpUseCase.deactivateTotp(AUTH_USER);
         verify(attributesRepository, never()).deleteAllByUserIdAndType(anyString(), any(UserSecurityAttributeType.class));
     }
 
