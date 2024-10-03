@@ -7,6 +7,7 @@ recipeList:
   - org.openrewrite.java.security.JavaSecurityBestPractices
   - org.openrewrite.java.RemoveUnusedImports
   - org.openrewrite.recommendations.CodeHealth
+  - org.openrewrite.java.logging.slf4j.Slf4jBestPractices
   - org.openrewrite.recommendations.DependencyManagement
   - org.openrewrite.maven.BestPractices
   - org.openrewrite.recipes.JavaRecipeBestPractices
@@ -40,8 +41,8 @@ recipeList:
 type: specs.openrewrite.org/v1beta/recipe
 name: com.github.nramc.recipes.testing
 recipeList:
-# Since some o f the Mockito.eq(), Mockito.any() and Mockito.when removed as unused, this is seems to be bug. Therefore below is disabled for now
-#  - org.openrewrite.java.testing.mockito.MockitoBestPractices
+  # Since some o f the Mockito.eq(), Mockito.any() and Mockito.when removed as unused, this is seems to be bug. Therefore below is disabled for now
+  #  - org.openrewrite.java.testing.mockito.MockitoBestPractices
   - org.openrewrite.java.testing.junit5.CleanupAssertions
   - org.openrewrite.java.testing.assertj.Assertj
   - org.openrewrite.java.testing.junit5.StaticImports
