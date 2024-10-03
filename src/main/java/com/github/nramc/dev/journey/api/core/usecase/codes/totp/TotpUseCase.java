@@ -5,15 +5,10 @@ import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeTy
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeConverter;
-import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeEntity;
-import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributesRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.utils.SecurityAttributesUtils;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,7 +18,7 @@ public class TotpUseCase {
     private final TotpSecretGenerator secretGenerator;
     private final QRCodeGenerator qrCodeGenerator;
     private final TotpCodeVerifier codeVerifier;
-    private final UserSecurityAttributesRepository attributesRepository;
+    private final UserSecurityAttributeService userSecurityAttributeService;
 
     public QRImageDetails newQRCodeData(AuthUser authUser) {
         TotpSecret secret = secretGenerator.generate();
@@ -40,23 +35,14 @@ public class TotpUseCase {
     public void activateTotp(AuthUser authUser, TotpCode code, TotpSecret secret) {
         boolean isCodeValid = codeVerifier.verify(secret, code);
         if (isCodeValid) {
-            UserSecurityAttributeEntity totpEntity = SecurityAttributesUtils.newTotpAttribute(authUser).toBuilder()
-                    .verified(true)
-                    .value(secret.secret())
-                    .build();
-            attributesRepository.save(totpEntity);
+            userSecurityAttributeService.saveTOTPSecret(authUser, secret);
         } else {
             throw new BusinessException("Code not valid", "totp.code.invalid");
         }
     }
 
     public Optional<UserSecurityAttribute> getTotpAttributeIfExists(AuthUser authUser) {
-        List<UserSecurityAttributeEntity> attributes = attributesRepository.findAllByUserIdAndType(
-                authUser.getId().toHexString(), UserSecurityAttributeType.TOTP);
-        return Optional.ofNullable(attributes)
-                .filter(CollectionUtils::isNotEmpty)
-                .map(List::getFirst)
-                .map(UserSecurityAttributeConverter::toModel);
+        return userSecurityAttributeService.getAttributeByType(authUser, UserSecurityAttributeType.TOTP);
     }
 
     public boolean verify(AuthUser authUser, TotpCode code) {
@@ -70,8 +56,7 @@ public class TotpUseCase {
     }
 
     public void deactivateTotp(AuthUser authUser) {
-        getTotpAttributeIfExists(authUser).ifPresent(attribute ->
-                attributesRepository.deleteAllByUserIdAndType(authUser.getId().toHexString(), UserSecurityAttributeType.TOTP));
+        userSecurityAttributeService.deleteAttributeByType(authUser, UserSecurityAttributeType.TOTP);
     }
 
     private QRCodeData toQRCodeData(TotpSecret secret, AuthUser authUser) {

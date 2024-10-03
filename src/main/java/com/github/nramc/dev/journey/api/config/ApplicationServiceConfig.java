@@ -10,9 +10,9 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
-import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributesRepository;
+import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -55,8 +55,8 @@ public class ApplicationServiceConfig {
             TotpSecretGenerator secretGenerator,
             QRCodeGenerator qrCodeGenerator,
             TotpCodeVerifier codeVerifier,
-            UserSecurityAttributesRepository attributeRepository) {
-        return new TotpUseCase(properties, secretGenerator, qrCodeGenerator, codeVerifier, attributeRepository);
+            UserSecurityAttributeService userSecurityAttributeService) {
+        return new TotpUseCase(properties, secretGenerator, qrCodeGenerator, codeVerifier, userSecurityAttributeService);
     }
 
     @Bean
