@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
 import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
-import com.github.nramc.dev.journey.api.core.services.token.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.usecase.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
@@ -25,20 +25,20 @@ import java.util.Map;
 public class AccountActivationUseCase {
     private static final String EMAIL_TEMPLATE_NAME = "account-activation-template.html";
     private final ApplicationProperties applicationProperties;
-    private final EmailTokenService emailTokenService;
+    private final EmailTokenUseCase emailTokenUseCase;
     private final MailService mailService;
     private final AuthUserDetailsService userDetailsService;
     private final UserSecurityEmailAddressAttributeService emailAddressAttributeService;
     private final EmailNotificationUseCase emailNotificationUseCase;
 
     public void sendActivationEmail(AppUser user) {
-        EmailToken emailToken = emailTokenService.generateEmailToken(user);
+        EmailToken emailToken = emailTokenUseCase.generateEmailToken(user);
         String activationUrl = getActivationUrl(emailToken, user);
         sendActivationEmail(activationUrl, user);
     }
 
     public void activateAccount(EmailToken emailToken, AppUser user) {
-        if (emailTokenService.isTokenExistsAndValid(emailToken, user)) {
+        if (emailTokenUseCase.verifyEmailToken(emailToken, user)) {
             activate(user);
         } else {
             throw new BusinessException("", "token.invalid.not.exists");

@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.config;
 
-import com.github.nramc.dev.journey.api.core.services.token.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.usecase.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.auth.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationServiceConfig {
 
     @Bean
-    public EmailTokenService emailTokenService(ConfirmationCodeRepository codeRepository) {
-        return new EmailTokenService(codeRepository);
+    public EmailTokenUseCase emailTokenService(ConfirmationCodeRepository codeRepository) {
+        return new EmailTokenUseCase(codeRepository);
     }
 
 

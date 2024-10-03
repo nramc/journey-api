@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.config;
 
 import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
-import com.github.nramc.dev.journey.api.core.services.token.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.usecase.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
@@ -24,10 +24,10 @@ public class ApplicationUseCaseConfig {
 
     @Bean
     public AccountActivationUseCase accountActivationUseCase(
-            ApplicationProperties properties, EmailTokenService emailTokenService, MailService mailService,
+            ApplicationProperties properties, EmailTokenUseCase emailTokenUseCase, MailService mailService,
             AuthUserDetailsService userDetailsService, UserSecurityEmailAddressAttributeService emailAddressAttributeService,
             EmailNotificationUseCase emailNotificationUseCase) {
-        return new AccountActivationUseCase(properties, emailTokenService, mailService, userDetailsService,
+        return new AccountActivationUseCase(properties, emailTokenUseCase, mailService, userDetailsService,
                 emailAddressAttributeService, emailNotificationUseCase);
     }
 

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.services.token;
+package com.github.nramc.dev.journey.api.core.usecase.token;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
@@ -18,7 +18,7 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.users.security
 
 @RequiredArgsConstructor
 @Slf4j
-public class EmailTokenService {
+public class EmailTokenUseCase {
     private final ConfirmationCodeRepository codeRepository;
 
     public EmailToken generateEmailToken(AppUser appUser) {
@@ -27,7 +27,7 @@ public class EmailTokenService {
         return emailToken;
     }
 
-    public boolean isTokenExistsAndValid(EmailToken emailToken, AppUser appUser) {
+    public boolean verifyEmailToken(EmailToken emailToken, AppUser appUser) {
         List<ConfirmationCodeEntity> codeEntities = codeRepository.findAllByUsername(appUser.username());
         return CollectionUtils.emptyIfNull(codeEntities).stream()
                 .filter(ConfirmationCodeEntity::isActive)

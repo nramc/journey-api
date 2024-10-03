@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.core.services;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
-import com.github.nramc.dev.journey.api.core.services.token.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.usecase.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.security.ConfirmationCodeRepository;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class EmailTokenServiceTest {
+class EmailTokenUseCaseTest {
     private static final EmailToken VALID_EMAIL_TOKEN = EmailToken.valueOf("7c26f3d9-6b22-4a58-ac2b-77638082e46c");
     private static final AppUser APP_USER = AppUser.builder()
             .name("Jaquelin Geier")
@@ -36,11 +36,11 @@ class EmailTokenServiceTest {
     @Mock
     private ConfirmationCodeRepository codeRepository;
     @InjectMocks
-    private EmailTokenService emailTokenService;
+    private EmailTokenUseCase emailTokenUseCase;
 
     @Test
     void generateEmailToken_shouldGenerateEmailToken_andPersisted() {
-        EmailToken emailToken = emailTokenService.generateEmailToken(APP_USER);
+        EmailToken emailToken = emailTokenUseCase.generateEmailToken(APP_USER);
         verify(codeRepository).save(assertArg(confirmationCodeEntity -> assertThat(confirmationCodeEntity).isNotNull()
                 .satisfies(entity -> assertThat(entity.getCode()).isEqualTo(emailToken.token()))
                 .satisfies(entity -> assertThat(entity.getUsername()).isEqualTo(APP_USER.username()))
@@ -50,43 +50,43 @@ class EmailTokenServiceTest {
     }
 
     @Test
-    void isTokenExistsAndValid_whenTokenExistsAndValid_shouldReturnTrue() {
+    void verifyEmailToken_whenTokenExistsAndValid_shouldReturnTrue() {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE)
         );
-        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isTrue();
+        assertThat(emailTokenUseCase.verifyEmailToken(VALID_EMAIL_TOKEN, APP_USER)).isTrue();
     }
 
     @Test
-    void isTokenExistsAndValid_whenTokenNotExists_shouldReturnFalse() {
+    void verifyEmailToken_whenTokenNotExists_shouldReturnFalse() {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of()
         );
-        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
+        assertThat(emailTokenUseCase.verifyEmailToken(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
     @Test
-    void isTokenExistsAndValid_whenTokenExistsButValid_shouldReturnFalse() {
+    void verifyEmailToken_whenTokenExistsButValid_shouldReturnFalse() {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE.toBuilder().isActive(false).build())
         );
-        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
+        assertThat(emailTokenUseCase.verifyEmailToken(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
     @Test
-    void isTokenExistsAndValid_whenTokenExistsButTypeNotMatched_shouldReturnFalse() {
+    void verifyEmailToken_whenTokenExistsButTypeNotMatched_shouldReturnFalse() {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE.toBuilder().type(EMAIL_CODE).build())
         );
-        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
+        assertThat(emailTokenUseCase.verifyEmailToken(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
     @Test
-    void isTokenExistsAndValid_whenTokenExistsButValueNotMatched_shouldReturnFalse() {
+    void verifyEmailToken_whenTokenExistsButValueNotMatched_shouldReturnFalse() {
         when(codeRepository.findAllByUsername(APP_USER.username())).thenReturn(
                 List.of(CONFIRMATION_CODE.toBuilder().code("078275ea-e9ff-4043-9275-50a84802f205").build())
         );
-        assertThat(emailTokenService.isTokenExistsAndValid(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
+        assertThat(emailTokenUseCase.verifyEmailToken(VALID_EMAIL_TOKEN, APP_USER)).isFalse();
     }
 
 }

@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.core.user.security.Role;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
-import com.github.nramc.dev.journey.api.core.services.token.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.usecase.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
@@ -44,7 +44,7 @@ class AccountActivationUseCaseTest {
     @Mock
     private ApplicationProperties applicationProperties;
     @Mock
-    private EmailTokenService emailTokenService;
+    private EmailTokenUseCase emailTokenUseCase;
     @Mock
     private MailService mailService;
     @Mock
@@ -59,7 +59,7 @@ class AccountActivationUseCaseTest {
     @Test
     void sendActivationEmail_shouldGenerateEmailToken_andShouldSendEmailWithActivationLink() throws MessagingException {
         when(applicationProperties.uiAppUrl()).thenReturn(JOURNEY_UI_BASE_URL);
-        when(emailTokenService.generateEmailToken(ONBOARDING_USER)).thenReturn(EMAIL_TOKEN);
+        when(emailTokenUseCase.generateEmailToken(ONBOARDING_USER)).thenReturn(EMAIL_TOKEN);
 
         accountActivationUseCase.sendActivationEmail(ONBOARDING_USER);
 
@@ -74,14 +74,14 @@ class AccountActivationUseCaseTest {
 
     @Test
     void activateAccount_whenTokenNotExistsOrInvalid_shouldThrowError() {
-        when(emailTokenService.isTokenExistsAndValid(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
+        when(emailTokenUseCase.verifyEmailToken(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
 
         assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER));
     }
 
     @Test
     void activateAccount_whenTokenValid_shouldActivateAccount() {
-        when(emailTokenService.isTokenExistsAndValid(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(true);
+        when(emailTokenUseCase.verifyEmailToken(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(true);
         when(userDetailsService.loadUserByUsername(ONBOARDING_USER.username())).thenReturn(ONBOARDING_USER_ENTITY);
 
         accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER);
