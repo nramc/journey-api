@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.dto.user;
+package com.github.nramc.dev.journey.api.web.resources.rest.users.dto;
 
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import lombok.Builder;
