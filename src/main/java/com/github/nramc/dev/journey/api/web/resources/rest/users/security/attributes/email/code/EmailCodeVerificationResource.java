@@ -1,8 +1,9 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,7 +29,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.VERIFY_EM
 @Tag(name = "My Account Security - Email Address Settings")
 public class EmailCodeVerificationResource {
     private final UserDetailsManager userDetailsManager;
-    private final EmailConfirmationCodeService emailConfirmationCodeService;
+    private final EmailCodeUseCase emailCodeUseCase;
 
     @Operation(summary = "Verify Email Confirmation code which was sent to registered email address")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Email code has been send successfully")})
@@ -42,7 +43,7 @@ public class EmailCodeVerificationResource {
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 
-        boolean isValid = emailConfirmationCodeService.verify(
+        boolean isValid = emailCodeUseCase.verify(
                 EmailCode.valueOf(Integer.parseInt(request.code())),
                 authUser);
 

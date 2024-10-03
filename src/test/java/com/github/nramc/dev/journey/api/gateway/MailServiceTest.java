@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.gateway;
 
 import com.github.nramc.dev.journey.api.config.MailConfig;
+import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService.EMAIL_CODE_TEMPLATE_HTML;
+import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.assertArg;
 import static org.mockito.Mockito.verify;

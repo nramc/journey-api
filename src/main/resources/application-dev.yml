@@ -1,11 +1,5 @@
 app:
   ui-app-url: http://localhost:4200
-  operational:
-    users:
-      - username: GUEST
-        password: <placeholder>
-        roles: GUEST_USER
-        name: Guest
   security:
     cors:
       properties:

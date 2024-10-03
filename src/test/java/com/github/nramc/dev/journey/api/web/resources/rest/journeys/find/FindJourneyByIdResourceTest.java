@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

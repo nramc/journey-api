@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import lombok.Builder;
 
 import java.time.Instant;
@@ -15,5 +15,5 @@ public record LoginResponse(
         Set<String> authorities,
         String name,
         boolean additionalFactorRequired,
-        Set<SecurityAttributeType> securityAttributes) {
+        Set<UserSecurityAttributeType> securityAttributes) {
 }

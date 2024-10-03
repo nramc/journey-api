@@ -1,10 +1,10 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.dto.VerifyTotpCodeRequest;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.dto.VerifyTotpCodeResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.QRImageDetails;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecret;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +33,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Validated
 public class TotpResource {
     private final UserDetailsService userDetailsService;
-    private final TotpService totpService;
+    private final TotpUseCase totpUseCase;
 
     // 1. new key
     @Operation(summary = "Generate QR Code with new TOTP secret key")
@@ -42,7 +42,7 @@ public class TotpResource {
     @GetMapping(value = MY_SECURITY_ATTRIBUTE_TOTP, produces = APPLICATION_JSON_VALUE)
     public QRImageDetails generateSecret(Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
-        return totpService.newQRCodeData(authUser);
+        return totpUseCase.newQRCodeData(authUser);
     }
 
     // 2. activate totp
@@ -54,7 +54,7 @@ public class TotpResource {
             @RequestBody @Valid TotpActivationRequest activationRequest,
             Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
-        totpService.activateTotp(authUser,
+        totpUseCase.activateTotp(authUser,
                 TotpCode.valueOf(activationRequest.code()),
                 TotpSecret.valueOf(activationRequest.secretKey())
         );
@@ -66,7 +66,7 @@ public class TotpResource {
     @GetMapping(value = MY_SECURITY_ATTRIBUTE_TOTP_STATUS, produces = APPLICATION_JSON_VALUE)
     public TotpStatus status(Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
-        return new TotpStatus(totpService.getTotpAttributeIfExists(authUser).isPresent());
+        return new TotpStatus(totpUseCase.getTotpAttributeIfExists(authUser).isPresent());
     }
 
 
@@ -77,7 +77,7 @@ public class TotpResource {
     @DeleteMapping(value = MY_SECURITY_ATTRIBUTE_TOTP)
     public void deactivate(Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
-        totpService.deactivateTotp(authUser);
+        totpUseCase.deactivateTotp(authUser);
     }
 
     // 4. verify totp
@@ -89,7 +89,7 @@ public class TotpResource {
             @RequestBody @Valid VerifyTotpCodeRequest verifyRequest,
             Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
-        return new VerifyTotpCodeResponse(totpService.verify(authUser, TotpCode.valueOf(verifyRequest.code())));
+        return new VerifyTotpCodeResponse(totpUseCase.verify(authUser, TotpCode.valueOf(verifyRequest.code())));
     }
 
 }

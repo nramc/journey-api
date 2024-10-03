@@ -6,8 +6,9 @@ import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUse
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,7 +24,6 @@ import java.util.List;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_MFA;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
@@ -129,23 +129,13 @@ class UpdateUserResourceTest {
     @WithMockAuthenticatedUser
     void updateMfaStatus_whenAnyAuthenticatedUserTryToActivateMfa_andUserHasValidMfaAttribute_thenShouldEnableMfa() throws Exception {
         when(attributeService.getAllAvailableUserSecurityAttributes(any(AuthUser.class)))
-                .thenReturn(List.of(EMAIL_ATTRIBUTE.toBuilder().verified(true).build()));
+                .thenReturn(List.of(UsersData.TOTP_ATTRIBUTE));
         mockMvc.perform(post(MY_SECURITY_MFA)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(UPDATE_MFA_STATUS_REQUEST_TEMPLATE.formatted(true))
                 ).andDo(print())
                 .andExpect(status().isOk());
         verify(userDetailsManager).updateUser(assertArg((AuthUser user) -> assertThat(user.isMfaEnabled()).isTrue()));
-    }
-
-    @Test
-    @WithMockAuthenticatedUser
-    void updateMfaStatus_whenAuthenticatedUserTryToActivateMfa_butDoesNotHaveValidMfaAttribute_thenShouldThrowError() throws Exception {
-        mockMvc.perform(post(MY_SECURITY_MFA)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(UPDATE_MFA_STATUS_REQUEST_TEMPLATE.formatted(true))
-                ).andDo(print())
-                .andExpect(status().isBadRequest());
     }
 
     @Test

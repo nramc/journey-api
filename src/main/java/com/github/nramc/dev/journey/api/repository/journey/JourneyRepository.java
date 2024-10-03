@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
 import com.github.nramc.dev.journey.api.repository.journey.projection.CategoryOnly;
-import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

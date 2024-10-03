@@ -3,10 +3,9 @@ package com.github.nramc.dev.journey.api.gateway.cloudinary;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.api.ApiResponse;
 import com.cloudinary.api.exceptions.NotFound;
-import com.github.nramc.dev.journey.api.config.cloudinary.CloudinaryProperties;
-import com.github.nramc.dev.journey.api.web.dto.Journey;
-import com.github.nramc.dev.journey.api.web.exceptions.NonTechnicalException;
-import com.github.nramc.dev.journey.api.web.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.core.exceptions.NonTechnicalException;
+import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -35,7 +34,7 @@ public class CloudinaryService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<CloudinaryResource> allResources(Journey journey) {
+    public List<CloudinaryAsset> allResources(Journey journey) {
         try {
             ApiResponse apiResponse = cloudinary.api().resourcesByContext("id", journey.id(), Map.of());
             log.info("allResources: {}", apiResponse);
@@ -46,9 +45,9 @@ public class CloudinaryService {
         }
     }
 
-    private CloudinaryResource toCloudinaryResource(Map<String, Object> resources) {
+    private CloudinaryAsset toCloudinaryResource(Map<String, Object> resources) {
         if (resources != null && !resources.isEmpty()) {
-            return CloudinaryResource.builder()
+            return CloudinaryAsset.builder()
                     .url(resources.get("url").toString())
                     .publicID(resources.get(PUBLIC_ID).toString())
                     .assetID(resources.get("asset_id").toString())
@@ -68,7 +67,7 @@ public class CloudinaryService {
     }
 
     private void deleteAllResources(Journey journey) {
-        List<CloudinaryResource> resources = allResources(journey);
+        List<CloudinaryAsset> resources = allResources(journey);
         CollectionUtils.emptyIfNull(resources).forEach(resource -> deleteImage(resource.assetID()));
     }
 

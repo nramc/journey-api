@@ -1,8 +1,13 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.config.TotpProperties;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp.model.TotpSecret;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpAlgorithm;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeGenerator;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpTimeStepWindowProvider;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
+import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecret;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

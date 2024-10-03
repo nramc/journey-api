@@ -1,16 +1,15 @@
 package com.github.nramc.dev.journey.api.core.usecase.registration;
 
-import com.github.nramc.dev.journey.api.config.ApplicationProperties;
-import com.github.nramc.dev.journey.api.config.security.Role;
-import com.github.nramc.dev.journey.api.core.model.AppUser;
-import com.github.nramc.dev.journey.api.core.model.EmailToken;
-import com.github.nramc.dev.journey.api.core.services.EmailTokenService;
+import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
+import com.github.nramc.dev.journey.api.core.domain.EmailToken;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
+import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
+import com.github.nramc.dev.journey.api.core.services.mail.MailService;
+import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
-import com.github.nramc.dev.journey.api.gateway.MailService;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.web.exceptions.BusinessException;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,13 +43,11 @@ class AccountActivationUseCaseTest {
     @Mock
     private ApplicationProperties applicationProperties;
     @Mock
-    private EmailTokenService emailTokenService;
+    private EmailTokenUseCase emailTokenUseCase;
     @Mock
     private MailService mailService;
     @Mock
     private AuthUserDetailsService userDetailsService;
-    @Mock
-    private UserSecurityEmailAddressAttributeService emailAddressAttributeService;
     @Mock
     private EmailNotificationUseCase emailNotificationUseCase;
     @InjectMocks
@@ -59,7 +56,7 @@ class AccountActivationUseCaseTest {
     @Test
     void sendActivationEmail_shouldGenerateEmailToken_andShouldSendEmailWithActivationLink() throws MessagingException {
         when(applicationProperties.uiAppUrl()).thenReturn(JOURNEY_UI_BASE_URL);
-        when(emailTokenService.generateEmailToken(ONBOARDING_USER)).thenReturn(EMAIL_TOKEN);
+        when(emailTokenUseCase.generateEmailToken(ONBOARDING_USER)).thenReturn(EMAIL_TOKEN);
 
         accountActivationUseCase.sendActivationEmail(ONBOARDING_USER);
 
@@ -74,19 +71,18 @@ class AccountActivationUseCaseTest {
 
     @Test
     void activateAccount_whenTokenNotExistsOrInvalid_shouldThrowError() {
-        when(emailTokenService.isTokenExistsAndValid(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
+        when(emailTokenUseCase.verifyEmailToken(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
 
         assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER));
     }
 
     @Test
     void activateAccount_whenTokenValid_shouldActivateAccount() {
-        when(emailTokenService.isTokenExistsAndValid(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(true);
+        when(emailTokenUseCase.verifyEmailToken(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(true);
         when(userDetailsService.loadUserByUsername(ONBOARDING_USER.username())).thenReturn(ONBOARDING_USER_ENTITY);
 
         accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER);
         verify(userDetailsService).updateUser(argThat(entity -> entity.isEnabled() && USERNAME.equals(entity.getUsername())));
-        verify(emailAddressAttributeService).saveSecurityEmailAddress(eq(ONBOARDING_USER_ENTITY), argThat(emailAddress -> USERNAME.equals(emailAddress.value())));
         verify(emailNotificationUseCase).notifyAdmin("User completed onboarding - " + USERNAME);
     }
 

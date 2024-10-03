@@ -2,8 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.web.dto.Journey;
-import com.github.nramc.dev.journey.api.web.dto.converter.JourneyConverter;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.UpdateJourneyConverter;
 import io.swagger.v3.oas.annotations.Operation;

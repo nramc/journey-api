@@ -1,12 +1,12 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.mfa;
 
 import com.github.nramc.dev.journey.api.config.TestConfig;
-import com.github.nramc.dev.journey.api.config.security.JwtProperties;
+import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCodeVerifier;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.github.nramc.dev.journey.api.config.TestConfig.ADMIN_USER;
-import static com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN_MFA;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
@@ -51,7 +51,7 @@ class MultiFactorAuthenticationResourceTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ConfirmationCodeVerifier confirmationCodeVerifier;
+    private ConfirmationCodeUseCase confirmationCodeUseCase;
 
     @Test
     void test() {
@@ -62,7 +62,7 @@ class MultiFactorAuthenticationResourceTest {
 
     @Test
     void mfa_whenConfirmationCodeValid_shouldProvideToken() throws Exception {
-        when(confirmationCodeVerifier.verify(eq(EMAIL_CODE), any(AuthUser.class))).thenReturn(true);
+        when(confirmationCodeUseCase.verify(eq(EMAIL_CODE), any(AuthUser.class))).thenReturn(true);
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN_MFA)
                         .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))
@@ -81,7 +81,7 @@ class MultiFactorAuthenticationResourceTest {
 
     @Test
     void mfa_whenConfirmationCodeInvalid_shouldThrowError() throws Exception {
-        when(confirmationCodeVerifier.verify(eq(EMAIL_CODE), any(AuthUser.class))).thenReturn(false);
+        when(confirmationCodeUseCase.verify(eq(EMAIL_CODE), any(AuthUser.class))).thenReturn(false);
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN_MFA)
                         .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))

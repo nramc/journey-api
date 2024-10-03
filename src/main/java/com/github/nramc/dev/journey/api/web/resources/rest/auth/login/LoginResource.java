@@ -1,12 +1,12 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
-import com.github.nramc.dev.journey.api.core.security.attributes.SecurityAttributeType;
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
-import com.github.nramc.dev.journey.api.web.dto.user.security.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 
@@ -50,9 +51,13 @@ public class LoginResource {
     }
 
     private LoginResponse additionalFactorResponse(AuthUser userDetails) {
-        List<UserSecurityAttribute> securityAttributes = attributeService.getAllAvailableUserSecurityAttributes(userDetails);
-        Set<SecurityAttributeType> availableAttributes = CollectionUtils.emptyIfNull(securityAttributes).stream()
-                .map(UserSecurityAttribute::type)
+        List<UserSecurityAttributeType> defaultSecurityAttributeTypes = List.of(UserSecurityAttributeType.EMAIL_ADDRESS);
+
+        Set<UserSecurityAttributeType> securityAttributes = CollectionUtils.emptyIfNull(attributeService.getAllAvailableUserSecurityAttributes(userDetails))
+                .stream().map(UserSecurityAttribute::type)
+                .collect(Collectors.toSet());
+
+        Set<UserSecurityAttributeType> availableAttributes = Stream.concat(defaultSecurityAttributeTypes.stream(), securityAttributes.stream())
                 .collect(Collectors.toSet());
         return LoginResponse.builder()
                 .additionalFactorRequired(true)

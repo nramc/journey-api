@@ -1,14 +1,14 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.mfa;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.MultiFactorAuthenticationRequest;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.ConfirmationCodeVerifier;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.EmailCode;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.confirmationcode.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,7 +35,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "Login", description = "Multi factor authentication")
 public class MultiFactorAuthenticationResource {
     private final UserDetailsService userDetailsService;
-    private final ConfirmationCodeVerifier confirmationCodeVerifier;
+    private final ConfirmationCodeUseCase confirmationCodeUseCase;
     private final JwtGenerator jwtGenerator;
 
     @Operation(summary = "Multi factor authentication and retrieve JWT token")
@@ -58,7 +58,7 @@ public class MultiFactorAuthenticationResource {
             case EMAIL_ADDRESS -> EmailCode.valueOf(Integer.parseInt(request.value()));
             case TOTP -> TotpCode.valueOf(request.value());
         };
-        return confirmationCodeVerifier.verify(confirmationCode, authenticatedUser);
+        return confirmationCodeUseCase.verify(confirmationCode, authenticatedUser);
     }
 
     private LoginResponse jwtResponse(AuthUser userDetails) {

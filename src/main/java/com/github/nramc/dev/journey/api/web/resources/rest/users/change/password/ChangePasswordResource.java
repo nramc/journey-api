@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.change.password;
 
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,7 +22,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.CHANGE_MY
 @Slf4j
 @RequiredArgsConstructor
 @Tag(name = "My Account Features")
-public class ChangePasswordResource {
+class ChangePasswordResource {
     private final AuthUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
@@ -30,7 +30,7 @@ public class ChangePasswordResource {
     @RestDocCommonResponse
     @ApiResponse(responseCode = "200", description = "Password changed successfully")
     @PostMapping(value = CHANGE_MY_PASSWORD, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void change(@RequestBody @Valid ChangePasswordRequest changePasswordRequest, Authentication authentication) {
+    void change(@RequestBody @Valid ChangePasswordRequest changePasswordRequest, Authentication authentication) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
         userDetailsService.updatePassword(userDetails, passwordEncoder.encode(changePasswordRequest.newPassword()));
     }

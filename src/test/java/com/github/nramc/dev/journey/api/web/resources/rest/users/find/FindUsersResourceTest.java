@@ -5,7 +5,7 @@ import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.repository.auth.UserRepository;
+import com.github.nramc.dev.journey.api.repository.user.UserRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
 import static org.assertj.core.api.Assertions.assertThat;

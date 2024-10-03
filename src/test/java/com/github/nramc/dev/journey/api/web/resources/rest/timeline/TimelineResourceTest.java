@@ -5,7 +5,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
-import static com.github.nramc.dev.journey.api.config.security.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.newImageDetailEntityWith;

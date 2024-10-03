@@ -8,8 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.AUTHENTICATED_USER;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

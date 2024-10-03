@@ -22,8 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.config.security.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;

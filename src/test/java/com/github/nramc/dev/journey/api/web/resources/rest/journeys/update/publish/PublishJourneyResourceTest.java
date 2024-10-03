@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.nramc.dev.journey.api.config.security.Visibility;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
@@ -24,8 +24,8 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.security.Visibility.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.config.security.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;

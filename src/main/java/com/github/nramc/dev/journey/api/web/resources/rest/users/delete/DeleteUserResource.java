@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.delete;
 
-import com.github.nramc.dev.journey.api.repository.auth.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,7 +18,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_US
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class DeleteUserResource {
+class DeleteUserResource {
     private final UserDetailsManager userDetailsManager;
 
     @Operation(summary = "Delete application user", tags = {"Administrator Features"})
