@@ -1,19 +1,19 @@
 package com.github.nramc.dev.journey.api.config;
 
-import com.github.nramc.dev.journey.api.core.usecase.code.EmailTokenUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.user.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.repository.user.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.UserSecurityAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.UserSecurityEmailAddressAttributeService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailCodeValidator;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code.EmailConfirmationCodeService;
-import com.github.nramc.dev.journey.api.core.totp.QRCodeGenerator;
-import com.github.nramc.dev.journey.api.core.totp.TotpCodeVerifier;
-import com.github.nramc.dev.journey.api.core.totp.TotpSecretGenerator;
-import com.github.nramc.dev.journey.api.core.totp.TotpUseCase;
-import com.github.nramc.dev.journey.api.core.totp.TotpProperties;
-import com.github.nramc.dev.journey.api.core.usecase.code.ConfirmationCodeVerifier;
+import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeValidator;
+import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.QRCodeGenerator;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeVerifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,13 +45,13 @@ public class ApplicationServiceConfig {
     }
 
     @Bean
-    public EmailConfirmationCodeService emailCodeService(
+    public EmailCodeUseCase emailCodeService(
             MailService mailService,
             ConfirmationCodeRepository codeRepository,
             EmailCodeValidator codeValidator,
             UserSecurityEmailAddressAttributeService emailAddressAttributeService) {
 
-        return new EmailConfirmationCodeService(mailService, codeRepository, codeValidator, emailAddressAttributeService);
+        return new EmailCodeUseCase(mailService, codeRepository, codeValidator, emailAddressAttributeService);
     }
 
     @Bean
@@ -71,8 +71,8 @@ public class ApplicationServiceConfig {
 
     @Bean
     public ConfirmationCodeVerifier confirmationCodeVerifier(
-            TotpUseCase totpUseCase, EmailConfirmationCodeService emailConfirmationCodeService) {
-        return new ConfirmationCodeVerifier(totpUseCase, emailConfirmationCodeService);
+            TotpUseCase totpUseCase, EmailCodeUseCase emailCodeUseCase) {
+        return new ConfirmationCodeVerifier(totpUseCase, emailCodeUseCase);
     }
 
 }

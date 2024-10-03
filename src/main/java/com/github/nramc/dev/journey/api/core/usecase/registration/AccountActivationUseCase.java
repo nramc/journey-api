@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.EmailToken;
 import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
-import com.github.nramc.dev.journey.api.core.usecase.code.EmailTokenUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;

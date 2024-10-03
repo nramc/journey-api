@@ -5,10 +5,10 @@ import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginRespons
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.MultiFactorAuthenticationRequest;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
-import com.github.nramc.dev.journey.api.core.usecase.code.ConfirmationCode;
-import com.github.nramc.dev.journey.api.core.usecase.code.ConfirmationCodeVerifier;
-import com.github.nramc.dev.journey.api.core.usecase.code.EmailCode;
-import com.github.nramc.dev.journey.api.core.usecase.code.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeVerifier;
+import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,10 +1,10 @@
 package com.github.nramc.dev.journey.api.config;
 
-import com.github.nramc.dev.journey.api.core.totp.TotpCodeGenerator;
-import com.github.nramc.dev.journey.api.core.totp.TotpCodeVerifier;
-import com.github.nramc.dev.journey.api.core.totp.TotpProperties;
-import com.github.nramc.dev.journey.api.core.totp.TotpSecretGenerator;
-import com.github.nramc.dev.journey.api.core.totp.TotpTimeStepWindowProvider;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeGenerator;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpTimeStepWindowProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
+import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAI
 @Tag(name = "My Account Security - Email Address Settings")
 public class SendEmailVerificationCodeResource {
     private final UserDetailsManager userDetailsManager;
-    private final EmailConfirmationCodeService emailConfirmationCodeService;
+    private final EmailCodeUseCase emailCodeUseCase;
 
     @Operation(summary = "Send Email Confirmation Code to registered email address")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Email code has been send successfully")})
@@ -37,7 +38,7 @@ public class SendEmailVerificationCodeResource {
                 .map(AuthUser.class::cast)
                 .orElseThrow(() -> new AccessDeniedException("User does not exists"));
 
-        emailConfirmationCodeService.send(authUser);
+        emailCodeUseCase.send(authUser);
 
         log.info("Email Code has been sent successfully");
     }

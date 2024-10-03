@@ -4,8 +4,9 @@ import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.core.usecase.code.ConfirmationCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,12 +35,12 @@ class EmailCodeVerificationResourceTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private EmailConfirmationCodeService emailConfirmationCodeService;
+    private EmailCodeUseCase emailCodeUseCase;
 
     @Test
     @WithMockAuthenticatedUser
     void verifyEmailCode_whenVerificationSuccess_shouldUpdateStatus() throws Exception {
-        when(emailConfirmationCodeService.verify(any(ConfirmationCode.class), any(AuthUser.class)))
+        when(emailCodeUseCase.verify(any(ConfirmationCode.class), any(AuthUser.class)))
                 .thenReturn(true);
         mvc.perform(MockMvcRequestBuilders.post(VERIFY_EMAIL_CODE)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -47,13 +48,13 @@ class EmailCodeVerificationResourceTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
-        verify(emailConfirmationCodeService).verify(any(ConfirmationCode.class), any(AuthUser.class));
+        verify(emailCodeUseCase).verify(any(ConfirmationCode.class), any(AuthUser.class));
     }
 
     @Test
     @WithMockAuthenticatedUser
     void verifyEmailCode_whenVerificationFailed_shouldThrowError() throws Exception {
-        when(emailConfirmationCodeService.verify(any(ConfirmationCode.class), any(AuthUser.class)))
+        when(emailCodeUseCase.verify(any(ConfirmationCode.class), any(AuthUser.class)))
                 .thenReturn(false);
         mvc.perform(MockMvcRequestBuilders.post(VERIFY_EMAIL_CODE)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -61,7 +62,7 @@ class EmailCodeVerificationResourceTest {
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest());
-        verify(emailConfirmationCodeService).verify(any(ConfirmationCode.class), any(AuthUser.class));
+        verify(emailCodeUseCase).verify(any(ConfirmationCode.class), any(AuthUser.class));
     }
 
     @Test
@@ -84,7 +85,7 @@ class EmailCodeVerificationResourceTest {
                 )
                 .andDo(print())
                 .andExpect(status().isForbidden());
-        verifyNoInteractions(emailConfirmationCodeService);
+        verifyNoInteractions(emailCodeUseCase);
     }
 
     @Test
@@ -94,7 +95,7 @@ class EmailCodeVerificationResourceTest {
                         .content(VERIFICATION_REQUEST_PAYLOAD))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
-        verifyNoInteractions(emailConfirmationCodeService);
+        verifyNoInteractions(emailCodeUseCase);
     }
 
 }

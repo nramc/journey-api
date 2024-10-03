@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attri
 
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ class SendEmailVerificationCodeResourceTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private EmailConfirmationCodeService emailConfirmationCodeService;
+    private EmailCodeUseCase emailCodeUseCase;
 
     @Test
     @WithMockUser(username = "auth-user", authorities = {MAINTAINER})
@@ -39,7 +40,7 @@ class SendEmailVerificationCodeResourceTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
-        verify(emailConfirmationCodeService).send(any(AuthUser.class));
+        verify(emailCodeUseCase).send(any(AuthUser.class));
     }
 
     @Test
@@ -49,7 +50,7 @@ class SendEmailVerificationCodeResourceTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isForbidden());
-        verifyNoInteractions(emailConfirmationCodeService);
+        verifyNoInteractions(emailCodeUseCase);
     }
 
     @Test
@@ -57,7 +58,7 @@ class SendEmailVerificationCodeResourceTest {
         mvc.perform(MockMvcRequestBuilders.post(SEND_EMAIL_CODE))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
-        verifyNoInteractions(emailConfirmationCodeService);
+        verifyNoInteractions(emailCodeUseCase);
     }
 
 
