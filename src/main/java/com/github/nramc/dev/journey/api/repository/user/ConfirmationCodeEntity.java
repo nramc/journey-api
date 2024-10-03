@@ -23,5 +23,4 @@ public class ConfirmationCodeEntity {
     private ConfirmationCodeType type;
     private LocalDateTime createdAt;
     private boolean isActive;
-    private String receiver;
 }

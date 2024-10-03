@@ -11,21 +11,19 @@ import org.springframework.context.annotation.Import;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @Import(TestContainersConfiguration.class)
 class ConfirmationCodeRepositoryTest {
     private static final String EMAIL_CODE = "123456";
-    private static final String USERNAME = "test-username";
+    private static final String USERNAME = "test-user@example.com";
     private static final ConfirmationCodeEntity EMAIL_CODE_ENTITY = ConfirmationCodeEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .isActive(true)
             .username(USERNAME)
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(EMAIL_CODE)
-            .receiver(EMAIL_ATTRIBUTE.value())
             .createdAt(LocalDateTime.now())
             .build();
     @Autowired

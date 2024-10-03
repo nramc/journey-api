@@ -28,7 +28,6 @@ import static com.github.nramc.dev.journey.api.config.TestConfig.TEST_USER;
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.TOTP_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
@@ -83,7 +82,7 @@ class LoginResourceTest {
     @Test
     void login_whenUserHasActiveMfa_thenShouldAskMfa() throws Exception {
         when(attributeService.getAllAvailableUserSecurityAttributes(any(AuthUser.class)))
-                .thenReturn(List.of(EMAIL_ATTRIBUTE));
+                .thenReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
                         .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))
@@ -98,7 +97,7 @@ class LoginResourceTest {
     @Test
     void login_whenUserHasActiveMfaAndHaveMultipleAttributes_thenShouldList() throws Exception {
         when(attributeService.getAllAvailableUserSecurityAttributes(any(AuthUser.class)))
-                .thenReturn(List.of(EMAIL_ATTRIBUTE, TOTP_ATTRIBUTE));
+                .thenReturn(List.of(TOTP_ATTRIBUTE));
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
                         .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))
@@ -107,7 +106,7 @@ class LoginResourceTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").doesNotExist())
                 .andExpect(jsonPath("$.additionalFactorRequired").value(true))
-                .andExpect(jsonPath("$.securityAttributes").value(hasItems(EMAIL_ADDRESS.name(), TOTP.name())));
+                .andExpect(jsonPath("$.securityAttributes").value(hasItems(TOTP.name(), EMAIL_ADDRESS.name())));
     }
 
     @Test

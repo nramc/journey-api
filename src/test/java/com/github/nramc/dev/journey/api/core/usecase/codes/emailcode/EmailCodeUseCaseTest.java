@@ -20,7 +20,6 @@ import java.util.List;
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.CODE_LENGTH;
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -48,7 +47,6 @@ class EmailCodeUseCaseTest {
             .username(AUTH_USER.getUsername())
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(VALID_CODE.code())
-            .receiver(EMAIL_ATTRIBUTE.value())
             .createdAt(LocalDateTime.now())
             .build();
     @Mock
@@ -71,7 +69,7 @@ class EmailCodeUseCaseTest {
 
         verify(mailService).sendEmailUsingTemplate(
                 eq(EMAIL_CODE_TEMPLATE_HTML),
-                eq(EMAIL_ATTRIBUTE.value()),
+                eq("test.user@example.com"),
                 eq("Journey: Confirmation Required"),
                 assertArg(params -> {
                     assertEquals(AUTH_USER.getName(), params.get("name"));
@@ -80,7 +78,6 @@ class EmailCodeUseCaseTest {
         );
         verify(codeRepository).save(assertArg(entity -> {
             assertEquals(AUTH_USER.getUsername(), entity.getUsername());
-            assertEquals(EMAIL_ATTRIBUTE.value(), entity.getReceiver());
             assertEquals(ConfirmationCodeType.EMAIL_CODE, entity.getType());
             assertNotNull(entity.getId());
             assertNotNull(entity.getCode());

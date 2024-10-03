@@ -41,10 +41,6 @@ public class EmailCodeValidator {
             log.info("Email Code verification failed. Reason:[code not active]");
             return false;
         }
-        if (!confirmationCodeEntity.getReceiver().equals(authUser.getUsername())) { // Email Address not matched
-            log.info("Email Code verification failed. Reason:[Email address not matched]");
-            return false;
-        }
         if (!ConfirmationCodeType.EMAIL_CODE.equals(confirmationCodeEntity.getType())) {
             log.info("Email Code verification failed. Reason:[Confirmation Type not matched]");
             return false;

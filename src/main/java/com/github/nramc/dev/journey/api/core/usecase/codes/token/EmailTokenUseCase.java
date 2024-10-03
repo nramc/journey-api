@@ -39,7 +39,6 @@ public class EmailTokenUseCase {
                 .type(ConfirmationCodeType.EMAIL_TOKEN)
                 .code(emailToken.token())
                 .username(appUser.username())
-                .receiver(appUser.username())
                 .isActive(true)
                 .createdAt(LocalDateTime.now())
                 .build();

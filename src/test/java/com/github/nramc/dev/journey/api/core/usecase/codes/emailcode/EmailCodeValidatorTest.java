@@ -16,7 +16,6 @@ import java.util.List;
 
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeValidator.EMAIL_CODE_VALIDITY_MINUTES;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.EMAIL_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -30,7 +29,6 @@ class EmailCodeValidatorTest {
             .username(VALID_USER.getUsername())
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(VALID_CODE.code())
-            .receiver(EMAIL_ATTRIBUTE.value())
             .createdAt(LocalDateTime.now())
             .build();
     @Mock

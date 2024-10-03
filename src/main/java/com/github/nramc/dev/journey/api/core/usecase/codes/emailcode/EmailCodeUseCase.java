@@ -94,7 +94,6 @@ public class EmailCodeUseCase {
                 .type(ConfirmationCodeType.EMAIL_CODE)
                 .code(code.code())
                 .username(authUser.getUsername())
-                .receiver(authUser.getUsername())
                 .isActive(true)
                 .createdAt(LocalDateTime.now().minusMinutes(2))
                 .build();
