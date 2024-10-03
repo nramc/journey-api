@@ -1,16 +1,16 @@
-package com.github.nramc.dev.journey.api.web.dto.converter;
+package com.github.nramc.dev.journey.api.repository.journey.converter;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
-import com.github.nramc.dev.journey.api.web.dto.Journey;
-import com.github.nramc.dev.journey.api.web.dto.JourneyExtendedDetails;
-import com.github.nramc.dev.journey.api.web.dto.JourneyGeoDetails;
-import com.github.nramc.dev.journey.api.web.dto.JourneyImageDetail;
-import com.github.nramc.dev.journey.api.web.dto.JourneyImagesDetails;
-import com.github.nramc.dev.journey.api.web.dto.JourneyVideoDetail;
-import com.github.nramc.dev.journey.api.web.dto.JourneyVideosDetails;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.core.journey.JourneyExtendedDetails;
+import com.github.nramc.dev.journey.api.core.journey.JourneyGeoDetails;
+import com.github.nramc.dev.journey.api.core.journey.JourneyImageDetail;
+import com.github.nramc.dev.journey.api.core.journey.JourneyImagesDetails;
+import com.github.nramc.dev.journey.api.core.journey.JourneyVideoDetail;
+import com.github.nramc.dev.journey.api.core.journey.JourneyVideosDetails;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;

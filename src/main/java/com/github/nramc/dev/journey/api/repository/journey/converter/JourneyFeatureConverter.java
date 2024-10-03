@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.dto.converter;
+package com.github.nramc.dev.journey.api.repository.journey.converter;
 
 import com.github.nramc.commons.geojson.domain.Feature;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;

@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.dto;
+package com.github.nramc.dev.journey.api.core.journey;
 
 import lombok.Builder;
 

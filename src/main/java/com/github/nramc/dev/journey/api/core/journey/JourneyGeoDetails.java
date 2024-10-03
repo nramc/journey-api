@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.dto;
+package com.github.nramc.dev.journey.api.core.journey;
 
 import com.github.nramc.commons.geojson.domain.GeoJson;
 import jakarta.validation.constraints.NotNull;

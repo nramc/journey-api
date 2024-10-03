@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.gateway.cloudinary;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.api.ApiResponse;
 import com.cloudinary.api.exceptions.NotFound;
-import com.github.nramc.dev.journey.api.web.dto.Journey;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.exceptions.NonTechnicalException;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
 import lombok.RequiredArgsConstructor;
