@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.config;
 
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.QRCodeGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
@@ -38,5 +39,11 @@ public class TotpConfig {
             TotpTimeStepWindowProvider timeStepWindowProvider) {
         return new TotpCodeVerifier(totpProperties, totpCodeGenerator, timeStepWindowProvider);
     }
+
+    @Bean
+    public QRCodeGenerator qrCodeGenerator() {
+        return new QRCodeGenerator();
+    }
+
 
 }

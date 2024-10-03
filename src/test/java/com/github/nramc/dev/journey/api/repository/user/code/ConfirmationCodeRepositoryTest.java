@@ -1,9 +1,7 @@
-package com.github.nramc.dev.journey.api.repository.user;
+package com.github.nramc.dev.journey.api.repository.user.code;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
 import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
-import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeEntity;
-import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,7 +6,7 @@ import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.MultiFactorA
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCode;
-import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeVerifier;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
 import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +35,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "Login", description = "Multi factor authentication")
 public class MultiFactorAuthenticationResource {
     private final UserDetailsService userDetailsService;
-    private final ConfirmationCodeVerifier confirmationCodeVerifier;
+    private final ConfirmationCodeUseCase confirmationCodeUseCase;
     private final JwtGenerator jwtGenerator;
 
     @Operation(summary = "Multi factor authentication and retrieve JWT token")
@@ -58,7 +58,7 @@ public class MultiFactorAuthenticationResource {
             case EMAIL_ADDRESS -> EmailCode.valueOf(Integer.parseInt(request.value()));
             case TOTP -> TotpCode.valueOf(request.value());
         };
-        return confirmationCodeVerifier.verify(confirmationCode, authenticatedUser);
+        return confirmationCodeUseCase.verify(confirmationCode, authenticatedUser);
     }
 
     private LoginResponse jwtResponse(AuthUser userDetails) {

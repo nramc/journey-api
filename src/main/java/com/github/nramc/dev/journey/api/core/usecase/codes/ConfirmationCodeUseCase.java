@@ -6,7 +6,7 @@ import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ConfirmationCodeVerifier {
+public class ConfirmationCodeUseCase {
     private final TotpUseCase totpUseCase;
     private final EmailCodeUseCase emailCodeUseCase;
 
