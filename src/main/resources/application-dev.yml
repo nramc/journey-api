@@ -9,6 +9,7 @@ app:
           allowed-headers:
             - Authorization
             - Content-Type
+            - X-Async-Process
           allow-credentials: true
 
 
