@@ -10,14 +10,14 @@
     </parent>
     <groupId>com.github.nramc.dev.journey</groupId>
     <artifactId>journey-api</artifactId>
-    <version>0.16.3-SNAPSHOT</version>
+    <version>0.16.3</version>
     <name>Journey-API</name>
     <description>Journey-API</description>
     <scm>
         <url>https://github.com/nramc/journey-api</url>
         <connection>scm:git:https://github.com/nramc/journey-api.git</connection>
         <developerConnection>scm:git:https://github.com/nramc/journey-api.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v0.16.3</tag>
     </scm>
     <properties>
         <java.version>21</java.version>
