@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder(toBuilder = true)
-public record CreateJourneyRequest(
+record CreateJourneyRequest(
         @NotBlank String name,
         @NotBlank String description,
         @NotEmpty List<String> tags,
