@@ -2,11 +2,11 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
@@ -15,6 +15,9 @@ import java.util.Set;
 
 @UtilityClass
 public class JourneyData {
+    public static final String GEO_LOCATION_JSON = """
+            {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]}
+            """;
     public static final String NEW_JOURNEY_JSON = """
             {
               "name" : "First Flight Experience",

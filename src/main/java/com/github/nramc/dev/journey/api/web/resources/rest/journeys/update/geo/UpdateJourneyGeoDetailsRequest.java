@@ -5,7 +5,7 @@ import com.github.nramc.commons.geojson.domain.Geometry;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UpdateJourneyGeoDetailsRequest(
+record UpdateJourneyGeoDetailsRequest(
         @NotBlank String title,
         @NotBlank String city,
         @NotBlank String country,

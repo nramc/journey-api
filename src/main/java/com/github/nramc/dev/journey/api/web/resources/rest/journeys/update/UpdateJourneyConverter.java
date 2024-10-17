@@ -2,13 +2,11 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basic.UpdateJourneyBasicDetailsRequest;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo.UpdateJourneyGeoDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.images.UpdateJourneyImagesDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish.PublishJourneyRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.videos.UpdateJourneyVideosDetailsRequest;
@@ -36,17 +34,6 @@ public class UpdateJourneyConverter {
                 .thumbnail(fromRequest.thumbnail())
                 .icon(fromRequest.icon())
                 .journeyDate(fromRequest.journeyDate())
-                .build();
-
-    }
-
-    public static JourneyEntity extendWithGeoDetails(UpdateJourneyGeoDetailsRequest fromRequest, JourneyEntity toEntity) {
-        JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
-
-        JourneyGeoDetailsEntity geoDetailsEntity = JourneyGeoDetailsEntity.builder().geoJson(fromRequest.geoJson()).build();
-
-        return toEntity.toBuilder()
-                .extended(extendedEntity.toBuilder().geoDetails(geoDetailsEntity).build())
                 .build();
 
     }

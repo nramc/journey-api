@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
 import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.GEO_LOCATION_JSON;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -43,24 +44,6 @@ class UpdateJourneyGeoDetailsResourceTest {
             status().isOk(),
             content().contentType(MediaType.APPLICATION_JSON)
     };
-    private static final ResultMatcher[] JOURNEY_BASE_DETAILS_MATCH = new ResultMatcher[]{
-            jsonPath("$.name").value("First Flight Experience"),
-            jsonPath("$.title").value("One of the most beautiful experience ever in my life"),
-            jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"),
-            jsonPath("$.category").value("Travel"),
-            jsonPath("$.city").value("Munich"),
-            jsonPath("$.country").value("Germany"),
-            jsonPath("$.tags").isArray(),
-            jsonPath("$.tags").value(hasSize(3)),
-            jsonPath("$.tags").value(hasItems("travel", "germany", "munich")),
-            jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"),
-            jsonPath("$.journeyDate").value("2024-03-27"),
-            jsonPath("$.createdDate").value("2024-03-27"),
-            jsonPath("$.location.type").value("Point"),
-            jsonPath("$.location.coordinates").isArray(),
-            jsonPath("$.location.coordinates").value(hasSize(2)),
-            jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
-    };
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -73,17 +56,41 @@ class UpdateJourneyGeoDetailsResourceTest {
         when(journeyRepository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
-                { "geoJson": %s }
+                {
+                 "title":"Airport, Munich, Germany",
+                 "city": "Munich",
+                 "country": "Germany",
+                 "location": %s,
+                 "geoJson": %s
+                  }
                 """;
         String geoJson = Files.readString(Path.of("src/test/resources/data/geojson/geometry-collection.json"));
         mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS)
-                        .content(jsonRequestTemplate.formatted(geoJson))
+                        .content(jsonRequestTemplate.formatted(GEO_LOCATION_JSON, geoJson))
                 )
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
-                .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
-                .andExpect(jsonPath("$.extendedDetails.geoDetails.geoJson.type").value("GeometryCollection"))
+                .andExpectAll(jsonPath("$.name").value("First Flight Experience"),
+                        jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"),
+                        jsonPath("$.category").value("Travel"),
+                        jsonPath("$.tags").isArray(),
+                        jsonPath("$.tags").value(hasSize(3)),
+                        jsonPath("$.tags").value(hasItems("travel", "germany", "munich")),
+                        jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"),
+                        jsonPath("$.journeyDate").value("2024-03-27"),
+                        jsonPath("$.createdDate").value("2024-03-27")
+                )
+                .andExpectAll(
+                        jsonPath("$.extendedDetails.geoDetails.title").value("Airport, Munich, Germany"),
+                        jsonPath("$.extendedDetails.geoDetails.city").value("Munich"),
+                        jsonPath("$.extendedDetails.geoDetails.country").value("Germany"),
+                        jsonPath("$.extendedDetails.geoDetails.geoJson.type").value("GeometryCollection"),
+                        jsonPath("$.extendedDetails.geoDetails.location.type").value("Point"),
+                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").isArray(),
+                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").value(hasSize(2)),
+                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
+                )
                 .andExpect(jsonPath("$.extendedDetails.imagesDetails").isEmpty())
                 .andExpect(jsonPath("$.extendedDetails.videosDetails").isEmpty());
     }

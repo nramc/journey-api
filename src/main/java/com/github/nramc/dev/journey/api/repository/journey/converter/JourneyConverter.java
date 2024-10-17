@@ -57,6 +57,10 @@ public class JourneyConverter {
         return Optional.ofNullable(journeyEntity.getExtended())
                 .map(JourneyExtendedEntity::getGeoDetails)
                 .map(journeyGeoDetailsEntity -> JourneyGeoDetails.builder()
+                        .title(journeyGeoDetailsEntity.getTitle())
+                        .city(journeyGeoDetailsEntity.getCity())
+                        .country(journeyGeoDetailsEntity.getCountry())
+                        .location(journeyGeoDetailsEntity.getLocation())
                         .geoJson(journeyGeoDetailsEntity.getGeoJson())
                         .build())
                 .orElse(null);
