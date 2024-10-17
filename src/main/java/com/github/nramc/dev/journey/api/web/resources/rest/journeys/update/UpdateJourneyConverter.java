@@ -6,13 +6,11 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEnt
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basic.UpdateJourneyBasicDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.images.UpdateJourneyImagesDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish.PublishJourneyRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.videos.UpdateJourneyVideosDetailsRequest;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,23 +18,6 @@ import java.util.Set;
 
 @UtilityClass
 public class UpdateJourneyConverter {
-
-    public static JourneyEntity copyData(UpdateJourneyBasicDetailsRequest fromRequest, JourneyEntity toEntity) {
-        return toEntity.toBuilder()
-                .name(fromRequest.name())
-                .title(fromRequest.title())
-                .description(fromRequest.description())
-                .city(fromRequest.city())
-                .country(fromRequest.country())
-                .category(fromRequest.category())
-                .tags(CollectionUtils.emptyIfNull(fromRequest.tags()).stream().map(StringUtils::lowerCase).toList())
-                .location(fromRequest.location())
-                .thumbnail(fromRequest.thumbnail())
-                .icon(fromRequest.icon())
-                .journeyDate(fromRequest.journeyDate())
-                .build();
-
-    }
 
     public static JourneyEntity extendWithImagesDetails(UpdateJourneyImagesDetailsRequest fromRequest, JourneyEntity toEntity) {
         JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
