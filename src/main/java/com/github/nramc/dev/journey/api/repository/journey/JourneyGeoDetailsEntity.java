@@ -15,6 +15,7 @@ public class JourneyGeoDetailsEntity {
     String title;
     String city;
     String country;
+    String category;
     Geometry location;
     GeoJson geoJson;
 }

@@ -60,6 +60,7 @@ public class JourneyConverter {
                         .title(journeyGeoDetailsEntity.getTitle())
                         .city(journeyGeoDetailsEntity.getCity())
                         .country(journeyGeoDetailsEntity.getCountry())
+                        .category(journeyGeoDetailsEntity.getCategory())
                         .location(journeyGeoDetailsEntity.getLocation())
                         .geoJson(journeyGeoDetailsEntity.getGeoJson())
                         .build())

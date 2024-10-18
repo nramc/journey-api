@@ -16,6 +16,7 @@ class UpdateJourneyGeoDetailsConverter {
                 .title(fromRequest.title())
                 .city(fromRequest.city())
                 .country(fromRequest.country())
+                .category(fromRequest.category())
                 .location(fromRequest.location())
                 .geoJson(fromRequest.geoJson())
                 .build();

@@ -11,6 +11,7 @@ public record JourneyGeoDetails(
         @NotBlank String title,
         @NotBlank String city,
         @NotBlank String country,
+        @NotBlank String category,
         @NotNull Geometry location,
         @NotNull GeoJson geoJson
 ) {

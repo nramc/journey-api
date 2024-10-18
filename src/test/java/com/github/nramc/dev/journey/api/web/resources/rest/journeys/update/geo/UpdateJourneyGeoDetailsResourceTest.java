@@ -60,6 +60,7 @@ class UpdateJourneyGeoDetailsResourceTest {
                  "title":"Airport, Munich, Germany",
                  "city": "Munich",
                  "country": "Germany",
+                 "category": "default",
                  "location": %s,
                  "geoJson": %s
                   }
@@ -85,6 +86,7 @@ class UpdateJourneyGeoDetailsResourceTest {
                         jsonPath("$.extendedDetails.geoDetails.title").value("Airport, Munich, Germany"),
                         jsonPath("$.extendedDetails.geoDetails.city").value("Munich"),
                         jsonPath("$.extendedDetails.geoDetails.country").value("Germany"),
+                        jsonPath("$.extendedDetails.geoDetails.category").value("default"),
                         jsonPath("$.extendedDetails.geoDetails.geoJson.type").value("GeometryCollection"),
                         jsonPath("$.extendedDetails.geoDetails.location.type").value("Point"),
                         jsonPath("$.extendedDetails.geoDetails.location.coordinates").isArray(),
