@@ -15,6 +15,5 @@ record CreateJourneyRequest(
         @NotBlank String description,
         @NotEmpty List<String> tags,
         @NotBlank String thumbnail,
-        @NotBlank String icon,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate) {
 }

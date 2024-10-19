@@ -45,7 +45,6 @@ class UpdateJourneyBasicDetailsResourceTest {
               "description" : "Travelled first time for work deputation from India to Germany, Munich city",
               "tags" : ["travel", "germany", "munich", "updated"],
               "thumbnail" : "https://example.com/thumbnail.png",
-              "icon": "home",
               "journeyDate": "2050-01-31"
             }
             """;
@@ -76,7 +75,6 @@ class UpdateJourneyBasicDetailsResourceTest {
                 .andExpect(jsonPath("$.tags").value(hasSize(4)))
                 .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich", "updated")))
                 .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
-                .andExpect(jsonPath("$.icon").value("home"))
                 .andExpect(jsonPath("$.journeyDate").value("2050-01-31"));
     }
 

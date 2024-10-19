@@ -68,7 +68,6 @@ class CreateJourneyResourceTest {
                 .andExpect(jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"))
                 .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich")))
                 .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
-                .andExpect(jsonPath("$.icon").value("home"))
                 .andExpect(jsonPath("$.journeyDate").value("2024-03-27"))
                 .andExpect(jsonPath("$.createdDate").value(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)));
     }

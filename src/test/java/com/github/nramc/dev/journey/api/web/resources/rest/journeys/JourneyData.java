@@ -21,18 +21,9 @@ public class JourneyData {
     public static final String NEW_JOURNEY_JSON = """
             {
               "name" : "First Flight Experience",
-              "title" : "One of the most beautiful experience ever in my life",
               "description" : "Travelled first time for work deputation to Germany, Munich city",
-              "category" : "Travel",
-              "city" : "Munich",
-              "country" : "Germany",
               "tags" : ["travel", "germany", "munich"],
               "thumbnail" : "https://example.com/thumbnail.png",
-              "icon": "home",
-              "location" : {
-                "type": "Point",
-                "coordinates": [48.183160038296585, 11.53090747669896]
-              },
               "journeyDate": "2024-03-27"
             }
             """;

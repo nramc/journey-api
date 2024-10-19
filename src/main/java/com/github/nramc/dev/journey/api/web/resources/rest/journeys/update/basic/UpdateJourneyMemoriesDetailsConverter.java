@@ -14,7 +14,6 @@ class UpdateJourneyMemoriesDetailsConverter {
                 .description(fromRequest.description())
                 .tags(CollectionUtils.emptyIfNull(fromRequest.tags()).stream().map(StringUtils::lowerCase).toList())
                 .thumbnail(fromRequest.thumbnail())
-                .icon(fromRequest.icon())
                 .journeyDate(fromRequest.journeyDate())
                 .build();
 

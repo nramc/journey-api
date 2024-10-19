@@ -24,7 +24,6 @@ class CreateJourneyConverter {
                 .description(request.description())
                 .tags(CollectionUtils.emptyIfNull(request.tags()).stream().map(StringUtils::lowerCase).toList())
                 .thumbnail(request.thumbnail())
-                .icon(request.icon())
                 .journeyDate(request.journeyDate())
                 .createdDate(LocalDate.now())
                 .createdBy(authUser.getUsername())
@@ -38,19 +37,12 @@ class CreateJourneyConverter {
         return CreateJourneyResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .title(entity.getTitle())
                 .description(entity.getDescription())
-                .city(entity.getCity())
-                .country(entity.getCountry())
-                .category(entity.getCategory())
                 .tags(entity.getTags())
-                .location(entity.getLocation())
                 .thumbnail(entity.getThumbnail())
-                .icon(entity.getIcon())
                 .createdDate(entity.getCreatedDate())
                 .journeyDate(entity.getJourneyDate())
                 .build();
-
     }
 
 }
