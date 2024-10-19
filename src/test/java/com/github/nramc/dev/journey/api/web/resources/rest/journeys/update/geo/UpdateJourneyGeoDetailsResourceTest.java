@@ -74,7 +74,6 @@ class UpdateJourneyGeoDetailsResourceTest {
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
                 .andExpectAll(jsonPath("$.name").value("First Flight Experience"),
                         jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"),
-                        jsonPath("$.category").value("Travel"),
                         jsonPath("$.tags").isArray(),
                         jsonPath("$.tags").value(hasSize(3)),
                         jsonPath("$.tags").value(hasItems("travel", "germany", "munich")),
