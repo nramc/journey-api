@@ -17,7 +17,7 @@ import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.A
 @Target(ElementType.METHOD)
 @WithMockUser(username = "test.user@example.com", password = "test-password", authorities = {AUTHENTICATED_USER})
 public @interface WithMockAuthenticatedUser {
-    public final AppUser USER = AppUser.builder()
+    AppUser USER = AppUser.builder()
             .username("test.user@example.com")
             .password("test-password")
             .name("Authenticated User")
