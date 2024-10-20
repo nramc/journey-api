@@ -6,6 +6,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.map.HashedMap;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -15,7 +16,10 @@ import java.util.Optional;
 public class JourneyFeatureConverter {
 
     public static Feature toFeature(JourneyEntity entity) {
-        return Feature.of(entity.getId(), entity.getExtended().getGeoDetails().getLocation(), toProperties(entity));
+        return Feature.of(entity.getId(),
+                Optional.of(entity).map(JourneyEntity::getExtended).map(JourneyExtendedEntity::getGeoDetails).map(JourneyGeoDetailsEntity::getLocation).orElse(null),
+                toProperties(entity)
+        );
     }
 
     private static Map<String, Serializable> toProperties(JourneyEntity entity) {
@@ -27,11 +31,10 @@ public class JourneyFeatureConverter {
         properties.put("name", entity.getName());
         properties.put("description", entity.getDescription());
 
-        properties.put("category", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getCategory).orElse(null));
-        properties.put("title", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getTitle).orElse(null));
-        properties.put("city", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getCity).orElse(null));
-        properties.put("country", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getCountry).orElse(null));
-        properties.put("location", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getLocation).orElse(null));
+        properties.put("category", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getCategory).orElse(StringUtils.EMPTY));
+        properties.put("title", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getTitle).orElse(StringUtils.EMPTY));
+        properties.put("city", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getCity).orElse(StringUtils.EMPTY));
+        properties.put("country", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getCountry).orElse(StringUtils.EMPTY));
 
         properties.put("thumbnail", entity.getThumbnail());
         properties.put("tags", entity.getTags().toArray());
