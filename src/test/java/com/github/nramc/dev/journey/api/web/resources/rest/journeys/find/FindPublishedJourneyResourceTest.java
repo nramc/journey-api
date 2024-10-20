@@ -22,6 +22,7 @@ import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.G
 import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -75,7 +76,7 @@ class FindPublishedJourneyResourceTest {
     @WithMockUser(username = "test-user", authorities = {MAINTAINER})
     void find_whenPublishedJourneyExists_ShouldReturnValidGeoJson() throws Exception {
         List<JourneyEntity> journeyEntities = List.of(
-                JOURNEY_ENTITY.toBuilder().isPublished(true).build()
+                JOURNEY_EXTENDED_ENTITY.toBuilder().isPublished(true).build()
         );
         when(journeyRepository.findAll(any(Example.class))).thenReturn(journeyEntities);
 
@@ -87,14 +88,13 @@ class FindPublishedJourneyResourceTest {
                 .andExpect(jsonPath("$.type").value("FeatureCollection"))
                 .andExpect(jsonPath("$.features").isNotEmpty())
                 .andExpect(jsonPath("$.features[0].type").value("Feature"))
-                .andExpect(jsonPath("$.features[0].id").value(JOURNEY_ENTITY.getId()))
+                .andExpect(jsonPath("$.features[0].id").value(JOURNEY_EXTENDED_ENTITY.getId()))
                 .andExpect(jsonPath("$.features[0].geometry").exists())
                 .andExpect(jsonPath("$.features[0].properties").exists())
-                .andExpect(jsonPath("$.features[0].properties.name").value(JOURNEY_ENTITY.getName()))
-                .andExpect(jsonPath("$.features[0].properties.category").value(JOURNEY_ENTITY.getCategory()))
-                .andExpect(jsonPath("$.features[0].properties.thumbnail").value(JOURNEY_ENTITY.getThumbnail()))
-                .andExpect(jsonPath("$.features[0].properties.icon").value(JOURNEY_ENTITY.getIcon()))
-                .andExpect(jsonPath("$.features[0].properties.description").value(JOURNEY_ENTITY.getDescription()))
-                .andExpect(jsonPath("$.features[0].properties.tags").value(equalTo(JOURNEY_ENTITY.getTags())));
+                .andExpect(jsonPath("$.features[0].properties.name").value(JOURNEY_EXTENDED_ENTITY.getName()))
+                .andExpect(jsonPath("$.features[0].properties.category").value(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().getCategory()))
+                .andExpect(jsonPath("$.features[0].properties.thumbnail").value(JOURNEY_EXTENDED_ENTITY.getThumbnail()))
+                .andExpect(jsonPath("$.features[0].properties.description").value(JOURNEY_EXTENDED_ENTITY.getDescription()))
+                .andExpect(jsonPath("$.features[0].properties.tags").value(equalTo(JOURNEY_EXTENDED_ENTITY.getTags())));
     }
 }

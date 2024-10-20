@@ -39,9 +39,9 @@ public class StatisticsResource {
         List<JourneyEntity> entities = journeyRepository.getAllBy(visibilities, username);
 
         return StatisticsResponse.builder()
-                .categories(getStatsFor(entities, JourneyEntity::getCategory))
-                .cities(getStatsFor(entities, JourneyEntity::getCity))
-                .countries(getStatsFor(entities, JourneyEntity::getCountry))
+                .categories(getStatsFor(entities, journeyEntity -> journeyEntity.getExtended().getGeoDetails().getCategory()))
+                .cities(getStatsFor(entities, journeyEntity -> journeyEntity.getExtended().getGeoDetails().getCity()))
+                .countries(getStatsFor(entities, journeyEntity -> journeyEntity.getExtended().getGeoDetails().getCountry()))
                 .years(getStatsFor(entities, entity -> String.valueOf(entity.getJourneyDate().getYear())))
                 .build();
     }

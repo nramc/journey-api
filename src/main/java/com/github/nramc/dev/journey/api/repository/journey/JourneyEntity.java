@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
-import com.github.nramc.commons.geojson.domain.Geometry;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,15 +21,9 @@ public class JourneyEntity {
     @Id
     private String id;
     private String name;
-    private String title;
     private String description;
-    private String category;
-    private String city;
-    private String country;
     private List<String> tags;
     private String thumbnail;
-    private String icon;
-    private Geometry location;
     private LocalDate createdDate;
     private String createdBy;
     private LocalDate journeyDate;

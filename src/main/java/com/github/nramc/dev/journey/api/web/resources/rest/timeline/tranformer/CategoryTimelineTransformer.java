@@ -38,7 +38,7 @@ public class CategoryTimelineTransformer {
 
     private static TimelineImage toTimelineImage(JourneyImageDetailEntity imageDetail, JourneyEntity journey) {
         return TimelineImage.builder()
-                .title(journey.getCategory())
+                .title(journey.getExtended().getGeoDetails().getCategory())
                 .src(imageDetail.getUrl())
                 .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
                 .args(Map.of())

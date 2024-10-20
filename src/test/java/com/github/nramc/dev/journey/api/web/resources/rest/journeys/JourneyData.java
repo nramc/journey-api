@@ -5,6 +5,7 @@ import com.github.nramc.commons.geojson.domain.Position;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import lombok.experimental.UtilityClass;
@@ -30,15 +31,9 @@ public class JourneyData {
     public static final JourneyEntity JOURNEY_ENTITY = JourneyEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
             .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
             .thumbnail("https://example.com/thumbnail.png")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-            .icon("home")
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
             .visibilities(Set.of(Visibility.MYSELF))
@@ -48,22 +43,24 @@ public class JourneyData {
     public static final JourneyEntity JOURNEY_EXTENDED_ENTITY = JourneyEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
             .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
             .thumbnail("https://example.com/thumbnail.png")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-            .icon("home")
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
             .visibilities(Set.of(Visibility.MYSELF))
             .createdBy("test-user")
             .extended(JourneyExtendedEntity.builder()
+                    .geoDetails(JourneyGeoDetailsEntity.builder()
+                            .title("One of the most beautiful experience ever in my life")
+                            .category("Home")
+                            .city("Munich")
+                            .country("Germany")
+                            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
+                            .build())
                     .imagesDetails(getImagesDetailsEntity())
-                    .build())
+                    .build()
+            )
             .build();
 
     public static JourneyImagesDetailsEntity getImagesDetailsEntity() {

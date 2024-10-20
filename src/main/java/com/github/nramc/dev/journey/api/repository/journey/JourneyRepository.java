@@ -1,8 +1,6 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
-import com.github.nramc.dev.journey.api.repository.journey.projection.CategoryOnly;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -20,7 +18,6 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
                 { 'isPublished': {$in: ?2} },
                 { $or: [
                     { 'name' : { $regex : '.*?3.*', '$options' : 'i' } },
-                    { 'title' : { $regex : '.*?3.*', '$options' : 'i' } },
                     { 'description' : { $regex : '.*?3.*', '$options' : 'i' } }
                   ]
                 },
@@ -29,9 +26,9 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
                     { 'tags': { $in: ?4 } }
                   ]
                 },
-                { $or: [ { $expr:{$eq: [?5, '']} }, {'city' : ?5} ] },
-                { $or: [ { $expr:{$eq: [?6, '']} }, {'country' : ?6} ] },
-                { $or: [ { $expr:{$eq: [?7, '']} }, {'category' : ?7} ] },
+                { $or: [ { $expr:{$eq: [?5, '']} }, {'extended.geoDetails.city' : ?5} ] },
+                { $or: [ { $expr:{$eq: [?6, '']} }, {'extended.geoDetails.country' : ?6} ] },
+                { $or: [ { $expr:{$eq: [?7, '']} }, {'extended.geoDetails.category' : ?7} ] },
                 { $or: [ { $expr:{$eq: [?8, null]} }, { 'journeyDate': { $gte: ?8 } } ] },
                 { $or: [ { $expr:{$eq: [?9, null]} }, { 'journeyDate': { $lte: ?9 } } ] }
               ]
@@ -51,8 +48,6 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
             LocalDate journeyEndDate,
             Pageable pageable
     );
-
-    List<CategoryOnly> findDistinctByCategoryContainingIgnoreCaseOrderByCategory(String category, Limit limit);
 
     @Query("""
             { $and: [
