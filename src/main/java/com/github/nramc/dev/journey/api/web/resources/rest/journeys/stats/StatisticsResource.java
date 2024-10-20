@@ -1,8 +1,9 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.stats;
 
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.stats.StatisticsResponse.KeyValueStatistics;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,15 +29,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @Tag(name = "Statistics")
 public class StatisticsResource {
-    private final JourneyRepository journeyRepository;
+    private final JourneyService journeyService;
 
     @Operation(summary = "Get Statistics about all available Journeys")
     @GetMapping(value = GET_STATISTICS, produces = APPLICATION_JSON_VALUE)
     public StatisticsResponse getStatistics(Authentication authentication) {
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
-        String username = authentication.getName();
+        AppUser user = AppUser.builder().username(authentication.getName()).build();
 
-        List<JourneyEntity> entities = journeyRepository.getAllBy(visibilities, username);
+        List<JourneyEntity> entities = journeyService.findAllPublishedJourneys(user, visibilities);
 
         return StatisticsResponse.builder()
                 .categories(getStatsFor(entities, journeyEntity -> journeyEntity.getExtended().getGeoDetails().getCategory()))

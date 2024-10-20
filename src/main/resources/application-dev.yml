@@ -19,6 +19,7 @@ logging:
     org.springframework.web: INFO
     org.springframework.security: INFO
     org.springframework.data.mongodb.core: DEBUG
+    logging.level.org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 #    org.springframework.boot.autoconfigure: DEBUG
 
 jwt:

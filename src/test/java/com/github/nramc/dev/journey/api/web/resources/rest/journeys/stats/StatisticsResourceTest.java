@@ -3,8 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.stats;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import org.junit.jupiter.api.Disabled;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,10 +21,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_STATISTICS;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -37,12 +36,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(StatisticsResource.class)
 @Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({JourneyRepository.class})
+@MockBean({JourneyService.class})
 class StatisticsResourceTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private JourneyRepository journeyRepository;
+    private JourneyService journeyService;
 
     @Test
     @WithAnonymousUser
@@ -53,24 +52,28 @@ class StatisticsResourceTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    @Disabled("refactored separately")
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockUser(username = "test-user", password = "test-password", authorities = {AUTHENTICATED_USER})
     void find_whenJourneyExists_thenShouldReturnResponse() throws Exception {
         // setup data
         List<JourneyEntity> journeyEntities = IntStream.range(0, 10).mapToObj(index ->
-                JOURNEY_ENTITY.toBuilder()
+                JOURNEY_EXTENDED_ENTITY.toBuilder()
                         .id("ID_" + index)
                         .createdDate(LocalDate.now().plusDays(index))
                         .visibilities(Set.of(MYSELF))
                         .isPublished(true)
                         .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index % 2))
-//                        .category("Category_" + (index % 2 == 0 ? "even" : "odd"))
-//                        .city("City_" + (index % 2 == 0 ? "even" : "odd"))
-//                        .country("Country_" + (index % 2 == 0 ? "even" : "odd"))
+                        .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
+                                .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                                        .category("Category_" + (index % 2 == 0 ? "even" : "odd"))
+                                        .city("City_" + (index % 2 == 0 ? "even" : "odd"))
+                                        .country("Country_" + (index % 2 == 0 ? "even" : "odd"))
+                                        .build())
+                                .build()
+                        )
                         .build()
         ).toList();
-        when(journeyRepository.getAllBy(any(), any())).thenReturn(journeyEntities);
+        when(journeyService.findAllPublishedJourneys(any(), any())).thenReturn(journeyEntities);
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_STATISTICS)
                         .accept(MediaType.APPLICATION_JSON)

@@ -2,6 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys;
 
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
@@ -16,6 +18,14 @@ import java.util.Set;
 
 @UtilityClass
 public class JourneyData {
+    public static final AppUser AUTHENTICATED_USER = AppUser.builder()
+            .username("test-user@example.com")
+            .password("test-password")
+            .roles(Set.of(Role.AUTHENTICATED_USER))
+            .name("Authenticated User")
+            .enabled(true)
+            .mfaEnabled(false)
+            .build();
     public static final String GEO_LOCATION_JSON = """
             {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]}
             """;

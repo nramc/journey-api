@@ -49,16 +49,4 @@ public interface JourneyRepository extends MongoRepository<JourneyEntity, String
             Pageable pageable
     );
 
-    @Query("""
-            { $and: [
-                { $or: [ {'createdBy' : ?1}, {'visibilities': {$in: ?0}} ] },
-                { 'isPublished': true },
-              ]
-            }
-            """
-    )
-    List<JourneyEntity> getAllBy(
-            Set<Visibility> visibilities,
-            String username
-    );
 }

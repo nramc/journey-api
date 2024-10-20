@@ -5,6 +5,7 @@ logging:
     org.springframework.security: DEBUG
     #    org.springframework.boot.autoconfigure: DEBUG
     org.springframework.data.mongodb.core: DEBUG
+    logging.level.org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
 jwt:
   private-key: classpath:app.key
