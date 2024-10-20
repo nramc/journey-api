@@ -15,7 +15,6 @@ import java.util.Set;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataMongoTest
 @Import({TestContainersConfiguration.class, JourneyService.class})
@@ -32,8 +31,8 @@ class JourneyRepositoryTest {
 
     @Test
     void context() {
-        assertNotNull(journeyRepository);
-        assertNotNull(journeyService);
+        assertThat(journeyRepository).isNotNull();
+        assertThat(journeyService).isNotNull();
     }
 
 
