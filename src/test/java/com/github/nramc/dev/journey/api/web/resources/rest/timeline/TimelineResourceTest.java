@@ -1,13 +1,16 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -45,6 +48,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 class TimelineResourceTest {
+    private static final JourneyEntity VALID_JOURNEY = JOURNEY_EXTENDED_ENTITY.toBuilder()
+            .createdBy(WithMockAuthenticatedUser.USER.username())
+            .isPublished(true)
+            .build();
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -69,10 +76,8 @@ class TimelineResourceTest {
     void getTimelineData_whenJourneyExists_butLoggedInUserDoesNotHavePermissions_thenShouldReturnEmptyResponse() throws Exception {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
                                 .build()
                 )
         );
@@ -87,14 +92,13 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "new-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockMaintainerUser
     void getTimelineData_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 2).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
                                 .visibilities(Set.of(MYSELF, Visibility.MAINTAINER))
-                                .isPublished(true)
                                 .build()
                 )
         );
@@ -114,7 +118,7 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "new-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void getTimelineData_whenNotFavoriteImageExists_shouldTakeFirstNImages() throws Exception {
         // setup data
         List<JourneyImageDetailEntity> images = List.of(
@@ -125,11 +129,12 @@ class TimelineResourceTest {
                 newImageDetailEntityWith("src_5", "asset 5", "title 5")
         );
         journeyRepository.save(
-                JOURNEY_EXTENDED_ENTITY.toBuilder()
+                VALID_JOURNEY.toBuilder()
                         .id("ID_12345")
-                        .visibilities(Set.of(MYSELF, Visibility.MAINTAINER))
-                        .isPublished(true)
-                        .extended(JourneyExtendedEntity.builder().imagesDetails(JourneyImagesDetailsEntity.builder().images(images).build()).build())
+                        .extended(JourneyExtendedEntity.builder()
+                                .imagesDetails(JourneyImagesDetailsEntity.builder().images(images).build())
+                                .build()
+                        )
                         .build()
         );
 
@@ -148,14 +153,12 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void getTimelineData_withJourneyIDs_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withJourneyIDs_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
                                 .build()
                 )
         );
@@ -178,14 +181,12 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void getTimelineData_withSingleJourneyID_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withSingleJourneyID_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
                                 .build()
                 )
         );
@@ -206,17 +207,14 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    @Disabled("refactor separately")
-    void getTimelineData_withCities_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withCities_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
-                                .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                        .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                                .extended(VALID_JOURNEY.getExtended().toBuilder()
+                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
                                                 .city("City_" + index)
                                                 .build())
                                         .build()
@@ -242,17 +240,14 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    @Disabled("refactor separately")
-    void getTimelineData_withSingleCity_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withSingleCity_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
-                                .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                        .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                                .extended(VALID_JOURNEY.getExtended().toBuilder()
+                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
                                                 .city("City_" + index)
                                                 .build())
                                         .build()
@@ -277,18 +272,14 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    @Disabled("refactor separately")
-    void getTimelineData_withCountries_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withCountries_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
-
-                                .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                        .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                                .extended(VALID_JOURNEY.getExtended().toBuilder()
+                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
                                                 .country("Country_" + index)
                                                 .build())
                                         .build()
@@ -296,6 +287,8 @@ class TimelineResourceTest {
                                 .build()
                 )
         );
+
+        journeyRepository.findAll().forEach(System.out::println);
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
                         .queryParam("country", "Country_1, Country_2")
@@ -314,17 +307,14 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    @Disabled("refactor separately")
-    void getTimelineData_withSingleCountry_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withSingleCountry_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
-                                .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                        .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                                .extended(VALID_JOURNEY.getExtended().toBuilder()
+                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
                                                 .country("Country_" + index)
                                                 .build())
                                         .build()
@@ -349,17 +339,14 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    @Disabled("refactor separately")
-    void getTimelineData_withCategories_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withCategories_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
-                                .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                        .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                                .extended(VALID_JOURNEY.getExtended().toBuilder()
+                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
                                                 .category("Category_" + index)
                                                 .build())
                                         .build()
@@ -385,14 +372,12 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void getTimelineData_withYears_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_withYears_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
                                 .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index))
                                 .build()
                 )
@@ -415,14 +400,12 @@ class TimelineResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void getTimelineData_forToday_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult() throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_forToday_whenJourneyExists_shouldReturnResult() throws Exception {
         // setup data
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
                                 .journeyDate(LocalDate.now().minusYears(index))
                                 .build()
                 )
@@ -446,14 +429,12 @@ class TimelineResourceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"3", "5", "10", "15", "25", "31"})
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
-    void getTimelineData_forUpcomingDays_whenJourneyExistsWithAnyOfVisibility_shouldReturnResult(String numberOfDays) throws Exception {
+    @WithMockAuthenticatedUser
+    void getTimelineData_forUpcomingDays_whenJourneyExists_shouldReturnResult(String numberOfDays) throws Exception {
         // setup data
         IntStream.range(0, Integer.parseInt(numberOfDays + 1)).forEach(index -> journeyRepository.save(
-                        JOURNEY_EXTENDED_ENTITY.toBuilder()
+                        VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .visibilities(Set.of(MYSELF))
-                                .isPublished(true)
                                 .journeyDate(LocalDate.now().plusDays(index).minusYears(index))
                                 .build()
                 )

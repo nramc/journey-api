@@ -59,13 +59,13 @@ public class TimelineResource {
             query.addCriteria(Criteria.where("id").in(journeyIDs));
         }
         if (CollectionUtils.isNotEmpty(cities)) {
-            query.addCriteria(Criteria.where("city").in(cities));
+            query.addCriteria(Criteria.where("extended.geoDetails.city").in(cities));
         }
         if (CollectionUtils.isNotEmpty(countries)) {
-            query.addCriteria(Criteria.where("country").in(countries));
+            query.addCriteria(Criteria.where("extended.geoDetails.country").in(countries));
         }
         if (CollectionUtils.isNotEmpty(categories)) {
-            query.addCriteria(Criteria.where("category").in(categories));
+            query.addCriteria(Criteria.where("extended.geoDetails.category").in(categories));
         }
         if (CollectionUtils.isNotEmpty(years)) {
             query.addCriteria(
