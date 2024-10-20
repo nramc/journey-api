@@ -41,6 +41,9 @@ public class AuthUtils {
         if (isMaintainerRoleExists(authorities)) {
             visibilities.add(Visibility.MAINTAINER);
         }
+        if (isAuthenticatedUser(authorities)) {
+            visibilities.add(Visibility.AUTHENTICATED_USER);
+        }
         if (isGuestUser(authorities)) {
             visibilities.add(Visibility.GUEST);
         }

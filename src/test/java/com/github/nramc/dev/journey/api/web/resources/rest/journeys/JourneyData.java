@@ -60,6 +60,7 @@ public class JourneyData {
             .journeyDate(LocalDate.of(2024, 3, 27))
             .visibilities(Set.of(Visibility.MYSELF))
             .createdBy("test-user")
+            .isPublished(false)
             .extended(JourneyExtendedEntity.builder()
                     .geoDetails(JourneyGeoDetailsEntity.builder()
                             .title("One of the most beautiful experience ever in my life")
