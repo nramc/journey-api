@@ -42,18 +42,9 @@ class UpdateJourneyBasicDetailsResourceTest {
     private static final String VALID_REQUEST = """
             {
               "name" : "First Internation Flight Experience",
-              "title" : "One of the most beautiful experience ever happened in my life",
               "description" : "Travelled first time for work deputation from India to Germany, Munich city",
-              "category" : "Work",
-              "city" : "Chennai",
-              "country" : "India",
               "tags" : ["travel", "germany", "munich", "updated"],
               "thumbnail" : "https://example.com/thumbnail.png",
-              "icon": "home",
-              "location" : {
-                "type": "Point",
-                "coordinates": [48.183160038296585, 11.53090747669896]
-              },
               "journeyDate": "2050-01-31"
             }
             """;
@@ -79,18 +70,12 @@ class UpdateJourneyBasicDetailsResourceTest {
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
                 .andExpect(jsonPath("$.name").value("First Internation Flight Experience"))
-                .andExpect(jsonPath("$.title").value("One of the most beautiful experience ever happened in my life"))
                 .andExpect(jsonPath("$.description").value("Travelled first time for work deputation from India to Germany, Munich city"))
-                .andExpect(jsonPath("$.category").value("Work"))
-                .andExpect(jsonPath("$.city").value("Chennai"))
-                .andExpect(jsonPath("$.country").value("India"))
                 .andExpect(jsonPath("$.tags").isArray())
                 .andExpect(jsonPath("$.tags").value(hasSize(4)))
                 .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich", "updated")))
                 .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
-                .andExpect(jsonPath("$.icon").value("home"))
-                .andExpect(jsonPath("$.journeyDate").value("2050-01-31"))
-                .andExpect(jsonPath("$.location.type").value("Point"));
+                .andExpect(jsonPath("$.journeyDate").value("2050-01-31"));
     }
 
     @Test

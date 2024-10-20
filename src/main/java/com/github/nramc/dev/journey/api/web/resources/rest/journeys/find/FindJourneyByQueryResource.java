@@ -1,11 +1,14 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneySearchCriteria;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
+import com.github.nramc.dev.journey.api.repository.journey.PagingProperty;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,9 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +34,7 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 @Slf4j
 @RequiredArgsConstructor
 public class FindJourneyByQueryResource {
-    private final JourneyRepository journeyRepository;
+    private final JourneyService journeyService;
 
     @Operation(summary = "Find Journeys for given query", tags = {"Search Journey"})
     @RestDocCommonResponse
@@ -44,7 +44,7 @@ public class FindJourneyByQueryResource {
             @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(name = "sort", defaultValue = "createdDate") String sortColumn,
-            @RequestParam(name = "order", defaultValue = "DESC") Sort.Direction sortOrder,
+            @RequestParam(name = "order", defaultValue = "DESC") String sortDirection,
             @RequestParam(name = "publishedOnly", defaultValue = "false") boolean publishedOnly,
             @RequestParam(name = "q", defaultValue = "") String searchText,
             @RequestParam(name = "tags", defaultValue = "") List<String> tags,
@@ -58,18 +58,30 @@ public class FindJourneyByQueryResource {
         String username = authentication.getName();
         Set<Boolean> publishedFlags = publishedOnly ? Set.of(true) : Set.of(true, false);
 
-        Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(sortOrder, sortColumn));
-
         List<String> tagsInLowerCase = tags.stream().map(StringUtils::lowerCase).toList();
         LocalDate journeyStartDate = year != null ? LocalDate.of(year.intValue(), 1, 1) : null;
         LocalDate journeyLastDate = year != null ? journeyStartDate.with(lastDayOfYear()) : null;
 
-        Page<JourneyEntity> entityPage = journeyRepository.findAllBy(
-                visibilities, username, publishedFlags, searchText, tagsInLowerCase,
-                cityText, countryText, categoryText,
-                journeyStartDate,
-                journeyLastDate,
-                pageable);
+        JourneySearchCriteria searchCriteria = JourneySearchCriteria.builder()
+                .appUser(AppUser.builder().username(username).build())
+                .visibilities(visibilities)
+                .publishedFlags(publishedFlags)
+                .searchText(searchText)
+                .tags(tagsInLowerCase)
+                .cityText(cityText)
+                .countryText(countryText)
+                .categoryText(categoryText)
+                .journeyStartDate(journeyStartDate)
+                .journeyEndDate(journeyLastDate)
+                .build();
+        PagingProperty pagingProperty = PagingProperty.builder()
+                .pageIndex(pageIndex)
+                .pageSize(pageSize)
+                .sortColumn(sortColumn)
+                .sortDirection(sortDirection)
+                .build();
+
+        Page<JourneyEntity> entityPage = journeyService.findAllJourneysWithPagination(searchCriteria, pagingProperty);
         Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
 
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",

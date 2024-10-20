@@ -42,21 +42,13 @@ class UpdateJourneyVideosDetailsResourceTest {
     };
     private static final ResultMatcher[] JOURNEY_BASE_DETAILS_MATCH = new ResultMatcher[]{
             jsonPath("$.name").value("First Flight Experience"),
-            jsonPath("$.title").value("One of the most beautiful experience ever in my life"),
             jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"),
-            jsonPath("$.category").value("Travel"),
-            jsonPath("$.city").value("Munich"),
-            jsonPath("$.country").value("Germany"),
             jsonPath("$.tags").isArray(),
             jsonPath("$.tags").value(hasSize(3)),
             jsonPath("$.tags").value(hasItems("travel", "germany", "munich")),
             jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"),
             jsonPath("$.journeyDate").value("2024-03-27"),
             jsonPath("$.createdDate").value("2024-03-27"),
-            jsonPath("$.location.type").value("Point"),
-            jsonPath("$.location.coordinates").isArray(),
-            jsonPath("$.location.coordinates").value(hasSize(2)),
-            jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
     };
 
     @Autowired

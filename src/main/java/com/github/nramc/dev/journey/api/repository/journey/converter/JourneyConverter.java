@@ -1,9 +1,5 @@
 package com.github.nramc.dev.journey.api.repository.journey.converter;
 
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.journey.JourneyExtendedDetails;
 import com.github.nramc.dev.journey.api.core.journey.JourneyGeoDetails;
@@ -11,6 +7,10 @@ import com.github.nramc.dev.journey.api.core.journey.JourneyImageDetail;
 import com.github.nramc.dev.journey.api.core.journey.JourneyImagesDetails;
 import com.github.nramc.dev.journey.api.core.journey.JourneyVideoDetail;
 import com.github.nramc.dev.journey.api.core.journey.JourneyVideosDetails;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -25,15 +25,9 @@ public class JourneyConverter {
         return Journey.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .title(entity.getTitle())
                 .description(entity.getDescription())
-                .city(entity.getCity())
-                .country(entity.getCountry())
-                .category(entity.getCategory())
                 .tags(entity.getTags())
-                .location(entity.getLocation())
                 .thumbnail(entity.getThumbnail())
-                .icon(entity.getIcon())
                 .journeyDate(entity.getJourneyDate())
                 .createdDate(entity.getCreatedDate())
                 .extendedDetails(getExtendedDetails(entity))
@@ -57,6 +51,11 @@ public class JourneyConverter {
         return Optional.ofNullable(journeyEntity.getExtended())
                 .map(JourneyExtendedEntity::getGeoDetails)
                 .map(journeyGeoDetailsEntity -> JourneyGeoDetails.builder()
+                        .title(journeyGeoDetailsEntity.getTitle())
+                        .city(journeyGeoDetailsEntity.getCity())
+                        .country(journeyGeoDetailsEntity.getCountry())
+                        .category(journeyGeoDetailsEntity.getCategory())
+                        .location(journeyGeoDetailsEntity.getLocation())
                         .geoJson(journeyGeoDetailsEntity.getGeoJson())
                         .build())
                 .orElse(null);

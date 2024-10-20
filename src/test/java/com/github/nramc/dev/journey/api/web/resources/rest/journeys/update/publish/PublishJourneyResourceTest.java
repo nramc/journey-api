@@ -1,11 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.validator.JourneyValidator;
@@ -48,22 +48,13 @@ class PublishJourneyResourceTest {
     };
     private static final ResultMatcher[] JOURNEY_BASE_DETAILS_MATCH = new ResultMatcher[]{
             jsonPath("$.name").value("First Flight Experience"),
-            jsonPath("$.title").value("One of the most beautiful experience ever in my life"),
             jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"),
-            jsonPath("$.category").value("Travel"),
-            jsonPath("$.city").value("Munich"),
-            jsonPath("$.country").value("Germany"),
             jsonPath("$.tags").isArray(),
             jsonPath("$.tags").value(hasSize(3)),
             jsonPath("$.tags").value(hasItems("travel", "germany", "munich")),
             jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"),
-            jsonPath("$.icon").value("home"),
             jsonPath("$.journeyDate").value("2024-03-27"),
             jsonPath("$.createdDate").value("2024-03-27"),
-            jsonPath("$.location.type").value("Point"),
-            jsonPath("$.location.coordinates").isArray(),
-            jsonPath("$.location.coordinates").value(hasSize(2)),
-            jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
     };
     private static final Set<Visibility> DEFAULT_VISIBILITY = Set.of(MYSELF, ADMINISTRATOR);
     @Autowired

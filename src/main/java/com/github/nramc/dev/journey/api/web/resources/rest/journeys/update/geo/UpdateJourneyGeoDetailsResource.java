@@ -1,11 +1,10 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo;
 
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.UpdateJourneyConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -25,17 +24,17 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class UpdateJourneyGeoDetailsResource {
+class UpdateJourneyGeoDetailsResource {
     private final JourneyRepository journeyRepository;
 
     @RestDocCommonResponse
     @Operation(summary = "Update GeoJson details of Journey", tags = {"Update Journey"})
     @ApiResponse(responseCode = "200", description = "Journey details updated successfully")
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_GEO_DETAILS, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> updateGeoDetails(@RequestBody @Valid UpdateJourneyGeoDetailsRequest request, @PathVariable String id) {
+    ResponseEntity<Journey> updateGeoDetails(@RequestBody @Valid UpdateJourneyGeoDetailsRequest request, @PathVariable String id) {
         JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update geo info"));
 
-        JourneyEntity journey = UpdateJourneyConverter.extendWithGeoDetails(request, entity);
+        JourneyEntity journey = UpdateJourneyGeoDetailsConverter.extendWithGeoDetails(request, entity);
 
         JourneyEntity journeyEntity = journeyRepository.save(journey);
 

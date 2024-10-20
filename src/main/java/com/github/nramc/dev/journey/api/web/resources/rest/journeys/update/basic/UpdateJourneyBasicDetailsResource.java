@@ -1,12 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basic;
 
 
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.UpdateJourneyConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -26,17 +25,17 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JO
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class UpdateJourneyBasicDetailsResource {
+class UpdateJourneyBasicDetailsResource {
     private final JourneyRepository journeyRepository;
 
     @RestDocCommonResponse
     @Operation(summary = "Update Basic details of Journey", tags = {"Update Journey"})
     @ApiResponse(responseCode = "200", description = "Journey details updated successfully")
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_BASIC_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Journey> updateBasicDetails(@RequestBody @Valid UpdateJourneyBasicDetailsRequest request, @PathVariable String id) {
+    ResponseEntity<Journey> updateBasicDetails(@RequestBody @Valid UpdateJourneyBasicDetailsRequest request, @PathVariable String id) {
         JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update base info"));
 
-        JourneyEntity journey = UpdateJourneyConverter.copyData(request, entity);
+        JourneyEntity journey = UpdateJourneyMemoriesDetailsConverter.extendDetailsWith(request, entity);
 
         JourneyEntity journeyEntity = journeyRepository.save(journey);
 

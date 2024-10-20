@@ -38,7 +38,7 @@ public class CityTimelineTransformer {
 
     private static TimelineImage toTimelineImage(JourneyImageDetailEntity imageDetail, JourneyEntity journey) {
         return TimelineImage.builder()
-                .title(journey.getCity())
+                .title(journey.getExtended().getGeoDetails().getCity())
                 .src(imageDetail.getUrl())
                 .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
                 .args(Map.of())

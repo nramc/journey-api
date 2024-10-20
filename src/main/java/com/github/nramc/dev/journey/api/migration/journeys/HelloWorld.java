@@ -16,8 +16,8 @@ public class HelloWorld implements Runnable {
 
     @Override
     public void run() {
-        List<JourneyEntity> entities = journeyRepository.findAll().stream().filter(journey -> journey.getCategory().startsWith("Marriage "))
-                .map(journey -> journey.toBuilder().category("Marriage Alaparaigal").build()).toList();
+        List<JourneyEntity> entities = journeyRepository.findAll().stream().filter(journey -> journey.getName().startsWith("Marriage "))
+                .map(journey -> journey.toBuilder().name("Marriage Alaparaigal").build()).toList();
         journeyRepository.saveAll(entities);
         log.info("No of journeys exists: {}", entities.size());
     }

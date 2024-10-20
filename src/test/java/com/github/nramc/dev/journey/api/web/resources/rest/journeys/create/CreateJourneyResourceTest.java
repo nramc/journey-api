@@ -65,16 +65,9 @@ class CreateJourneyResourceTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("First Flight Experience"))
-                .andExpect(jsonPath("$.title").value("One of the most beautiful experience ever in my life"))
                 .andExpect(jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"))
-                .andExpect(jsonPath("$.category").value("Travel"))
-                .andExpect(jsonPath("$.city").value("Munich"))
-                .andExpect(jsonPath("$.country").value("Germany"))
                 .andExpect(jsonPath("$.tags").value(hasItems("travel", "germany", "munich")))
                 .andExpect(jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"))
-                .andExpect(jsonPath("$.icon").value("home"))
-                .andExpect(jsonPath("$.location.type").value("Point"))
-                .andExpect(jsonPath("$.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)))
                 .andExpect(jsonPath("$.journeyDate").value("2024-03-27"))
                 .andExpect(jsonPath("$.createdDate").value(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)));
     }
@@ -100,35 +93,23 @@ class CreateJourneyResourceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {/* Field Validation failure for Mandatory field is blank */"""
+    @ValueSource(strings = {
+            /* Field Validation failure for Mandatory field is blank */"""
             {
               "name" : "",
-              "title" : "One of the most beautiful experience ever in my life",
               "description" : "Travelled first time for work deputation to Germany, Munich city",
-              "category" : "Travel",
-              "city" : "Munich",
-              "country" : "Germany",
               "tags" : ["travel", "germany", "munich"],
               "thumbnail" : "https://example.com/thumbnail.png",
-              "location" : {
-                "type": "Point",
-                "coordinates": [100.0, 0.0]
-              }
+              "journeyDate": "2024-10-05"
              }
-            """,/* Deserialization error dye to invalid type inn location */"""
+            """,/* Deserialization error due to invalid journey date type */"""
             {
               "name" : "First Flight Experience",
-              "title" : "One of the most beautiful experience ever in my life",
               "description" : "Travelled first time for work deputation to Germany, Munich city",
-              "category" : "Travel",
-              "city" : "Munich",
-              "country" : "Germany",
               "tags" : ["travel", "germany", "munich"],
               "thumbnail" : "https://example.com/thumbnail.png",
-              "location" : {
-                "type": "Invalid Type",
-                "coordinates": [100.0, 0.0]
-              }
+              "icon" : "home",
+              "journeyDate": "2024"
              }
             """
     })

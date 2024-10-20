@@ -1,7 +1,5 @@
 package com.github.nramc.dev.journey.api.core.journey.security;
 
-import com.github.nramc.commons.geojson.domain.Point;
-import com.github.nramc.commons.geojson.domain.Position;
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +25,9 @@ class JourneyAuthorizationManagerTest {
     private static final JourneyEntity JOURNEY_ENTITY = JourneyEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .name("First Flight Experience")
-            .title("One of the most beautiful experience ever in my life")
             .description("Travelled first time for work deputation to Germany, Munich city")
-            .category("Travel")
-            .city("Munich")
-            .country("Germany")
             .tags(List.of("travel", "germany", "munich"))
             .thumbnail("https://example.com/thumbnail.png")
-            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
             .createdBy("xyz123")
