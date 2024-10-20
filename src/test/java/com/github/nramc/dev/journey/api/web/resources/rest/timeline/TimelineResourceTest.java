@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
