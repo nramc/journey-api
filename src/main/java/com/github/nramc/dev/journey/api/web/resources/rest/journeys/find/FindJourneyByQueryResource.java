@@ -1,13 +1,12 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
+import com.github.nramc.dev.journey.api.core.domain.data.DataPageable;
 import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneySearchCriteria;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
 import com.github.nramc.dev.journey.api.repository.journey.PagingProperty;
-import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,8 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +39,7 @@ public class FindJourneyByQueryResource {
     @RestDocCommonResponse
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returns available Journeys for given query")})
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<Journey> find(
+    public DataPageable<Journey> find(
             @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(name = "sort", defaultValue = "createdDate") String sortColumn,
@@ -81,11 +80,13 @@ public class FindJourneyByQueryResource {
                 .sortDirection(sortDirection)
                 .build();
 
-        Page<JourneyEntity> entityPage = journeyService.findAllJourneysWithPagination(searchCriteria, pagingProperty);
-        Page<Journey> responsePage = entityPage.map(JourneyConverter::convert);
+        DataPageable<Journey> journeysWithPagination = journeyService.findAllJourneysWithPagination(searchCriteria, pagingProperty);
 
         log.info("Journey exists:[{}] pages:[{}] total:[{}]",
-                responsePage.hasContent(), responsePage.getTotalPages(), responsePage.getTotalElements());
-        return responsePage;
+                CollectionUtils.size(journeysWithPagination.content()),
+                journeysWithPagination.totalPages(),
+                journeysWithPagination.totalElements()
+        );
+        return journeysWithPagination;
     }
 }

@@ -1,17 +1,20 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
+import com.github.nramc.dev.journey.api.core.domain.data.DataPageable;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
+import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,45 +41,45 @@ public class JourneyService {
                 .all();
     }
 
-    public Page<JourneyEntity> findAllJourneysWithPagination(JourneySearchCriteria searchCriteria, PagingProperty pagingProperty) {
-        List<Criteria> criterias = new ArrayList<>();
+    public DataPageable<Journey> findAllJourneysWithPagination(JourneySearchCriteria searchCriteria, PagingProperty pagingProperty) {
+        List<Criteria> criteriaList = new ArrayList<>();
 
-        criterias.add(
+        criteriaList.add(
                 new Criteria().orOperator(
                         Criteria.where("createdBy").is(searchCriteria.appUser().username()),
                         Criteria.where("visibilities").in(searchCriteria.visibilities())
                 )
         );
-        criterias.add(
+        criteriaList.add(
                 Criteria.where("isPublished").in(searchCriteria.publishedFlags())
         );
         if (StringUtils.isNotEmpty(searchCriteria.searchText())) {
-            criterias.add(new Criteria().orOperator(
+            criteriaList.add(new Criteria().orOperator(
                     Criteria.where("name").regex(compile(".*" + searchCriteria.searchText() + ".*", CASE_INSENSITIVE)),
                     Criteria.where("description").regex(compile(".*" + searchCriteria.searchText() + ".*", CASE_INSENSITIVE))
             ));
         }
         if (CollectionUtils.isNotEmpty(searchCriteria.tags())) {
-            criterias.add(Criteria.where("tags").in(searchCriteria.tags()));
+            criteriaList.add(Criteria.where("tags").in(searchCriteria.tags()));
         }
         if (StringUtils.isNotEmpty(searchCriteria.cityText())) {
-            criterias.add(Criteria.where("extended.geoDetails.city").is(searchCriteria.cityText()));
+            criteriaList.add(Criteria.where("extended.geoDetails.city").is(searchCriteria.cityText()));
         }
         if (StringUtils.isNotEmpty(searchCriteria.countryText())) {
-            criterias.add(Criteria.where("extended.geoDetails.country").is(searchCriteria.countryText()));
+            criteriaList.add(Criteria.where("extended.geoDetails.country").is(searchCriteria.countryText()));
         }
         if (StringUtils.isNotEmpty(searchCriteria.categoryText())) {
-            criterias.add(Criteria.where("extended.geoDetails.category").is(searchCriteria.categoryText()));
+            criteriaList.add(Criteria.where("extended.geoDetails.category").is(searchCriteria.categoryText()));
         }
         if (searchCriteria.journeyStartDate() != null) {
-            criterias.add(Criteria.where("journeyDate").gte(searchCriteria.journeyStartDate()));
+            criteriaList.add(Criteria.where("journeyDate").gte(searchCriteria.journeyStartDate()));
         }
         if (searchCriteria.journeyEndDate() != null) {
-            criterias.add(Criteria.where("journeyDate").lte(searchCriteria.journeyEndDate()));
+            criteriaList.add(Criteria.where("journeyDate").lte(searchCriteria.journeyEndDate()));
         }
 
-        Criteria criteria = new Criteria().andOperator(criterias.toArray(new Criteria[0]));
-        Query query = new Query(criteria);
+        Criteria combinedCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
+        Query query = new Query(combinedCriteria);
 
         // Pagination &  setup
         PageRequest pageable = PageRequest.of(pagingProperty.pageIndex(), pagingProperty.pageSize());
@@ -88,11 +91,19 @@ public class JourneyService {
         // Fetching the results
         List<JourneyEntity> results = mongoTemplate.find(query, JourneyEntity.class);
 
-        // Fetching the total count
-        long count = mongoTemplate.count(query, JourneyEntity.class);
-
-
-        return new PageImpl<>(results, pageable, count);
+        Page<JourneyEntity> journeyEntityPage = PageableExecutionUtils.getPage(
+                results,
+                pageable,
+                () -> mongoTemplate.count(new Query(combinedCriteria), JourneyEntity.class));
+        Page<Journey> journeyPage = journeyEntityPage.map(JourneyConverter::convert);
+        return DataPageable.<Journey>builder()
+                .content(journeyPage.getContent())
+                .numberOfElements(journeyPage.getNumberOfElements())
+                .totalElements(journeyPage.getTotalElements())
+                .totalPages(journeyPage.getTotalPages())
+                .pageNumber(pagingProperty.pageIndex())
+                .pageSize(pagingProperty.pageSize())
+                .build();
     }
 
 }
