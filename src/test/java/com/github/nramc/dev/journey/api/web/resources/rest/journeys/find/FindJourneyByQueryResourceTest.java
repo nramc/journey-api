@@ -79,8 +79,8 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // assert paging
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("5"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("5"))
                 .andExpect(jsonPath("$.totalPages").value("0"))
                 .andExpect(jsonPath("$.totalElements").value("0"));
     }
@@ -106,8 +106,8 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // assert paging
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("5"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("5"))
                 .andExpect(jsonPath("$.totalPages").value("0"))
                 .andExpect(jsonPath("$.totalElements").value("0"));
     }
@@ -129,8 +129,8 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // assert paging
-                .andExpect(jsonPath("$.pageable.pageNumber").value("1"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("5"))
+                .andExpect(jsonPath("$.pageNumber").value("1"))
+                .andExpect(jsonPath("$.pageSize").value("5"))
                 .andExpect(jsonPath("$.totalPages").value("2"))
                 .andExpect(jsonPath("$.totalElements").value("10"))
                 .andExpect(jsonPath("$.content").isArray())
@@ -158,8 +158,8 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // assert paging
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("5"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("5"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("2"))
                 .andExpect(jsonPath("$.content").isArray())
@@ -193,8 +193,8 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // assert paging
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("5"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("5"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("5"))
                 .andExpect(jsonPath("$.content").isArray())
@@ -220,8 +220,8 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // assert paging
-                .andExpect(jsonPath("$.pageable.pageNumber").value("1"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("5"))
+                .andExpect(jsonPath("$.pageNumber").value("1"))
+                .andExpect(jsonPath("$.pageSize").value("5"))
                 .andExpect(jsonPath("$.totalPages").value("2"))
                 .andExpect(jsonPath("$.totalElements").value("10"))
                 .andExpect(jsonPath("$.content").isArray())
@@ -247,8 +247,8 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // assert paging
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("10"))
                 .andExpect(jsonPath("$.content").isArray())
@@ -270,8 +270,8 @@ class FindJourneyByQueryResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("0"))
                 .andExpect(jsonPath("$.totalElements").value("0"));
     }
@@ -290,8 +290,8 @@ class FindJourneyByQueryResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("2"));
     }
@@ -310,8 +310,8 @@ class FindJourneyByQueryResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("2"));
     }
@@ -349,8 +349,8 @@ class FindJourneyByQueryResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("1"));
     }
@@ -377,8 +377,8 @@ class FindJourneyByQueryResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("1"));
     }
@@ -406,8 +406,8 @@ class FindJourneyByQueryResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("1"));
     }
@@ -427,8 +427,8 @@ class FindJourneyByQueryResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.pageable.pageNumber").value("0"))
-                .andExpect(jsonPath("$.pageable.pageSize").value("10"))
+                .andExpect(jsonPath("$.pageNumber").value("0"))
+                .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("1"));
     }
