@@ -8,17 +8,17 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.ResourceUtils;
+import org.springframework.core.io.Resource;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 
 @RequiredArgsConstructor
 public class QRCodeGenerator {
+    private final Resource logoFile;
 
     public byte[] generate(QRCodeData qrCodeData) {
         try {
@@ -42,8 +42,7 @@ public class QRCodeGenerator {
             BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix, imageConfig);
 
             // Getting logo image
-            File logoFile = ResourceUtils.getFile("classpath:assets/qr-code-logo-60x60.png");
-            BufferedImage logoImage = ImageIO.read(logoFile);
+            BufferedImage logoImage = ImageIO.read(logoFile.getFile());
             int finalImageHeight = qrImage.getHeight() - logoImage.getHeight();
             int finalImageWidth = qrImage.getWidth() - logoImage.getWidth();
 
