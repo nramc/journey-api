@@ -6,9 +6,11 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpTimeStepWindowProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
 /**
  * TOTP Implementation based on <a href="https://datatracker.ietf.org/doc/html/rfc6238">RFC-6238</a> guidelines
@@ -41,8 +43,8 @@ public class TotpConfig {
     }
 
     @Bean
-    public QRCodeGenerator qrCodeGenerator() {
-        return new QRCodeGenerator();
+    public QRCodeGenerator qrCodeGenerator(@Value("classpath:assets/qr-code-logo-60x60.png") Resource logoFile) {
+        return new QRCodeGenerator(logoFile);
     }
 
 
