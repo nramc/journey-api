@@ -1,8 +1,6 @@
 package com.github.nramc.dev.journey.api.core.usecase.codes.totp;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,18 +31,17 @@ class QRCodeGeneratorTest {
             .height(TOTP_PROPERTIES.qrHeight())
             .secret("EX47GINFPBK5GNLYLILGD2H6ZLGJNNWB")
             .build();
-    private final Resource logoFile = new ClassPathResource("assets/qr-code-logo-60x60.png");
 
     @Test
     void something() throws IOException {
-        QRCodeGenerator generator = new QRCodeGenerator(logoFile);
+        QRCodeGenerator generator = new QRCodeGenerator();
         Path tempFile = Files.write(Files.createTempFile("qr_test", ".png"), generator.generate(QR_DATA));
         assertThat(tempFile).isNotNull();
     }
 
     @Test
     void qRCodeGenerator() throws IOException {
-        QRCodeGenerator generator = new QRCodeGenerator(logoFile);
+        QRCodeGenerator generator = new QRCodeGenerator();
         Path tempFile = Files.write(Files.createTempFile("qr_test", ".png"), generator.generateWithLogo(QR_DATA));
         assertThat(tempFile).isNotNull();
     }
