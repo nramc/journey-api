@@ -70,7 +70,7 @@ class FindUsersResourceTest {
     @Test
     @WithMockAdministratorUser
     void find_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
-        when(userRepository.findAll()).thenReturn(List.of(UsersData.AUTH_USER, UsersData.MFA_USER));
+        when(userRepository.findAll()).thenReturn(List.of(UsersData.AUTH_USER));
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_USERS))
                 .andDo(print())
                 .andExpect(status().isOk())
