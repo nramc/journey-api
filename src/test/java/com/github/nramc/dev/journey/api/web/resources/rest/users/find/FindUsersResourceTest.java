@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,6 +52,7 @@ class FindUsersResourceTest {
     }
 
     @Test
+    @WithAnonymousUser
     void find_whenUserNotAuthenticated_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_USERS))
                 .andDo(print())
@@ -58,7 +60,7 @@ class FindUsersResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
+    @WithMockUser(username = "non-admin-user@example.com", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
     void find_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_USERS))
                 .andDo(print())
@@ -85,6 +87,7 @@ class FindUsersResourceTest {
     }
 
     @Test
+    @WithAnonymousUser
     void findMyAccount_whenUserNotAuthenticated_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_MY_ACCOUNT))
                 .andDo(print())

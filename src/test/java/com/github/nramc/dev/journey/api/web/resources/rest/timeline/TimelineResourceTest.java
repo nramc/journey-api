@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class TimelineResourceTest {
     private static final JourneyEntity VALID_JOURNEY = JOURNEY_EXTENDED_ENTITY.toBuilder()
-            .createdBy(WithMockAuthenticatedUser.USER.username())
+            .createdBy(WithMockAuthenticatedUser.USER_DETAILS.username())
             .isPublished(true)
             .build();
     @Autowired

@@ -2,24 +2,23 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Example;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
@@ -44,9 +43,9 @@ class FindPublishedJourneyResourceTest {
     private JourneyRepository journeyRepository;
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {MAINTAINER})
-    void find_whenNoPublishedJourneyExists_ShouldReturnEmptyCollection() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS)
+    @WithMockAuthenticatedUser
+    void find_whenPublishedJourneyNotExists_ShouldReturnEmptyCollection() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_PUBLISHED_JOURNEYS)
                         .accept(JOURNEYS_GEO_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
@@ -56,14 +55,14 @@ class FindPublishedJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "guest-user", authorities = {GUEST_USER})
+    @WithMockGuestUser
     void find_whenPublishedJourneyExists_butDoesNNotHavePermission_ShouldReturnEmptyCollection() throws Exception {
         List<JourneyEntity> journeyEntities = List.of(JOURNEY_ENTITY.toBuilder()
                 .isPublished(true)
                 .build());
         when(journeyRepository.findAll(any(Example.class))).thenReturn(journeyEntities);
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_PUBLISHED_JOURNEYS)
                         .accept(JOURNEYS_GEO_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
@@ -73,14 +72,14 @@ class FindPublishedJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void find_whenPublishedJourneyExists_ShouldReturnValidGeoJson() throws Exception {
         List<JourneyEntity> journeyEntities = List.of(
                 JOURNEY_EXTENDED_ENTITY.toBuilder().isPublished(true).build()
         );
         when(journeyRepository.findAll(any(Example.class))).thenReturn(journeyEntities);
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_PUBLISHED_JOURNEYS, VALID_UUID)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_PUBLISHED_JOURNEYS, VALID_UUID)
                         .accept(JOURNEYS_GEO_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())

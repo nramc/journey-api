@@ -2,6 +2,8 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basi
 
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
@@ -12,15 +14,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
@@ -58,7 +57,7 @@ class UpdateJourneyBasicDetailsResourceTest {
     private JourneyRepository journeyRepository;
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAuthenticatedUser
     void updateBasicDetails() throws Exception {
         when(journeyRepository.findById(anyString())).thenReturn(Optional.of(JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -92,7 +91,7 @@ class UpdateJourneyBasicDetailsResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "guest-user", password = "test-password", authorities = {GUEST_USER})
+    @WithMockGuestUser
     void updateBasicDetails_whenNotAuthorized_throwError() throws Exception {
         when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
 

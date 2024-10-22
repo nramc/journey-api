@@ -42,7 +42,7 @@ class FindJourneyByQueryResourceTest {
     private static final JourneyEntity VALID_JOURNEY = JOURNEY_EXTENDED_ENTITY.toBuilder()
             .id(VALID_UUID)
             .visibilities(Set.of(MYSELF))
-            .createdBy(WithMockAuthenticatedUser.USER.username())
+            .createdBy(WithMockAuthenticatedUser.USER_DETAILS.username())
             .createdDate(LocalDate.now())
             .build();
     @Autowired
@@ -63,7 +63,7 @@ class FindJourneyByQueryResourceTest {
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
                                 .createdDate(LocalDate.now().plusDays(index))
-                                .createdBy(WithMockAuthenticatedUser.USER.username())
+                                .createdBy(WithMockAuthenticatedUser.USER_DETAILS.username())
                                 .visibilities(Set.of(MYSELF))
                                 .build()
                 )

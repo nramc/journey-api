@@ -1,8 +1,12 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.delete;
 
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
+import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
@@ -12,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,9 +24,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -51,7 +52,7 @@ class DeleteJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {AUTHENTICATED_USER})
+    @WithMockAuthenticatedUser
     void delete_whenAuthenticatedUserOwnedJourney_shouldAllowDeletion() throws Exception {
         when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
 
@@ -64,7 +65,7 @@ class DeleteJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-admin", password = "test-password", authorities = {MAINTAINER})
+    @WithMockAdministratorUser
     void delete_whenLoggedInUserDoesNotAccessToJourney_shouldGracefullyIgnoreRequest() throws Exception {
         when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
 
@@ -76,7 +77,7 @@ class DeleteJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-admin", password = "test-password", authorities = {MAINTAINER})
+    @WithMockMaintainerUser
     void delete_whenJourneyAccessibleWithSharedRole_shouldAllowDeletion() throws Exception {
         JourneyEntity journey = JOURNEY_EXTENDED_ENTITY.toBuilder()
                 .visibilities(Set.of(Visibility.MYSELF, Visibility.MAINTAINER))
@@ -91,8 +92,8 @@ class DeleteJourneyResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", password = "test-password", authorities = {GUEST_USER})
-    void delete_whenLoggedInUserDoesNotAuthority_shouldThrowError() throws Exception {
+    @WithMockGuestUser
+    void delete_whenLoggedInUserDoesNotHaveAuthority_shouldThrowError() throws Exception {
         when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
 
         mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_EXTENDED_ENTITY.getId()))
@@ -103,6 +104,7 @@ class DeleteJourneyResourceTest {
     }
 
     @Test
+    @WithAnonymousUser
     void delete_whenUserNotAuthenticated_shouldThrowError() throws Exception {
         when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
 

@@ -5,6 +5,7 @@ import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,16 +48,17 @@ class DeleteUserResourceTest {
     }
 
     @Test
+    @WithAnonymousUser
     void find_whenUserNotAuthenticated_shouldThrowError() throws Exception {
-        mockMvc.perform(delete(DELETE_USER_BY_USERNAME, "test-user"))
+        mockMvc.perform(delete(DELETE_USER_BY_USERNAME, WithMockAuthenticatedUser.USERNAME))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
+    @WithMockUser(username = "non-admin-user@example.com", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
     void find_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
-        mockMvc.perform(delete(DELETE_USER_BY_USERNAME, "test-user"))
+        mockMvc.perform(delete(DELETE_USER_BY_USERNAME, WithMockAuthenticatedUser.USERNAME))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -63,12 +66,13 @@ class DeleteUserResourceTest {
     @Test
     @WithMockAdministratorUser
     void deleteByUsername_whenUserHasPermission_thenShouldDeleteUser() throws Exception {
-        mockMvc.perform(delete(DELETE_USER_BY_USERNAME, "admin-user"))
+        mockMvc.perform(delete(DELETE_USER_BY_USERNAME, WithMockMaintainerUser.USERNAME))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
+    @WithAnonymousUser
     void deleteMyAccount_whenUserNotAuthenticated_shouldThrowError() throws Exception {
         mockMvc.perform(delete(DELETE_MY_ACCOUNT))
                 .andDo(print())
@@ -91,8 +95,6 @@ class DeleteUserResourceTest {
                 .andExpect(status().isOk());
 
         verify(userDetailsManager).updateUser(assertArg((AuthUser user) -> assertThat(user.isEnabled()).isFalse()));
-
     }
-
 
 }
