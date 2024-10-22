@@ -20,6 +20,7 @@ import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.A
 @WithMockUser(username = USERNAME, password = PASSWORD, authorities = {AUTHENTICATED_USER})
 public @interface WithMockAuthenticatedUser {
     String USERNAME = "test.user@example.com";
+    String MFA_USERNAME = "mfa.user@example.com";
     String PASSWORD = "test-password";
 
     AppUser USER_DETAILS = AppUser.builder()

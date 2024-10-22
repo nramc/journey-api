@@ -24,18 +24,29 @@ public class WebSecurityTestConfig {
                 .password(passwordEncoder.encode(WithMockAuthenticatedUser.PASSWORD))
                 .roles(WithMockAuthenticatedUser.USER_DETAILS.roles())
                 .name(WithMockAuthenticatedUser.USER_DETAILS.name())
+                .enabled(WithMockAuthenticatedUser.USER_DETAILS.enabled())
                 .build();
         UserDetails administratorUser = AuthUser.builder()
                 .username(WithMockAdministratorUser.USERNAME)
                 .password(passwordEncoder.encode(WithMockAdministratorUser.PASSWORD))
                 .roles(WithMockAdministratorUser.USER_DETAILS.roles())
                 .name(WithMockAdministratorUser.USER_DETAILS.name())
+                .enabled(WithMockAdministratorUser.USER_DETAILS.enabled())
                 .build();
         UserDetails maintainerUser = AuthUser.builder()
                 .username(WithMockMaintainerUser.USERNAME)
                 .password(passwordEncoder.encode(WithMockMaintainerUser.PASSWORD))
                 .roles(WithMockMaintainerUser.USER_DETAILS.roles())
                 .name(WithMockMaintainerUser.USER_DETAILS.name())
+                .enabled(WithMockMaintainerUser.USER_DETAILS.enabled())
+                .build();
+        UserDetails mfaUser = AuthUser.builder()
+                .username(WithMockAuthenticatedUser.MFA_USERNAME)
+                .password(passwordEncoder.encode(WithMockAuthenticatedUser.PASSWORD))
+                .roles(WithMockAuthenticatedUser.USER_DETAILS.roles())
+                .name(WithMockAuthenticatedUser.USER_DETAILS.name())
+                .enabled(WithMockAuthenticatedUser.USER_DETAILS.enabled())
+                .mfaEnabled(true)
                 .build();
 
         return new InMemoryUserDetailsManager(authenticatedUser, administratorUser, maintainerUser) {
@@ -44,6 +55,7 @@ public class WebSecurityTestConfig {
                 return switch (username) {
                     case WithMockAdministratorUser.USERNAME -> administratorUser;
                     case WithMockMaintainerUser.USERNAME -> maintainerUser;
+                    case WithMockAuthenticatedUser.MFA_USERNAME -> mfaUser;
                     default -> authenticatedUser;
                 };
             }
