@@ -26,7 +26,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURI
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -81,7 +81,7 @@ class TotpResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void generateSecret_whenUserAuthenticated_shouldBeSuccessful() throws Exception {
-        when(totpUseCase.newQRCodeData(any(AuthUser.class))).thenReturn(
+        when(totpUseCase.newQRCodeData(any())).thenReturn(
                 QRImageDetails.builder().data("image".getBytes()).secretKey(SECRET_KEY).build());
         mockMvc.perform(get(MY_SECURITY_ATTRIBUTE_TOTP))
                 .andDo(print())

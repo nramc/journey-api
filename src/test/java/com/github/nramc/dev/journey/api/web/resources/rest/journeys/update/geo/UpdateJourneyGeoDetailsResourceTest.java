@@ -1,13 +1,12 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,6 +26,7 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.Journ
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -52,7 +52,7 @@ class UpdateJourneyGeoDetailsResourceTest {
     @WithMockAuthenticatedUser
     void updateGeoDetails() throws Exception {
         when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
-        when(journeyRepository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
                 {

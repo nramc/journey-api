@@ -37,12 +37,22 @@
         <rewrite-maven-plugin.version>5.43.0</rewrite-maven-plugin.version>
         <rewrite-recommendations.version>1.12.0</rewrite-recommendations.version>
         <rewrite-static-analysis.version>1.19.0</rewrite-static-analysis.version>
-        <rewrite-testing-frameworks.version>2.20.1</rewrite-testing-frameworks.version>
+        <rewrite-testing-frameworks.version>2.21.0</rewrite-testing-frameworks.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.3</zxing-qr.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!--  Added to fix known CVEs          -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>6.1.14</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

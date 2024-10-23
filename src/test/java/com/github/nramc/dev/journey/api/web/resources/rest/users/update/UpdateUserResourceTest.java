@@ -1,14 +1,14 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.update;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
 import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -128,7 +128,7 @@ class UpdateUserResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void updateMfaStatus_whenAnyAuthenticatedUserTryToActivateMfa_andUserHasValidMfaAttribute_thenShouldEnableMfa() throws Exception {
-        when(attributeService.getAllAvailableUserSecurityAttributes(any(AuthUser.class)))
+        when(attributeService.getAllAvailableUserSecurityAttributes(any()))
                 .thenReturn(List.of(UsersData.TOTP_ATTRIBUTE));
         mockMvc.perform(post(MY_SECURITY_MFA)
                         .contentType(MediaType.APPLICATION_JSON)

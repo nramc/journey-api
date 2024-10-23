@@ -1,12 +1,12 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.email.code;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCode;
 import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.VERIFY_EMAIL_CODE;
-import static org.mockito.Mockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -40,7 +40,7 @@ class EmailCodeVerificationResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void verifyEmailCode_whenVerificationSuccess_shouldUpdateStatus() throws Exception {
-        when(emailCodeUseCase.verify(any(ConfirmationCode.class), any(AuthUser.class)))
+        when(emailCodeUseCase.verify(any(), any()))
                 .thenReturn(true);
         mvc.perform(MockMvcRequestBuilders.post(VERIFY_EMAIL_CODE)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -48,7 +48,7 @@ class EmailCodeVerificationResourceTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
-        verify(emailCodeUseCase).verify(any(ConfirmationCode.class), any(AuthUser.class));
+        verify(emailCodeUseCase).verify(any(), any());
     }
 
     @Test

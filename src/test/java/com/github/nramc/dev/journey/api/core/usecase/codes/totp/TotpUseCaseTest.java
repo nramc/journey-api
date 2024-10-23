@@ -60,7 +60,7 @@ class TotpUseCaseTest {
     @Test
     void newQRCodeData_whenNewQRCodeRequested_shouldGenerateQRCodeWithConfiguredValues() {
         when(secretGenerator.generate()).thenReturn(TOTP_SECRET);
-        when(qrCodeGenerator.generateWithLogo(any(QRCodeData.class))).thenReturn(QR_IMG_BYTES);
+        when(qrCodeGenerator.generateWithLogo(any())).thenReturn(QR_IMG_BYTES);
 
         QRImageDetails qrImageDetails = totpUseCase.newQRCodeData(AUTHENTICATED_USER);
         assertThat(qrImageDetails).isNotNull()
