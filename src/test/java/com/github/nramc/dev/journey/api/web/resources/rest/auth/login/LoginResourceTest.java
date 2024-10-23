@@ -1,14 +1,14 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.nramc.dev.journey.api.config.TestConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.UserRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,8 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.config.TestConfig.ADMIN_USER;
-import static com.github.nramc.dev.journey.api.config.TestConfig.TEST_USER;
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
@@ -43,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {LoginResource.class})
-@Import({TestConfig.class, JwtGenerator.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, WebSecurityConfig.class})
 @EnableConfigurationProperties({JwtProperties.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson
@@ -54,8 +52,6 @@ class LoginResourceTest {
     private ObjectMapper objectMapper;
     @MockBean
     private UserSecurityAttributeService attributeService;
-    @MockBean
-    private UserRepository userRepository;
 
     @Test
     void test() {
@@ -67,13 +63,13 @@ class LoginResourceTest {
     @Test
     void login_whenUserAuthenticated_thenShouldGetJwtToken() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
-                        .with(httpBasic(TEST_USER.getUsername(), TEST_USER.getPassword()))
+                        .with(httpBasic(WithMockAuthenticatedUser.USERNAME, WithMockAuthenticatedUser.PASSWORD))
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
-                .andExpect(jsonPath("$.name").value("USER"))
+                .andExpect(jsonPath("$.name").value(WithMockAuthenticatedUser.USER_DETAILS.name()))
                 .andExpect(jsonPath("$.authorities").value(hasItems("AUTHENTICATED_USER")))
                 .andExpect(jsonPath("$.additionalFactorRequired").value(false))
                 .andExpect(jsonPath("$.securityAttributes").doesNotExist());
@@ -85,7 +81,7 @@ class LoginResourceTest {
                 .thenReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
-                        .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))
+                        .with(httpBasic(WithMockAuthenticatedUser.MFA_USERNAME, WithMockAuthenticatedUser.PASSWORD))
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -100,7 +96,7 @@ class LoginResourceTest {
                 .thenReturn(List.of(TOTP_ATTRIBUTE));
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
-                        .with(httpBasic(ADMIN_USER.getUsername(), ADMIN_USER.getPassword()))
+                        .with(httpBasic(WithMockAuthenticatedUser.MFA_USERNAME, WithMockAuthenticatedUser.PASSWORD))
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -112,17 +108,15 @@ class LoginResourceTest {
     @Test
     void login_whenJwtValid_thenShouldAuthenticateSuccessfully() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)
-                        .with(httpBasic(TEST_USER.getUsername(), TEST_USER.getPassword()))
+                        .with(httpBasic(WithMockAuthenticatedUser.USERNAME, WithMockAuthenticatedUser.PASSWORD))
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().string(not(blankOrNullString())))
                 .andReturn().getResponse().getContentAsString();
 
-        when(userRepository.findUserByUsername(TEST_USER.getUsername())).thenReturn(TEST_USER);
         LoginResponse loginResponse = objectMapper.readValue(response, LoginResponse.class);
-        assertThat(loginResponse).isNotNull()
-                .satisfies(r -> assertThat(r.token()).isNotNull());
+        assertThat(loginResponse).isNotNull().satisfies(r -> assertThat(r.token()).isNotNull());
     }
 
 }

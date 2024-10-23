@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.find;
 
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FindUsersResource.class)
-@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
 @MockBean({UserRepository.class})
 class FindUsersResourceTest {
@@ -51,6 +52,7 @@ class FindUsersResourceTest {
     }
 
     @Test
+    @WithAnonymousUser
     void find_whenUserNotAuthenticated_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_USERS))
                 .andDo(print())
@@ -58,7 +60,7 @@ class FindUsersResourceTest {
     }
 
     @Test
-    @WithMockUser(username = "test-user", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
+    @WithMockUser(username = "non-admin-user@example.com", authorities = {GUEST_USER, AUTHENTICATED_USER, MAINTAINER})
     void find_whenUserDoesNotHavePermission_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_USERS))
                 .andDo(print())
@@ -68,7 +70,7 @@ class FindUsersResourceTest {
     @Test
     @WithMockAdministratorUser
     void find_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
-        when(userRepository.findAll()).thenReturn(List.of(UsersData.AUTH_USER, UsersData.MFA_USER));
+        when(userRepository.findAll()).thenReturn(List.of(UsersData.AUTHENTICATED_USER));
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_USERS))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -85,6 +87,7 @@ class FindUsersResourceTest {
     }
 
     @Test
+    @WithAnonymousUser
     void findMyAccount_whenUserNotAuthenticated_shouldThrowError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(FIND_MY_ACCOUNT))
                 .andDo(print())
@@ -102,7 +105,7 @@ class FindUsersResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void findMyAccount_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
-        when(userRepository.findUserByUsername(UsersData.AUTH_USER.getUsername())).thenReturn(UsersData.AUTH_USER);
+        when(userRepository.findUserByUsername(UsersData.AUTHENTICATED_USER.getUsername())).thenReturn(UsersData.AUTHENTICATED_USER);
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_MY_ACCOUNT))
                 .andDo(print())
                 .andExpect(status().isOk())

@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.registration;
 
-import com.github.nramc.dev.journey.api.config.TestConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {AccountRegistrationResource.class})
-@Import({TestConfig.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class})
 @ActiveProfiles({"test"})
 @MockBean({RegistrationUseCase.class, AccountActivationUseCase.class})
 class AccountRegistrationResourceTest {

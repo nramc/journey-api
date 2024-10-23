@@ -1,31 +1,28 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys;
 
+import com.github.nramc.commons.geojson.domain.Feature;
+import com.github.nramc.commons.geojson.domain.FeatureCollection;
 import com.github.nramc.commons.geojson.domain.Point;
 import com.github.nramc.commons.geojson.domain.Position;
-import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
+import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
 
 @UtilityClass
 public class JourneyData {
-    public static final AppUser AUTHENTICATED_USER = AppUser.builder()
-            .username("test-user@example.com")
-            .password("test-password")
-            .roles(Set.of(Role.AUTHENTICATED_USER))
-            .name("Authenticated User")
-            .enabled(true)
-            .mfaEnabled(false)
-            .build();
     public static final String GEO_LOCATION_JSON = """
             {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]}
             """;
@@ -38,7 +35,7 @@ public class JourneyData {
               "journeyDate": "2024-03-27"
             }
             """;
-    public static final JourneyEntity JOURNEY_ENTITY = JourneyEntity.builder()
+    public static final JourneyEntity NEW_JOURNEY_ENTITY = JourneyEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .name("First Flight Experience")
             .description("Travelled first time for work deputation to Germany, Munich city")
@@ -47,39 +44,36 @@ public class JourneyData {
             .createdDate(LocalDate.of(2024, 3, 27))
             .journeyDate(LocalDate.of(2024, 3, 27))
             .visibilities(Set.of(Visibility.MYSELF))
-            .createdBy("test-user")
+            .createdBy(WithMockAuthenticatedUser.USERNAME)
+            .isPublished(false)
             .build();
 
-    public static final JourneyEntity JOURNEY_EXTENDED_ENTITY = JourneyEntity.builder()
-            .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
-            .name("First Flight Experience")
-            .description("Travelled first time for work deputation to Germany, Munich city")
-            .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("https://example.com/thumbnail.png")
-            .createdDate(LocalDate.of(2024, 3, 27))
-            .journeyDate(LocalDate.of(2024, 3, 27))
-            .visibilities(Set.of(Visibility.MYSELF))
-            .createdBy("test-user")
-            .isPublished(false)
+    public static final JourneyEntity JOURNEY_ENTITY = NEW_JOURNEY_ENTITY.toBuilder()
             .extended(JourneyExtendedEntity.builder()
-                    .geoDetails(JourneyGeoDetailsEntity.builder()
-                            .title("One of the most beautiful experience ever in my life")
-                            .category("Home")
-                            .city("Munich")
-                            .country("Germany")
-                            .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
-                            .build())
+                    .geoDetails(getGeoDetailsEntity())
                     .imagesDetails(getImagesDetailsEntity())
+                    .videosDetails(newVideosDetailsEntity())
                     .build()
             )
             .build();
 
+    public static JourneyGeoDetailsEntity getGeoDetailsEntity() {
+        return JourneyGeoDetailsEntity.builder()
+                .title("Airport, Munich, Germany")
+                .category("default")
+                .city("Munich")
+                .country("Germany")
+                .location(Point.of(Position.of(48.183160038296585, 11.53090747669896)))
+                .geoJson(FeatureCollection.of(Feature.of("Feature_001", Point.of(Position.of(48.183160038296585, 11.53090747669896)), Map.of())))
+                .build();
+    }
+
     public static JourneyImagesDetailsEntity getImagesDetailsEntity() {
         return JourneyImagesDetailsEntity.builder()
                 .images(List.of(
-                        newImageDetailEntityWith("src_1", "asset 1", "title 1")
+                        newImageDetailEntityWith("image1.jpg", "asset 1", "Image 1 Title")
                                 .toBuilder().isFavorite(true).build(),
-                        newImageDetailEntityWith("src_2", "asset 2", "title 2")
+                        newImageDetailEntityWith("image2.jpg", "asset 2", "Image 2 Title")
                 ))
                 .build();
     }
@@ -92,5 +86,15 @@ public class JourneyData {
                 .url(url)
                 .assetId(assetId)
                 .build();
+    }
+
+    public static JourneyVideosDetailsEntity newVideosDetailsEntity() {
+        return JourneyVideosDetailsEntity.builder()
+                .videos(List.of(newVideoDetailEntityWith("VIDEO_ID_1"), newVideoDetailEntityWith("https://example.com/example.mp4")))
+                .build();
+    }
+
+    public static JourneyVideoDetailEntity newVideoDetailEntityWith(String videoId) {
+        return JourneyVideoDetailEntity.builder().videoId(videoId).build();
     }
 }

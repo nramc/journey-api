@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publ
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
@@ -26,7 +26,7 @@ import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.ADMINISTRATOR;
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.any;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PublishJourneyResource.class)
-@Import({WebSecurityConfig.class, WebSecurityTestConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
 @MockBean({JourneyRepository.class, JourneyValidator.class})
 class PublishJourneyResourceTest {
@@ -69,7 +69,7 @@ class PublishJourneyResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void publishJourney_saveAsDraft() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(validator.canPublish(any())).thenReturn(true);
 
@@ -78,7 +78,7 @@ class PublishJourneyResourceTest {
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(false)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -91,7 +91,7 @@ class PublishJourneyResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void publishJourney_whenAllExists_thenShouldPublishJourney() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(validator.canPublish(any())).thenReturn(true);
 
@@ -100,7 +100,7 @@ class PublishJourneyResourceTest {
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -113,7 +113,7 @@ class PublishJourneyResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void publishJourney_whenValidationFailsDueToInsufficientData_throwsError() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(validator.canPublish(any())).thenReturn(true);
 
@@ -122,7 +122,7 @@ class PublishJourneyResourceTest {
                 .thumbnail(null)
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -139,7 +139,7 @@ class PublishJourneyResourceTest {
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -156,7 +156,7 @@ class PublishJourneyResourceTest {
                 .thumbnail("https://example.com/thumbnail.png")
                 .isPublished(true)
                 .build();
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.PUBLISH_JOURNEY_DETAILS)
                         .content(objectMapper.writeValueAsString(request))
                 )

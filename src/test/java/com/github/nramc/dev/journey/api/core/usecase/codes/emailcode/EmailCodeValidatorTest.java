@@ -15,14 +15,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeValidator.EMAIL_CODE_VALIDITY_MINUTES;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EmailCodeValidatorTest {
     private static final EmailCode VALID_CODE = EmailCode.valueOf(747469);
-    private static final AuthUser VALID_USER = AUTH_USER.toBuilder().build();
+    private static final AuthUser VALID_USER = AUTHENTICATED_USER.toBuilder().build();
     private static final ConfirmationCodeEntity VALID_CODE_ENTITY = ConfirmationCodeEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .isActive(true)

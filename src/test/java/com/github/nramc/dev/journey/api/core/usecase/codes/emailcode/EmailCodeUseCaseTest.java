@@ -19,7 +19,7 @@ import java.util.List;
 
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.CODE_LENGTH;
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -44,7 +44,7 @@ class EmailCodeUseCaseTest {
     private static final ConfirmationCodeEntity VALID_CODE_ENTITY = ConfirmationCodeEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .isActive(true)
-            .username(AUTH_USER.getUsername())
+            .username(AUTHENTICATED_USER.getUsername())
             .type(ConfirmationCodeType.EMAIL_CODE)
             .code(VALID_CODE.code())
             .createdAt(LocalDateTime.now())
@@ -65,19 +65,19 @@ class EmailCodeUseCaseTest {
     void send_whenDataValid_shouldSendEmailCodeSuccessfully() throws MessagingException {
         doNothing().when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
 
-        assertDoesNotThrow(() -> emailCodeUseCase.send(AUTH_USER));
+        assertDoesNotThrow(() -> emailCodeUseCase.send(AUTHENTICATED_USER));
 
         verify(mailService).sendEmailUsingTemplate(
                 eq(EMAIL_CODE_TEMPLATE_HTML),
                 eq("test.user@example.com"),
                 eq("Journey: Confirmation Required"),
                 assertArg(params -> {
-                    assertEquals(AUTH_USER.getName(), params.get("name"));
+                    assertEquals(AUTHENTICATED_USER.getName(), params.get("name"));
                     assertTrue(params.containsKey("ottPin"));
                 })
         );
         verify(codeRepository).save(assertArg(entity -> {
-            assertEquals(AUTH_USER.getUsername(), entity.getUsername());
+            assertEquals(AUTHENTICATED_USER.getUsername(), entity.getUsername());
             assertEquals(ConfirmationCodeType.EMAIL_CODE, entity.getType());
             assertNotNull(entity.getId());
             assertNotNull(entity.getCode());
@@ -88,7 +88,7 @@ class EmailCodeUseCaseTest {
     @Test
     void send_whenSendingEmailCodeFailed_shouldThrowError() throws MessagingException {
         doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
-        assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailCodeUseCase.send(AUTH_USER));
+        assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailCodeUseCase.send(AUTHENTICATED_USER));
         verifyNoInteractions(codeRepository);
     }
 
@@ -106,19 +106,19 @@ class EmailCodeUseCaseTest {
     void verify_whenEmailCodeValid_shouldReturnSuccessAndInvalidAllExistingCodes() {
         when(codeRepository.findAllByUsername(anyString())).thenReturn(List.of(VALID_CODE_ENTITY));
 
-        boolean valid = emailCodeUseCase.verify(VALID_CODE, AUTH_USER);
+        boolean valid = emailCodeUseCase.verify(VALID_CODE, AUTHENTICATED_USER);
 
         assertThat(valid).isTrue();
-        verify(codeRepository, atLeastOnce()).findAllByUsername(AUTH_USER.getUsername());
+        verify(codeRepository, atLeastOnce()).findAllByUsername(AUTHENTICATED_USER.getUsername());
         verify(codeRepository).deleteAll(any());
     }
 
     @Test
     void verify_whenEmailCodeNotValid_shouldReturnError() {
         when(codeRepository.findAllByUsername(anyString())).thenReturn(List.of(VALID_CODE_ENTITY.toBuilder().isActive(false).build()));
-        boolean valid = emailCodeUseCase.verify(VALID_CODE, AUTH_USER);
+        boolean valid = emailCodeUseCase.verify(VALID_CODE, AUTHENTICATED_USER);
         assertThat(valid).isFalse();
-        verify(codeRepository).findAllByUsername(AUTH_USER.getUsername());
+        verify(codeRepository).findAllByUsername(AUTHENTICATED_USER.getUsername());
         verify(codeRepository, never()).deleteAll(any());
     }
 

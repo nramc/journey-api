@@ -1,10 +1,10 @@
 package com.github.nramc.dev.journey.api.core.usecase.registration;
 
-import com.github.nramc.dev.journey.api.config.TestConfig;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
+import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
+import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,14 +23,14 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.config.TestConfig.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class, ValidationAutoConfiguration.class, BCryptPasswordEncoder.class})
+@ContextConfiguration(classes = {InMemoryUserDetailsConfig.class, ValidationAutoConfiguration.class, BCryptPasswordEncoder.class})
 class RegistrationUseCaseTest {
     private static final AppUser ONBOARDING_USER = AppUser.builder()
             .name("Chalese Bitner")

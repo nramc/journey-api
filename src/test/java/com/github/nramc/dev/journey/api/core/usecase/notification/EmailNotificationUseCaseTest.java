@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.config.TestConfig.ADMIN_USER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.ADMINISTRATOR_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.assertArg;
@@ -34,12 +34,12 @@ class EmailNotificationUseCaseTest {
 
     @Test
     void notifyAdmin_whenAdminNotificationTriggered_shouldSendNotificationToAllAvailableAdmins() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMIN_USER));
+        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER));
 
         emailNotificationUseCase.notifyAdmin("Signup Completed");
 
         verify(mailService).sendSimpleEmail(
-                assertArg(emails -> assertThat(emails).isNotNull().hasSize(1).contains(ADMIN_USER.getUsername())),
+                assertArg(emails -> assertThat(emails).isNotNull().hasSize(1).contains(ADMINISTRATOR_USER.getUsername())),
                 eq("Notification: Signup Completed"),
                 eq("Notification: Signup Completed")
         );
