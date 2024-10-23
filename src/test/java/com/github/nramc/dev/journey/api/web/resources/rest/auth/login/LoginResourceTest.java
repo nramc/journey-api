@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityTestConfig;
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {LoginResource.class})
-@Import({WebSecurityTestConfig.class, JwtGenerator.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, WebSecurityConfig.class})
 @EnableConfigurationProperties({JwtProperties.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson

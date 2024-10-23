@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.nramc.dev.journey.api.config.TestConfig;
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
@@ -19,8 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.github.nramc.dev.journey.api.config.TestConfig.GUEST_USER;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOGIN;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.GUEST_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {GuestLoginResource.class})
-@Import({TestConfig.class, JwtGenerator.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, WebSecurityConfig.class})
 @EnableConfigurationProperties({JwtProperties.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson
@@ -63,7 +63,7 @@ class GuestLoginResourceTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").value(not(blankOrNullString())))
                 .andExpect(jsonPath("$.expiredAt").value(not(blankOrNullString())))
-                .andExpect(jsonPath("$.name").value("Guest"))
+                .andExpect(jsonPath("$.name").value(GUEST_USER.getName()))
                 .andExpect(jsonPath("$.authorities").value(hasItems("GUEST_USER")));
     }
 

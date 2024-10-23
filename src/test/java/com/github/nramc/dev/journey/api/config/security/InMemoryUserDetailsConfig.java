@@ -12,7 +12,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 
 @TestConfiguration
-public class WebSecurityTestConfig {
+public class InMemoryUserDetailsConfig {
 
     @Bean
     @Primary
