@@ -44,14 +44,16 @@ recipeList:
   # Since some o f the Mockito.eq(), Mockito.any() and Mockito.when removed as unused, this is seems to be bug. Therefore below is disabled for now
   #  - org.openrewrite.java.testing.mockito.MockitoBestPractices
   - org.openrewrite.java.testing.junit5.CleanupAssertions
-#  commented out due to bug which removed Mockito.when, eq, any as unused even used in code
-#  - org.openrewrite.java.testing.assertj.Assertj
+  #  commented out due to bug which removed Mockito.when, eq, any as unused even used in code
+  #  BUG: https://github.com/openrewrite/rewrite/issues/3111
+  #  - org.openrewrite.java.testing.assertj.Assertj
   - org.openrewrite.java.testing.junit5.StaticImports
   - org.openrewrite.recipes.RecipeTestingBestPractices
   - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
   # BestPractices contains both TestsShouldIncludeAssertions and RemoveTestPrefix
   # Since TestsShouldIncludeAssertions does not recognize mockito verify and assertJ,
   # commented out BestPractices and explicitly mentioned RemoveTestPrefix below
+  #  BUG: https://github.com/openrewrite/rewrite/issues/3111
   #  - org.openrewrite.java.testing.cleanup.BestPractices
   - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
   - org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe
