@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -77,7 +77,7 @@ class LoginResourceTest {
 
     @Test
     void login_whenUserHasActiveMfa_thenShouldAskMfa() throws Exception {
-        when(attributeService.getAllAvailableUserSecurityAttributes(any(AuthUser.class)))
+        when(attributeService.getAllAvailableUserSecurityAttributes(any()))
                 .thenReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN)

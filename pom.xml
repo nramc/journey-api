@@ -43,6 +43,16 @@
         <zxing-qr.version>3.5.3</zxing-qr.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!--  Added to fix known CVEs          -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>6.1.14</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
