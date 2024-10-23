@@ -24,7 +24,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.GEO_LOCATION_JSON;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -51,7 +51,7 @@ class UpdateJourneyGeoDetailsResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void updateGeoDetails() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
@@ -65,7 +65,7 @@ class UpdateJourneyGeoDetailsResourceTest {
                   }
                 """;
         String geoJson = Files.readString(Path.of("src/test/resources/data/geojson/geometry-collection.json"));
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS)
                         .content(jsonRequestTemplate.formatted(GEO_LOCATION_JSON, geoJson))
                 )
@@ -102,7 +102,7 @@ class UpdateJourneyGeoDetailsResourceTest {
                 { "geoJson": %s }
                 """;
         String geoJson = Files.readString(Path.of("src/test/resources/data/geojson/geometry-collection.json"));
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS)
                         .content(jsonRequestTemplate.formatted(geoJson))
                 )
@@ -117,7 +117,7 @@ class UpdateJourneyGeoDetailsResourceTest {
                 { "geoJson": %s }
                 """;
         String geoJson = Files.readString(Path.of("src/test/resources/data/geojson/geometry-collection.json"));
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_GEO_DETAILS)
                         .content(jsonRequestTemplate.formatted(geoJson))
                 )

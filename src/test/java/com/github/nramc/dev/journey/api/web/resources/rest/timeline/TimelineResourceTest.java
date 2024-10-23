@@ -30,7 +30,7 @@ import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.newImageDetailEntityWith;
 import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer.DEFAULT_HEADING;
 import static org.hamcrest.Matchers.hasItems;
@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 class TimelineResourceTest {
-    private static final JourneyEntity VALID_JOURNEY = JOURNEY_EXTENDED_ENTITY.toBuilder()
+    private static final JourneyEntity VALID_JOURNEY = JOURNEY_ENTITY.toBuilder()
             .createdBy(WithMockAuthenticatedUser.USERNAME)
             .isPublished(true)
             .build();

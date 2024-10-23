@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,10 +59,10 @@ class UpdateJourneyBasicDetailsResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void updateBasicDetails() throws Exception {
-        when(journeyRepository.findById(anyString())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(anyString())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        mockMvc.perform(put(UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
                         .content(VALID_REQUEST)
                 )
@@ -80,9 +80,9 @@ class UpdateJourneyBasicDetailsResourceTest {
     @Test
     @WithAnonymousUser
     void updateBasicDetails_whenNotAuthenticated_throwError() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
 
-        mockMvc.perform(put(UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
                         .content(VALID_REQUEST)
                 )
@@ -93,9 +93,9 @@ class UpdateJourneyBasicDetailsResourceTest {
     @Test
     @WithMockGuestUser
     void updateBasicDetails_whenNotAuthorized_throwError() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
 
-        mockMvc.perform(put(UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_BASIC_DETAILS)
                         .content(VALID_REQUEST)
                 )

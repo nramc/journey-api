@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
@@ -54,9 +54,9 @@ class DeleteJourneyResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void delete_whenAuthenticatedUserOwnedJourney_shouldAllowDeletion() throws Exception {
-        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
+        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_EXTENDED_ENTITY.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_ENTITY.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -67,9 +67,9 @@ class DeleteJourneyResourceTest {
     @Test
     @WithMockAdministratorUser
     void delete_whenLoggedInUserDoesNotAccessToJourney_shouldGracefullyIgnoreRequest() throws Exception {
-        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
+        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_EXTENDED_ENTITY.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_ENTITY.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
         verify(journeyRepository, never()).deleteById(anyString());
@@ -79,7 +79,7 @@ class DeleteJourneyResourceTest {
     @Test
     @WithMockMaintainerUser
     void delete_whenJourneyAccessibleWithSharedRole_shouldAllowDeletion() throws Exception {
-        JourneyEntity journey = JOURNEY_EXTENDED_ENTITY.toBuilder()
+        JourneyEntity journey = JOURNEY_ENTITY.toBuilder()
                 .visibilities(Set.of(Visibility.MYSELF, Visibility.MAINTAINER))
                 .build();
         when(journeyRepository.findById(any())).thenReturn(Optional.of(journey));
@@ -94,9 +94,9 @@ class DeleteJourneyResourceTest {
     @Test
     @WithMockGuestUser
     void delete_whenLoggedInUserDoesNotHaveAuthority_shouldThrowError() throws Exception {
-        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
+        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_EXTENDED_ENTITY.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_ENTITY.getId()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
         verify(journeyRepository, never()).deleteById(anyString());
@@ -106,9 +106,9 @@ class DeleteJourneyResourceTest {
     @Test
     @WithAnonymousUser
     void delete_whenUserNotAuthenticated_shouldThrowError() throws Exception {
-        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
+        when(journeyRepository.findById(any())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_EXTENDED_ENTITY.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.delete(Resources.DELETE_JOURNEY, JOURNEY_ENTITY.getId()))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
         verify(journeyRepository, never()).deleteById(anyString());

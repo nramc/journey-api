@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_STATISTICS;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -56,14 +56,14 @@ class StatisticsResourceTest {
     void find_whenJourneyExists_thenShouldReturnResponse() throws Exception {
         // setup data
         List<JourneyEntity> journeyEntities = IntStream.range(0, 10).mapToObj(index ->
-                JOURNEY_EXTENDED_ENTITY.toBuilder()
+                JOURNEY_ENTITY.toBuilder()
                         .id("ID_" + index)
                         .createdDate(LocalDate.now().plusDays(index))
                         .visibilities(Set.of(MYSELF))
                         .isPublished(true)
                         .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index % 2))
-                        .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                        .extended(JOURNEY_ENTITY.getExtended().toBuilder()
+                                .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
                                         .category("Category_" + (index % 2 == 0 ? "even" : "odd"))
                                         .city("City_" + (index % 2 == 0 ? "even" : "odd"))
                                         .country("Country_" + (index % 2 == 0 ? "even" : "odd"))

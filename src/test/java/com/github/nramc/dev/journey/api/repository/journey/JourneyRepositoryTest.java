@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
@@ -38,15 +38,15 @@ class JourneyRepositoryTest {
 
     @Test
     void getJourneyById() {
-        journeyRepository.save(JOURNEY_EXTENDED_ENTITY);
+        journeyRepository.save(JOURNEY_ENTITY);
 
-        Optional<JourneyEntity> optionalJourney = journeyRepository.findById(JOURNEY_EXTENDED_ENTITY.getId());
+        Optional<JourneyEntity> optionalJourney = journeyRepository.findById(JOURNEY_ENTITY.getId());
         assertThat(optionalJourney).isNotEmpty();
     }
 
     @Test
     void findAllPublishedJourneys_whenJourneyExistsForUser_thenShouldInclude() {
-        JourneyEntity journey = JOURNEY_EXTENDED_ENTITY.toBuilder()
+        JourneyEntity journey = JOURNEY_ENTITY.toBuilder()
                 .createdBy(AUTHENTICATED_USER.username())
                 .isPublished(true)
                 .build();

@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class FindJourneyByQueryResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
-    private static final JourneyEntity VALID_JOURNEY = JOURNEY_EXTENDED_ENTITY.toBuilder()
+    private static final JourneyEntity VALID_JOURNEY = JOURNEY_ENTITY.toBuilder()
             .id(VALID_UUID)
             .visibilities(Set.of(MYSELF))
             .createdBy(WithMockAuthenticatedUser.USER_DETAILS.username())
@@ -331,8 +331,8 @@ class FindJourneyByQueryResourceTest {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder().id("ID_" + index)
-                                .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                        .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                                .extended(JOURNEY_ENTITY.getExtended().toBuilder()
+                                        .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
                                                 .city("City_" + index)
                                                 .build())
                                         .build()
@@ -361,8 +361,8 @@ class FindJourneyByQueryResourceTest {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
                 VALID_JOURNEY.toBuilder().id("ID_" + index)
-                        .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                        .extended(JOURNEY_ENTITY.getExtended().toBuilder()
+                                .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
                                         .country("Country_" + index)
                                         .build())
                                 .build()
@@ -389,8 +389,8 @@ class FindJourneyByQueryResourceTest {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
                 VALID_JOURNEY.toBuilder().id("ID_" + index)
-                        .extended(JOURNEY_EXTENDED_ENTITY.getExtended().toBuilder()
-                                .geoDetails(JOURNEY_EXTENDED_ENTITY.getExtended().getGeoDetails().toBuilder()
+                        .extended(JOURNEY_ENTITY.getExtended().toBuilder()
+                                .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
                                         .category("Category_" + index)
                                         .build())
                                 .build()

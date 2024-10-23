@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
@@ -60,7 +60,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void updateImagesDetails_whenOptionalFieldDoesNotExists_thenShouldUpdateWithDefaultValues() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
@@ -71,7 +71,7 @@ class UpdateJourneyImagesDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS)
                         .content(jsonRequestTemplate)
                 )
@@ -89,7 +89,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void updateImagesDetails_whenOptionalFieldHaveValues_thenShouldUpdateWithGivenValues() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
@@ -100,7 +100,7 @@ class UpdateJourneyImagesDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS)
                         .content(jsonRequestTemplate)
                 )
@@ -118,7 +118,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void updateImagesDetails_whenIsThumbnailFlagEnabled_thenShouldUpdateThumbnailField() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
@@ -129,7 +129,7 @@ class UpdateJourneyImagesDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS)
                         .content(jsonRequestTemplate)
                 )
@@ -164,7 +164,7 @@ class UpdateJourneyImagesDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS)
                         .content(jsonRequestTemplate)
                 )
@@ -175,7 +175,7 @@ class UpdateJourneyImagesDetailsResourceTest {
     @Test
     @WithMockGuestUser
     void updateImagesDetails_whenNotAuthorized_shouldThrowError() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.empty());
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.empty());
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
@@ -186,7 +186,7 @@ class UpdateJourneyImagesDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_IMAGES_DETAILS)
                         .content(jsonRequestTemplate)
                 )

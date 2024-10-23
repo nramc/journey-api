@@ -21,8 +21,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_EXTENDED_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -44,6 +44,28 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void find_whenJourneyExistsWithIncompleteData_ShouldReturnValidJson() throws Exception {
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, NEW_JOURNEY_ENTITY.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(NEW_JOURNEY_ENTITY.getId()))
+                .andExpect(jsonPath("$.name").value(NEW_JOURNEY_ENTITY.getName()))
+                .andExpect(jsonPath("$.description").value(NEW_JOURNEY_ENTITY.getDescription()))
+                .andExpect(jsonPath("$.tags").value(Matchers.hasItems("travel", "germany", "munich")))
+                .andExpect(jsonPath("$.thumbnail").value(NEW_JOURNEY_ENTITY.getThumbnail()))
+                .andExpect(jsonPath("$.journeyDate").value("2024-03-27"))
+                .andExpect(jsonPath("$.createdDate").value("2024-03-27"))
+                .andExpect(jsonPath("$.isPublished").value(false))
+                .andExpect(jsonPath("$.extendedDetails").value(NEW_JOURNEY_ENTITY.getExtended()))
+        ;
+    }
+
+    @Test
+    @WithMockAuthenticatedUser
+    void find_whenJourneyExistsWithCompleteData_ShouldReturnValidJson() throws Exception {
         when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
 
         mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, JOURNEY_ENTITY.getId())
@@ -51,34 +73,12 @@ class FindJourneyByIdResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(JOURNEY_ENTITY.getId()))
-                .andExpect(jsonPath("$.name").value(JOURNEY_ENTITY.getName()))
-                .andExpect(jsonPath("$.description").value(JOURNEY_ENTITY.getDescription()))
-                .andExpect(jsonPath("$.tags").value(Matchers.hasItems("travel", "germany", "munich")))
-                .andExpect(jsonPath("$.thumbnail").value(JOURNEY_ENTITY.getThumbnail()))
-                .andExpect(jsonPath("$.journeyDate").value("2024-03-27"))
-                .andExpect(jsonPath("$.createdDate").value("2024-03-27"))
-                .andExpect(jsonPath("$.isPublished").value(false))
-                .andExpect(jsonPath("$.extendedDetails").value(JOURNEY_ENTITY.getExtended()))
-        ;
-    }
-
-    @Test
-    @WithMockAuthenticatedUser
-    void find_whenJourneyExistsWithCompleteData_ShouldReturnValidJson() throws Exception {
-        when(journeyRepository.findById(JOURNEY_EXTENDED_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_EXTENDED_ENTITY));
-
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, JOURNEY_EXTENDED_ENTITY.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
-                        jsonPath("$.id").value(JOURNEY_EXTENDED_ENTITY.getId()),
-                        jsonPath("$.name").value(JOURNEY_EXTENDED_ENTITY.getName()),
-                        jsonPath("$.description").value(JOURNEY_EXTENDED_ENTITY.getDescription()),
+                        jsonPath("$.id").value(JOURNEY_ENTITY.getId()),
+                        jsonPath("$.name").value(JOURNEY_ENTITY.getName()),
+                        jsonPath("$.description").value(JOURNEY_ENTITY.getDescription()),
                         jsonPath("$.tags").value(Matchers.hasItems("travel", "germany", "munich")),
-                        jsonPath("$.thumbnail").value(JOURNEY_EXTENDED_ENTITY.getThumbnail()),
+                        jsonPath("$.thumbnail").value(JOURNEY_ENTITY.getThumbnail()),
                         jsonPath("$.journeyDate").value("2024-03-27"),
                         jsonPath("$.createdDate").value("2024-03-27"),
                         jsonPath("$.isPublished").value(false),
@@ -113,9 +113,9 @@ class FindJourneyByIdResourceTest {
     @Test
     @WithMockGuestUser
     void find_whenJourneyExists_butDoesNotHavePermission_ShouldThrowError() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, JOURNEY_ENTITY.getId())
+        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEY_BY_ID, NEW_JOURNEY_ENTITY.getId())
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isNotFound());

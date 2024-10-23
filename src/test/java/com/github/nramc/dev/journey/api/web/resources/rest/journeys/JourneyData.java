@@ -44,19 +44,7 @@ public class JourneyData {
               "journeyDate": "2024-03-27"
             }
             """;
-    public static final JourneyEntity JOURNEY_ENTITY = JourneyEntity.builder()
-            .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
-            .name("First Flight Experience")
-            .description("Travelled first time for work deputation to Germany, Munich city")
-            .tags(List.of("travel", "germany", "munich"))
-            .thumbnail("https://example.com/thumbnail.png")
-            .createdDate(LocalDate.of(2024, 3, 27))
-            .journeyDate(LocalDate.of(2024, 3, 27))
-            .visibilities(Set.of(Visibility.MYSELF))
-            .createdBy(WithMockAuthenticatedUser.USERNAME)
-            .build();
-
-    public static final JourneyEntity JOURNEY_EXTENDED_ENTITY = JourneyEntity.builder()
+    public static final JourneyEntity NEW_JOURNEY_ENTITY = JourneyEntity.builder()
             .id("ecc76991-0137-4152-b3b2-efce70a37ed0")
             .name("First Flight Experience")
             .description("Travelled first time for work deputation to Germany, Munich city")
@@ -67,6 +55,9 @@ public class JourneyData {
             .visibilities(Set.of(Visibility.MYSELF))
             .createdBy(WithMockAuthenticatedUser.USERNAME)
             .isPublished(false)
+            .build();
+
+    public static final JourneyEntity JOURNEY_ENTITY = NEW_JOURNEY_ENTITY.toBuilder()
             .extended(JourneyExtendedEntity.builder()
                     .geoDetails(getGeoDetailsEntity())
                     .imagesDetails(getImagesDetailsEntity())

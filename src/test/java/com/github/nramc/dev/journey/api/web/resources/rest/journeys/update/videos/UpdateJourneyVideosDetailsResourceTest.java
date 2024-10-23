@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.any;
@@ -59,7 +59,7 @@ class UpdateJourneyVideosDetailsResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void updateVideoDetails() throws Exception {
-        when(journeyRepository.findById(JOURNEY_ENTITY.getId())).thenReturn(Optional.of(JOURNEY_ENTITY));
+        when(journeyRepository.findById(NEW_JOURNEY_ENTITY.getId())).thenReturn(Optional.of(NEW_JOURNEY_ENTITY));
         when(journeyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         String jsonRequestTemplate = """
@@ -70,7 +70,7 @@ class UpdateJourneyVideosDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS)
                         .content(jsonRequestTemplate)
                 )
@@ -92,7 +92,7 @@ class UpdateJourneyVideosDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS)
                         .content(jsonRequestTemplate)
                 )
@@ -111,7 +111,7 @@ class UpdateJourneyVideosDetailsResourceTest {
                 ]
                 }
                 """;
-        mockMvc.perform(put(Resources.UPDATE_JOURNEY, JOURNEY_ENTITY.getId())
+        mockMvc.perform(put(Resources.UPDATE_JOURNEY, NEW_JOURNEY_ENTITY.getId())
                         .header(HttpHeaders.CONTENT_TYPE, Resources.MediaType.UPDATE_JOURNEY_VIDEOS_DETAILS)
                         .content(jsonRequestTemplate)
                 )
