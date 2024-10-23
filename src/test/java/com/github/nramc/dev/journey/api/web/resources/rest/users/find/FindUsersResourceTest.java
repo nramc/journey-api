@@ -70,7 +70,7 @@ class FindUsersResourceTest {
     @Test
     @WithMockAdministratorUser
     void find_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
-        when(userRepository.findAll()).thenReturn(List.of(UsersData.AUTH_USER));
+        when(userRepository.findAll()).thenReturn(List.of(UsersData.AUTHENTICATED_USER));
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_USERS))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -105,7 +105,7 @@ class FindUsersResourceTest {
     @Test
     @WithMockAuthenticatedUser
     void findMyAccount_whenUserHasPermission_shouldReturnUsersDetails() throws Exception {
-        when(userRepository.findUserByUsername(UsersData.AUTH_USER.getUsername())).thenReturn(UsersData.AUTH_USER);
+        when(userRepository.findUserByUsername(UsersData.AUTHENTICATED_USER.getUsername())).thenReturn(UsersData.AUTHENTICATED_USER);
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_MY_ACCOUNT))
                 .andDo(print())
                 .andExpect(status().isOk())

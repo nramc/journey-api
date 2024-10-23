@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 @TestConfiguration
+// todo remove the calss completely after replacing it with WithMock*-User data
 public class TestConfig {
     public static final AuthUser TEST_USER = AuthUser.builder()
             .username("arlanda_cuffkut@toddler.xbx")

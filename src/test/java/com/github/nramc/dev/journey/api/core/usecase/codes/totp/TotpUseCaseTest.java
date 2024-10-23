@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTH_USER;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -62,7 +62,7 @@ class TotpUseCaseTest {
         when(secretGenerator.generate()).thenReturn(TOTP_SECRET);
         when(qrCodeGenerator.generateWithLogo(any(QRCodeData.class))).thenReturn(QR_IMG_BYTES);
 
-        QRImageDetails qrImageDetails = totpUseCase.newQRCodeData(AUTH_USER);
+        QRImageDetails qrImageDetails = totpUseCase.newQRCodeData(AUTHENTICATED_USER);
         assertThat(qrImageDetails).isNotNull()
                 .satisfies(data -> assertThat(data.secretKey()).isNotBlank().isEqualTo(TOTP_SECRET.secret()))
                 .satisfies(data -> assertThat(data.data()).isEqualTo(QR_IMG_BYTES));
@@ -72,66 +72,66 @@ class TotpUseCaseTest {
     void activateTotp_whenCodeValid_shouldActivateTotp() {
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(true);
 
-        totpUseCase.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET);
+        totpUseCase.activateTotp(AUTHENTICATED_USER, TOTP_CODE, TOTP_SECRET);
 
-        verify(userSecurityAttributeService).saveTOTPSecret(AUTH_USER, TOTP_SECRET);
+        verify(userSecurityAttributeService).saveTOTPSecret(AUTHENTICATED_USER, TOTP_SECRET);
     }
 
     @Test
     void activateTotp_whenCodeInvalid_shouldNotActivateTotp() {
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
-        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> totpUseCase.activateTotp(AUTH_USER, TOTP_CODE, TOTP_SECRET));
+        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> totpUseCase.activateTotp(AUTHENTICATED_USER, TOTP_CODE, TOTP_SECRET));
 
         verifyNoInteractions(userSecurityAttributeService);
     }
 
     @Test
     void getTotpAttributeIfExists_whenAttributeExists_shouldReturnTotpAttribute() {
-        when(userSecurityAttributeService.getAttributeByType(AUTH_USER, TOTP)).thenReturn(Optional.of(TOTP_ATTRIBUTE));
+        when(userSecurityAttributeService.getAttributeByType(AUTHENTICATED_USER, TOTP)).thenReturn(Optional.of(TOTP_ATTRIBUTE));
 
-        Optional<UserSecurityAttribute> attributeOptional = totpUseCase.getTotpAttributeIfExists(AUTH_USER);
+        Optional<UserSecurityAttribute> attributeOptional = totpUseCase.getTotpAttributeIfExists(AUTHENTICATED_USER);
 
         assertThat(attributeOptional).isNotEmpty().hasValueSatisfying(attribute -> assertThat(attribute).isNotNull());
     }
 
     @Test
     void getTotpAttributeIfExists_whenAttributeDoesNotExist_shouldReturnEmptyOptional() {
-        when(userSecurityAttributeService.getAttributeByType(AUTH_USER, TOTP)).thenReturn(Optional.empty());
+        when(userSecurityAttributeService.getAttributeByType(AUTHENTICATED_USER, TOTP)).thenReturn(Optional.empty());
 
-        Optional<UserSecurityAttribute> attributeOptional = totpUseCase.getTotpAttributeIfExists(AUTH_USER);
+        Optional<UserSecurityAttribute> attributeOptional = totpUseCase.getTotpAttributeIfExists(AUTHENTICATED_USER);
 
         assertThat(attributeOptional).isEmpty();
     }
 
     @Test
     void verify_whenAttributeExistsAndCodeValid_shouldReturnTrue() {
-        when(userSecurityAttributeService.getAttributeByType(AUTH_USER, TOTP)).thenReturn(Optional.of(TOTP_ATTRIBUTE));
+        when(userSecurityAttributeService.getAttributeByType(AUTHENTICATED_USER, TOTP)).thenReturn(Optional.of(TOTP_ATTRIBUTE));
 
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(true);
 
-        assertThat(totpUseCase.verify(AUTH_USER, TOTP_CODE)).isTrue();
+        assertThat(totpUseCase.verify(AUTHENTICATED_USER, TOTP_CODE)).isTrue();
     }
 
     @Test
     void verify_whenAttributeExistsAndCodeInvalid_shouldReturnFalse() {
-        when(userSecurityAttributeService.getAttributeByType(AUTH_USER, TOTP)).thenReturn(Optional.of(TOTP_ATTRIBUTE));
+        when(userSecurityAttributeService.getAttributeByType(AUTHENTICATED_USER, TOTP)).thenReturn(Optional.of(TOTP_ATTRIBUTE));
 
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
-        assertThat(totpUseCase.verify(AUTH_USER, TOTP_CODE)).isFalse();
+        assertThat(totpUseCase.verify(AUTHENTICATED_USER, TOTP_CODE)).isFalse();
     }
 
     @Test
     void verify_whenAttributeDoesNotExist_shouldReturnFalse() {
-        assertThat(totpUseCase.verify(AUTH_USER, TOTP_CODE)).isFalse();
+        assertThat(totpUseCase.verify(AUTHENTICATED_USER, TOTP_CODE)).isFalse();
     }
 
     @Test
     void deactivateTotp_shouldDeactivateTotp() {
-        totpUseCase.deactivateTotp(AUTH_USER);
+        totpUseCase.deactivateTotp(AUTHENTICATED_USER);
 
-        verify(userSecurityAttributeService).deleteAttributeByType(AUTH_USER, TOTP);
+        verify(userSecurityAttributeService).deleteAttributeByType(AUTHENTICATED_USER, TOTP);
     }
 
 
