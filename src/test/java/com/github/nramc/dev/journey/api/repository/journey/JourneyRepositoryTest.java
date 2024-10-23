@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_APP_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
@@ -47,12 +47,12 @@ class JourneyRepositoryTest {
     @Test
     void findAllPublishedJourneys_whenJourneyExistsForUser_thenShouldInclude() {
         JourneyEntity journey = JOURNEY_ENTITY.toBuilder()
-                .createdBy(AUTHENTICATED_USER.username())
+                .createdBy(AUTHENTICATED_APP_USER.username())
                 .isPublished(true)
                 .build();
         journeyRepository.save(journey);
 
-        List<JourneyEntity> journeys = journeyService.findAllPublishedJourneys(AUTHENTICATED_USER, Set.of(Visibility.MYSELF));
+        List<JourneyEntity> journeys = journeyService.findAllPublishedJourneys(AUTHENTICATED_APP_USER, Set.of(Visibility.MYSELF));
         assertThat(journeys).isNotNull().hasSize(1);
     }
 

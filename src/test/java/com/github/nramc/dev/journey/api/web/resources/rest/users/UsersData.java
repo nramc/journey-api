@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.users;
 import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import lombok.experimental.UtilityClass;
@@ -21,6 +22,14 @@ public class UsersData {
             .name(WithMockAuthenticatedUser.USER_DETAILS.name())
             .roles(WithMockAuthenticatedUser.USER_DETAILS.roles())
             .enabled(true)
+            .build();
+    public static final AppUser AUTHENTICATED_APP_USER = AppUser.builder()
+            .username(WithMockAuthenticatedUser.USERNAME)
+            .password(WithMockAuthenticatedUser.PASSWORD)
+            .roles(WithMockAuthenticatedUser.USER_DETAILS.roles())
+            .name(WithMockAuthenticatedUser.USER_DETAILS.name())
+            .enabled(true)
+            .mfaEnabled(false)
             .build();
     public static final AuthUser GUEST_USER = AuthUser.builder()
             .id(new ObjectId("665b1b94bd24ff59695e1d01"))
