@@ -5,7 +5,7 @@ RUN mvn clean package -Pprod -DskipTests
 
 
 # Run jar file with appropriate veriables
-FROM eclipse-temurin:21.0.4_7-jre-alpine
+FROM eclipse-temurin:21.0.5_11-jre-alpine
 EXPOSE 8080
 COPY --from=build target/*.jar journey-api.jar
 ENV SPRING_PROFILES_ACTIVE=prod
