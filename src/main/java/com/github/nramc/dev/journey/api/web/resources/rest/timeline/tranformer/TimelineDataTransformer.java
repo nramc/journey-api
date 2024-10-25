@@ -1,9 +1,9 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer;
 
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.core.journey.JourneyExtendedDetails;
+import com.github.nramc.dev.journey.api.core.journey.JourneyImageDetail;
+import com.github.nramc.dev.journey.api.core.journey.JourneyImagesDetails;
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,7 +19,7 @@ public class TimelineDataTransformer {
     public static final String DEFAULT_HEADING = "Timeline";
 
     @SuppressWarnings("java:S107")
-    public static TimelineData transform(List<JourneyEntity> entities,
+    public static TimelineData transform(List<Journey> journeys,
                                          List<String> journeyIDs,
                                          List<String> cities,
                                          List<String> countries,
@@ -28,66 +28,66 @@ public class TimelineDataTransformer {
                                          Boolean today,
                                          Boolean upcoming) {
         if (Boolean.TRUE.equals(today)) {
-            return TodayTimelineTransformer.transform(entities);
+            return TodayTimelineTransformer.transform(journeys);
         } else if (Boolean.TRUE.equals(upcoming)) {
-            return UpcomingTimelineTransformer.transform(entities);
+            return UpcomingTimelineTransformer.transform(journeys);
         } else if (CollectionUtils.isNotEmpty(years)) {
-            return YearTimelineTransformer.transform(entities, years);
+            return YearTimelineTransformer.transform(journeys, years);
         } else if (CollectionUtils.isNotEmpty(journeyIDs)) {
-            return JourneyTimelineTransformer.transform(entities);
+            return JourneyTimelineTransformer.transform(journeys);
         } else if (CollectionUtils.isNotEmpty(cities)) {
-            return CityTimelineTransformer.transform(entities);
+            return CityTimelineTransformer.transform(journeys);
         } else if (CollectionUtils.isNotEmpty(countries)) {
-            return CountryTimelineTransformer.transform(entities);
+            return CountryTimelineTransformer.transform(journeys);
         } else if (CollectionUtils.isNotEmpty(categories)) {
-            return CategoryTimelineTransformer.transform(entities);
+            return CategoryTimelineTransformer.transform(journeys);
         } else {
             return TimelineData.builder()
                     .heading(DEFAULT_HEADING)
-                    .images(getImagesForTimeline(entities))
+                    .images(getImagesForTimeline(journeys))
                     .build();
         }
     }
 
-    private static List<TimelineData.TimelineImage> getImagesForTimeline(List<JourneyEntity> entities) {
-        return CollectionUtils.emptyIfNull(entities).stream()
+    private static List<TimelineData.TimelineImage> getImagesForTimeline(List<Journey> journeys) {
+        return CollectionUtils.emptyIfNull(journeys).stream()
                 .map(TimelineDataTransformer::getImages)
                 .flatMap(Collection::stream)
                 .map(TimelineDataTransformer::toTimelineImage)
                 .toList();
     }
 
-    private static TimelineData.TimelineImage toTimelineImage(JourneyImageDetailEntity entity) {
+    private static TimelineData.TimelineImage toTimelineImage(JourneyImageDetail imageDetail) {
         return TimelineData.TimelineImage.builder()
-                .src(entity.getUrl())
-                .caption(entity.getTitle())
+                .src(imageDetail.url())
+                .caption(imageDetail.title())
                 .args(Map.of())
                 .build();
     }
 
-    public static List<JourneyImageDetailEntity> getImages(JourneyEntity journeyEntity) {
-        List<JourneyImageDetailEntity> favoriteImages = getFavoriteImages(journeyEntity);
-        return favoriteImages.isEmpty() ? getFirstNImages(journeyEntity, MAX_IMAGES_PER_JOURNEY) : favoriteImages;
+    public static List<JourneyImageDetail> getImages(Journey journey) {
+        List<JourneyImageDetail> favoriteImages = getFavoriteImages(journey);
+        return favoriteImages.isEmpty() ? getFirstNImages(journey, MAX_IMAGES_PER_JOURNEY) : favoriteImages;
     }
 
-    private static List<JourneyImageDetailEntity> getFavoriteImages(JourneyEntity journeyEntity) {
-        return Optional.of(journeyEntity)
-                .map(JourneyEntity::getExtended)
-                .map(JourneyExtendedEntity::getImagesDetails)
-                .map(JourneyImagesDetailsEntity::getImages)
+    private static List<JourneyImageDetail> getFavoriteImages(Journey journey) {
+        return Optional.of(journey)
+                .map(Journey::extendedDetails)
+                .map(JourneyExtendedDetails::imagesDetails)
+                .map(JourneyImagesDetails::images)
                 .filter(CollectionUtils::isNotEmpty)
                 .orElse(List.of())
                 .stream()
-                .filter(JourneyImageDetailEntity::isFavorite)
+                .filter(JourneyImageDetail::isFavorite)
                 .limit(MAX_IMAGES_PER_JOURNEY)
                 .toList();
     }
 
-    public static List<JourneyImageDetailEntity> getFirstNImages(JourneyEntity journeyEntity, int maxImagesPerJourney) {
-        return Optional.of(journeyEntity)
-                .map(JourneyEntity::getExtended)
-                .map(JourneyExtendedEntity::getImagesDetails)
-                .map(JourneyImagesDetailsEntity::getImages)
+    public static List<JourneyImageDetail> getFirstNImages(Journey journey, int maxImagesPerJourney) {
+        return Optional.of(journey)
+                .map(Journey::extendedDetails)
+                .map(JourneyExtendedDetails::imagesDetails)
+                .map(JourneyImagesDetails::images)
                 .filter(CollectionUtils::isNotEmpty)
                 .orElse(List.of())
                 .stream()

@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer;
 
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.core.journey.JourneyImageDetail;
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData;
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData.TimelineImage;
 import lombok.experimental.UtilityClass;
@@ -19,32 +19,32 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranf
 @UtilityClass
 public class UpcomingTimelineTransformer {
 
-    public TimelineData transform(List<JourneyEntity> entities) {
+    public TimelineData transform(List<Journey> journeys) {
         return TimelineData.builder()
                 .heading("Upcoming Journiversaries")
-                .images(images(entities))
+                .images(images(journeys))
                 .build();
     }
 
-    private static List<TimelineImage> images(List<JourneyEntity> entities) {
-        return CollectionUtils.emptyIfNull(entities).stream()
+    private static List<TimelineImage> images(List<Journey> journeys) {
+        return CollectionUtils.emptyIfNull(journeys).stream()
                 .map(UpcomingTimelineTransformer::getImagesForJourney)
                 .flatMap(List::stream)
                 .toList();
     }
 
-    private static List<TimelineImage> getImagesForJourney(JourneyEntity journeyEntity) {
-        return getImages(journeyEntity).stream()
-                .map(imageEntity -> toTimelineImage(imageEntity, journeyEntity))
+    private static List<TimelineImage> getImagesForJourney(Journey journey) {
+        return getImages(journey).stream()
+                .map(imageDetail -> toTimelineImage(imageDetail, journey))
                 .toList();
     }
 
-    private static TimelineImage toTimelineImage(JourneyImageDetailEntity imageDetail, JourneyEntity journey) {
-        String title = Optional.ofNullable(journey.getJourneyDate()).map(UpcomingTimelineTransformer::title).orElse(null);
+    private static TimelineImage toTimelineImage(JourneyImageDetail imageDetail, Journey journey) {
+        String title = Optional.ofNullable(journey.journeyDate()).map(UpcomingTimelineTransformer::title).orElse(null);
         return TimelineImage.builder()
                 .title(title)
-                .src(imageDetail.getUrl())
-                .caption(StringUtils.firstNonBlank(imageDetail.getTitle(), journey.getName()))
+                .src(imageDetail.url())
+                .caption(StringUtils.firstNonBlank(imageDetail.title(), journey.name()))
                 .args(Map.of())
                 .build();
     }

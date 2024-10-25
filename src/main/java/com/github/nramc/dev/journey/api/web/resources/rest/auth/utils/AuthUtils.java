@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class AuthUtils {
@@ -49,6 +50,20 @@ public class AuthUtils {
         }
 
         return visibilities;
+    }
+
+    public static Set<Visibility> getVisibilityFromRole(Collection<Role> roles) {
+        return CollectionUtils.emptyIfNull(roles).stream().map(AuthUtils::toVisibility).collect(Collectors.toSet());
+    }
+
+    private static Visibility toVisibility(Role role) {
+        return switch (role) {
+            case ADMINISTRATOR -> Visibility.ADMINISTRATOR;
+            case MAINTAINER -> Visibility.MAINTAINER;
+            case AUTHENTICATED_USER -> Visibility.AUTHENTICATED_USER;
+            case GUEST_USER -> Visibility.GUEST;
+        };
+
     }
 
 }

@@ -1,26 +1,24 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline;
 
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
+import com.github.nramc.dev.journey.api.repository.journey.JourneySearchCriteria;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer.TimelineDataTransformer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.bson.Document;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
@@ -31,11 +29,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @Tag(name = "Timeline")
 public class TimelineResource {
-    private final MongoTemplate mongoTemplate;
+    private final JourneyService journeyService;
+
 
     @Operation(summary = "Get Timeline data")
     @GetMapping(value = GET_TIMELINE_DATA, produces = APPLICATION_JSON_VALUE)
-    @SuppressWarnings("java:S1192")
     public TimelineData getTimelineData(
             @RequestParam(name = "IDs", defaultValue = "") List<String> journeyIDs,
             @RequestParam(name = "city", defaultValue = "") List<String> cities,
@@ -45,76 +43,25 @@ public class TimelineResource {
             @RequestParam(name = "today", required = false) Boolean today,
             @RequestParam(name = "upcoming", required = false) Integer upcomingJourneysTillDays,
             Authentication authentication) {
+
         Set<Visibility> visibilities = AuthUtils.getVisibilityFromAuthority(authentication.getAuthorities());
         String username = authentication.getName();
 
-        Query query = new Query();
-        query.addCriteria(Criteria.where("isPublished").is(true)
-                .orOperator(
-                        Criteria.where("visibilities").in(visibilities),
-                        Criteria.where("createdBy").is(username)
-                )
-        );
-        if (CollectionUtils.isNotEmpty(journeyIDs)) {
-            query.addCriteria(Criteria.where("id").in(journeyIDs));
-        }
-        if (CollectionUtils.isNotEmpty(cities)) {
-            query.addCriteria(Criteria.where("extended.geoDetails.city").in(cities));
-        }
-        if (CollectionUtils.isNotEmpty(countries)) {
-            query.addCriteria(Criteria.where("extended.geoDetails.country").in(countries));
-        }
-        if (CollectionUtils.isNotEmpty(categories)) {
-            query.addCriteria(Criteria.where("extended.geoDetails.category").in(categories));
-        }
-        if (CollectionUtils.isNotEmpty(years)) {
-            query.addCriteria(
-                    Criteria.where("$expr").is(new Document("$in", List.of(new Document("$year", "$journeyDate"), years)))
-            );
-        }
-        if (Boolean.TRUE.equals(today)) {
-            LocalDateTime localDateTime = LocalDate.now().atStartOfDay();
-            Criteria monthCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), localDateTime.getMonthValue())));
-            Criteria dayCriteria = Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$dayOfMonth", "$journeyDate"), localDateTime.getDayOfMonth())));
-            query.addCriteria(monthCriteria.andOperator(dayCriteria));
-        }
-        if (upcomingJourneysTillDays != null) {
-            query.addCriteria(getUpcomingDaysCriteria(upcomingJourneysTillDays));
-        }
+        JourneySearchCriteria searchCriteria = JourneySearchCriteria.builder()
+                .publishedFlags(Set.of(true))
+                .visibilities(visibilities)
+                .appUser(AppUser.builder().username(username).build())
+                .ids(journeyIDs)
+                .cities(cities)
+                .countries(countries)
+                .categories(categories)
+                .journeyYears(years)
+                .journeyDaysUpTo(Optional.ofNullable(today).filter(BooleanUtils::isTrue).map(ignore -> 0).orElse(upcomingJourneysTillDays))
+                .build();
 
-        List<JourneyEntity> entities = mongoTemplate.find(query, JourneyEntity.class);
-
-
-        return TimelineDataTransformer.transform(entities, journeyIDs, cities, countries, categories, years, today,
+        List<Journey> journeys = journeyService.findAllJourneys(searchCriteria);
+        return TimelineDataTransformer.transform(journeys, journeyIDs, cities, countries, categories, years, today,
                 upcomingJourneysTillDays != null);
-    }
-
-    private Criteria getUpcomingDaysCriteria(int upcomingJourneysTillDays) {
-        Criteria criteria;
-        LocalDate startDate = LocalDate.now().plusDays(1);
-        LocalDate endDate = LocalDate.now().plusDays(upcomingJourneysTillDays);
-
-        if (startDate.getMonthValue() == endDate.getMonthValue()) {
-            // Same month, just compare days
-            criteria = new Criteria().andOperator(
-                    Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth()))),
-                    Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$dayOfMonth", "$journeyDate"), endDate.getDayOfMonth()))),
-                    Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue())))
-            );
-        } else {
-            // Different months, compare both months and days
-            criteria = new Criteria().orOperator(
-                    new Criteria().andOperator(
-                            Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth()))),
-                            Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue())))
-                    ),
-                    new Criteria().andOperator(
-                            Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$dayOfMonth", "$journeyDate"), endDate.getDayOfMonth()))),
-                            Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), endDate.getMonthValue())))
-                    )
-            );
-        }
-        return criteria;
     }
 
 

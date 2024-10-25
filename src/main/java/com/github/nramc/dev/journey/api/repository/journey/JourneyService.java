@@ -5,9 +5,9 @@ import com.github.nramc.dev.journey.api.core.domain.data.DataPageable;
 import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
-import static java.util.regex.Pattern.compile;
+import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.getCriteriaForUpcomingAnniversary;
+import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.transformSearchCriteria;
 
 @RequiredArgsConstructor
 public class JourneyService {
@@ -41,44 +41,27 @@ public class JourneyService {
                 .all();
     }
 
-    public DataPageable<Journey> findAllJourneysWithPagination(JourneySearchCriteria searchCriteria, PagingProperty pagingProperty) {
+    public List<Journey> getAnniversariesInNextDays(AppUser user, int daysAhead) {
         List<Criteria> criteriaList = new ArrayList<>();
-
-        criteriaList.add(
-                new Criteria().orOperator(
-                        Criteria.where("createdBy").is(searchCriteria.appUser().username()),
-                        Criteria.where("visibilities").in(searchCriteria.visibilities())
-                )
+        criteriaList.add(Criteria.where("isPublished").is(true).orOperator(
+                Criteria.where("createdBy").is(user.username()),
+                Criteria.where("visibilities").in(AuthUtils.getVisibilityFromRole(user.roles())))
         );
-        criteriaList.add(
-                Criteria.where("isPublished").in(searchCriteria.publishedFlags())
-        );
-        if (StringUtils.isNotEmpty(searchCriteria.searchText())) {
-            criteriaList.add(new Criteria().orOperator(
-                    Criteria.where("name").regex(compile(".*" + searchCriteria.searchText() + ".*", CASE_INSENSITIVE)),
-                    Criteria.where("description").regex(compile(".*" + searchCriteria.searchText() + ".*", CASE_INSENSITIVE))
-            ));
-        }
-        if (CollectionUtils.isNotEmpty(searchCriteria.tags())) {
-            criteriaList.add(Criteria.where("tags").in(searchCriteria.tags()));
-        }
-        if (StringUtils.isNotEmpty(searchCriteria.cityText())) {
-            criteriaList.add(Criteria.where("extended.geoDetails.city").is(searchCriteria.cityText()));
-        }
-        if (StringUtils.isNotEmpty(searchCriteria.countryText())) {
-            criteriaList.add(Criteria.where("extended.geoDetails.country").is(searchCriteria.countryText()));
-        }
-        if (StringUtils.isNotEmpty(searchCriteria.categoryText())) {
-            criteriaList.add(Criteria.where("extended.geoDetails.category").is(searchCriteria.categoryText()));
-        }
-        if (searchCriteria.journeyStartDate() != null) {
-            criteriaList.add(Criteria.where("journeyDate").gte(searchCriteria.journeyStartDate()));
-        }
-        if (searchCriteria.journeyEndDate() != null) {
-            criteriaList.add(Criteria.where("journeyDate").lte(searchCriteria.journeyEndDate()));
-        }
 
+        criteriaList.add(getCriteriaForUpcomingAnniversary(daysAhead));
         Criteria combinedCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
+        List<JourneyEntity> results = mongoTemplate.find(new Query(combinedCriteria), JourneyEntity.class);
+        return CollectionUtils.emptyIfNull(results).stream().map(JourneyConverter::convert).toList();
+    }
+
+    public List<Journey> findAllJourneys(JourneySearchCriteria searchCriteria) {
+        Criteria combinedCriteria = transformSearchCriteria(searchCriteria);
+        List<JourneyEntity> results = mongoTemplate.find(new Query(combinedCriteria), JourneyEntity.class);
+        return CollectionUtils.emptyIfNull(results).stream().map(JourneyConverter::convert).toList();
+    }
+
+    public DataPageable<Journey> findAllJourneysWithPagination(JourneySearchCriteria searchCriteria, PagingProperty pagingProperty) {
+        Criteria combinedCriteria = transformSearchCriteria(searchCriteria);
         Query query = new Query(combinedCriteria);
 
         // Pagination &  setup
@@ -105,5 +88,6 @@ public class JourneyService {
                 .pageSize(pagingProperty.pageSize())
                 .build();
     }
+
 
 }
