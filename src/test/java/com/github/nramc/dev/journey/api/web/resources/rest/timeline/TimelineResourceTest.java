@@ -9,6 +9,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(TestContainersConfiguration.class)
+@Import({TestContainersConfiguration.class, JourneyService.class})
 @ActiveProfiles({"test"})
 @AutoConfigureMockMvc
 class TimelineResourceTest {
@@ -429,7 +430,7 @@ class TimelineResourceTest {
     @WithMockAuthenticatedUser
     void getTimelineData_forUpcomingDays_whenJourneyExists_shouldReturnResult(int numberOfDays) throws Exception {
         // setup data
-        IntStream.range(0, numberOfDays + 1).forEach(index -> journeyRepository.save(
+        IntStream.range(1, numberOfDays + 1).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
                                 .journeyDate(LocalDate.now().plusDays(index).minusYears(index))
