@@ -12,13 +12,16 @@ import java.util.Set;
 public record JourneySearchCriteria(
         Set<Visibility> visibilities,
         AppUser appUser,
+        List<String> ids,
         Set<Boolean> publishedFlags,
         String searchText,
         List<String> tags,
-        String cityText,
-        String countryText,
-        String categoryText,
-        LocalDate journeyStartDate,
-        LocalDate journeyEndDate) {
+        List<String> cities,
+        List<String> countries,
+        List<String> categories,
+        LocalDate journeyDateFrom,
+        LocalDate journeyDateUpTo,
+        List<Long> journeyYears,
+        Integer journeyDaysUpTo) {
 
 }

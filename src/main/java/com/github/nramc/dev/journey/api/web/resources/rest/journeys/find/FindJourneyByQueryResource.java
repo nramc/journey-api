@@ -47,9 +47,9 @@ public class FindJourneyByQueryResource {
             @RequestParam(name = "publishedOnly", defaultValue = "false") boolean publishedOnly,
             @RequestParam(name = "q", defaultValue = "") String searchText,
             @RequestParam(name = "tags", defaultValue = "") List<String> tags,
-            @RequestParam(name = "city", defaultValue = "") String cityText,
-            @RequestParam(name = "country", defaultValue = "") String countryText,
-            @RequestParam(name = "category", defaultValue = "") String categoryText,
+            @RequestParam(name = "city", defaultValue = "") List<String> cities,
+            @RequestParam(name = "country", defaultValue = "") List<String> countries,
+            @RequestParam(name = "category", defaultValue = "") List<String> categories,
             @RequestParam(name = "year", required = false) Long year,
             Authentication authentication) {
 
@@ -67,11 +67,11 @@ public class FindJourneyByQueryResource {
                 .publishedFlags(publishedFlags)
                 .searchText(searchText)
                 .tags(tagsInLowerCase)
-                .cityText(cityText)
-                .countryText(countryText)
-                .categoryText(categoryText)
-                .journeyStartDate(journeyStartDate)
-                .journeyEndDate(journeyLastDate)
+                .cities(cities)
+                .countries(countries)
+                .categories(categories)
+                .journeyDateFrom(journeyStartDate)
+                .journeyDateUpTo(journeyLastDate)
                 .build();
         PagingProperty pagingProperty = PagingProperty.builder()
                 .pageIndex(pageIndex)

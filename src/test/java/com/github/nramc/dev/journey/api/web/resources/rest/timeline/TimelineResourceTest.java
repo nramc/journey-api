@@ -425,11 +425,11 @@ class TimelineResourceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"3", "5", "10", "15", "25", "31"})
+    @ValueSource(ints = {3, 5, 10, 15, 25, 31})
     @WithMockAuthenticatedUser
-    void getTimelineData_forUpcomingDays_whenJourneyExists_shouldReturnResult(String numberOfDays) throws Exception {
+    void getTimelineData_forUpcomingDays_whenJourneyExists_shouldReturnResult(int numberOfDays) throws Exception {
         // setup data
-        IntStream.range(0, Integer.parseInt(numberOfDays + 1)).forEach(index -> journeyRepository.save(
+        IntStream.range(0, numberOfDays + 1).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
                                 .journeyDate(LocalDate.now().plusDays(index).minusYears(index))
@@ -438,14 +438,14 @@ class TimelineResourceTest {
         );
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
-                        .queryParam("upcoming", numberOfDays)
+                        .queryParam("upcoming", String.valueOf(numberOfDays))
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("Upcoming Journiversaries"))
                 .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(Integer.parseInt(numberOfDays))))
+                .andExpect(jsonPath("$.images").value(hasSize(numberOfDays)))
                 .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
                 .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
                 .andExpect(jsonPath("$.images[0].args").isMap());
