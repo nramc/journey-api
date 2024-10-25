@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
@@ -55,7 +56,7 @@ public class TimelineResource {
                 .countries(countries)
                 .categories(categories)
                 .journeyYears(years)
-                .journeyDaysUpTo(BooleanUtils.isTrue(today) ? 0 : upcomingJourneysTillDays)
+                .journeyDaysUpTo(Optional.ofNullable(today).filter(BooleanUtils::isTrue).map(ignore -> 0).orElse(upcomingJourneysTillDays))
                 .build();
 
         List<Journey> journeys = journeyService.findAllJourneys(searchCriteria);
