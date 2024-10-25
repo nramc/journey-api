@@ -16,13 +16,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.getCriteriaWhenDateRangeFallsCrossMonths;
-import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.getCriteriaWhenDateRangeFallsUnderSameMonths;
+import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.getCriteriaForUpcomingAnniversary;
 import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.transformSearchCriteria;
 
 @RequiredArgsConstructor
@@ -50,15 +48,7 @@ public class JourneyService {
                 Criteria.where("visibilities").in(AuthUtils.getVisibilityFromRole(user.roles())))
         );
 
-        LocalDate startDate = LocalDate.now();
-        LocalDate endDate = startDate.plusDays(daysAhead);
-
-        if (startDate.getMonthValue() == endDate.getMonthValue()) {
-            criteriaList.add(getCriteriaWhenDateRangeFallsUnderSameMonths(startDate, endDate));
-        } else {
-            criteriaList.add(getCriteriaWhenDateRangeFallsCrossMonths(startDate, endDate));
-        }
-
+        criteriaList.add(getCriteriaForUpcomingAnniversary(daysAhead));
         Criteria combinedCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
         List<JourneyEntity> results = mongoTemplate.find(new Query(combinedCriteria), JourneyEntity.class);
         return CollectionUtils.emptyIfNull(results).stream().map(JourneyConverter::convert).toList();

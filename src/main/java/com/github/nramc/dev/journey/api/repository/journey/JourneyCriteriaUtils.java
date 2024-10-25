@@ -18,7 +18,18 @@ import static java.util.regex.Pattern.compile;
 @SuppressWarnings("java:S1192") // Suppressed String literals should not be repeated
 public class JourneyCriteriaUtils {
 
-    static Criteria getCriteriaWhenDateRangeFallsCrossMonths(LocalDate startDate, LocalDate endDate) {
+    static Criteria getCriteriaForUpcomingAnniversary(int daysAhead) {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(daysAhead);
+
+        if (startDate.getMonthValue() == endDate.getMonthValue()) {
+            return getCriteriaWhenDateRangeFallsUnderSameMonths(startDate, endDate);
+        } else {
+            return getCriteriaWhenDateRangeFallsCrossMonths(startDate, endDate);
+        }
+    }
+
+    private static Criteria getCriteriaWhenDateRangeFallsCrossMonths(LocalDate startDate, LocalDate endDate) {
         // Crosses months
         Criteria startMonthCriteria = new Criteria().andOperator(
                 Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue()))),
@@ -31,7 +42,7 @@ public class JourneyCriteriaUtils {
         return new Criteria().orOperator(startMonthCriteria, endMonthCriteria);
     }
 
-    static Criteria getCriteriaWhenDateRangeFallsUnderSameMonths(LocalDate startDate, LocalDate endDate) {
+    private static Criteria getCriteriaWhenDateRangeFallsUnderSameMonths(LocalDate startDate, LocalDate endDate) {
         return new Criteria().andOperator(
                 Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue()))),
                 Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth()))),
@@ -72,9 +83,7 @@ public class JourneyCriteriaUtils {
         Optional.ofNullable(searchCriteria.journeyYears()).filter(CollectionUtils::isNotEmpty)
                 .ifPresent(years -> criteriaList.add(Criteria.where("$expr").is(new Document("$in", List.of(new Document("$year", "$journeyDate"), years)))));
         Optional.ofNullable(searchCriteria.journeyDaysUpTo())
-                .ifPresent(daysUpto -> {
-
-                });
+                .ifPresent(daysUpto -> criteriaList.add(getCriteriaForUpcomingAnniversary(daysUpto)));
 
         return new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
     }

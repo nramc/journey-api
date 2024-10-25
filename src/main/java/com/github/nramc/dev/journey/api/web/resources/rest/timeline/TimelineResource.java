@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,7 +55,7 @@ public class TimelineResource {
                 .countries(countries)
                 .categories(categories)
                 .journeyYears(years)
-                .journeyDaysUpTo(upcomingJourneysTillDays)
+                .journeyDaysUpTo(BooleanUtils.isTrue(today) ? 0 : upcomingJourneysTillDays)
                 .build();
 
         List<Journey> journeys = journeyService.findAllJourneys(searchCriteria);
