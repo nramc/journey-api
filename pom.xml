@@ -46,11 +46,6 @@
     <dependencyManagement>
         <dependencies>
             <!--  Added to fix known CVEs          -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>6.1.14</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
