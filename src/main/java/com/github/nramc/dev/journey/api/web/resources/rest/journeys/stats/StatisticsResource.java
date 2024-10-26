@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.stats;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
@@ -44,14 +43,14 @@ public class StatisticsResource {
         List<JourneyEntity> entities = journeyService.findAllPublishedJourneys(user, visibilities);
 
         return StatisticsResponse.builder()
-                .categories(getStatsFor(entities, journeyEntity -> Optional.of(journeyEntity).map(JourneyEntity::getExtended)
-                        .map(JourneyExtendedEntity::getGeoDetails).map(JourneyGeoDetailsEntity::getCategory).orElse(StringUtils.EMPTY)
+                .categories(getStatsFor(entities, journeyEntity -> Optional.of(journeyEntity).map(JourneyEntity::getGeoDetails)
+                        .map(JourneyGeoDetailsEntity::getCategory).orElse(StringUtils.EMPTY)
                 ))
-                .cities(getStatsFor(entities, journeyEntity -> Optional.of(journeyEntity).map(JourneyEntity::getExtended)
-                        .map(JourneyExtendedEntity::getGeoDetails).map(JourneyGeoDetailsEntity::getCity).orElse(StringUtils.EMPTY)
+                .cities(getStatsFor(entities, journeyEntity -> Optional.of(journeyEntity).map(JourneyEntity::getGeoDetails)
+                        .map(JourneyGeoDetailsEntity::getCity).orElse(StringUtils.EMPTY)
                 ))
-                .countries(getStatsFor(entities, journeyEntity -> Optional.of(journeyEntity).map(JourneyEntity::getExtended)
-                        .map(JourneyExtendedEntity::getGeoDetails).map(JourneyGeoDetailsEntity::getCountry).orElse(StringUtils.EMPTY)
+                .countries(getStatsFor(entities, journeyEntity -> Optional.of(journeyEntity).map(JourneyEntity::getGeoDetails)
+                        .map(JourneyGeoDetailsEntity::getCountry).orElse(StringUtils.EMPTY)
                 ))
                 .years(getStatsFor(entities, entity -> String.valueOf(entity.getJourneyDate().getYear())))
                 .build();

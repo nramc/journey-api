@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
@@ -21,8 +21,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -58,9 +58,7 @@ class FindJourneyByIdResourceTest {
                 .andExpect(jsonPath("$.thumbnail").value(NEW_JOURNEY_ENTITY.getThumbnail()))
                 .andExpect(jsonPath("$.journeyDate").value("2024-03-27"))
                 .andExpect(jsonPath("$.createdDate").value("2024-03-27"))
-                .andExpect(jsonPath("$.isPublished").value(false))
-                .andExpect(jsonPath("$.extendedDetails").value(NEW_JOURNEY_ENTITY.getExtended()))
-        ;
+                .andExpect(jsonPath("$.isPublished").value(false));
     }
 
     @Test
@@ -81,32 +79,31 @@ class FindJourneyByIdResourceTest {
                         jsonPath("$.thumbnail").value(JOURNEY_ENTITY.getThumbnail()),
                         jsonPath("$.journeyDate").value("2024-03-27"),
                         jsonPath("$.createdDate").value("2024-03-27"),
-                        jsonPath("$.isPublished").value(false),
-                        jsonPath("$.extendedDetails").exists()
+                        jsonPath("$.isPublished").value(false)
                 )
                 .andExpectAll(
-                        jsonPath("$.extendedDetails.geoDetails.title").value("Airport, Munich, Germany"),
-                        jsonPath("$.extendedDetails.geoDetails.city").value("Munich"),
-                        jsonPath("$.extendedDetails.geoDetails.country").value("Germany"),
-                        jsonPath("$.extendedDetails.geoDetails.category").value("default"),
-                        jsonPath("$.extendedDetails.geoDetails.location.type").value("Point"),
-                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").isArray(),
-                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").value(hasSize(2)),
-                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)),
-                        jsonPath("$.extendedDetails.geoDetails.geoJson.type").value("FeatureCollection"),
-                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
+                        jsonPath("$.geoDetails.title").value("Airport, Munich, Germany"),
+                        jsonPath("$.geoDetails.city").value("Munich"),
+                        jsonPath("$.geoDetails.country").value("Germany"),
+                        jsonPath("$.geoDetails.category").value("default"),
+                        jsonPath("$.geoDetails.location.type").value("Point"),
+                        jsonPath("$.geoDetails.location.coordinates").isArray(),
+                        jsonPath("$.geoDetails.location.coordinates").value(hasSize(2)),
+                        jsonPath("$.geoDetails.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896)),
+                        jsonPath("$.geoDetails.geoJson.type").value("FeatureCollection"),
+                        jsonPath("$.geoDetails.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
                 )
                 .andExpectAll(
-                        jsonPath("$.extendedDetails.imagesDetails.images").value(hasSize(2)),
-                        jsonPath("$.extendedDetails.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.jpg")),
-                        jsonPath("$.extendedDetails.imagesDetails.images[*].assetId").value(hasItems("asset 1", "asset 2")),
-                        jsonPath("$.extendedDetails.imagesDetails.images[*].title").value(hasItems("Image 1 Title", "Image 2 Title")),
-                        jsonPath("$.extendedDetails.imagesDetails.images[*].isFavorite").value(hasItems(true, true)),
-                        jsonPath("$.extendedDetails.imagesDetails.images[*].isThumbnail").value(hasItems(false, false))
+                        jsonPath("$.imagesDetails.images").value(hasSize(2)),
+                        jsonPath("$.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.jpg")),
+                        jsonPath("$.imagesDetails.images[*].assetId").value(hasItems("asset 1", "asset 2")),
+                        jsonPath("$.imagesDetails.images[*].title").value(hasItems("Image 1 Title", "Image 2 Title")),
+                        jsonPath("$.imagesDetails.images[*].isFavorite").value(hasItems(true, true)),
+                        jsonPath("$.imagesDetails.images[*].isThumbnail").value(hasItems(false, false))
                 )
                 .andExpectAll(
-                        jsonPath("$.extendedDetails.videosDetails.videos").value(hasSize(2)),
-                        jsonPath("$.extendedDetails.videosDetails.videos[*].videoId").value(hasItems("VIDEO_ID_1", "https://example.com/example.mp4"))
+                        jsonPath("$.videosDetails.videos").value(hasSize(2)),
+                        jsonPath("$.videosDetails.videos[*].videoId").value(hasItems("VIDEO_ID_1", "https://example.com/example.mp4"))
                 );
     }
 

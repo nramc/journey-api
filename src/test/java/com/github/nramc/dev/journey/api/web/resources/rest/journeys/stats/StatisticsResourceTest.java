@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.stats;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
@@ -62,15 +62,12 @@ class StatisticsResourceTest {
                         .visibilities(Set.of(MYSELF))
                         .isPublished(true)
                         .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index % 2))
-                        .extended(JOURNEY_ENTITY.getExtended().toBuilder()
-                                .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
-                                        .category("Category_" + (index % 2 == 0 ? "even" : "odd"))
-                                        .city("City_" + (index % 2 == 0 ? "even" : "odd"))
-                                        .country("Country_" + (index % 2 == 0 ? "even" : "odd"))
-                                        .build())
+                        .geoDetails(JOURNEY_ENTITY.getGeoDetails().toBuilder()
+                                .category("Category_" + (index % 2 == 0 ? "even" : "odd"))
+                                .city("City_" + (index % 2 == 0 ? "even" : "odd"))
+                                .country("Country_" + (index % 2 == 0 ? "even" : "odd"))
                                 .build()
-                        )
-                        .build()
+                        ).build()
         ).toList();
         when(journeyService.findAllPublishedJourneys(any(), any())).thenReturn(journeyEntities);
 

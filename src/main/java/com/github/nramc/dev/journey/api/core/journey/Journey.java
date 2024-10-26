@@ -22,7 +22,9 @@ public record Journey(
         @NotBlank @URL String thumbnail,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate,
         @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate,
-        @NotNull @Valid JourneyExtendedDetails extendedDetails,
+        @NotNull @Valid JourneyGeoDetails geoDetails,
+        @Valid JourneyImagesDetails imagesDetails,
+        @Valid JourneyVideosDetails videosDetails,
         @NotEmpty Set<Visibility> visibilities,
         boolean isPublished) {
 }

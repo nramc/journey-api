@@ -5,7 +5,6 @@ import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUse
 import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
@@ -129,10 +128,7 @@ class TimelineResourceTest {
         journeyRepository.save(
                 VALID_JOURNEY.toBuilder()
                         .id("ID_12345")
-                        .extended(JourneyExtendedEntity.builder()
-                                .imagesDetails(JourneyImagesDetailsEntity.builder().images(images).build())
-                                .build()
-                        )
+                        .imagesDetails(JourneyImagesDetailsEntity.builder().images(images).build())
                         .build()
         );
 
@@ -211,12 +207,9 @@ class TimelineResourceTest {
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .extended(VALID_JOURNEY.getExtended().toBuilder()
-                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
-                                                .city("City_" + index)
-                                                .build())
-                                        .build()
-                                )
+                                .geoDetails(VALID_JOURNEY.getGeoDetails().toBuilder()
+                                        .city("City_" + index)
+                                        .build())
                                 .build()
                 )
         );
@@ -244,12 +237,9 @@ class TimelineResourceTest {
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .extended(VALID_JOURNEY.getExtended().toBuilder()
-                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
-                                                .city("City_" + index)
-                                                .build())
-                                        .build()
-                                )
+                                .geoDetails(VALID_JOURNEY.getGeoDetails().toBuilder()
+                                        .city("City_" + index)
+                                        .build())
                                 .build()
                 )
         );
@@ -276,12 +266,9 @@ class TimelineResourceTest {
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .extended(VALID_JOURNEY.getExtended().toBuilder()
-                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
-                                                .country("Country_" + index)
-                                                .build())
-                                        .build()
-                                )
+                                .geoDetails(VALID_JOURNEY.getGeoDetails().toBuilder()
+                                        .country("Country_" + index)
+                                        .build())
                                 .build()
                 )
         );
@@ -311,12 +298,9 @@ class TimelineResourceTest {
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .extended(VALID_JOURNEY.getExtended().toBuilder()
-                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
-                                                .country("Country_" + index)
-                                                .build())
-                                        .build()
-                                )
+                                .geoDetails(VALID_JOURNEY.getGeoDetails().toBuilder()
+                                        .country("Country_" + index)
+                                        .build())
                                 .build()
                 )
         );
@@ -343,12 +327,9 @@ class TimelineResourceTest {
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .extended(VALID_JOURNEY.getExtended().toBuilder()
-                                        .geoDetails(VALID_JOURNEY.getExtended().getGeoDetails().toBuilder()
-                                                .category("Category_" + index)
-                                                .build())
-                                        .build()
-                                )
+                                .geoDetails(VALID_JOURNEY.getGeoDetails().toBuilder()
+                                        .category("Category_" + index)
+                                        .build())
                                 .build()
                 )
         );

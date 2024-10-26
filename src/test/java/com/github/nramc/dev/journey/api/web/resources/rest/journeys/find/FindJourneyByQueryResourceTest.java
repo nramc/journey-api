@@ -331,12 +331,7 @@ class FindJourneyByQueryResourceTest {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder().id("ID_" + index)
-                                .extended(JOURNEY_ENTITY.getExtended().toBuilder()
-                                        .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
-                                                .city("City_" + index)
-                                                .build())
-                                        .build()
-                                )
+                                .geoDetails(JOURNEY_ENTITY.getGeoDetails().toBuilder().city("City_" + index).build())
                                 .build()
                 )
         );
@@ -361,12 +356,9 @@ class FindJourneyByQueryResourceTest {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
                 VALID_JOURNEY.toBuilder().id("ID_" + index)
-                        .extended(JOURNEY_ENTITY.getExtended().toBuilder()
-                                .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
-                                        .country("Country_" + index)
-                                        .build())
-                                .build()
-                        )
+                        .geoDetails(JOURNEY_ENTITY.getGeoDetails().toBuilder()
+                                .country("Country_" + index)
+                                .build())
                         .build()));
         journeyRepository.findAll().forEach(System.out::println);
 
@@ -389,13 +381,10 @@ class FindJourneyByQueryResourceTest {
         // setup data
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(
                 VALID_JOURNEY.toBuilder().id("ID_" + index)
-                        .extended(JOURNEY_ENTITY.getExtended().toBuilder()
-                                .geoDetails(JOURNEY_ENTITY.getExtended().getGeoDetails().toBuilder()
-                                        .category("Category_" + index)
-                                        .build())
+                        .geoDetails(JOURNEY_ENTITY.getGeoDetails().toBuilder()
+                                .category("Category_" + index)
                                 .build()
-                        )
-                        .build())
+                        ).build())
         );
         journeyRepository.findAll().forEach(System.out::println);
 

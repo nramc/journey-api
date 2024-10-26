@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api;
 
-import com.github.nramc.dev.journey.api.migration.journeys.HelloWorld;
+import com.github.nramc.dev.journey.api.migration.journeys.JourneyEntityMigrationRule;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +19,7 @@ public class JourneyApiApplication {
     CommandLineRunner commandLineRunner(JourneyRepository journeyRepository) {
         return args -> {
             log.info("######## Migration support started ########");
-            HelloWorld helloWorld = new HelloWorld(journeyRepository);
+            JourneyEntityMigrationRule helloWorld = new JourneyEntityMigrationRule(journeyRepository);
             helloWorld.run();
             log.info("######## Migration support completed ########");
         };

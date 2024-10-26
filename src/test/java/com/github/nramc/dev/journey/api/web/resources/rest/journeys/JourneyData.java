@@ -7,7 +7,6 @@ import com.github.nramc.commons.geojson.domain.Position;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
@@ -49,12 +48,9 @@ public class JourneyData {
             .build();
 
     public static final JourneyEntity JOURNEY_ENTITY = NEW_JOURNEY_ENTITY.toBuilder()
-            .extended(JourneyExtendedEntity.builder()
-                    .geoDetails(getGeoDetailsEntity())
-                    .imagesDetails(getImagesDetailsEntity())
-                    .videosDetails(newVideosDetailsEntity())
-                    .build()
-            )
+            .geoDetails(getGeoDetailsEntity())
+            .imagesDetails(getImagesDetailsEntity())
+            .videosDetails(newVideosDetailsEntity())
             .build();
 
     public static JourneyGeoDetailsEntity getGeoDetailsEntity() {

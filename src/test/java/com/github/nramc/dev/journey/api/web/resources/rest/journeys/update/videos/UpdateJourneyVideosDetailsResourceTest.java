@@ -77,8 +77,8 @@ class UpdateJourneyVideosDetailsResourceTest {
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
                 .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
-                .andExpect(jsonPath("$.extendedDetails.videosDetails.videos").value(hasSize(3)))
-                .andExpect(jsonPath("$.extendedDetails.videosDetails.videos[*].videoId").value(hasItems("VIDEO_ID001", "VIDEO_ID002", "VIDEO_ID003")));
+                .andExpect(jsonPath("$.videosDetails.videos").value(hasSize(3)))
+                .andExpect(jsonPath("$.videosDetails.videos[*].videoId").value(hasItems("VIDEO_ID001", "VIDEO_ID002", "VIDEO_ID003")));
     }
 
     @Test
