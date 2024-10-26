@@ -2,7 +2,6 @@ package com.github.nramc.dev.journey.api.repository.journey.converter;
 
 import com.github.nramc.commons.geojson.domain.Feature;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.map.HashedMap;
@@ -17,7 +16,7 @@ public class JourneyFeatureConverter {
 
     public static Feature toFeature(JourneyEntity entity) {
         return Feature.of(entity.getId(),
-                Optional.of(entity).map(JourneyEntity::getExtended).map(JourneyExtendedEntity::getGeoDetails).map(JourneyGeoDetailsEntity::getLocation).orElse(null),
+                Optional.of(entity).map(JourneyEntity::getGeoDetails).map(JourneyGeoDetailsEntity::getLocation).orElse(null),
                 toProperties(entity)
         );
     }
@@ -26,7 +25,7 @@ public class JourneyFeatureConverter {
         Map<String, Serializable> properties = new HashedMap<>();
 
         Optional<JourneyGeoDetailsEntity> optionalJourneyGeoDetails = Optional.of(entity)
-                .map(JourneyEntity::getExtended).map(JourneyExtendedEntity::getGeoDetails);
+                .map(JourneyEntity::getGeoDetails);
 
         properties.put("name", entity.getName());
         properties.put("description", entity.getDescription());

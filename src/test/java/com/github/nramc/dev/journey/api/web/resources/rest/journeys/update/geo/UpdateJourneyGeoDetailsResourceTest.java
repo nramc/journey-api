@@ -81,18 +81,18 @@ class UpdateJourneyGeoDetailsResourceTest {
                         jsonPath("$.createdDate").value("2024-03-27")
                 )
                 .andExpectAll(
-                        jsonPath("$.extendedDetails.geoDetails.title").value("Airport, Munich, Germany"),
-                        jsonPath("$.extendedDetails.geoDetails.city").value("Munich"),
-                        jsonPath("$.extendedDetails.geoDetails.country").value("Germany"),
-                        jsonPath("$.extendedDetails.geoDetails.category").value("default"),
-                        jsonPath("$.extendedDetails.geoDetails.geoJson.type").value("GeometryCollection"),
-                        jsonPath("$.extendedDetails.geoDetails.location.type").value("Point"),
-                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").isArray(),
-                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").value(hasSize(2)),
-                        jsonPath("$.extendedDetails.geoDetails.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
+                        jsonPath("$.geoDetails.title").value("Airport, Munich, Germany"),
+                        jsonPath("$.geoDetails.city").value("Munich"),
+                        jsonPath("$.geoDetails.country").value("Germany"),
+                        jsonPath("$.geoDetails.category").value("default"),
+                        jsonPath("$.geoDetails.geoJson.type").value("GeometryCollection"),
+                        jsonPath("$.geoDetails.location.type").value("Point"),
+                        jsonPath("$.geoDetails.location.coordinates").isArray(),
+                        jsonPath("$.geoDetails.location.coordinates").value(hasSize(2)),
+                        jsonPath("$.geoDetails.location.coordinates").value(hasItems(48.183160038296585, 11.53090747669896))
                 )
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails").isEmpty())
-                .andExpect(jsonPath("$.extendedDetails.videosDetails").isEmpty());
+                .andExpect(jsonPath("$.imagesDetails").isEmpty())
+                .andExpect(jsonPath("$.videosDetails").isEmpty());
     }
 
     @Test

@@ -1,14 +1,12 @@
 package com.github.nramc.dev.journey.api.repository.journey.converter;
 
 import com.github.nramc.dev.journey.api.core.journey.Journey;
-import com.github.nramc.dev.journey.api.core.journey.JourneyExtendedDetails;
 import com.github.nramc.dev.journey.api.core.journey.JourneyGeoDetails;
 import com.github.nramc.dev.journey.api.core.journey.JourneyImageDetail;
 import com.github.nramc.dev.journey.api.core.journey.JourneyImagesDetails;
 import com.github.nramc.dev.journey.api.core.journey.JourneyVideoDetail;
 import com.github.nramc.dev.journey.api.core.journey.JourneyVideosDetails;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import lombok.experimental.UtilityClass;
@@ -30,26 +28,16 @@ public class JourneyConverter {
                 .thumbnail(entity.getThumbnail())
                 .journeyDate(entity.getJourneyDate())
                 .createdDate(entity.getCreatedDate())
-                .extendedDetails(getExtendedDetails(entity))
+                .geoDetails(getGeoDetails(entity))
+                .imagesDetails(getImagesDetails(entity))
+                .videosDetails(getVideosDetails(entity))
                 .isPublished(BooleanUtils.toBoolean(entity.getIsPublished()))
                 .visibilities(entity.getVisibilities())
                 .build();
     }
 
-    private static JourneyExtendedDetails getExtendedDetails(JourneyEntity journeyEntity) {
-        return Optional.of(journeyEntity)
-                .filter(journey -> journey.getExtended() != null)
-                .map(journey -> JourneyExtendedDetails.builder()
-                        .geoDetails(getGeoDetails(journey))
-                        .imagesDetails(getImagesDetails(journey))
-                        .videosDetails(getVideosDetails(journey))
-                        .build())
-                .orElse(null);
-    }
-
     private static JourneyGeoDetails getGeoDetails(JourneyEntity journeyEntity) {
-        return Optional.ofNullable(journeyEntity.getExtended())
-                .map(JourneyExtendedEntity::getGeoDetails)
+        return Optional.ofNullable(journeyEntity.getGeoDetails())
                 .map(journeyGeoDetailsEntity -> JourneyGeoDetails.builder()
                         .title(journeyGeoDetailsEntity.getTitle())
                         .city(journeyGeoDetailsEntity.getCity())
@@ -62,8 +50,7 @@ public class JourneyConverter {
     }
 
     private static JourneyImagesDetails getImagesDetails(JourneyEntity journeyEntity) {
-        return Optional.ofNullable(journeyEntity.getExtended())
-                .map(JourneyExtendedEntity::getImagesDetails)
+        return Optional.ofNullable(journeyEntity.getImagesDetails())
                 .map(entity -> JourneyImagesDetails.builder().images(toImageDetails(entity.getImages())).build())
                 .orElse(null);
     }
@@ -82,8 +69,7 @@ public class JourneyConverter {
     }
 
     private static JourneyVideosDetails getVideosDetails(JourneyEntity journeyEntity) {
-        return Optional.ofNullable(journeyEntity.getExtended())
-                .map(JourneyExtendedEntity::getVideosDetails)
+        return Optional.ofNullable(journeyEntity.getVideosDetails())
                 .map(entity -> JourneyVideosDetails.builder().videos(toVideoDetails(entity.getVideos())).build())
                 .orElse(null);
     }

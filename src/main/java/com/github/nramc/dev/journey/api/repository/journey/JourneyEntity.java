@@ -29,5 +29,7 @@ public class JourneyEntity {
     private LocalDate journeyDate;
     private Boolean isPublished;
     private Set<Visibility> visibilities;
-    private JourneyExtendedEntity extended;
+    private JourneyGeoDetailsEntity geoDetails;
+    private JourneyImagesDetailsEntity imagesDetails;
+    private JourneyVideosDetailsEntity videosDetails;
 }

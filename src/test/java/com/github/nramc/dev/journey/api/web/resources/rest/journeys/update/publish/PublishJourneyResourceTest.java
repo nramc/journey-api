@@ -74,9 +74,9 @@ class PublishJourneyResourceTest {
 
         return Stream.of(
                 JOURNEY_ENTITY.toBuilder().build(),
-                JOURNEY_ENTITY.toBuilder().extended(JOURNEY_ENTITY.getExtended().toBuilder().videosDetails(null).build()).build(),
-                JOURNEY_ENTITY.toBuilder().extended(JOURNEY_ENTITY.getExtended().toBuilder().imagesDetails(null).build()).build(),
-                JOURNEY_ENTITY.toBuilder().extended(JOURNEY_ENTITY.getExtended().toBuilder().imagesDetails(null).videosDetails(null).build()).build()
+                JOURNEY_ENTITY.toBuilder().videosDetails(null).build(),
+                JOURNEY_ENTITY.toBuilder().imagesDetails(null).build(),
+                JOURNEY_ENTITY.toBuilder().imagesDetails(null).videosDetails(null).build()
         );
     }
 

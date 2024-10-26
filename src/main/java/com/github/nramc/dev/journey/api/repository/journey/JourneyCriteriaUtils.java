@@ -71,11 +71,11 @@ public class JourneyCriteriaUtils {
         Optional.ofNullable(searchCriteria.tags()).filter(CollectionUtils::isNotEmpty)
                 .ifPresent(tags -> criteriaList.add(Criteria.where("tags").in(tags)));
         Optional.ofNullable(searchCriteria.cities()).filter(CollectionUtils::isNotEmpty)
-                .ifPresent(cities -> criteriaList.add(Criteria.where("extended.geoDetails.city").in(cities)));
+                .ifPresent(cities -> criteriaList.add(Criteria.where("geoDetails.city").in(cities)));
         Optional.ofNullable(searchCriteria.countries()).filter(CollectionUtils::isNotEmpty)
-                .ifPresent(countries -> criteriaList.add(Criteria.where("extended.geoDetails.country").in(countries)));
+                .ifPresent(countries -> criteriaList.add(Criteria.where("geoDetails.country").in(countries)));
         Optional.ofNullable(searchCriteria.categories()).filter(CollectionUtils::isNotEmpty)
-                .ifPresent(categories -> criteriaList.add(Criteria.where("extended.geoDetails.category").in(categories)));
+                .ifPresent(categories -> criteriaList.add(Criteria.where("geoDetails.category").in(categories)));
         Optional.ofNullable(searchCriteria.journeyDateFrom())
                 .ifPresent(startDate -> criteriaList.add(Criteria.where("journeyDate").gte(startDate)));
         Optional.ofNullable(searchCriteria.journeyDateUpTo())

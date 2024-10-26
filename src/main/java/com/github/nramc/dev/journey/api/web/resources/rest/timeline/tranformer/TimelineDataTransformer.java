@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.timeline.tranformer;
 
 import com.github.nramc.dev.journey.api.core.journey.Journey;
-import com.github.nramc.dev.journey.api.core.journey.JourneyExtendedDetails;
 import com.github.nramc.dev.journey.api.core.journey.JourneyImageDetail;
 import com.github.nramc.dev.journey.api.core.journey.JourneyImagesDetails;
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData;
@@ -72,8 +71,7 @@ public class TimelineDataTransformer {
 
     private static List<JourneyImageDetail> getFavoriteImages(Journey journey) {
         return Optional.of(journey)
-                .map(Journey::extendedDetails)
-                .map(JourneyExtendedDetails::imagesDetails)
+                .map(Journey::imagesDetails)
                 .map(JourneyImagesDetails::images)
                 .filter(CollectionUtils::isNotEmpty)
                 .orElse(List.of())
@@ -85,8 +83,7 @@ public class TimelineDataTransformer {
 
     public static List<JourneyImageDetail> getFirstNImages(Journey journey, int maxImagesPerJourney) {
         return Optional.of(journey)
-                .map(Journey::extendedDetails)
-                .map(JourneyExtendedDetails::imagesDetails)
+                .map(Journey::imagesDetails)
                 .map(JourneyImagesDetails::images)
                 .filter(CollectionUtils::isNotEmpty)
                 .orElse(List.of())

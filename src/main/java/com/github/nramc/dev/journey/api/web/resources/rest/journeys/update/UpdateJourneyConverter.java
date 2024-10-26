@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
@@ -20,8 +19,6 @@ import java.util.Set;
 public class UpdateJourneyConverter {
 
     public static JourneyEntity extendWithImagesDetails(UpdateJourneyImagesDetailsRequest fromRequest, JourneyEntity toEntity) {
-        JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
-
         List<JourneyImageDetailEntity> imageDetailEntities = CollectionUtils.emptyIfNull(fromRequest.images()).stream()
                 .map(UpdateJourneyConverter::toJourneyImageDetailEntity)
                 .toList();
@@ -32,7 +29,7 @@ public class UpdateJourneyConverter {
 
         return toEntity.toBuilder()
                 .thumbnail(getThumbnailImageIfExists(imageDetailEntities).map(JourneyImageDetailEntity::getUrl).orElse(toEntity.getThumbnail()))
-                .extended(extendedEntity.toBuilder().imagesDetails(imageDetailsEntity).build())
+                .imagesDetails(imageDetailsEntity)
                 .build();
     }
 
@@ -53,8 +50,6 @@ public class UpdateJourneyConverter {
     }
 
     public static JourneyEntity extendWithVideosDetails(UpdateJourneyVideosDetailsRequest fromRequest, JourneyEntity toEntity) {
-        JourneyExtendedEntity extendedEntity = Optional.ofNullable(toEntity.getExtended()).orElse(JourneyExtendedEntity.builder().build());
-
         List<JourneyVideoDetailEntity> videoDetailEntities = CollectionUtils.emptyIfNull(fromRequest.videos()).stream()
                 .map(videoDetail -> JourneyVideoDetailEntity.builder()
                         .videoId(videoDetail.videoId())
@@ -67,7 +62,7 @@ public class UpdateJourneyConverter {
                 .build();
 
         return toEntity.toBuilder()
-                .extended(extendedEntity.toBuilder().videosDetails(journeyVideosDetailsEntity).build())
+                .videosDetails(journeyVideosDetailsEntity)
                 .build();
     }
 

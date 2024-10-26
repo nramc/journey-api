@@ -78,12 +78,12 @@ class UpdateJourneyImagesDetailsResourceTest {
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
                 .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images").value(hasSize(3)))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.png", "image3.gif")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].assetId").value(hasItems("first-image", "second-image", "third-image")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].title").value(hasItems(nullValue(), nullValue(), nullValue())))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].isFavorite").value(hasItems(false, false, false)))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].isThumbnail").value(hasItems(false, false, false)));
+                .andExpect(jsonPath("$.imagesDetails.images").value(hasSize(3)))
+                .andExpect(jsonPath("$.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.png", "image3.gif")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].assetId").value(hasItems("first-image", "second-image", "third-image")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].title").value(hasItems(nullValue(), nullValue(), nullValue())))
+                .andExpect(jsonPath("$.imagesDetails.images[*].isFavorite").value(hasItems(false, false, false)))
+                .andExpect(jsonPath("$.imagesDetails.images[*].isThumbnail").value(hasItems(false, false, false)));
     }
 
     @Test
@@ -107,12 +107,12 @@ class UpdateJourneyImagesDetailsResourceTest {
                 .andDo(print())
                 .andExpectAll(STATUS_AND_CONTENT_TYPE_MATCH)
                 .andExpectAll(JOURNEY_BASE_DETAILS_MATCH)
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images").value(hasSize(3)))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.png", "image3.gif")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].assetId").value(hasItems("first-image", "second-image", "third-image")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].title").value(hasItems("Image1 Title", "Image2 Title", "Image3 Title")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].isFavorite").value(hasItems(true, true, true)))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].isThumbnail").value(hasItems(false, false, false)));
+                .andExpect(jsonPath("$.imagesDetails.images").value(hasSize(3)))
+                .andExpect(jsonPath("$.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.png", "image3.gif")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].assetId").value(hasItems("first-image", "second-image", "third-image")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].title").value(hasItems("Image1 Title", "Image2 Title", "Image3 Title")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].isFavorite").value(hasItems(true, true, true)))
+                .andExpect(jsonPath("$.imagesDetails.images[*].isThumbnail").value(hasItems(false, false, false)));
     }
 
     @Test
@@ -145,12 +145,12 @@ class UpdateJourneyImagesDetailsResourceTest {
                         jsonPath("$.journeyDate").value("2024-03-27"),
                         jsonPath("$.createdDate").value("2024-03-27")
                 )
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images").value(hasSize(3)))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.png", "image3.gif")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].assetId").value(hasItems("first-image", "second-image", "third-image")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].title").value(hasItems("Image1 Title", "Image2 Title", "Image3 Title")))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].isFavorite").value(hasItems(true, true, true)))
-                .andExpect(jsonPath("$.extendedDetails.imagesDetails.images[*].isThumbnail").value(hasItems(false, false, false)));
+                .andExpect(jsonPath("$.imagesDetails.images").value(hasSize(3)))
+                .andExpect(jsonPath("$.imagesDetails.images[*].url").value(hasItems("image1.jpg", "image2.png", "image3.gif")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].assetId").value(hasItems("first-image", "second-image", "third-image")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].title").value(hasItems("Image1 Title", "Image2 Title", "Image3 Title")))
+                .andExpect(jsonPath("$.imagesDetails.images[*].isFavorite").value(hasItems(true, true, true)))
+                .andExpect(jsonPath("$.imagesDetails.images[*].isThumbnail").value(hasItems(false, false, false)));
     }
 
     @Test

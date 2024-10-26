@@ -1,12 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.images;
 
+import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyExtendedEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.UpdateJourneyConverter;
@@ -58,7 +57,7 @@ public class UpdateJourneyImagesDetailsResource {
     }
 
     private void deleteImagesFromCloudinaryIfRequired(JourneyEntity journey, List<UpdateJourneyImagesDetailsRequest.ImageDetail> newImageDetails) {
-        List<JourneyImageDetailEntity> currentImagesEntities = Optional.of(journey).map(JourneyEntity::getExtended).map(JourneyExtendedEntity::getImagesDetails)
+        List<JourneyImageDetailEntity> currentImagesEntities = Optional.of(journey).map(JourneyEntity::getImagesDetails)
                 .map(JourneyImagesDetailsEntity::getImages).orElse(Collections.emptyList());
         Set<String> currentImages = CollectionUtils.emptyIfNull(currentImagesEntities)
                 .stream().map(JourneyImageDetailEntity::getAssetId).collect(Collectors.toSet());
