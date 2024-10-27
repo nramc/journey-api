@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.journeys.stats;
+package com.github.nramc.dev.journey.api.web.resources.rest.statistics;
 
 import lombok.Builder;
 

@@ -1,9 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.utils;
 
+import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -52,8 +54,33 @@ public class AuthUtils {
         return visibilities;
     }
 
+    public static Set<Role> getRoleFromAuthority(Collection<? extends GrantedAuthority> authorities) {
+        Set<Role> roles = new HashSet<>();
+        if (isAdministratorRoleExists(authorities)) {
+            roles.add(Role.ADMINISTRATOR);
+        }
+        if (isMaintainerRoleExists(authorities)) {
+            roles.add(Role.MAINTAINER);
+        }
+        if (isAuthenticatedUser(authorities)) {
+            roles.add(Role.AUTHENTICATED_USER);
+        }
+        if (isGuestUser(authorities)) {
+            roles.add(Role.GUEST_USER);
+        }
+
+        return roles;
+    }
+
     public static Set<Visibility> getVisibilityFromRole(Collection<Role> roles) {
         return CollectionUtils.emptyIfNull(roles).stream().map(AuthUtils::toVisibility).collect(Collectors.toSet());
+    }
+
+    public static AppUser toAppUser(Authentication authentication) {
+        return AppUser.builder()
+                .username(authentication.getName())
+                .roles(getRoleFromAuthority(authentication.getAuthorities()))
+                .build();
     }
 
     private static Visibility toVisibility(Role role) {

@@ -1,10 +1,11 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.journeys.stats;
+package com.github.nramc.dev.journey.api.web.resources.rest.statistics;
 
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
+import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -55,7 +56,7 @@ class StatisticsResourceTest {
     @WithMockAuthenticatedUser
     void find_whenJourneyExists_thenShouldReturnResponse() throws Exception {
         // setup data
-        List<JourneyEntity> journeyEntities = IntStream.range(0, 10).mapToObj(index ->
+        List<Journey> journeys = IntStream.range(0, 10).mapToObj(index ->
                 JOURNEY_ENTITY.toBuilder()
                         .id("ID_" + index)
                         .createdDate(LocalDate.now().plusDays(index))
@@ -68,8 +69,8 @@ class StatisticsResourceTest {
                                 .country("Country_" + (index % 2 == 0 ? "even" : "odd"))
                                 .build()
                         ).build()
-        ).toList();
-        when(journeyService.findAllPublishedJourneys(any(), any())).thenReturn(journeyEntities);
+        ).map(JourneyConverter::convert).toList();
+        when(journeyService.findAllPublishedJourneys(any())).thenReturn(journeys);
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_STATISTICS)
                         .accept(MediaType.APPLICATION_JSON)

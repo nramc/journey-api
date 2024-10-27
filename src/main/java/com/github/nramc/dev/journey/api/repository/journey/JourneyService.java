@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.repository.journey;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.data.DataPageable;
 import com.github.nramc.dev.journey.api.core.journey.Journey;
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.getCriteriaForUpcomingAnniversary;
 import static com.github.nramc.dev.journey.api.repository.journey.JourneyCriteriaUtils.transformSearchCriteria;
@@ -28,17 +26,17 @@ public class JourneyService {
     private final MongoTemplate mongoTemplate;
 
 
-    public List<JourneyEntity> findAllPublishedJourneys(AppUser user, Set<Visibility> visibilities) {
-
+    public List<Journey> findAllPublishedJourneys(AppUser user) {
         Criteria publishedJourneysCriteria = Criteria.where("isPublished").is(true);
         Criteria userOwnedJourneysCriteria = Criteria.where("createdBy").is(user.username());
-        Criteria journeyConntainsUserVisibilityCriteria = Criteria.where("visibility").in(visibilities);
+        Criteria journeyConntainsUserVisibilityCriteria = Criteria.where("visibility").in(AuthUtils.getVisibilityFromRole(user.roles()));
 
         Query query = Query.query(publishedJourneysCriteria.orOperator(userOwnedJourneysCriteria, journeyConntainsUserVisibilityCriteria));
 
-        return mongoTemplate.query(JourneyEntity.class)
+        List<JourneyEntity> results = mongoTemplate.query(JourneyEntity.class)
                 .matching(query)
                 .all();
+        return CollectionUtils.emptyIfNull(results).stream().map(JourneyConverter::convert).toList();
     }
 
     public List<Journey> getAnniversariesInNextDays(AppUser user, int daysAhead) {
