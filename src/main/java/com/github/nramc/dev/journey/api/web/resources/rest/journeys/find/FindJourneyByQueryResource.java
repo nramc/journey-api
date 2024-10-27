@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_UPCOMING_ANNIVERSARY;
 import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 
 @RestController
@@ -89,4 +90,13 @@ public class FindJourneyByQueryResource {
         );
         return journeysWithPagination;
     }
+
+    @GetMapping(path = FIND_UPCOMING_ANNIVERSARY, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Journey> getUpcomingAnniversaries(
+            @RequestParam(value = "days", defaultValue = "7") int upcomingAnniversaryDays,
+            Authentication authentication) {
+        AppUser user = AuthUtils.toAppUser(authentication);
+        return journeyService.getAnniversariesInNextDays(user, upcomingAnniversaryDays);
+    }
+
 }
