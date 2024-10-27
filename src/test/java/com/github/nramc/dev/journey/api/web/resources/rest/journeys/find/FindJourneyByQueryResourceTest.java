@@ -5,9 +5,10 @@ import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUse
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,9 +26,12 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_UPCOMING_ANNIVERSARY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -69,7 +73,7 @@ class FindJourneyByQueryResourceTest {
                 )
         );
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("sort", "id")
                         .param("order", "ASC")
@@ -96,7 +100,7 @@ class FindJourneyByQueryResourceTest {
                 )
         );
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("sort", "id")
                         .param("order", "ASC")
@@ -119,7 +123,7 @@ class FindJourneyByQueryResourceTest {
         IntStream.range(0, 10).forEach(index -> journeyRepository.save(VALID_JOURNEY.toBuilder().id("ID_" + index).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("sort", "id")
                         .param("order", "ASC")
@@ -147,7 +151,7 @@ class FindJourneyByQueryResourceTest {
         journeyRepository.save(VALID_JOURNEY.toBuilder().id("ID_03").description("Description have search query 'Fantasy and Adventures' journeys").build());
         journeyRepository.save(VALID_JOURNEY.toBuilder().id("ID_04").build());
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("sort", "id")
                         .param("order", "ASC")
@@ -182,7 +186,7 @@ class FindJourneyByQueryResourceTest {
         JourneyEntity entity = new JourneyEntity();
         entity.setIsPublished(true);
 
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("sort", "id")
                         .param("order", "ASC")
@@ -210,7 +214,7 @@ class FindJourneyByQueryResourceTest {
                 VALID_JOURNEY.toBuilder().id("ID_" + index).createdDate(LocalDate.now().plusDays(index)).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("sort", "id")
                         .param("order", "DESC")
@@ -241,7 +245,7 @@ class FindJourneyByQueryResourceTest {
                 .toArray(String[]::new);
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
@@ -264,7 +268,7 @@ class FindJourneyByQueryResourceTest {
                 VALID_JOURNEY.toBuilder().id("ID_" + index).tags(List.of("tag_" + index)).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .queryParam("tags", "tag")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -284,7 +288,7 @@ class FindJourneyByQueryResourceTest {
                 VALID_JOURNEY.toBuilder().id("ID_" + index).tags(List.of("tag_" + index)).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .queryParam("tags", "tag_0", "tag_1")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -304,7 +308,7 @@ class FindJourneyByQueryResourceTest {
                 VALID_JOURNEY.toBuilder().id("ID_" + index).tags(List.of("tag_" + index)).build()));
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .queryParam("tags", "tag_0, tag_1")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -319,7 +323,7 @@ class FindJourneyByQueryResourceTest {
     @Test
     @WithAnonymousUser
     void find_whenNotAuthenticated_shouldThrowError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isUnauthorized());
@@ -338,7 +342,7 @@ class FindJourneyByQueryResourceTest {
         journeyRepository.findAll().forEach(System.out::println);
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .queryParam("city", "City_5")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -363,7 +367,7 @@ class FindJourneyByQueryResourceTest {
         journeyRepository.findAll().forEach(System.out::println);
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .queryParam("country", "Country_5")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -389,7 +393,7 @@ class FindJourneyByQueryResourceTest {
         journeyRepository.findAll().forEach(System.out::println);
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .queryParam("category", "Category_5")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -410,7 +414,7 @@ class FindJourneyByQueryResourceTest {
         journeyRepository.findAll().forEach(System.out::println);
 
         // Request result with page number 1 (second page) and order by id ascending
-        mockMvc.perform(MockMvcRequestBuilders.get(Resources.FIND_JOURNEYS)
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_JOURNEYS)
                         .queryParam("year", String.valueOf(LocalDate.now().getYear()))
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
@@ -420,6 +424,53 @@ class FindJourneyByQueryResourceTest {
                 .andExpect(jsonPath("$.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalPages").value("1"))
                 .andExpect(jsonPath("$.totalElements").value("1"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {5, 7, 10, 14})
+    @WithMockAuthenticatedUser
+    void getUpcomingAnniversaries_whenDaysGiven_andJourneysAvailable_shouldReturnJourneys(int days) throws Exception {
+        IntStream.range(1, 20).forEach(index -> journeyRepository.save(
+                        VALID_JOURNEY.toBuilder()
+                                .id("ID_" + index)
+                                .journeyDate(LocalDate.now().plusDays(index).minusYears(index))
+                                .isPublished(true)
+                                .build()
+                )
+        );
+        journeyRepository.findAll().forEach(System.out::println);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_UPCOMING_ANNIVERSARY)
+                        .queryParam("days", String.valueOf(days))
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[*]").value(hasSize(days)));
+    }
+
+    @Test
+    @WithMockAuthenticatedUser
+    void getUpcomingAnniversaries_whenDaysNotGiven_shouldConsiderDefaultValue_andReturnExistingJourney() throws Exception {
+        IntStream.range(1, 10).forEach(index -> journeyRepository.save(
+                        VALID_JOURNEY.toBuilder()
+                                .id("ID_" + index)
+                                .journeyDate(LocalDate.now().plusDays(index).minusYears(index))
+                                .isPublished(true)
+                                .build()
+                )
+        );
+        journeyRepository.findAll().forEach(System.out::println);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_UPCOMING_ANNIVERSARY)
+                        .queryParam("days", String.valueOf(7))
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[*]").value(hasSize(7)));
     }
 
 }

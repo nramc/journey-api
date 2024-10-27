@@ -46,6 +46,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOUR
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEY_BY_ID;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_UPCOMING_ANNIVERSARY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_STATISTICS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_TIMELINE_DATA;
@@ -137,7 +138,10 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, FIND_JOURNEYS).access(readAccessAuthorizationManager)
                         .requestMatchers(GET, FIND_JOURNEY_BY_ID).access(readAccessAuthorizationManager)
                         .requestMatchers(GET, FIND_PUBLISHED_JOURNEYS).access(readAccessAuthorizationManager)
+                        .requestMatchers(GET, FIND_UPCOMING_ANNIVERSARY).access(readAccessAuthorizationManager)
+
                         .requestMatchers(GET, GET_STATISTICS).access(readAccessAuthorizationManager)
+
                         .requestMatchers(GET, GET_TIMELINE_DATA).access(readAccessAuthorizationManager)
 
 

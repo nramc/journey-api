@@ -41,8 +41,8 @@ public class JourneyService {
 
     public List<Journey> getAnniversariesInNextDays(AppUser user, int daysAhead) {
         List<Criteria> criteriaList = new ArrayList<>();
-        criteriaList.add(Criteria.where("isPublished").is(true).orOperator(
-                Criteria.where("createdBy").is(user.username()),
+        criteriaList.add(Criteria.where("isPublished").is(true));
+        criteriaList.add(new Criteria().orOperator(Criteria.where("createdBy").is(user.username()),
                 Criteria.where("visibilities").in(AuthUtils.getVisibilityFromRole(user.roles())))
         );
 
