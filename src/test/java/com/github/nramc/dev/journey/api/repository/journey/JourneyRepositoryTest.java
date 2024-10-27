@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_APP_USER;
@@ -52,7 +51,7 @@ class JourneyRepositoryTest {
                 .build();
         journeyRepository.save(journey);
 
-        List<JourneyEntity> journeys = journeyService.findAllPublishedJourneys(AUTHENTICATED_APP_USER, Set.of(Visibility.MYSELF));
+        List<Journey> journeys = journeyService.findAllPublishedJourneys(AUTHENTICATED_APP_USER);
         assertThat(journeys).isNotNull().hasSize(1);
     }
 
