@@ -31,6 +31,7 @@
 
         <!--    mvn versions:display-property-updates    -->
         <commons-geojson.version>0.0.38</commons-geojson.version>
+        <geojson4j.version>0.4.0</geojson4j.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <rewrite-java-security.version>2.14.1</rewrite-java-security.version>
         <rewrite-logging-frameworks.version>2.15.1</rewrite-logging-frameworks.version>
@@ -106,6 +107,11 @@
             <groupId>io.github.nramc.commons</groupId>
             <artifactId>commons-geojson</artifactId>
             <version>${commons-geojson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.nramc</groupId>
+            <artifactId>geojson4j</artifactId>
+            <version>${geojson4j.version}</version>
         </dependency>
         <dependency>
             <groupId>com.cloudinary</groupId>
