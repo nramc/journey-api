@@ -37,7 +37,7 @@
         <rewrite-logging-frameworks.version>2.17.1</rewrite-logging-frameworks.version>
         <rewrite-maven-plugin.version>5.46.2</rewrite-maven-plugin.version>
         <rewrite-recommendations.version>1.14.1</rewrite-recommendations.version>
-        <rewrite-static-analysis.version>1.20.0</rewrite-static-analysis.version>
+        <rewrite-static-analysis.version>1.21.1</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>2.23.1</rewrite-testing-frameworks.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.7.0</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
