@@ -8,6 +8,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class JourneyFeatureConverter {
 
         properties.put("name", entity.getName());
         properties.put("description", entity.getDescription());
+        properties.put("journeyDate", DateTimeFormatter.ISO_DATE.format(entity.getJourneyDate()));
 
         properties.put("category", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getCategory).orElse(StringUtils.EMPTY));
         properties.put("title", optionalJourneyGeoDetails.map(JourneyGeoDetailsEntity::getTitle).orElse(StringUtils.EMPTY));

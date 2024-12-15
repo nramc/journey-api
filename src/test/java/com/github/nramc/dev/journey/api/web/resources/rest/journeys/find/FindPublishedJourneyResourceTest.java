@@ -9,10 +9,10 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Example;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -33,14 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(FindPublishedJourneyResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({JourneyRepository.class})
 @SuppressWarnings("unchecked")
 class FindPublishedJourneyResourceTest {
     private static final String VALID_UUID = "ecc76991-0137-4152-b3b2-efce70a37ed0";
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private JourneyRepository journeyRepository;
+    @MockitoBean
+    JourneyRepository journeyRepository;
 
     @Test
     @WithMockAuthenticatedUser
@@ -91,6 +90,7 @@ class FindPublishedJourneyResourceTest {
                 .andExpect(jsonPath("$.features[0].geometry").exists())
                 .andExpect(jsonPath("$.features[0].properties").exists())
                 .andExpect(jsonPath("$.features[0].properties.name").value(JOURNEY_ENTITY.getName()))
+                .andExpect(jsonPath("$.features[0].properties.journeyDate").value("2024-03-27"))
                 .andExpect(jsonPath("$.features[0].properties.category").value(JOURNEY_ENTITY.getGeoDetails().getCategory()))
                 .andExpect(jsonPath("$.features[0].properties.thumbnail").value(JOURNEY_ENTITY.getThumbnail()))
                 .andExpect(jsonPath("$.features[0].properties.description").value(JOURNEY_ENTITY.getDescription()))
