@@ -12,7 +12,7 @@ class StringObfuscatorTest {
     @CsvSource({
             "Test, T***",
             "Test Test, T********",
-            "Test123, T******",
+            "Test123, T******"
     })
     void obfuscate_WhenNumberOfVisibleCharactersNotSpecified_shouldConsiderDefaultVisibleCharacters(String string, String expectedObfuscatedString) {
         assertThat(StringObfuscator.obfuscate(string)).isEqualTo(expectedObfuscatedString);

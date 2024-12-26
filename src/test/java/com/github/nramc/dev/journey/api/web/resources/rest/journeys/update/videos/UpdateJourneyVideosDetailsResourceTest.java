@@ -48,7 +48,7 @@ class UpdateJourneyVideosDetailsResourceTest {
             jsonPath("$.tags").value(hasItems("travel", "germany", "munich")),
             jsonPath("$.thumbnail").value("https://example.com/thumbnail.png"),
             jsonPath("$.journeyDate").value("2024-03-27"),
-            jsonPath("$.createdDate").value("2024-03-27"),
+            jsonPath("$.createdDate").value("2024-03-27")
     };
 
     @Autowired
