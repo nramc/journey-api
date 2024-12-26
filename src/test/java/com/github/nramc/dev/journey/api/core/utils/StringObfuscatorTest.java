@@ -11,7 +11,7 @@ class StringObfuscatorTest {
     @ParameterizedTest
     @CsvSource({
             "Test, T***",
-            "Test Test, T********",    
+            "Test Test, T********",     
             "Test123, T******",
     })
     void obfuscate_WhenNumberOfVisibleCharactersNotSpecified_shouldConsiderDefaultVisibleCharacters(String string, String expectedObfuscatedString) {
