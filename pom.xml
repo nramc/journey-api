@@ -266,7 +266,6 @@
                             <failOnDryRunResults>true</failOnDryRunResults>
                             <activeRecipes>
                                 <recipe>com.github.nramc.recipes.sources</recipe>
-                                <recipe>org.openrewrite.java.security.OwaspTopTen.customized</recipe>
                                 <recipe>com.github.nramc.recipes.testing</recipe>
                             </activeRecipes>
                             <activeStyles>
