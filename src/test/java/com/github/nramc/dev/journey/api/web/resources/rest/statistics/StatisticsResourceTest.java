@@ -9,11 +9,11 @@ import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConv
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -26,6 +26,7 @@ import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_STATISTICS;
 import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,12 +37,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(StatisticsResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({JourneyService.class})
 class StatisticsResourceTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private JourneyService journeyService;
+    @MockitoBean
+    JourneyService journeyService;
 
     @Test
     @WithAnonymousUser
@@ -92,8 +92,51 @@ class StatisticsResourceTest {
                 // assert years stats
                 .andExpect(jsonPath("$.years").exists())
                 .andExpect(jsonPath("$.years[*].name").value(hasItems("2025", "2024")))
-                .andExpect(jsonPath("$.years[*].count").value(hasItems(5, 5)))
-        ;
+                .andExpect(jsonPath("$.years[*].count").value(hasItems(5, 5)));
+    }
+
+
+    @Test
+    @WithMockAuthenticatedUser
+    void find_whenJourneyExists_andLimitExceeds_thenShouldReturnResponse_withLimitedValuesBasedOnConfig() throws Exception {
+        // setup data
+        List<Journey> journeys = IntStream.range(0, 10).mapToObj(index ->
+                JOURNEY_ENTITY.toBuilder()
+                        .id("ID_" + index)
+                        .createdDate(LocalDate.now().plusDays(index))
+                        .visibilities(Set.of(MYSELF))
+                        .isPublished(true)
+                        .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index))
+                        .geoDetails(JOURNEY_ENTITY.getGeoDetails().toBuilder()
+                                .category("Category_" + index)
+                                .city("City_" + index)
+                                .country("Country_" + index)
+                                .build()
+                        ).build()
+        ).map(JourneyConverter::convert).toList();
+        when(journeyService.findAllPublishedJourneys(any())).thenReturn(journeys);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(GET_STATISTICS)
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // assert categories stats
+                .andExpect(jsonPath("$.categories").exists())
+                .andExpect(jsonPath("$.categories[*]").value(hasSize(5)))
+                // assert cities stats
+                .andExpect(jsonPath("$.cities").exists())
+                .andExpect(jsonPath("$.cities[*]").value(hasSize(5)))
+                // assert countries stats
+                .andExpect(jsonPath("$.countries").exists())
+                .andExpect(jsonPath("$.countries[*]").value(hasSize(10)))
+                .andExpect(jsonPath("$.countries[*].name").value(hasItems("Country_0", "Country_1", "Country_2", "Country_3", "Country_4", "Country_5", "Country_6", "Country_7", "Country_8", "Country_9")))
+                .andExpect(jsonPath("$.countries[*].count").value(hasItems(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)))
+                // assert years stats
+                .andExpect(jsonPath("$.years").exists())
+                .andExpect(jsonPath("$.years[*]").value(hasSize(10)))
+                .andExpect(jsonPath("$.years[*].name").value(hasItems("2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033")))
+                .andExpect(jsonPath("$.years[*].count").value(hasItems(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)));
     }
 
 

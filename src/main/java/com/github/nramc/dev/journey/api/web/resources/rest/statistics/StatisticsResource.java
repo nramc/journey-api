@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -39,23 +38,24 @@ public class StatisticsResource {
 
         return StatisticsResponse.builder()
                 .categories(getStatsFor(journeys, journey -> Optional.of(journey).map(Journey::geoDetails)
-                        .map(JourneyGeoDetails::category).orElse(StringUtils.EMPTY)
+                        .map(JourneyGeoDetails::category).orElse(StringUtils.EMPTY), 5
                 ))
                 .cities(getStatsFor(journeys, journey -> Optional.of(journey).map(Journey::geoDetails)
-                        .map(JourneyGeoDetails::city).orElse(StringUtils.EMPTY)
+                        .map(JourneyGeoDetails::city).orElse(StringUtils.EMPTY), 5
                 ))
                 .countries(getStatsFor(journeys, journey -> Optional.of(journey).map(Journey::geoDetails)
-                        .map(JourneyGeoDetails::country).orElse(StringUtils.EMPTY)
+                        .map(JourneyGeoDetails::country).orElse(StringUtils.EMPTY), Long.MAX_VALUE
                 ))
-                .years(getStatsFor(journeys, journey -> String.valueOf(journey.journeyDate().getYear())))
+                .years(getStatsFor(journeys, journey -> String.valueOf(journey.journeyDate().getYear()), Long.MAX_VALUE))
                 .build();
     }
 
-    private static List<KeyValueStatistics> getStatsFor(List<Journey> entities, Function<Journey, String> fnExtractField) {
-        Map<String, Long> countByCategory = CollectionUtils.emptyIfNull(entities).stream()
-                .collect(Collectors.groupingBy(fnExtractField, Collectors.counting()));
-
-        return countByCategory.entrySet().stream()
+    private static List<KeyValueStatistics> getStatsFor(List<Journey> entities, Function<Journey, String> fnExtractField, long limit) {
+        return CollectionUtils.emptyIfNull(entities).stream()
+                .collect(Collectors.groupingBy(fnExtractField, Collectors.counting()))
+                .entrySet().stream()
+                .sorted((category1, category2) -> Long.compare(category2.getValue(), category1.getValue()))
+                .limit(limit)
                 .map(entry -> new KeyValueStatistics(entry.getKey(), entry.getValue()))
                 .toList();
     }
