@@ -1,12 +1,12 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
-import com.github.nramc.commons.geojson.domain.Feature;
-import com.github.nramc.commons.geojson.domain.FeatureCollection;
-import com.github.nramc.commons.geojson.domain.GeoJson;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.core.journey.security.JourneyAuthorizationManager;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyFeatureConverter;
+import com.github.nramc.geojson.domain.Feature;
+import com.github.nramc.geojson.domain.FeatureCollection;
+import com.github.nramc.geojson.domain.GeoJson;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
