@@ -24,7 +24,7 @@ public class JourneyEntityMigrationRule implements Runnable {
 
     private void migrateJourney(JourneyEntity journeyEntity) {
         JourneyEntity updatedEntity = journeyEntity.toBuilder()
-                // migratinn goess here
+                // migration goes here
                 .build();
 
         journeyRepository.save(updatedEntity);
