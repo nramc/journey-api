@@ -83,3 +83,7 @@ service:
       secure: true
     root-directory: journey/journey-dev
 
+server:
+  compression:
+    enabled: true
+    mime-types: application/json,application/geo+json,text/html
