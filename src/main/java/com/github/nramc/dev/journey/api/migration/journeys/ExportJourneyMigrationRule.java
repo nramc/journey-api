@@ -13,7 +13,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ExportJourneyMigrationRule implements Runnable {
-    private static final String EXPORT_STAGE = "dev";
     private static final String EXPORT_FILE_NAME = "journeys.json";
     private final JourneyRepository journeyRepository;
     private final ObjectMapper objectMapper;
@@ -21,7 +20,7 @@ public class ExportJourneyMigrationRule implements Runnable {
     @Override
     public void run() {
         List<JourneyEntity> journeys = journeyRepository.findAll();
-        File file = new File(EXPORT_STAGE + "/export/" + EXPORT_FILE_NAME);
+        File file = new File(EXPORT_FILE_NAME);
         try {
             objectMapper.writeValue(file, journeys);
             log.info("Successfully exported to {} with {} journeys", file.getAbsolutePath(), journeys.size());
