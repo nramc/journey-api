@@ -30,7 +30,6 @@
         <rewrite-maven-plugin.skip.dry-run-execution>false</rewrite-maven-plugin.skip.dry-run-execution>
 
         <!--    mvn versions:display-property-updates    -->
-        <commons-geojson.version>0.0.38</commons-geojson.version>
         <geojson4j.version>1.0.1</geojson4j.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <rewrite-java-security.version>2.17.1</rewrite-java-security.version>
@@ -103,11 +102,6 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.github.nramc.commons</groupId>
-            <artifactId>commons-geojson</artifactId>
-            <version>${commons-geojson.version}</version>
-        </dependency>
         <dependency>
             <groupId>io.github.nramc</groupId>
             <artifactId>geojson4j</artifactId>

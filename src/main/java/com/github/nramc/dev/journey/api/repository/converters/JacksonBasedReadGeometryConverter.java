@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.converters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.nramc.commons.geojson.domain.Geometry;
+import com.github.nramc.geojson.domain.Geometry;
 import org.bson.Document;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;

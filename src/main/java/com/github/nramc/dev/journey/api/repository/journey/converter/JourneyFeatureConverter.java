@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.repository.journey.converter;
 
-import com.github.nramc.commons.geojson.domain.Feature;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
+import com.github.nramc.geojson.domain.Feature;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;

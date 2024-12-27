@@ -1,9 +1,5 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys;
 
-import com.github.nramc.commons.geojson.domain.Feature;
-import com.github.nramc.commons.geojson.domain.FeatureCollection;
-import com.github.nramc.commons.geojson.domain.Point;
-import com.github.nramc.commons.geojson.domain.Position;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
@@ -12,6 +8,10 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEnt
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
+import com.github.nramc.geojson.domain.Feature;
+import com.github.nramc.geojson.domain.FeatureCollection;
+import com.github.nramc.geojson.domain.Point;
+import com.github.nramc.geojson.domain.Position;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;

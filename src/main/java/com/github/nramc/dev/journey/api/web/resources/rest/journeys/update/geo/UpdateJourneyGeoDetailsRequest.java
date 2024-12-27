@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo;
 
-import com.github.nramc.commons.geojson.domain.GeoJson;
-import com.github.nramc.commons.geojson.domain.Geometry;
+import com.github.nramc.geojson.domain.GeoJson;
+import com.github.nramc.geojson.domain.Geometry;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
