@@ -30,7 +30,7 @@
         <rewrite-maven-plugin.skip.dry-run-execution>false</rewrite-maven-plugin.skip.dry-run-execution>
 
         <!--    mvn versions:display-property-updates    -->
-        <geojson4j.version>1.0.1</geojson4j.version>
+        <geojson4j.version>1.0.2</geojson4j.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <rewrite-java-security.version>2.17.1</rewrite-java-security.version>
         <rewrite-logging-frameworks.version>2.18.1</rewrite-logging-frameworks.version>
