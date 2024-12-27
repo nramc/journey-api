@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api;
 
-import com.github.nramc.dev.journey.api.migration.journeys.JourneyEntityMigrationRule;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.nramc.dev.journey.api.migration.journeys.ImportJourneyMigrationRule;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -16,10 +17,10 @@ public class JourneyApiApplication {
     }
 
 
-    CommandLineRunner commandLineRunner(JourneyRepository journeyRepository) {
+    CommandLineRunner commandLineRunner(JourneyRepository journeyRepository, ObjectMapper objectMapper) {
         return args -> {
             log.info("######## Migration support started ########");
-            JourneyEntityMigrationRule migrationRule = new JourneyEntityMigrationRule(journeyRepository);
+            ImportJourneyMigrationRule migrationRule = new ImportJourneyMigrationRule(journeyRepository, objectMapper);
             migrationRule.run();
             log.info("######## Migration support completed ########");
         };

@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ImportJourneyMigrationRule implements Runnable {
-    private static final String IMPORT_FILE_NAME = "/Users/ramachandrannellaiyappan/Ram/lab/Journey-API/output.json";
+    private static final String IMPORT_FILE_NAME = "journeys.json";
     private final JourneyRepository journeyRepository;
     private final ObjectMapper objectMapper;
 
