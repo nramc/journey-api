@@ -19,8 +19,8 @@ public class JourneyApiApplication {
     CommandLineRunner commandLineRunner(JourneyRepository journeyRepository) {
         return args -> {
             log.info("######## Migration support started ########");
-            JourneyEntityMigrationRule helloWorld = new JourneyEntityMigrationRule(journeyRepository);
-            helloWorld.run();
+            JourneyEntityMigrationRule migrationRule = new JourneyEntityMigrationRule(journeyRepository);
+            migrationRule.run();
             log.info("######## Migration support completed ########");
         };
     }
