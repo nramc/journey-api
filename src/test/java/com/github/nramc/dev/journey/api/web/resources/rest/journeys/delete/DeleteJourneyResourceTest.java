@@ -1,23 +1,23 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.delete;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
+import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryGateway;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -37,14 +37,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(DeleteJourneyResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({JourneyRepository.class, CloudinaryService.class})
 class DeleteJourneyResourceTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private JourneyRepository journeyRepository;
-    @Autowired
-    private CloudinaryService cloudinaryService;
+    @MockitoBean
+    JourneyRepository journeyRepository;
+    @MockitoBean
+    CloudinaryGateway cloudinaryGateway;
 
     @Test
     void context() {
@@ -61,7 +60,7 @@ class DeleteJourneyResourceTest {
                 .andExpect(status().isOk());
 
         verify(journeyRepository).deleteById(anyString());
-        verify(cloudinaryService).deleteJourney(any());
+        verify(cloudinaryGateway).deleteJourney(any());
     }
 
     @Test
@@ -73,7 +72,7 @@ class DeleteJourneyResourceTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         verify(journeyRepository, never()).deleteById(anyString());
-        verify(cloudinaryService, never()).deleteJourney(any());
+        verify(cloudinaryGateway, never()).deleteJourney(any());
     }
 
     @Test
@@ -88,7 +87,7 @@ class DeleteJourneyResourceTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         verify(journeyRepository).deleteById(anyString());
-        verify(cloudinaryService).deleteJourney(any());
+        verify(cloudinaryGateway).deleteJourney(any());
     }
 
     @Test
@@ -100,7 +99,7 @@ class DeleteJourneyResourceTest {
                 .andDo(print())
                 .andExpect(status().isForbidden());
         verify(journeyRepository, never()).deleteById(anyString());
-        verify(cloudinaryService, never()).deleteJourney(any());
+        verify(cloudinaryGateway, never()).deleteJourney(any());
     }
 
     @Test
@@ -112,7 +111,7 @@ class DeleteJourneyResourceTest {
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
         verify(journeyRepository, never()).deleteById(anyString());
-        verify(cloudinaryService, never()).deleteJourney(any());
+        verify(cloudinaryGateway, never()).deleteJourney(any());
     }
 
 }

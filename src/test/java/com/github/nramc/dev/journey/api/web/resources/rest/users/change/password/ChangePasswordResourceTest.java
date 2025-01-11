@@ -1,22 +1,21 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.change.password;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
-import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -31,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ChangePasswordResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, BCryptPasswordEncoder.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({AuthUserDetailsService.class})
 class ChangePasswordResourceTest {
     private static final String REQUEST_TEMPLATE = """
             {
@@ -41,8 +39,8 @@ class ChangePasswordResourceTest {
     private MockMvc mockMvc;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @SpyBean
-    private AuthUserDetailsService authUserDetailsService;
+    @MockitoBean
+    AuthUserDetailsService authUserDetailsService;
 
 
     @Test

@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.change.password;
 
-import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.core.usecase.codes.totp;
 
+import com.github.nramc.dev.journey.api.core.domain.user.settings.security.TotpSecret;
 import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
