@@ -5,7 +5,7 @@ import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfi
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
-import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.repository.user.UserRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
 import org.junit.jupiter.api.Test;
@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOGIN;
@@ -43,10 +43,10 @@ class GuestLoginResourceTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @MockBean
-    private AuthUserDetailsService userDetailsService;
-    @MockBean
-    private UserRepository userRepository;
+    @MockitoBean
+    AuthUserDetailsService userDetailsService;
+    @MockitoBean
+    UserRepository userRepository;
 
     @Test
     void test() {

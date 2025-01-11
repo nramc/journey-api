@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.images;
 
 import com.github.nramc.dev.journey.api.core.journey.Journey;
-import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
+import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryGateway;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
@@ -37,7 +37,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JO
 @RequiredArgsConstructor
 public class UpdateJourneyImagesDetailsResource {
     private final JourneyRepository journeyRepository;
-    private final CloudinaryService cloudinaryService;
+    private final CloudinaryGateway cloudinaryGateway;
 
     @RestDocCommonResponse
     @Operation(summary = "Update Images details of Journey", tags = {"Update Journey"})
@@ -64,7 +64,7 @@ public class UpdateJourneyImagesDetailsResource {
         Set<String> newImages = CollectionUtils.emptyIfNull(newImageDetails).stream().map(UpdateJourneyImagesDetailsRequest.ImageDetail::assetId).collect(Collectors.toSet());
         boolean isChangeExists = currentImages.removeAll(newImages);
         if (isChangeExists) {
-            currentImages.forEach(cloudinaryService::deleteImage);
+            currentImages.forEach(cloudinaryGateway::deleteImage);
         }
     }
 }

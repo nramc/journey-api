@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.core.usecase.codes.totp;
 
+import com.github.nramc.dev.journey.api.core.domain.user.settings.security.TotpSecret;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
