@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.repository.user.attributes;
 
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
-import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecret;
+import com.github.nramc.dev.journey.api.core.domain.user.settings.security.TotpSecret;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;

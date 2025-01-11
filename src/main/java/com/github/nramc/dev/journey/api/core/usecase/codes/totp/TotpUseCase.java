@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.core.usecase.codes.totp;
 
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
+import com.github.nramc.dev.journey.api.core.domain.user.settings.security.TotpSecret;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;

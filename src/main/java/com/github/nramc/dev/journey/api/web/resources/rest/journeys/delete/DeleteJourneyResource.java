@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.delete;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.core.journey.security.JourneyAuthorizationManager;
-import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryService;
+import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryGateway;
 import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
@@ -24,7 +24,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_JO
 @Tag(name = "Delete Journey Details Resource")
 public class DeleteJourneyResource {
     private final JourneyRepository journeyRepository;
-    private final CloudinaryService cloudinaryService;
+    private final CloudinaryGateway cloudinaryGateway;
 
     @RestDocCommonResponse
     @ApiResponse(responseCode = "200", description = "Journey details deleted successfully")
@@ -39,7 +39,7 @@ public class DeleteJourneyResource {
     }
 
     private void deleteJourney(Journey journey) {
-        cloudinaryService.deleteJourney(journey);
+        cloudinaryGateway.deleteJourney(journey);
         journeyRepository.deleteById(journey.id());
     }
 

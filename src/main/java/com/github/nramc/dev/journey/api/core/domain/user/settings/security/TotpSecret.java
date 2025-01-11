@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.usecase.codes.totp;
+package com.github.nramc.dev.journey.api.core.domain.user.settings.security;
 
 public record TotpSecret(String secret) {
 

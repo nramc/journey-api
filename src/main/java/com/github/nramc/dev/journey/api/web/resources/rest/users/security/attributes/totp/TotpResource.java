@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.totp.QRImageDetails;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
-import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecret;
+import com.github.nramc.dev.journey.api.core.domain.user.settings.security.TotpSecret;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

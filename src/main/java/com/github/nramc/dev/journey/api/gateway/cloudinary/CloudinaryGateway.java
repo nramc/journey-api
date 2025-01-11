@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
-public class CloudinaryService {
+public class CloudinaryGateway {
     private static final String PUBLIC_ID = "public_id";
     private final Cloudinary cloudinary;
     private final CloudinaryProperties cloudinaryProperties;

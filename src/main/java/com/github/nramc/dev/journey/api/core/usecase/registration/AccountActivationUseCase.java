@@ -6,10 +6,10 @@ import com.github.nramc.dev.journey.api.core.domain.EmailToken;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.core.services.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +62,7 @@ public class AccountActivationUseCase {
     }
 
     private String getActivationUrl(EmailToken emailToken, AppUser user) {
-        return UriComponentsBuilder.fromHttpUrl(applicationProperties.uiAppUrl())
+        return UriComponentsBuilder.fromUriString(applicationProperties.uiAppUrl())
                 .path("/activation")
                 .queryParam("identifier", user.username())
                 .queryParam("token", emailToken.token())
