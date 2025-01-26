@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.videos;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
@@ -9,12 +9,12 @@ import com.github.nramc.dev.journey.api.web.resources.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UpdateJourneyVideosDetailsResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({JourneyRepository.class})
 class UpdateJourneyVideosDetailsResourceTest {
     private static final ResultMatcher[] STATUS_AND_CONTENT_TYPE_MATCH = new ResultMatcher[]{
             status().isOk(),
@@ -52,9 +51,9 @@ class UpdateJourneyVideosDetailsResourceTest {
     };
 
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private JourneyRepository journeyRepository;
+    MockMvc mockMvc;
+    @MockitoBean
+    JourneyRepository journeyRepository;
 
     @Test
     @WithMockAuthenticatedUser

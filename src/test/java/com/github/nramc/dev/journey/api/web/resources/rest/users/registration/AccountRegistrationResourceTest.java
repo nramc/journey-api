@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.registration;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
 import org.junit.jupiter.api.Test;
@@ -10,10 +10,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = {AccountRegistrationResource.class})
 @Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class})
 @ActiveProfiles({"test"})
-@MockBean({RegistrationUseCase.class, AccountActivationUseCase.class})
+@MockitoBean(types = {RegistrationUseCase.class, AccountActivationUseCase.class})
 class AccountRegistrationResourceTest {
     private static final String SIGNUP_REQUEST_TEMPLATE = """
             {

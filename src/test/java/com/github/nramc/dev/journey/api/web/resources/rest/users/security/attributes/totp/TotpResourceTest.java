@@ -1,23 +1,23 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.core.usecase.codes.totp.QRImageDetails;
-import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.QRImageDetails;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
+import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -40,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TotpResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({TotpUseCase.class})
 class TotpResourceTest {
     private static final String SECRET_KEY = "E6DCVTM46CLPRXOE6NNNXCPWAIR3L5QZss";
     private static final String TOTP_CODE = "123456";
@@ -54,9 +53,9 @@ class TotpResourceTest {
             { "code": "%s" }
             """;
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private TotpUseCase totpUseCase;
+    MockMvc mockMvc;
+    @MockitoBean
+    TotpUseCase totpUseCase;
 
     @Test
     void context() {

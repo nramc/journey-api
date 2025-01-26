@@ -12,12 +12,12 @@ import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UpdateUserResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({UserSecurityAttributeService.class})
 class UpdateUserResourceTest {
     private static final String UPDATE_USER_REQUEST_TEMPLATE = """
             {
@@ -47,11 +46,11 @@ class UpdateUserResourceTest {
              "status": "%s"
             }""";
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private UserSecurityAttributeService attributeService;
-    @SpyBean
-    private UserDetailsManager userDetailsManager;
+    MockMvc mockMvc;
+    @MockitoBean
+    UserSecurityAttributeService attributeService;
+    @MockitoSpyBean
+    UserDetailsManager userDetailsManager;
 
     @Test
     void context() {
