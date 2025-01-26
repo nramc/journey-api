@@ -17,12 +17,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
@@ -45,7 +45,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PublishJourneyResource.class)
 @Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, ValidationAutoConfiguration.class, JourneyValidator.class})
 @ActiveProfiles({"prod", "test"})
-@MockBean({JourneyRepository.class})
 class PublishJourneyResourceTest {
     private static final JourneyEntity JOURNEY_ENTITY = JourneyData.JOURNEY_ENTITY.toBuilder().build();
     private static final ResultMatcher[] STATUS_AND_CONTENT_TYPE_MATCH = new ResultMatcher[]{
@@ -64,11 +63,11 @@ class PublishJourneyResourceTest {
     };
     private static final Set<Visibility> DEFAULT_VISIBILITY = Set.of(MYSELF);
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
+    @MockitoBean
+    JourneyRepository journeyRepository;
     @Autowired
-    private JourneyRepository journeyRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     static Stream<JourneyEntity> validJourneyDataProvider() {
 

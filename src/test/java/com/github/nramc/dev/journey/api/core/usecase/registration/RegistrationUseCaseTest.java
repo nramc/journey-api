@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -39,15 +39,15 @@ class RegistrationUseCaseTest {
             .roles(Set.of(Role.AUTHENTICATED_USER))
             .build();
     @Autowired
-    private UserDetailsManager userDetailsManager;
+    UserDetailsManager userDetailsManager;
     @Autowired
-    private Validator validator;
+    Validator validator;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @MockBean
-    private AccountActivationUseCase accountActivationUseCase;
-    @MockBean
-    private EmailNotificationUseCase emailNotificationUseCase;
+    PasswordEncoder passwordEncoder;
+    @MockitoBean
+    AccountActivationUseCase accountActivationUseCase;
+    @MockitoBean
+    EmailNotificationUseCase emailNotificationUseCase;
 
     private RegistrationUseCase registrationUseCase;
 
