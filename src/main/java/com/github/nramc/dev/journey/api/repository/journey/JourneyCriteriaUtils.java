@@ -32,11 +32,11 @@ public class JourneyCriteriaUtils {
     private static Criteria getCriteriaWhenDateRangeFallsCrossMonths(LocalDate startDate, LocalDate endDate) {
         // Crosses months
         Criteria startMonthCriteria = new Criteria().andOperator(
-                Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue()))),
+                Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue()))),
                 Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth())))
         );
         Criteria endMonthCriteria = new Criteria().andOperator(
-                Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), endDate.getMonthValue()))),
+                Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$month", "$journeyDate"), endDate.getMonthValue()))),
                 Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$dayOfMonth", "$journeyDate"), endDate.getDayOfMonth())))
         );
         return new Criteria().orOperator(startMonthCriteria, endMonthCriteria);
