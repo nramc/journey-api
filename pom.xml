@@ -34,7 +34,7 @@
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <rewrite-java-security.version>3.2.0</rewrite-java-security.version>
         <rewrite-logging-frameworks.version>3.3.0</rewrite-logging-frameworks.version>
-        <rewrite-maven-plugin.version>6.2.0</rewrite-maven-plugin.version>
+        <rewrite-maven-plugin.version>6.2.1</rewrite-maven-plugin.version>
         <rewrite-recommendations.version>1.15.0</rewrite-recommendations.version>
         <rewrite-static-analysis.version>2.3.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.3.0</rewrite-testing-frameworks.version>
