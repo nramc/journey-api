@@ -1,6 +1,7 @@
 spring:
   application:
     name: ${app.name}
+    version: ${app.version}
   data:
     mongodb:
       database: journey-dev
