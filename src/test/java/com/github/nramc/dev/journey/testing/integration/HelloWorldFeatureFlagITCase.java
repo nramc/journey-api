@@ -1,28 +1,28 @@
 package com.github.nramc.dev.journey.testing.integration;
 
-import com.github.nramc.dev.journey.testing.integration.extension.MyBeforeAllExtension;
-import com.github.nramc.dev.journey.testing.integration.extension.MyBeforeEachExtension;
 import com.github.nramc.dev.journey.testing.integration.extension.MyBeforeEachMethodExtension;
 import com.github.nramc.dev.journey.testing.integration.extension.MyBeforeTestMethodExtension;
+import com.github.nramc.dev.journey.testing.integration.support.extension.ExtendWithFeatureFlagCondition;
 import com.github.nramc.dev.journey.testing.integration.support.extension.ExtendWithProfileCondition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWithProfileCondition(profiles = "dev", extensions = {MyBeforeEachExtension.class, MyBeforeAllExtension.class})
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("dev")
-class HelloWorldITCase {
+@TestPropertySource(properties = {"feature.hello-world.enabled=true","feature.hello-world-2.enabled=false"})
+class HelloWorldFeatureFlagITCase {
 
     @Test
-    @ExtendWithProfileCondition(profiles = {"prod", "dev"}, extensions = {MyBeforeEachMethodExtension.class})
+    @ExtendWithFeatureFlagCondition(property = {"feature.hello-world.enabled"}, extensions = {MyBeforeEachMethodExtension.class})
     void myHelloWorld_1() {
         System.out.println("myHelloWorld_1 > Hello, World!");
     }
 
     @Test
-    @ExtendWithProfileCondition(profiles = "dev", extensions = {MyBeforeTestMethodExtension.class})
+    @ExtendWithFeatureFlagCondition(property = "feature.hello-world-2.enabled", extensions = {MyBeforeTestMethodExtension.class})
     void myHelloWorld_2() {
         System.out.println("myHelloWorld_2 > Hello, World!");
     }
