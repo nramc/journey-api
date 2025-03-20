@@ -9,7 +9,7 @@ public class MyBeforeTestMethodExtension implements BeforeTestExecutionCallback 
 
 
     @Override
-    public void beforeTestExecution(ExtensionContext context) throws Exception {
+    public void beforeTestExecution(ExtensionContext context) {
         log.info("MyBeforeTestMethodExtension > beforeTestExecution executed");
     }
 }

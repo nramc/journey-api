@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 public class MyBeforeEachExtension implements BeforeEachCallback {
 
     @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
+    public void beforeEach(ExtensionContext context) {
         log.info("MyBeforeEachExtension > Before each executed");
     }
 }
