@@ -35,8 +35,8 @@ public class ExtendWithProfileConditionResolver extends AbstractConditionalExten
 
     private boolean evaluateCondition(ExtensionContext context, ExtendWithProfileCondition extendWith) {
         Environment environment = SpringExtension.getApplicationContext(context).getEnvironment();
-        return ArrayUtils.isEmpty(extendWith.profiles()) ||
-                Arrays.stream(environment.getActiveProfiles()).anyMatch(profile -> ArrayUtils.contains(extendWith.profiles(), profile));
+        return ArrayUtils.isEmpty(extendWith.profiles())
+                || Arrays.stream(environment.getActiveProfiles()).anyMatch(profile -> ArrayUtils.contains(extendWith.profiles(), profile));
     }
 
 

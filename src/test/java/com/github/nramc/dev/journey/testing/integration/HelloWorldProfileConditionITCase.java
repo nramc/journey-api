@@ -5,11 +5,12 @@ import com.github.nramc.dev.journey.testing.integration.extension.MyBeforeEachEx
 import com.github.nramc.dev.journey.testing.integration.extension.MyBeforeEachMethodExtension;
 import com.github.nramc.dev.journey.testing.integration.extension.MyBeforeTestMethodExtension;
 import com.github.nramc.dev.journey.testing.integration.support.extension.ExtendWithProfileCondition;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWithProfileCondition(profiles = "dev", extensions = {MyBeforeEachExtension.class, MyBeforeAllExtension.class})
 @ExtendWith(SpringExtension.class)
@@ -20,13 +21,13 @@ class HelloWorldProfileConditionITCase {
     @ExtendWithProfileCondition(profiles = {"prod", "dev"}, extensions = {MyBeforeEachMethodExtension.class})
     void myHelloWorld_1() {
         System.out.println("myHelloWorld_1 > Hello, World!");
-        Assertions.assertTrue(true);
+        assertTrue(true);
     }
 
     @Test
     @ExtendWithProfileCondition(profiles = "dev", extensions = {MyBeforeTestMethodExtension.class})
     void myHelloWorld_2() {
         System.out.println("myHelloWorld_2 > Hello, World!");
-        Assertions.assertTrue(true);
+        assertTrue(true);
     }
 }
