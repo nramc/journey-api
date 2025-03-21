@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-@ExtendWith(ExtendWithEnvironmentVariableConditionResolver.class)
-public @interface ExtendWithEnvironmentVariableCondition {
+@ExtendWith(ExtendWithEnvConditionResolver.class)
+public @interface ExtendWithEnvCondition {
 
     String[] variables() default {};
 

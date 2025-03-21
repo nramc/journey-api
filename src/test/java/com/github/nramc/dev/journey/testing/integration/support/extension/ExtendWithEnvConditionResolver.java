@@ -11,18 +11,18 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Slf4j
-public class ExtendWithEnvironmentVariableConditionResolver extends AbstractConditionalExtensionResolver {
+public class ExtendWithEnvConditionResolver extends AbstractConditionalExtensionResolver {
 
     @Override
     public void handler(ExtensionContext context, Class<? extends Extension> callbackClass) {
         Stream.of(context.getTestClass(), context.getTestMethod())
                 .flatMap(Optional::stream)
-                .map(element -> element.getAnnotation(ExtendWithEnvironmentVariableCondition.class))
+                .map(element -> element.getAnnotation(ExtendWithEnvCondition.class))
                 .filter(Objects::nonNull)
                 .forEach(annotation -> evaluateConditionAndInvokeExtensions(context, annotation, callbackClass));
     }
 
-    private void evaluateConditionAndInvokeExtensions(ExtensionContext context, ExtendWithEnvironmentVariableCondition extendWith, Class<? extends Extension> targetExtensionType) {
+    private void evaluateConditionAndInvokeExtensions(ExtensionContext context, ExtendWithEnvCondition extendWith, Class<? extends Extension> targetExtensionType) {
         if (evaluateCondition(extendWith)) {
             log.debug("Condition met for env variables:[{}] Registering extensions:[{}]", Arrays.toString(extendWith.variables()), extendWith.extensions());
             invokeExtensionsIfApplicable(context, extendWith.extensions(), targetExtensionType);
@@ -31,7 +31,7 @@ public class ExtendWithEnvironmentVariableConditionResolver extends AbstractCond
         }
     }
 
-    private boolean evaluateCondition(ExtendWithEnvironmentVariableCondition extendWith) {
+    private boolean evaluateCondition(ExtendWithEnvCondition extendWith) {
         if (ArrayUtils.isEmpty(extendWith.variables())) {
             return true;
         }
