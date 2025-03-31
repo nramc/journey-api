@@ -28,10 +28,9 @@ class JourneyApiApplicationTests {
 
     @Test
     void healthCheckEndpoint() {
-        assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() ->
             webTestClient.get().uri("/actuator/health").exchange()
-                    .expectStatus().isOk();
-        });
+                    .expectStatus().isOk());
     }
 
 }
