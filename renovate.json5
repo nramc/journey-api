@@ -3,5 +3,9 @@
   "extends": [
     "config:recommended"
   ],
+  "ignoreDeps": [
+    "com.github.nramc.dev.journey:journey-api",
+    "com.github.nramc.dev.journey:journey-web"
+  ],
   "automerge": true
 }
