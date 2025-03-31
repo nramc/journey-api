@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended"
   ],
+  // exclude own project dependencies for version upgrade and keep it as it is.
   "ignoreDeps": [
     "com.github.nramc.dev.journey:journey-api",
     "com.github.nramc.dev.journey:journey-web"
