@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
@@ -30,16 +31,24 @@ public class JourneyCriteriaUtils {
     }
 
     private static Criteria getCriteriaWhenDateRangeFallsCrossMonths(LocalDate startDate, LocalDate endDate) {
-        // Crosses months
-        Criteria startMonthCriteria = new Criteria().andOperator(
-                Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue()))),
+        List<Criteria> criteriaList = new ArrayList<>();
+        // Start of the month
+        criteriaList.add(new Criteria().andOperator(
+                Criteria.where("$expr").is(new Document("eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue()))),
                 Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth())))
+        ));
+
+        // Month in between
+        IntStream.range(startDate.getMonthValue() + 1, endDate.getMonthValue()).forEach(month ->
+                criteriaList.add(Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), month))))
         );
-        Criteria endMonthCriteria = new Criteria().andOperator(
-                Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$month", "$journeyDate"), endDate.getMonthValue()))),
+
+        // End of the month
+        criteriaList.add(new Criteria().andOperator(
+                Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), endDate.getMonthValue()))),
                 Criteria.where("$expr").is(new Document("$lte", List.of(new Document("$dayOfMonth", "$journeyDate"), endDate.getDayOfMonth())))
-        );
-        return new Criteria().orOperator(startMonthCriteria, endMonthCriteria);
+        ));
+        return new Criteria().orOperator(criteriaList);
     }
 
     private static Criteria getCriteriaWhenDateRangeFallsUnderSameMonths(LocalDate startDate, LocalDate endDate) {
