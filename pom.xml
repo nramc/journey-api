@@ -148,13 +148,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.extensions</groupId>
-                <artifactId>maven-build-cache-extension</artifactId>
-                <version>${maven-build-cache-extension.version}</version>
-            </extension>
-        </extensions>
     </build>
 
     <profiles>
