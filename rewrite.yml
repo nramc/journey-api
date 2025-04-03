@@ -4,13 +4,8 @@ name: com.github.nramc.recipes.sources
 recipeList:
   - org.openrewrite.staticanalysis.CommonStaticAnalysis
   - org.openrewrite.staticanalysis.CodeCleanup
-  - org.openrewrite.java.security.JavaSecurityBestPractices
-  - org.openrewrite.java.RemoveUnusedImports
-  - org.openrewrite.recommendations.CodeHealth
   - org.openrewrite.java.logging.slf4j.Slf4jBestPractices
-  - org.openrewrite.recommendations.DependencyManagement
   - org.openrewrite.maven.BestPractices
-  - org.openrewrite.recipes.JavaRecipeBestPractices
 #  - org.openrewrite.java.AddApache2LicenseHeader
 
 ---
@@ -24,13 +19,12 @@ recipeList:
   #  BUG: https://github.com/openrewrite/rewrite/issues/3111
   #  - org.openrewrite.java.testing.assertj.Assertj
   - org.openrewrite.java.testing.junit5.StaticImports
-  - org.openrewrite.recipes.RecipeTestingBestPractices
   - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
   # BestPractices contains both TestsShouldIncludeAssertions and RemoveTestPrefix
   # Since TestsShouldIncludeAssertions does not recognize mockito verify and assertJ,
   # commented out BestPractices and explicitly mentioned RemoveTestPrefix below
   #  BUG: https://github.com/openrewrite/rewrite/issues/3111
-  #  - org.openrewrite.java.testing.cleanup.BestPractices
+  - org.openrewrite.java.testing.cleanup.BestPractices
   - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
   - org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe
   - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices
