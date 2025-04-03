@@ -1,10 +1,8 @@
 package com.github.nramc.dev.journey.api.repository.user.attributes;
 
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
-public class UserSecurityAttributeConverter {
+public final class UserSecurityAttributeConverter {
 
     public static UserSecurityAttribute toModel(final UserSecurityAttributeEntity entity) {
         return UserSecurityAttribute.builder()
@@ -15,6 +13,10 @@ public class UserSecurityAttributeConverter {
                 .creationDate(entity.getCreationDate())
                 .lastUpdateDate(entity.getLastUpdateDate())
                 .build();
+    }
+
+    private UserSecurityAttributeConverter() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

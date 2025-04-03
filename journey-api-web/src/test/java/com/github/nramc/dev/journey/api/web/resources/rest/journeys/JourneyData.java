@@ -12,7 +12,6 @@ import com.github.nramc.geojson.domain.Feature;
 import com.github.nramc.geojson.domain.FeatureCollection;
 import com.github.nramc.geojson.domain.Point;
 import com.github.nramc.geojson.domain.Position;
-import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,8 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-@UtilityClass
-public class JourneyData {
+public final class JourneyData {
     public static final String GEO_LOCATION_JSON = """
             {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]}
             """;
@@ -92,5 +90,9 @@ public class JourneyData {
 
     public static JourneyVideoDetailEntity newVideoDetailEntityWith(String videoId) {
         return JourneyVideoDetailEntity.builder().videoId(videoId).build();
+    }
+
+    private JourneyData() {
+        throw new IllegalStateException("Utility class");
     }
 }

@@ -1,17 +1,15 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
 
+import com.github.nramc.dev.journey.api.core.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpAlgorithm;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier;
+import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpTimeStepWindowProvider;
-import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
-import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
-import com.github.nramc.dev.journey.api.core.domain.user.settings.security.TotpSecret;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
-public class TotpDemo {
+public final class TotpDemo {
 
 
     public static void main(String[] args) {
@@ -38,6 +36,10 @@ public class TotpDemo {
         // Verify the TOTP (example)
         boolean isValid = totpCodeVerifier.verify(secretKey, totp);
         System.out.println("Is TOTP valid: " + isValid);
+    }
+
+    private TotpDemo() {
+        throw new IllegalStateException("Utility class");
     }
 
 

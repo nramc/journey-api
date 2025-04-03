@@ -1,10 +1,8 @@
 package com.github.nramc.dev.journey.api.repository.user;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
-public class AppUserConvertor {
+public final class AppUserConvertor {
 
     public static AuthUser toEntity(AppUser appUser) {
         return AuthUser.builder()
@@ -30,6 +28,10 @@ public class AppUserConvertor {
                 .createdDate(authUser.getCreatedDate())
                 .passwordChangedAt(authUser.getPasswordChangedAt())
                 .build();
+    }
+
+    private AppUserConvertor() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

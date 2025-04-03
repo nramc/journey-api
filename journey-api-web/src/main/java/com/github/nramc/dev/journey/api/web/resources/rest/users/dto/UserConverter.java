@@ -1,13 +1,11 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.users.dto;
 
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
-@UtilityClass
-public class UserConverter {
+public final class UserConverter {
 
     public static List<User> toUsers(List<AuthUser> authUsers) {
         return CollectionUtils.emptyIfNull(authUsers)
@@ -25,6 +23,10 @@ public class UserConverter {
                 .enabled(authUser.isEnabled())
                 .mfaEnabled(authUser.isMfaEnabled())
                 .build();
+    }
+
+    private UserConverter() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

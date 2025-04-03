@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.core.journey.security;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
@@ -11,8 +10,7 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.Aut
 import static com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils.isGuestUser;
 import static com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils.isMaintainerRoleExists;
 
-@UtilityClass
-public class JourneyAuthorizationManager {
+public final class JourneyAuthorizationManager {
 
     public static boolean isAuthorized(JourneyEntity journeyEntity, Authentication authentication) {
 
@@ -33,6 +31,10 @@ public class JourneyAuthorizationManager {
 
     private static boolean isJourneyOwnedByLoggedInUser(JourneyEntity journeyEntity, Authentication authentication) {
         return StringUtils.equals(authentication.getName(), journeyEntity.getCreatedBy());
+    }
+
+    private JourneyAuthorizationManager() {
+        throw new IllegalStateException("Utility class");
     }
 
 
