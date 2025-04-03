@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources;
 
-public class Resources {
+public final class Resources {
     public static final String HOME = "/";
     public static final String HEALTH_CHECK = "/actuator/health";
     public static final String REST_DOC = "/doc/**";
@@ -42,7 +42,7 @@ public class Resources {
 
     public static final String FETCH_ALL_CATEGORIES = "/rest/categories";
 
-    public static class MediaType {
+    public static final class MediaType {
         public static final String UPDATE_JOURNEY_BASIC_DETAILS = "application/vnd.journey.api.basic.v1+json";
         public static final String UPDATE_JOURNEY_GEO_DETAILS = "application/vnd.journey.api.geo.v1+json";
         public static final String UPDATE_JOURNEY_IMAGES_DETAILS = "application/vnd.journey.api.images.v1+json";

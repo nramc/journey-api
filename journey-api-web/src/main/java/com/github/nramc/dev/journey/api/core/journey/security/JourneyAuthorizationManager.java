@@ -10,7 +10,7 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.Aut
 import static com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils.isGuestUser;
 import static com.github.nramc.dev.journey.api.web.resources.rest.auth.utils.AuthUtils.isMaintainerRoleExists;
 
-public class JourneyAuthorizationManager {
+public final class JourneyAuthorizationManager {
 
     public static boolean isAuthorized(JourneyEntity journeyEntity, Authentication authentication) {
 

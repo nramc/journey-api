@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 
-class UpdateJourneyGeoDetailsConverter {
+final class UpdateJourneyGeoDetailsConverter {
     static JourneyEntity extendWithGeoDetails(UpdateJourneyGeoDetailsRequest fromRequest, JourneyEntity toEntity) {
         JourneyGeoDetailsEntity geoDetailsEntity = JourneyGeoDetailsEntity.builder()
                 .title(fromRequest.title())

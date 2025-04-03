@@ -15,7 +15,7 @@ public enum Role {
         return List.of(this.name(), "SCOPE_" + this.name(), "ROLE_" + this.name());
     }
 
-    public static class Constants {
+    public static final class Constants {
         public static final String ADMINISTRATOR = "ADMINISTRATOR";
         public static final String AUTHENTICATED_USER = "AUTHENTICATED_USER";
         public static final String MAINTAINER = "MAINTAINER";

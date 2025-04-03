@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
 
-public class UsersData {
+public final class UsersData {
     public static final AuthUser AUTHENTICATED_USER = AuthUser.builder()
             .id(new ObjectId("665b1b94bd24ff59695e1d04"))
             .username(WithMockAuthenticatedUser.USERNAME)

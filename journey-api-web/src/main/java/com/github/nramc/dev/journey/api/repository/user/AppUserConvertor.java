@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.repository.user;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 
-public class AppUserConvertor {
+public final class AppUserConvertor {
 
     public static AuthUser toEntity(AppUser appUser) {
         return AuthUser.builder()

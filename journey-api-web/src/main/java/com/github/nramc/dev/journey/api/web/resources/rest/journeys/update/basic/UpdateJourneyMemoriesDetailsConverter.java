@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-class UpdateJourneyMemoriesDetailsConverter {
+final class UpdateJourneyMemoriesDetailsConverter {
 
     static JourneyEntity extendDetailsWith(UpdateJourneyBasicDetailsRequest fromRequest, JourneyEntity toEntity) {
         return toEntity.toBuilder()

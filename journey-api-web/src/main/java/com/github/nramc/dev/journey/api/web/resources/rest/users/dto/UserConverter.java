@@ -5,7 +5,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
-public class UserConverter {
+public final class UserConverter {
 
     public static List<User> toUsers(List<AuthUser> authUsers) {
         return CollectionUtils.emptyIfNull(authUsers)

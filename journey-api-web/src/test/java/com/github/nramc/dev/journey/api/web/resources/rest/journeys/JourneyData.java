@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class JourneyData {
+public final class JourneyData {
     public static final String GEO_LOCATION_JSON = """
             {"type": "Point", "type": "Point", "coordinates": [48.183160038296585, 11.53090747669896]}
             """;

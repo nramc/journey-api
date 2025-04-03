@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
-public class JourneyFeatureConverter {
+public final class JourneyFeatureConverter {
 
     public static Feature toFeature(JourneyEntity entity) {
         return Feature.of(entity.getId(),

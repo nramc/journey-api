@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AuthUtils {
+public final class AuthUtils {
 
     public static boolean isAdministratorRoleExists(Collection<? extends GrantedAuthority> authorities) {
         return CollectionUtils.emptyIfNull(authorities).stream()

@@ -9,7 +9,7 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpTimeStepWindowProvider;
 
-public class TotpDemo {
+public final class TotpDemo {
 
 
     public static void main(String[] args) {

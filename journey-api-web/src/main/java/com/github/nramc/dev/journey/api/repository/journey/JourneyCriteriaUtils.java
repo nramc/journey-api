@@ -15,7 +15,7 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
 
 @SuppressWarnings("java:S1192") // Suppressed String literals should not be repeated
-public class JourneyCriteriaUtils {
+public final class JourneyCriteriaUtils {
 
     static Criteria getCriteriaForUpcomingAnniversary(int daysAhead) {
         LocalDate startDate = LocalDate.now();

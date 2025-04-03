@@ -15,7 +15,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import java.util.List;
 import java.util.Optional;
 
-public class JourneyConverter {
+public final class JourneyConverter {
 
     public static Journey convert(JourneyEntity entity) {
         return Journey.builder()

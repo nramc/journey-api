@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.repository.user.attributes;
 
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 
-public class UserSecurityAttributeConverter {
+public final class UserSecurityAttributeConverter {
 
     public static UserSecurityAttribute toModel(final UserSecurityAttributeEntity entity) {
         return UserSecurityAttribute.builder()

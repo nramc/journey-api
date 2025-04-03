@@ -12,7 +12,7 @@ import java.util.Set;
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 
 
-class CreateJourneyConverter {
+final class CreateJourneyConverter {
     private static final Set<Visibility> DEFAULT_VISIBILITIES = Set.of(MYSELF);
 
     public static JourneyEntity convert(CreateJourneyRequest request, AuthUser authUser) {
