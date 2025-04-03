@@ -407,7 +407,7 @@ class TimelineResourceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {3, 5, 10, 15, 25, 31})
+    @ValueSource(ints = {3, 5, 10, 15, 25, 31, 60, 90, 120, 180})
     @WithMockAuthenticatedUser
     void getTimelineData_forUpcomingDays_whenJourneyExists_shouldReturnResult(int numberOfDays) throws Exception {
         // setup data

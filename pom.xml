@@ -10,12 +10,13 @@
     </parent>
     <groupId>com.github.nramc.dev.journey</groupId>
     <artifactId>journey-api</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Journey-API</name>
     <description>Journey-API</description>
     <modules>
         <module>journey-api-web</module>
+        <module>journey-api-tests</module>
     </modules>
     <scm>
         <url>https://github.com/nramc/journey-api</url>
@@ -25,6 +26,8 @@
     </scm>
     <properties>
         <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <sonar.organization>nramc</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.exclusions>**/com/github/nramc/dev/journey/api/migration/**</sonar.coverage.exclusions>
@@ -48,6 +51,7 @@
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven-build-cache-extension.version>1.2.0</maven-build-cache-extension.version>
         <archunit-junit5.version>1.4.0</archunit-junit5.version>
+        <wiremock-standalone.version>3.12.1</wiremock-standalone.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -84,6 +88,12 @@
                 <version>${archunit-junit5.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.wiremock</groupId>
+                <artifactId>wiremock-standalone</artifactId>
+                <version>${wiremock-standalone.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -112,6 +122,19 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>5.1.0.4751</version>
@@ -119,18 +142,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -140,13 +151,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.extensions</groupId>
-                <artifactId>maven-build-cache-extension</artifactId>
-                <version>${maven-build-cache-extension.version}</version>
-            </extension>
-        </extensions>
     </build>
 
     <profiles>

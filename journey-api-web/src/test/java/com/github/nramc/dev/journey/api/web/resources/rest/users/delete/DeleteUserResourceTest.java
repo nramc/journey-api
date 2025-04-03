@@ -42,9 +42,8 @@ class DeleteUserResourceTest {
 
     @Test
     void context() {
-        assertDoesNotThrow(() -> {
-            assertThat(mockMvc).isNotNull();
-        });
+        assertDoesNotThrow(() ->
+            assertThat(mockMvc).isNotNull());
     }
 
     @Test

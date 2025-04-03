@@ -55,9 +55,8 @@ class MultiFactorAuthenticationResourceTest {
 
     @Test
     void test() {
-        assertDoesNotThrow(() -> {
-            assertThat(mockMvc).isNotNull();
-        });
+        assertDoesNotThrow(() ->
+            assertThat(mockMvc).isNotNull());
     }
 
     @Test

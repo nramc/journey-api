@@ -1,0 +1,27 @@
+jwt:
+  private-key: classpath:app.key
+  public-key: classpath:app.pub
+  ttl: 1h
+  issuer: self
+
+spring:
+  mail:
+    username: noreply@journey.com
+    password: test-password
+    host: localhost
+    port: 1025
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+      mail.smtp.starttls.required: false
+
+service:
+  cloudinary:
+    api-key: dummy-integration-test-api-key
+    api-secret: dummy-integration-test-api-secret
+    cloud-name: integration-test-cloud-name
+    additional-properties:
+      upload_preset: journey_integration_test
+      # Wiremock URL for Cloudinary API stub
+      upload_prefix: http://localhost:8090/cloudinary/api/
+
