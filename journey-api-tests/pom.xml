@@ -110,7 +110,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.github.nramc.dev.journey.api.JourneyApiApplication</mainClass>
+                    <mainClass>com.github.nramc.dev.journey.api.tests.application.JourneyIntegrationApplication</mainClass>
                     <profiles>integration</profiles>
                     <useTestClasspath>true</useTestClasspath>
                     <additionalClasspathElements>
