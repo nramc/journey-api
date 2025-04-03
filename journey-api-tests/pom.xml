@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.nramc.dev.journey</groupId>
         <artifactId>journey-api</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>journey-api-tests</artifactId>
@@ -101,7 +101,7 @@
                         </goals>
                         <phase>pre-integration-test</phase>
                         <configuration>
-                            <mainClass>application.com.github.nramc.dev.journey.api.tests.JourneyIntegrationTestApplication
+                            <mainClass>com.github.nramc.dev.journey.api.tests.application.JourneyIntegrationApplication
                             </mainClass>
                             <profiles>integration</profiles>
                         </configuration>
