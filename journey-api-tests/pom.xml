@@ -117,7 +117,7 @@
                         <!-- Additional classpath added to look for customized main class for integration tests -->
                         <additionalClasspathElement>${project.build.testOutputDirectory}</additionalClasspathElement>
                     </additionalClasspathElements>
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration>
             </plugin>
         </plugins>
