@@ -23,6 +23,7 @@
 
         <!-- test suite properties -->
         <skipTests>false</skipTests>
+        <testcase.spring.profiles>integration-test</testcase.spring.profiles>
 
     </properties>
 
@@ -106,6 +107,7 @@
                         <phase>pre-integration-test</phase>
                         <configuration>
                             <skip>${skipTests}</skip>
+                            <skip>${integration.test.skip}</skip>
                         </configuration>
                     </execution>
                     <execution>
@@ -116,6 +118,7 @@
                         <phase>post-integration-test</phase>
                         <configuration>
                             <skip>${skipTests}</skip>
+                            <skip>${integration.test.skip}</skip>
                         </configuration>
                     </execution>
                 </executions>
@@ -149,10 +152,42 @@
                     <includes>
                         <include>**/*Test.java</include> <!-- Matches classes ending with 'Test' -->
                     </includes>
+                    <environmentVariables>
+                        <SPRING_PROFILES_ACTIVE>${testcase.spring.profiles}</SPRING_PROFILES_ACTIVE>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure-maven.version}</version>
+                <configuration>
+                    <!-- Unfortunately io.qameta.allure:allure-commandline:zip dependency is not managed in allure-bom dependency,
+                     we need to manage a version in our end -->
+                    <reportVersion>${allure-commandline.version}</reportVersion>
                 </configuration>
             </plugin>
 
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <integration.test.skip>false</integration.test.skip>
+                <testcase.spring.profiles>integration-test</testcase.spring.profiles>
+            </properties>
+        </profile>
+        <profile>
+            <id>qa-test</id>
+            <properties>
+                <integration.test.skip>true</integration.test.skip>
+                <testcase.spring.profiles>qa-test</testcase.spring.profiles>
+            </properties>
+        </profile>
+
+    </profiles>
 
 </project>
