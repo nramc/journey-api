@@ -22,6 +22,7 @@
         <rest-assured-bom.version>5.5.1</rest-assured-bom.version>
 
         <!-- test suite properties -->
+        <skipTests>false</skipTests>
 
     </properties>
 
