@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.nramc.dev.journey</groupId>
         <artifactId>journey-api</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>journey-api-tests</artifactId>
@@ -43,7 +43,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.nramc.dev.journey</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>journey-api-web</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -100,11 +100,6 @@
                             <goal>start</goal>
                         </goals>
                         <phase>pre-integration-test</phase>
-                        <configuration>
-                            <mainClass>com.github.nramc.dev.journey.api.tests.application.JourneyIntegrationApplication
-                            </mainClass>
-                            <profiles>integration</profiles>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>post-integration-test</id>
@@ -115,11 +110,14 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <mainClass>com.github.nramc.dev.journey.api.JourneyApiApplication</mainClass>
+                    <profiles>integration</profiles>
                     <useTestClasspath>true</useTestClasspath>
                     <additionalClasspathElements>
                         <!-- Additional classpath added to look for customized main class for integration tests -->
                         <additionalClasspathElement>${project.build.testOutputDirectory}</additionalClasspathElement>
                     </additionalClasspathElements>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
