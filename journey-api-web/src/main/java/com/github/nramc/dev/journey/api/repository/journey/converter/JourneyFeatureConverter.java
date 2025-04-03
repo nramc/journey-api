@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.repository.journey.converter;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
 import com.github.nramc.geojson.domain.Feature;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
-@UtilityClass
 public class JourneyFeatureConverter {
 
     public static Feature toFeature(JourneyEntity entity) {
@@ -41,6 +39,10 @@ public class JourneyFeatureConverter {
         properties.put("tags", entity.getTags().toArray());
 
         return properties;
+    }
+
+    private JourneyFeatureConverter() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

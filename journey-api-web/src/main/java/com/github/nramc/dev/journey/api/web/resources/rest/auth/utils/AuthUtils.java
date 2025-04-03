@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.utils;
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@UtilityClass
 public class AuthUtils {
 
     public static boolean isAdministratorRoleExists(Collection<? extends GrantedAuthority> authorities) {
@@ -91,6 +89,10 @@ public class AuthUtils {
             case GUEST_USER -> Visibility.GUEST;
         };
 
+    }
+
+    private AuthUtils() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

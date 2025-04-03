@@ -2,9 +2,7 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.geo;
 
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
 class UpdateJourneyGeoDetailsConverter {
     static JourneyEntity extendWithGeoDetails(UpdateJourneyGeoDetailsRequest fromRequest, JourneyEntity toEntity) {
         JourneyGeoDetailsEntity geoDetailsEntity = JourneyGeoDetailsEntity.builder()
@@ -19,5 +17,9 @@ class UpdateJourneyGeoDetailsConverter {
         return toEntity.toBuilder()
                 .geoDetails(geoDetailsEntity)
                 .build();
+    }
+
+    private UpdateJourneyGeoDetailsConverter() {
+        throw new IllegalStateException("Utility class");
     }
 }

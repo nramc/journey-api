@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.repository.journey;
 
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
@@ -15,7 +14,6 @@ import java.util.stream.IntStream;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
 
-@UtilityClass
 @SuppressWarnings("java:S1192") // Suppressed String literals should not be repeated
 public class JourneyCriteriaUtils {
 
@@ -95,6 +93,10 @@ public class JourneyCriteriaUtils {
                 .ifPresent(daysUpto -> criteriaList.add(getCriteriaForUpcomingAnniversary(daysUpto)));
 
         return new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
+    }
+
+    private JourneyCriteriaUtils() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

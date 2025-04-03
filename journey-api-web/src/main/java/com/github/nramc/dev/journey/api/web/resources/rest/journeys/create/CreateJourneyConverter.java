@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.web.resources.rest.journeys.create;
 import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,7 +12,6 @@ import java.util.Set;
 import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
 
 
-@UtilityClass
 class CreateJourneyConverter {
     private static final Set<Visibility> DEFAULT_VISIBILITIES = Set.of(MYSELF);
 
@@ -43,6 +41,10 @@ class CreateJourneyConverter {
                 .createdDate(entity.getCreatedDate())
                 .journeyDate(entity.getJourneyDate())
                 .build();
+    }
+
+    private CreateJourneyConverter() {
+        throw new IllegalStateException("Utility class");
     }
 
 }

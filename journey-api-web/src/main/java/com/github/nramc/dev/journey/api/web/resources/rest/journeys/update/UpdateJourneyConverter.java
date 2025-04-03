@@ -8,14 +8,12 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsE
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.images.UpdateJourneyImagesDetailsRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish.PublishJourneyRequest;
 import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.videos.UpdateJourneyVideosDetailsRequest;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@UtilityClass
 public class UpdateJourneyConverter {
 
     public static JourneyEntity extendWithImagesDetails(UpdateJourneyImagesDetailsRequest fromRequest, JourneyEntity toEntity) {
@@ -72,5 +70,9 @@ public class UpdateJourneyConverter {
                 .isPublished(request.isPublished())
                 .thumbnail(request.thumbnail())
                 .build();
+    }
+
+    private UpdateJourneyConverter() {
+        throw new IllegalStateException("Utility class");
     }
 }

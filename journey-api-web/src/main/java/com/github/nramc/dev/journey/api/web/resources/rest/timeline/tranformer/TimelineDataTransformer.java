@@ -4,7 +4,6 @@ import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.journey.JourneyImageDetail;
 import com.github.nramc.dev.journey.api.core.journey.JourneyImagesDetails;
 import com.github.nramc.dev.journey.api.web.resources.rest.timeline.TimelineData;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collection;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@UtilityClass
 public class TimelineDataTransformer {
     private static final int MAX_IMAGES_PER_JOURNEY = 3;
     public static final String DEFAULT_HEADING = "Timeline";
@@ -90,5 +88,9 @@ public class TimelineDataTransformer {
                 .stream()
                 .limit(maxImagesPerJourney)
                 .toList();
+    }
+
+    private TimelineDataTransformer() {
+        throw new IllegalStateException("Utility class");
     }
 }

@@ -9,14 +9,12 @@ import com.github.nramc.dev.journey.api.core.journey.JourneyVideosDetails;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.List;
 import java.util.Optional;
 
-@UtilityClass
 public class JourneyConverter {
 
     public static Journey convert(JourneyEntity entity) {
@@ -79,6 +77,10 @@ public class JourneyConverter {
                 .videoId(entity.getVideoId())
                 .build()
         ).toList();
+    }
+
+    private JourneyConverter() {
+        throw new IllegalStateException("Utility class");
     }
 
 }
