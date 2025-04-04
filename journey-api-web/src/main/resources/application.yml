@@ -88,3 +88,7 @@ server:
   compression:
     enabled: true
     mime-types: application/json,application/geo+json,text/html
+
+logging:
+  level:
+    root: info

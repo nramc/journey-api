@@ -1,6 +1,13 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="JourneyIntegrationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="integration" />
+    <additionalParameters>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="spring.docker.compose.file" />
+        <option name="value" value="  docker-compose.yml" />
+      </param>
+    </additionalParameters>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <module name="journey-api-tests" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.github.nramc.dev.journey.api.tests.application.JourneyIntegrationApplication" />
