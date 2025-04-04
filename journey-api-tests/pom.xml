@@ -126,6 +126,8 @@
                     <mainClass>com.github.nramc.dev.journey.api.tests.application.JourneyIntegrationApplication
                     </mainClass>
                     <profiles>integration</profiles>
+                    <wait>1000</wait> <!-- Wait interval to check the application start -->
+                    <maxAttempts>180</maxAttempts>
                     <useTestClasspath>true</useTestClasspath>
                     <additionalClasspathElements>
                         <!-- Additional classpath added to look for customized main class for integration tests -->
@@ -187,7 +189,6 @@
                 <testcase.spring.profiles>qa-test</testcase.spring.profiles>
             </properties>
         </profile>
-
     </profiles>
 
 </project>
