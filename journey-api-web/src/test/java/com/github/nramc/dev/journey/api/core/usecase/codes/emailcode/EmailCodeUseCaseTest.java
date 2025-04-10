@@ -23,9 +23,6 @@ import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersDat
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.assertArg;
@@ -72,16 +69,17 @@ class EmailCodeUseCaseTest {
                 eq("test.user@example.com"),
                 eq("Journey: Confirmation Required"),
                 assertArg(params -> {
-                    assertEquals(AUTHENTICATED_USER.getName(), params.get("name"));
-                    assertTrue(params.containsKey("ottPin"));
+                    assertThat(params)
+                            .containsEntry("name", AUTHENTICATED_USER.getName())
+                            .containsKey("ottPin");
                 })
         );
         verify(codeRepository).save(assertArg(entity -> {
-            assertEquals(AUTHENTICATED_USER.getUsername(), entity.getUsername());
-            assertEquals(ConfirmationCodeType.EMAIL_CODE, entity.getType());
-            assertNotNull(entity.getId());
-            assertNotNull(entity.getCode());
-            assertNotNull(entity.getCreatedAt());
+            assertThat(entity.getUsername()).isEqualTo(AUTHENTICATED_USER.getUsername());
+            assertThat(entity.getType()).isEqualTo(ConfirmationCodeType.EMAIL_CODE);
+            assertThat(entity.getId()).isNotNull();
+            assertThat(entity.getCode()).isNotNull();
+            assertThat(entity.getCreatedAt()).isNotNull();
         }));
     }
 

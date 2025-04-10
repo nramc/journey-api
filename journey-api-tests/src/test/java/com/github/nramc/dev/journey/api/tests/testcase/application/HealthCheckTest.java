@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.Matchers.equalTo;
 
 @SpringJUnitConfig(classes = {IntegrationTestSuiteConfig.class, QaTestSuiteConfig.class})
 @ExtendWith(RestAssuredExtension.class)
