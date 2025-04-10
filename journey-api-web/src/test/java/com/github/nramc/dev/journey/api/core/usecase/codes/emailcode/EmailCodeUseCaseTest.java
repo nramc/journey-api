@@ -68,11 +68,9 @@ class EmailCodeUseCaseTest {
                 eq(EMAIL_CODE_TEMPLATE_HTML),
                 eq("test.user@example.com"),
                 eq("Journey: Confirmation Required"),
-                assertArg(params -> {
-                    assertThat(params)
-                            .containsEntry("name", AUTHENTICATED_USER.getName())
-                            .containsKey("ottPin");
-                })
+                assertArg(params -> assertThat(params)
+                        .containsEntry("name", AUTHENTICATED_USER.getName())
+                        .containsKey("ottPin"))
         );
         verify(codeRepository).save(assertArg(entity -> {
             assertThat(entity.getUsername()).isEqualTo(AUTHENTICATED_USER.getUsername());
