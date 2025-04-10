@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.testing.integration.support.extension;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -38,7 +39,7 @@ public class ExtendWithEnvConditionResolver extends AbstractConditionalExtension
 
         return Arrays.stream(extendWith.variables())
                 .map(variable -> variable.split("="))
-                .anyMatch(keyValueEntry -> System.getenv(keyValueEntry[0]).equals(keyValueEntry[1]));
+                .anyMatch(keyValueEntry -> StringUtils.equals(System.getenv(keyValueEntry[0]), keyValueEntry[1]));
     }
 
 
