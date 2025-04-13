@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.core.usecase.notification;
 
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -17,7 +17,10 @@ public class EmailNotificationUseCase {
     public void notifyAdmin(String notificationText) {
         List<AuthUser> admins = authUserDetailsService.findAllAdministratorUsers();
         List<String> adminEmailAddresses = CollectionUtils.emptyIfNull(admins).stream().map(AuthUser::getUsername).toList();
-        mailService.sendSimpleEmail(adminEmailAddresses, SUBJECT_PREFIX + notificationText, SUBJECT_PREFIX + notificationText);
+
+        if (CollectionUtils.isNotEmpty(adminEmailAddresses)) {
+            mailService.sendSimpleEmail(adminEmailAddresses, SUBJECT_PREFIX + notificationText, SUBJECT_PREFIX + notificationText);
+        }
     }
 
 }
