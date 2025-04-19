@@ -121,6 +121,14 @@
                             <skip>${integration.test.skip}</skip>
                         </configuration>
                     </execution>
+                    <!-- Start integration application for security testing in CI workflow -->
+                    <execution>
+                        <id>integration-app</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <phase>none</phase>
+                    </execution>
                 </executions>
                 <configuration>
                     <mainClass>com.github.nramc.dev.journey.api.tests.application.JourneyIntegrationApplication
