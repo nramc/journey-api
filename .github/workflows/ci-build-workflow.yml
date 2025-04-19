@@ -64,7 +64,7 @@ jobs:
 
       - name: Start application for Security Testing
         run: |
-          mvn clean package -DskipTests
+          mvn clean install -DskipTests
           mvn spring-boot:start@integration-app -pl journey-api-tests
         env:
           SPRING_PROFILES_ACTIVE: integration
@@ -80,5 +80,5 @@ jobs:
 
       - name: Stop Spring Boot application
         run: |
-          pkill -f 'spring-boot:run'
+          mvn spring-boot:stop -pl journey-api-tests
 
