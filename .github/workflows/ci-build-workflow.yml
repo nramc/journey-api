@@ -77,6 +77,7 @@ jobs:
         uses: zaproxy/action-af@v0.2.0
         with:
           plan: '.github/workflows/zap/journey-openapi-plan.yaml'
+          cmd_options: '-port 8090'
 
       - name: Stop Spring Boot application
         run: |
