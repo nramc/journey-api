@@ -2,14 +2,14 @@ env:
   contexts:
   - name: journey-api
     urls:
-    - ${JOURNEY_BASE_URL}
+    - http://localhost:8080
     includePaths:
-    - ${JOURNEY_BASE_URL}.*
+    - http://localhost:8080.*
     authentication:
       method: json
       parameters:
-        loginPageUrl: ${JOURNEY_BASE_URL}/rest/guestLogin
-        loginRequestUrl: ${JOURNEY_BASE_URL}/rest/guestLogin
+        loginPageUrl: http://localhost:8080/rest/guestLogin
+        loginRequestUrl: http://localhost:8080/rest/guestLogin
         loginRequestBody: "{\"username\":\"{%username%}\",\"password\":\"{%password%}\"\
           }"
       verification:
@@ -27,16 +27,16 @@ env:
     users:
     - name: journey-user
       credentials:
-        password: ${JOURNEY_PASSWORD}
-        username: ${JOURNEY_USERNAME}
+        password: Journey-Test@123
+        username: journey-test-user@journey.com
   parameters: {}
 jobs:
 - type: passiveScan-config
   parameters: {}
 - type: openapi
   parameters:
-    apiUrl: ${JOURNEY_BASE_URL}/doc/openapi
-    targetUrl: ${JOURNEY_BASE_URL}
+    apiUrl: http://localhost:8080/doc/openapi
+    targetUrl: http://localhost:8080
     context: journey-api
     user: journey-user
 - type: passiveScan-wait
