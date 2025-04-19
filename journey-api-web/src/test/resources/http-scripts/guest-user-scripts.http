@@ -1,5 +1,7 @@
+@baseUrl=http://localhost:8080
+
 ### Login as Guest user
-POST {{baseUrl}}/guestLogin
+POST {{baseUrl}}/rest/guestLogin
 
 
 > {%
