@@ -32,7 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Login", description = "Multi factor authentication")
+@Tag(name = "Multi Factor Login", description = "Multi factor authentication")
 public class MultiFactorAuthenticationResource {
     private final UserDetailsService userDetailsService;
     private final ConfirmationCodeUseCase confirmationCodeUseCase;
