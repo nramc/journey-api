@@ -1,0 +1,49 @@
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  mongodb:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - data:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongodb_user
+      - MONGO_INITDB_ROOT_PASSWORD=mongodb_pwd
+
+  journey-ci:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mailpit
+      - mongodb
+    environment:
+      SPRING_PROFILES_ACTIVE: integration
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  zap:
+    image: zaproxy/zap-stable
+    depends_on:
+      journey-ci:
+        condition: service_healthy
+    volumes:
+      - ./zap:/zap/wrk
+    entrypoint: >
+      zap.sh -cmd -autorun /zap/wrk/journey-openapi-plan.yaml
+
+volumes:
+  data: {}
+
