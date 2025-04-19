@@ -21,6 +21,8 @@ jobs:
     services:
       journey-ci:
         image: codewithram/journey-api:latest
+        env:
+          SPRING_PROFILES_ACTIVE: integration
         ports:
           - 8080:8080
         options: >-
