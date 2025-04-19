@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="JourneyIntegrationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <option name="ACTIVE_PROFILES" value="integration" />
+    <option name="ACTIVE_PROFILES" value="dev,integration" />
     <additionalParameters>
       <param>
         <option name="enabled" value="true" />
