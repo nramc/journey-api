@@ -1,0 +1,52 @@
+env:
+  contexts:
+  - name: journey-api
+    urls:
+    - http://localhost:8080
+    includePaths:
+    - http://localhost:8080.*
+    authentication:
+      method: json
+      parameters:
+        loginPageUrl: http://localhost:8080/rest/guestLogin
+        loginRequestUrl: http://localhost:8080/rest/guestLogin
+        loginRequestBody: "{\"username\":\"{%username%}\",\"password\":\"{%password%}\"\
+          }"
+      verification:
+        method: response
+        pollFrequency: 60
+        pollUnits: requests
+        pollUrl: ""
+        pollPostData: ""
+    sessionManagement:
+      method: headers
+      parameters:
+        Authorization: "Bearer {%json:token%}"
+    technology: {}
+    structure: {}
+    users:
+    - name: journey-user
+      credentials:
+        password: RamNellai@7
+        username: ramachandrannellai@gmail.com
+  parameters: {}
+jobs:
+- type: passiveScan-config
+  parameters: {}
+- type: openapi
+  parameters:
+    apiUrl: http://localhost:8080/doc/openapi
+    targetUrl: http://localhost:8080
+    context: journey-api
+    user: journey-user
+- type: passiveScan-wait
+  parameters: {}
+- type: activeScan
+  parameters: {}
+  policyDefinition: {}
+- type: report
+  parameters:
+    reportTitle: ZAP by Checkmarx Scanning Report
+- type: exitStatus
+  parameters: {}
+
