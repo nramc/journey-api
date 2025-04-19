@@ -64,7 +64,8 @@ jobs:
 
       - name: Start application for Security Testing
         run: |
-          mvn spring-boot:start -Dspring-boot.run.mainClass=com.github.nramc.dev.journey.api.tests.application.JourneyIntegrationApplication
+          mvn clean package -DskipTests
+          mvn spring-boot:start@integration-app -pl journey-api-tests
         env:
           SPRING_PROFILES_ACTIVE: integration
 
