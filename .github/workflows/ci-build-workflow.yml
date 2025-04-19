@@ -17,6 +17,18 @@ jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+
+    services:
+      journey-ci:
+        image: codewithram/journey-api:latest
+        ports:
+          - 8080:8080
+        options: >-
+          --health-cmd="curl -f http://localhost:8080/actuator/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,7 +65,6 @@ jobs:
         with:
           plan: '.github/workflows/zap/journey-openapi-plan.yaml'
           docker_env_vars: |
-            JOURNEY_USERNAME
-            JOURNEY_PASSWORD
-            JOURNEY_BASE_URL
-
+            TARGET_URL
+        env:
+          TARGET_URL: http://journey-ci:8080
