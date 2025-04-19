@@ -52,4 +52,8 @@ jobs:
         uses: zaproxy/action-af@v0.2.0
         with:
           plan: '.github/workflows/zap/journey-openapi-plan.yaml'
+          docker_env_vars: |
+            JOURNEY_USERNAME
+            JOURNEY_PASSWORD
+            JOURNEY_BASE_URL
 
