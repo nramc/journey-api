@@ -2,14 +2,14 @@ env:
   contexts:
   - name: journey-api
     urls:
-    - http://localhost:8080
+    - ${TARGET_APP_URL}
     includePaths:
-    - http://localhost:8080.*
+    - "${TARGET_APP_URL}.*"
     authentication:
       method: json
       parameters:
-        loginPageUrl: http://localhost:8080/rest/guestLogin
-        loginRequestUrl: http://localhost:8080/rest/guestLogin
+        loginPageUrl: ${TARGET_APP_URL}/rest/guestLogin
+        loginRequestUrl: ${TARGET_APP_URL}/rest/guestLogin
         loginRequestBody: "{\"username\":\"{%username%}\",\"password\":\"{%password%}\"\
           }"
       verification:
@@ -31,15 +31,16 @@ env:
         password: ${APP_PASSWORD}
   parameters: {}
   vars:
-    APP_USERNAME: "Journey-Test@123"
-    APP_PASSWORD: "journey-test-user@journey.com"
+    APP_USERNAME: "journey-test-user@journey.com"
+    APP_PASSWORD: "Journey-Test@123"
+    TARGET_APP_URL: "http://localhost:8080"
 jobs:
 - type: passiveScan-config
   parameters: {}
 - type: openapi
   parameters:
-    apiUrl: http://localhost:8080/doc/openapi
-    targetUrl: http://localhost:8080
+    apiUrl: ${TARGET_APP_URL}/doc/openapi
+    targetUrl: ${TARGET_APP_URL}
     context: journey-api
     user: journey-user
 - type: passiveScan-wait
@@ -47,6 +48,9 @@ jobs:
 - type: activeScan
   parameters: {}
   policyDefinition: {}
+- type: report
+  parameters:
+    reportTitle: ZAP by Checkmarx Scanning Report
 - type: exitStatus
   parameters: {}
 
