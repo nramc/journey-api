@@ -12,11 +12,12 @@ on:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,9 +43,47 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build and analyze
+      - name: Build and Verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P coverage,open-rewrite -Dsonar.projectKey=nramc_journey-api
+
+
+  security-test:
+    name: Security Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Start application for Security Testing
+        run: |
+          mvn clean install -DskipTests
+          mvn spring-boot:start@integration-app -pl journey-api-tests
+        env:
+          SPRING_PROFILES_ACTIVE: integration
+
+      - name: Wait for application to start
+        run: |
+          timeout 60 bash -c 'until curl -s http://localhost:8080/actuator/health; do sleep 5; done'
+
+      - name: ZAP Scan
+        uses: zaproxy/action-af@v0.2.0
+        with:
+          plan: '.github/workflows/zap/journey-openapi-plan.yaml'
+          cmd_options: '-port 8090'
+          docker_env_vars: |
+            REPORT_DIR
+        env:
+          REPORT_DIR: "/zap/wrk/zap-report"
+
+      - name: Stop Spring Boot application
+        run: |
+          mvn spring-boot:stop -pl journey-api-tests
 

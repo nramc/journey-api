@@ -1,0 +1,58 @@
+env:
+  contexts:
+  - name: journey-api
+    urls:
+    - ${TARGET_APP_URL}
+    includePaths:
+    - "${TARGET_APP_URL}.*"
+    authentication:
+      method: json
+      parameters:
+        loginPageUrl: ${TARGET_APP_URL}/rest/guestLogin
+        loginRequestUrl: ${TARGET_APP_URL}/rest/guestLogin
+        loginRequestBody: "{\"username\":\"{%username%}\",\"password\":\"{%password%}\"\
+          }"
+      verification:
+        method: response
+        pollFrequency: 60
+        pollUnits: requests
+        pollUrl: ""
+        pollPostData: ""
+    sessionManagement:
+      method: headers
+      parameters:
+        Authorization: "Bearer {%json:token%}"
+    technology: {}
+    structure: {}
+    users:
+    - name: journey-user
+      credentials:
+        username: ${APP_USERNAME}
+        password: ${APP_PASSWORD}
+  parameters: {}
+  vars:
+    REPORT_DIR: "zap-report"
+    APP_USERNAME: "journey-test-user@journey.com"
+    APP_PASSWORD: "Journey-Test@123"
+    TARGET_APP_URL: "http://localhost:8080"
+jobs:
+- type: passiveScan-config
+  parameters: {}
+- type: openapi
+  parameters:
+    apiUrl: ${TARGET_APP_URL}/doc/openapi
+    targetUrl: ${TARGET_APP_URL}
+    context: journey-api
+    user: journey-user
+- type: passiveScan-wait
+  parameters: {}
+- type: activeScan
+  parameters: {}
+  policyDefinition: {}
+- type: report
+  parameters:
+    reportDir: ${REPORT_DIR}
+    reportTitle: Security Testing Report
+- type: exitStatus
+  parameters: {}
+
