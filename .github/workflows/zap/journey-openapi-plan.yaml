@@ -31,6 +31,7 @@ env:
         password: ${APP_PASSWORD}
   parameters: {}
   vars:
+    REPORT_DIR: "zap-report"
     APP_USERNAME: "journey-test-user@journey.com"
     APP_PASSWORD: "Journey-Test@123"
     TARGET_APP_URL: "http://localhost:8080"
@@ -50,7 +51,8 @@ jobs:
   policyDefinition: {}
 - type: report
   parameters:
-    reportTitle: ZAP by Checkmarx Scanning Report
+    reportDir: ${REPORT_DIR}
+    reportTitle: Security Testing Report
 - type: exitStatus
   parameters: {}
 

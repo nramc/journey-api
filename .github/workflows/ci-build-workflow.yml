@@ -78,6 +78,10 @@ jobs:
         with:
           plan: '.github/workflows/zap/journey-openapi-plan.yaml'
           cmd_options: '-port 8090'
+          docker_env_vars: |
+            REPORT_DIR
+        env:
+          REPORT_DIR: "/zap/wrk/zap-report"
 
       - name: Stop Spring Boot application
         run: |
