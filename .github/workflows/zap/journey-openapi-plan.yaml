@@ -27,9 +27,12 @@ env:
     users:
     - name: journey-user
       credentials:
-        password: Journey-Test@123
-        username: journey-test-user@journey.com
+        username: ${APP_USERNAME}
+        password: ${APP_PASSWORD}
   parameters: {}
+  vars:
+    APP_USERNAME: "Journey-Test@123"
+    APP_PASSWORD: "journey-test-user@journey.com"
 jobs:
 - type: passiveScan-config
   parameters: {}
