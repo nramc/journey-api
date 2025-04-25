@@ -3,9 +3,9 @@ package com.github.nramc.dev.journey.api.gateway.cloudinary;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.api.ApiResponse;
 import com.cloudinary.api.exceptions.NotFound;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.exceptions.NonTechnicalException;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -20,6 +20,17 @@ public class CloudinaryGateway {
     private static final String PUBLIC_ID = "public_id";
     private final Cloudinary cloudinary;
     private final CloudinaryProperties cloudinaryProperties;
+
+    public boolean isAvailable() {
+        try {
+            ApiResponse apiResponse = cloudinary.api().ping(Map.of());
+            log.info("Ping response: {}", apiResponse);
+            return true;
+        } catch (Exception ex) {
+            log.warn("Cloudinary is not available", ex);
+            return false;
+        }
+    }
 
     // BEGIN-NOSCAN
     public void deleteImage(String assetID) {
