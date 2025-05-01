@@ -25,6 +25,7 @@
         <skipTests>false</skipTests>
         <testcase.spring.profiles>integration-test</testcase.spring.profiles>
 
+        <wiremock-jre8-standalone.version>2.35.2</wiremock-jre8-standalone.version>
     </properties>
 
     <dependencyManagement>
@@ -67,6 +68,7 @@
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-jre8-standalone</artifactId>
+            <version>${wiremock-jre8-standalone.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
