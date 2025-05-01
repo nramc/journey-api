@@ -57,17 +57,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Uncomment after fixing https://github.com/spring-cloud/spring-cloud-contract/issues/2104
         <dependency>
             <groupId>org.wiremock</groupId>
             <artifactId>wiremock-standalone</artifactId>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
+        <!-- Uncomment after fixing https://github.com/spring-cloud/spring-cloud-contract/issues/2104
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-jre8-standalone</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
