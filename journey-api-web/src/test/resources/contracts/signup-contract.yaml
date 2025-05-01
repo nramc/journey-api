@@ -11,7 +11,7 @@ request:
     body:
       - path: $.['username']
         type: by_regex
-        value: "[a-zA-Z0-9]{8,20}@[a-zA-Z0-9]{3,20}\\.[a-zA-Z]{2,6}"
+        value: "[a-zA-Z0-9._-]{8,20}@[a-zA-Z0-9]{3,20}\\.[a-zA-Z]{2,6}"
       - path: $.['password']
         type: by_regex
         value: "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@.#$!%*?&^])[A-Za-z\\d@.#$!%*?&]{8,50}"
