@@ -1,0 +1,22 @@
+request:
+  method: POST
+  url: /rest/signup
+  body:
+    "username": example-username@example.com
+    "password": Strong@password123
+    "name": "John Doe"
+  headers:
+    Content-Type: application/json
+  matchers:
+    body:
+      - path: $.['username']
+        type: by_regex
+        value: "[a-zA-Z0-9]{8,20}@[a-zA-Z0-9]{3,20}\\.[a-zA-Z]{2,6}"
+      - path: $.['password']
+        type: by_regex
+        value: "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@.#$!%*?&^])[A-Za-z\\d@.#$!%*?&]{8,50}"
+      - path: $.['name']
+        type: by_regex
+        value: "[a-zA-Z\\s]{3,50}"
+response:
+  status: 201

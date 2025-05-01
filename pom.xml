@@ -43,6 +43,7 @@
         <rewrite-maven-plugin.version>6.7.0</rewrite-maven-plugin.version>
         <rewrite-static-analysis.version>2.8.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.7.0</rewrite-testing-frameworks.version>
+        <spring-cloud-contract.version>4.2.1</spring-cloud-contract.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.8.6</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.3</zxing-qr.version>
@@ -92,6 +93,13 @@
                 <version>${wiremock-standalone.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-contract-dependencies</artifactId>
+                <version>${spring-cloud-contract.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -129,6 +137,12 @@
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>5.1.0.4751</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+                    <version>${spring-cloud-contract.version}</version>
+                    <extensions>true</extensions>
                 </plugin>
             </plugins>
         </pluginManagement>
