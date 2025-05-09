@@ -2,7 +2,6 @@ package com.github.nramc.dev.journey.api.config;
 
 import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeValidator;
@@ -15,6 +14,7 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
+import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
 import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
 import jakarta.validation.Validator;
