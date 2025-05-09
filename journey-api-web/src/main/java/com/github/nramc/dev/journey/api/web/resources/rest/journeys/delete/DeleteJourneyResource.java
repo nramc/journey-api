@@ -1,9 +1,9 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.delete;
 
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.core.journey.security.JourneyAuthorizationManager;
 import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryGateway;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

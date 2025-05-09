@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
 
+import com.github.nramc.dev.journey.api.core.journey.security.JourneyAuthorizationManager;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.core.journey.security.JourneyAuthorizationManager;
 import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyFeatureConverter;
 import com.github.nramc.geojson.domain.Feature;
 import com.github.nramc.geojson.domain.FeatureCollection;
