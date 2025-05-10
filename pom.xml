@@ -212,6 +212,9 @@
                             <activeStyles>
                                 <style>org.openrewrite.java.IntelliJ</style>
                             </activeStyles>
+                            <exclusions>
+                                <exclusion>**/target/**</exclusion>
+                            </exclusions>
                         </configuration>
                         <dependencies>
                             <dependency>
