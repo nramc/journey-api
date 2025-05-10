@@ -4,9 +4,20 @@ name: com.github.nramc.recipes.sources
 recipeList:
   - org.openrewrite.staticanalysis.CommonStaticAnalysis
   - org.openrewrite.staticanalysis.CodeCleanup
-  - org.openrewrite.java.logging.slf4j.Slf4jBestPractices
+  - org.openrewrite.java.logging.slf4j.Slf4jBestPractices.custom
   - org.openrewrite.maven.BestPractices
 #  - org.openrewrite.java.AddApache2LicenseHeader
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.logging.slf4j.Slf4jBestPractices.custom
+recipeList:
+  - org.openrewrite.java.logging.slf4j.LoggersNamedForEnclosingClass
+  - org.openrewrite.java.logging.slf4j.ParameterizedLogging
+  - org.openrewrite.java.logging.slf4j.Slf4jLogShouldBeConstant
+  - org.openrewrite.java.logging.slf4j.CompleteExceptionLogging
+#  - org.openrewrite.java.logging.CatchBlockLogLevel
+#  - org.openrewrite.java.logging.slf4j.WrapExpensiveLogStatementsInConditionals
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
