@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.web.exceptions;
 
-
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.exceptions.NonTechnicalException;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;

@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basic;
 
-
 import com.github.nramc.dev.journey.api.core.journey.Journey;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
