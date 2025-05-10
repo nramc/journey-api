@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.config.security;
 
-
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import org.springframework.security.test.context.support.WithMockUser;

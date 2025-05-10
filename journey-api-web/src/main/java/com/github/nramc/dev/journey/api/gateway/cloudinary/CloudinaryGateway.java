@@ -27,7 +27,7 @@ public class CloudinaryGateway {
             log.info("Ping response: {}", apiResponse);
             return true;
         } catch (Exception ex) {
-            log.warn("Cloudinary is not available", ex);
+            log.error("Cloudinary is not available", ex);
             return false;
         }
     }
@@ -40,7 +40,7 @@ public class CloudinaryGateway {
             ApiResponse apiResponse = cloudinary.api().deleteResources(Collections.singleton(getPublicId(resourceResponse)), Map.of());
             log.info("Response: {}", apiResponse);
         } catch (Exception ex) {
-            log.warn("Failed to delete image", ex);
+            log.error("Failed to delete image", ex);
         }
     }
 

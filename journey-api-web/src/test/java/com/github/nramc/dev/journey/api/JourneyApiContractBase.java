@@ -14,7 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 @ActiveProfiles("test")
 // Suppressing the warning for the test class as public visibility is required for contract tests
 @SuppressWarnings("java:S5786")
-public class JourneyApiContractBase {
+class JourneyApiContractBase {
     @Autowired
     WebApplicationContext context;
 
