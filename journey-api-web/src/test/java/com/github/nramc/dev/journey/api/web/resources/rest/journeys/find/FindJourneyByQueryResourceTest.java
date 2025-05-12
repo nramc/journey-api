@@ -179,7 +179,7 @@ class FindJourneyByQueryResourceTest {
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
                                 .createdDate(LocalDate.now().plusDays(index))
-                                .isPublished(index % 2 == 0) // only even indexed journeys published
+                                .isPublished(index % 2 == 0)// only even indexed journeys published
                                 .build()
                 )
         );

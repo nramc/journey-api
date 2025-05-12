@@ -29,6 +29,8 @@ recipeList:
   - org.openrewrite.java.testing.junit5.StaticImports
   - org.openrewrite.java.testing.cleanup.TestsShouldNotBePublic
   - org.openrewrite.java.testing.junit5.JUnit5BestPractices
-  - org.openrewrite.java.testing.cleanup.BestPractices
+  # commeted out to exclude org.openrewrite.java.testing.cleanup.TestsShouldIncludeAssertions
+  #  - org.openrewrite.java.testing.cleanup.BestPractices
+  - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
   - org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe
   - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices
