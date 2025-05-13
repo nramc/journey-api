@@ -44,7 +44,8 @@ public class UpdateJourneyImagesDetailsResource {
     @ApiResponse(responseCode = "200", description = "Journey details updated successfully")
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_IMAGES_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateImagesDetails(@RequestBody @Valid UpdateJourneyImagesDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update images info"));
+        JourneyEntity entity = journeyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update images info"));
 
         JourneyEntity journey = UpdateJourneyConverter.extendWithImagesDetails(request, entity);
 
@@ -61,7 +62,8 @@ public class UpdateJourneyImagesDetailsResource {
                 .map(JourneyImagesDetailsEntity::getImages).orElse(Collections.emptyList());
         Set<String> currentImages = CollectionUtils.emptyIfNull(currentImagesEntities)
                 .stream().map(JourneyImageDetailEntity::getAssetId).collect(Collectors.toSet());
-        Set<String> newImages = CollectionUtils.emptyIfNull(newImageDetails).stream().map(UpdateJourneyImagesDetailsRequest.ImageDetail::assetId).collect(Collectors.toSet());
+        Set<String> newImages = CollectionUtils.emptyIfNull(newImageDetails).stream()
+                .map(UpdateJourneyImagesDetailsRequest.ImageDetail::assetId).collect(Collectors.toSet());
         boolean isChangeExists = currentImages.removeAll(newImages);
         if (isChangeExists) {
             currentImages.forEach(cloudinaryGateway::deleteImage);

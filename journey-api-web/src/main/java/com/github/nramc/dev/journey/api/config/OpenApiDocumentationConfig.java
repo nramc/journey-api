@@ -20,7 +20,8 @@ public class OpenApiDocumentationConfig {
         return new OpenAPI().info(new Info()
                         .title("Journey API")
                         .version(appVersion)
-                        .description("This is Backend For Frontend(BFF) service created using SpringBoot and OAuth2 Framework for Journey Single Page Application(SPA).")
+                        .description("This is Backend For Frontend(BFF) service created using SpringBoot and OAuth2 Framework"
+                                + " for Journey Single Page Application(SPA).")
                         .license(new License().name("Apache 2.0").identifier("Apache-2.0"))
                         .contact(new Contact()
                                 .name("Ramachandran Nellaiyappan")

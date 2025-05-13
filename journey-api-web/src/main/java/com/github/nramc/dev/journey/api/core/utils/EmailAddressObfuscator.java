@@ -6,9 +6,8 @@ import java.util.Optional;
 
 /**
  * Obfuscates an email address by masking local part (username) except the first character.
- * <p>
- * For example the email address <c>name.surname@gmail.com</c> will be obfuscated as <c>n***********@gmail.com</c>.
- * </p>
+ *
+ * <p>For example the email address <c>name.surname@gmail.com</c> will be obfuscated as <c>n***********@gmail.com</c>.</p>
  */
 public final class EmailAddressObfuscator {
     private static final String EMAIL_ADDRESS_SEPARATOR = "@";

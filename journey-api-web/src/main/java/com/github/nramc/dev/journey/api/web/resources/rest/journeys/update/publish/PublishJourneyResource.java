@@ -37,7 +37,8 @@ public class PublishJourneyResource {
     public ResponseEntity<Journey> publishJourney(
             @RequestBody @Valid PublishJourneyRequest request,
             @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't publish journey"));
+        JourneyEntity entity = journeyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't publish journey"));
 
         JourneyEntity journey = UpdateJourneyConverter.extendEntityWith(request, entity);
         Journey journeyToBePublished = JourneyConverter.convert(journey);

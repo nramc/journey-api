@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * TOTP Implementation based on <a href="https://datatracker.ietf.org/doc/html/rfc6238">RFC-6238</a> guidelines
+ * TOTP Implementation based on <a href="https://datatracker.ietf.org/doc/html/rfc6238">RFC-6238</a> guidelines.
  */
 @Configuration
 @EnableConfigurationProperties(TotpProperties.class)

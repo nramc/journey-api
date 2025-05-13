@@ -32,7 +32,8 @@ class UpdateJourneyGeoDetailsResource {
     @ApiResponse(responseCode = "200", description = "Journey details updated successfully")
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_GEO_DETAILS, produces = APPLICATION_JSON_VALUE)
     ResponseEntity<Journey> updateGeoDetails(@RequestBody @Valid UpdateJourneyGeoDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update geo info"));
+        JourneyEntity entity = journeyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update geo info"));
 
         JourneyEntity journey = UpdateJourneyGeoDetailsConverter.extendWithGeoDetails(request, entity);
 
