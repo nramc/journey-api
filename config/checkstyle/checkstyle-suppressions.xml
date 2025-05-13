@@ -5,7 +5,10 @@
 
 <suppressions>
 
-    <!-- Suppress all Javadoc checks -->
+    <!-- Suppress all Missing Javadoc checks -->
     <suppress checks="MissingJavadoc.*"/>
+
+    <!-- Allow Abbreviated method and class names since sometimes abbreviation provides better context   -->
+    <suppress checks="AbbreviationAsWordInName"/>
 
 </suppressions>
