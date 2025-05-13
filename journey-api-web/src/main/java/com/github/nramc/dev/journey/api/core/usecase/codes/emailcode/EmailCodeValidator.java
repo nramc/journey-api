@@ -22,6 +22,8 @@ public class EmailCodeValidator {
     private final ConfirmationCodeRepository codeRepository;
 
     /**
+     * Validate Confirmation Code.
+     *
      * @param confirmationCode code to be validated
      * @param authUser         email code associated user
      * @return true if code valid otherwise false

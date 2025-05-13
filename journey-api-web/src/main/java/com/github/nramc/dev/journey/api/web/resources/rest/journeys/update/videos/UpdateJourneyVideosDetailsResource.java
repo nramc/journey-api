@@ -33,7 +33,8 @@ public class UpdateJourneyVideosDetailsResource {
     @ApiResponse(responseCode = "200", description = "Journey details updated successfully")
     @PutMapping(value = UPDATE_JOURNEY, consumes = UPDATE_JOURNEY_VIDEOS_DETAILS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> updateVideosDetails(@RequestBody @Valid UpdateJourneyVideosDetailsRequest request, @PathVariable String id) {
-        JourneyEntity entity = journeyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update videos info"));
+        JourneyEntity entity = journeyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Given ID does not exists, can't update videos info"));
 
         JourneyEntity journey = UpdateJourneyConverter.extendWithVideosDetails(request, entity);
 

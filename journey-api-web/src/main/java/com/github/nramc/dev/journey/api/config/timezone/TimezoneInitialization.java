@@ -17,8 +17,8 @@ public class TimezoneInitialization {
      * MongoDB Query parameter binding iss not working as expected for date and timestamp values.
      * To fix the timezone difference, either JPA repository layer has to be adopted to handle UTC zone conversion before binding values
      * or service has to be adopted to use UTC format.
-     * <p>
-     * For time being second solution implemented to run service in UTC zone.
+     *
+     * <p>For time being second solution implemented to run service in UTC zone.</p>
      */
     @PostConstruct
     public void init() {

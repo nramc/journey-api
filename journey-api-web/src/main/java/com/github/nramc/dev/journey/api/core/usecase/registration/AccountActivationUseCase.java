@@ -34,6 +34,17 @@ public class AccountActivationUseCase {
         sendActivationEmail(activationUrl, user);
     }
 
+    private void sendActivationEmail(String activationUrl, AppUser user) {
+        try {
+            Map<String, Object> placeholders = new HashMap<>();
+            placeholders.put("name", user.name());
+            placeholders.put("activationUrl", activationUrl);
+            mailService.sendEmailUsingTemplate(EMAIL_TEMPLATE_NAME, user.username(), "Journey: Activate your account", placeholders);
+        } catch (MessagingException ex) {
+            throw new TechnicalException("Unable to send activation email", ex);
+        }
+    }
+
     public void activateAccount(EmailToken emailToken, AppUser user) {
         if (emailTokenUseCase.verifyEmailToken(emailToken, user)) {
             activate(user);
@@ -48,17 +59,6 @@ public class AccountActivationUseCase {
         userDetailsService.updateUser(updatedUserEntity);
 
         emailNotificationUseCase.notifyAdmin("User completed onboarding - " + userEntity.getUsername());
-    }
-
-    private void sendActivationEmail(String activationUrl, AppUser user) {
-        try {
-            Map<String, Object> placeholders = new HashMap<>();
-            placeholders.put("name", user.name());
-            placeholders.put("activationUrl", activationUrl);
-            mailService.sendEmailUsingTemplate(EMAIL_TEMPLATE_NAME, user.username(), "Journey: Activate your account", placeholders);
-        } catch (MessagingException ex) {
-            throw new TechnicalException("Unable to send activation email", ex);
-        }
     }
 
     private String getActivationUrl(EmailToken emailToken, AppUser user) {
