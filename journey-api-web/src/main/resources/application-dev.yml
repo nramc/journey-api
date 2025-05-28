@@ -1,6 +1,10 @@
 app:
   ui-app-url: http://localhost:4200
   security:
+    webauthn:
+      rp-id: localhost
+      allowed-origins:
+        - http://localhost:8080
     cors:
       properties:
         - path: /**

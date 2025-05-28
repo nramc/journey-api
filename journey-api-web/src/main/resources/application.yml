@@ -22,6 +22,21 @@ app:
   version: '@project.version@'
   ui-app-url: https://nramc.github.io/journeys
   security:
+    webauthn:
+      enabled: true
+      rp-id: nramc.github.io
+      rp-name: Journey
+      rp-icon: https://nramc.github.io/journeys/assets/logo/journey-logo-180x180.png
+      allowed-origins:
+        - https://nramc.github.io
+#      user-verification: preferred
+#      attestation-conveyance-preference: none
+#      authenticator-selection:
+#        require-resident-key: false
+#        user-verification: preferred
+#        authenticator-type: cross-platform, platform
+#      timeout-in-millis: 60000
+#      allow-credential-mismatch: true
     totp:
       number-of-digits: 6
       secret-length: 32
