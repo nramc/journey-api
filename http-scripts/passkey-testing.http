@@ -1,0 +1,7 @@
+### Get Options for Registering a Passkey
+POST http://localhost:8080/webauthn/register/options
+Authorization: Basic {{username}} {{password}}
+
+
+### Get Options for Authenticating a Passkey
+POST http://localhost:8080/webauthn/authenticate/options
