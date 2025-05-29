@@ -78,7 +78,7 @@ import static org.springframework.security.oauth2.core.authorization.OAuth2Autho
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
-@EnableConfigurationProperties({JwtProperties.class, CorsProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, CorsProperties.class, WenAuthnSecurityProperties.class})
 public class WebSecurityConfig {
     AuthorizationManager<RequestAuthorizationContext> authenticatedUserAuthorizationManager = anyOf(
             hasAnyAuthority(AUTHENTICATED_USER.name(), MAINTAINER.name(), ADMINISTRATOR.name()),
@@ -91,6 +91,19 @@ public class WebSecurityConfig {
     AuthorizationManager<RequestAuthorizationContext> adminAccessAuthorizationManager = anyOf(
             hasAnyAuthority(ADMINISTRATOR.name()), hasAnyScope(ADMINISTRATOR.name())
     );
+
+    //@Bean
+    SecurityFilterChain webauthnFilterChain(HttpSecurity http, WenAuthnSecurityProperties webAuthnProperties) throws Exception {
+        return http.authorizeHttpRequests(ht -> ht.anyRequest().authenticated())
+                .cors(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
+                .webAuthn(webauthn -> webauthn
+                        .allowedOrigins(webAuthnProperties.allowedOrigins())
+                        .rpId(webAuthnProperties.rpId())
+                        .rpName(webAuthnProperties.rpName())
+                )
+                .build();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
