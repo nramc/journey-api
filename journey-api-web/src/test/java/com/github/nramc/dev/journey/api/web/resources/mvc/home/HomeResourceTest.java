@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.mvc.home;
 
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HomeResource.class)
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
 @EnableConfigurationProperties({ApplicationProperties.class})
 class HomeResourceTest {

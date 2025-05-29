@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HomeResource.class)
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
 @EnableConfigurationProperties({ApplicationProperties.class})
 class WebSecurityConfigTest {

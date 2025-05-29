@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.api;
 
+import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
 import com.github.nramc.dev.journey.api.web.resources.Resources;
@@ -16,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ApiVersionResource.class)
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
 @ActiveProfiles({"prod", "test"})
 @EnableConfigurationProperties({ApplicationProperties.class})
 class ApiVersionResourceTest {

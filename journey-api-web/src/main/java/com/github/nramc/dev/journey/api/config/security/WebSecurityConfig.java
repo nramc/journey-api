@@ -1,5 +1,7 @@
 package com.github.nramc.dev.journey.api.config.security;
 
+import com.github.nramc.dev.journey.api.config.security.webauthn.InMemoryWebAuthnCreationOptionsRepository;
+import com.github.nramc.dev.journey.api.config.security.webauthn.InMemoryWebAuthnRequestOptionsRepository;
 import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -10,6 +12,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,6 +30,8 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
+import org.springframework.security.web.webauthn.authentication.PublicKeyCredentialRequestOptionsRepository;
+import org.springframework.security.web.webauthn.registration.PublicKeyCredentialCreationOptionsRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -92,9 +97,18 @@ public class WebSecurityConfig {
             hasAnyAuthority(ADMINISTRATOR.name()), hasAnyScope(ADMINISTRATOR.name())
     );
 
-    //@Bean
+    @Bean
+    @Order(2)
     SecurityFilterChain webauthnFilterChain(HttpSecurity http, WenAuthnSecurityProperties webAuthnProperties) throws Exception {
-        return http.authorizeHttpRequests(ht -> ht.anyRequest().authenticated())
+        return http
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(GET, HEALTH_CHECK).permitAll()
+
+                        .requestMatchers(HOME).permitAll()
+                        .requestMatchers(REST_DOC).permitAll()
+
+                        .anyRequest().authenticated()
+                )
                 .cors(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .webAuthn(webauthn -> webauthn
@@ -106,8 +120,10 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    @Order(1)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/rest/**")
                 // configure CORS security
                 .cors(Customizer.withDefaults())
 
@@ -133,11 +149,9 @@ public class WebSecurityConfig {
 
 
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(GET, HEALTH_CHECK).permitAll()
 
-                        .requestMatchers(HOME).permitAll()
+                        // Public resources
                         .requestMatchers(GET, API_VERSION).permitAll()
-                        .requestMatchers(REST_DOC).permitAll()
 
                         // Registration Resources
                         .requestMatchers(SIGNUP).permitAll()
@@ -221,6 +235,19 @@ public class WebSecurityConfig {
             source.registerCorsConfiguration(corsProperty.path(), configuration);
         });
         return source;
+    }
+
+
+    /* WebAuthn configurations */
+
+    @Bean
+    PublicKeyCredentialCreationOptionsRepository inMemoryWebAuthnCreationOptionsRepository() {
+        return new InMemoryWebAuthnCreationOptionsRepository();
+    }
+
+    @Bean
+    PublicKeyCredentialRequestOptionsRepository inMemoryWebAuthnRequestOptionsRepository() {
+        return new InMemoryWebAuthnRequestOptionsRepository();
     }
 
 }
