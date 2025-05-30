@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.core.security.webauthn;
 
-import com.yubico.webauthn.CredentialRepository;
 import com.yubico.webauthn.RegisteredCredential;
 import com.yubico.webauthn.RegistrationResult;
 import com.yubico.webauthn.data.ByteArray;
@@ -25,17 +24,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * */
 
 @Slf4j
-public class InMemoryCredentialRepository implements CredentialRepository {
+public class InMemoryCredentialRepository implements PublicKeyCredentialRepository {
     private final Map<String, List<RegisteredCredential>> credentialsByUsername = new ConcurrentHashMap<>();
     private final Map<ByteArray, String> usernameByUserHandle = new ConcurrentHashMap<>();
 
 
+    @Override
     public void addCredential(String username, ByteArray userHandle, RegisteredCredential credential) {
         credentialsByUsername.computeIfAbsent(username, k -> new ArrayList<>()).add(credential);
         usernameByUserHandle.putIfAbsent(userHandle, username);
         log.info("Added credential for user: {}, credential ID: {}", username, credential.getCredentialId());
     }
 
+    @Override
     public void removeCredential(String username, ByteArray credentialId) {
         List<RegisteredCredential> credentials = credentialsByUsername.get(username);
         if (credentials != null) {
@@ -67,6 +68,7 @@ public class InMemoryCredentialRepository implements CredentialRepository {
         for (RegisteredCredential cred : credentials) {
             result.add(PublicKeyCredentialDescriptor.builder()
                     .id(cred.getCredentialId())
+                    .transports(Set.of())
                     .build());
         }
         log.info("Retrieved {} credential IDs for user: {}", result.size(), username);

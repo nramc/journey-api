@@ -1,0 +1,24 @@
+package com.github.nramc.dev.journey.api.core.security.webauthn;
+
+import com.yubico.webauthn.CredentialRepository;
+import com.yubico.webauthn.RegisteredCredential;
+import com.yubico.webauthn.data.ByteArray;
+
+public interface PublicKeyCredentialRepository extends CredentialRepository {
+    /**
+     * Adds a credential to the repository.
+     *
+     * @param username   the username associated with the credential
+     * @param userHandle the user handle for the credential
+     * @param credential the credential to add
+     */
+    void addCredential(String username, ByteArray userHandle, RegisteredCredential credential);
+
+    /**
+     * Removes a credential from the repository.
+     *
+     * @param username     the username associated with the credential
+     * @param credentialId the ID of the credential to remove
+     */
+    void removeCredential(String username, ByteArray credentialId);
+}

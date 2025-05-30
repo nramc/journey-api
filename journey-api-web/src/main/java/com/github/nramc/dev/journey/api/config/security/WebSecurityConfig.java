@@ -160,7 +160,7 @@ public class WebSecurityConfig {
                         .requestMatchers(POST, UPDATE_MY_ACCOUNT).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, MY_SECURITY_ATTRIBUTE_EMAIL).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(GET, MY_SECURITY_ATTRIBUTE_EMAIL).access(readAccessAuthorizationManager)
-                        .requestMatchers(POST, "/webauthn/register/start").access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(POST, "/webauthn/register/*").access(authenticatedUserAuthorizationManager)
 
                         .requestMatchers(POST, MY_SECURITY_MFA).access(authenticatedUserAuthorizationManager)
                         .requestMatchers(POST, SEND_EMAIL_CODE).access(authenticatedUserAuthorizationManager)
