@@ -53,6 +53,7 @@
         <wiremock-standalone.version>3.13.0</wiremock-standalone.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <checkstyle.version>10.23.1</checkstyle.version>
+        <webauthn-server-core.version>2.7.0</webauthn-server-core.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -60,6 +61,12 @@
                 <groupId>io.github.nramc</groupId>
                 <artifactId>geojson4j</artifactId>
                 <version>${geojson4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yubico</groupId>
+                <artifactId>webauthn-server-core</artifactId>
+                <version>${webauthn-server-core.version}</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>com.cloudinary</groupId>
