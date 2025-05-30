@@ -33,3 +33,11 @@ spring:
       mail.smtp.auth: false
       mail.smtp.starttls.enable: false
       mail.smtp.starttls.required: false
+
+server:
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:keystore/localhost.p12
+    key-store-password: "changeit"
+    key-alias: "tomcat"
