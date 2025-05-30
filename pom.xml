@@ -43,7 +43,7 @@
         <rewrite-maven-plugin.version>6.10.0</rewrite-maven-plugin.version>
         <rewrite-static-analysis.version>2.10.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.10.0</rewrite-testing-frameworks.version>
-        <spring-cloud-contract.version>4.2.1</spring-cloud-contract.version>
+        <spring-cloud-contract.version>4.3.0</spring-cloud-contract.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.8.8</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.3</zxing-qr.version>
