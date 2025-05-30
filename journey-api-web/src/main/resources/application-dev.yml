@@ -1,10 +1,13 @@
 app:
-  ui-app-url: http://localhost:4200
+  ui-app-url: https://localhost:4200
   security:
+    webauthn:
+      rp-id: localhost
+      origin: https://localhost:4200
     cors:
       properties:
         - path: /**
-          allowed-origins: http://localhost:4200, https://nramc.github.io
+          allowed-origins: https://localhost:4200, https://nramc.github.io
           allowed-methods: GET, POST, PUT, DELETE
           allowed-headers:
             - Authorization
@@ -40,4 +43,4 @@ server:
     key-store-type: PKCS12
     key-store: classpath:keystore/localhost.p12
     key-store-password: "changeit"
-    key-alias: "tomcat"
+    key-alias: localhost-dev
