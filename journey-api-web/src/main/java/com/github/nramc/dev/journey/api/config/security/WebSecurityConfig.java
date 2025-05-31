@@ -132,6 +132,7 @@ public class WebSecurityConfig {
 
                         // Login resources
                         .requestMatchers(POST, GUEST_LOGIN).permitAll()
+                        .requestMatchers(POST, "/webauthn/authenticate/*").permitAll()
                         .requestMatchers(POST, LOGIN).authenticated()
                         .requestMatchers(POST, LOGIN_MFA).authenticated()
 
