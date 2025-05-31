@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
@@ -38,9 +39,9 @@ public class WebAuthnAuthenticationResource {
      * @return PublicKeyCredentialRequestOptions for the frontend
      */
     @PostMapping("/start")
-    public ResponseEntity<PublicKeyCredentialRequestOptions> startAuthentication(@RequestParam String username) {
+    public String startAuthentication(@RequestParam String username) throws JsonProcessingException {
         PublicKeyCredentialRequestOptions options = webAuthnService.startAssertion(username);
-        return ResponseEntity.ok(options);
+        return options.toCredentialsGetJson();
     }
 
     /**

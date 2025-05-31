@@ -12,12 +12,14 @@ import com.yubico.webauthn.StartAssertionOptions;
 import com.yubico.webauthn.StartRegistrationOptions;
 import com.yubico.webauthn.data.AuthenticatorAssertionResponse;
 import com.yubico.webauthn.data.AuthenticatorAttestationResponse;
+import com.yubico.webauthn.data.AuthenticatorSelectionCriteria;
 import com.yubico.webauthn.data.ByteArray;
 import com.yubico.webauthn.data.ClientAssertionExtensionOutputs;
 import com.yubico.webauthn.data.ClientRegistrationExtensionOutputs;
 import com.yubico.webauthn.data.PublicKeyCredential;
 import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
 import com.yubico.webauthn.data.PublicKeyCredentialRequestOptions;
+import com.yubico.webauthn.data.ResidentKeyRequirement;
 import com.yubico.webauthn.data.UserIdentity;
 import com.yubico.webauthn.data.UserVerificationRequirement;
 import com.yubico.webauthn.exception.AssertionFailedException;
@@ -41,9 +43,16 @@ public class WebAuthnService {
                 .id(WebAuthnUtils.newUserHandle())
                 .build();
 
+        AuthenticatorSelectionCriteria authenticatorSelectionCriteria = AuthenticatorSelectionCriteria.builder()
+                .residentKey(ResidentKeyRequirement.REQUIRED)
+                .userVerification(UserVerificationRequirement.REQUIRED)
+                .build();
+
         StartRegistrationOptions options = StartRegistrationOptions.builder()
                 .user(userIdentity)
+                .authenticatorSelection(authenticatorSelectionCriteria)
                 .build();
+
         PublicKeyCredentialCreationOptions creationOptions = relyingParty.startRegistration(options);
         log.info("Registration options created for user: {}", user.getUsername());
         creationOptionRepository.save(user, creationOptions);
@@ -82,11 +91,13 @@ public class WebAuthnService {
 
     public PublicKeyCredentialRequestOptions startAssertion(String username) {
         StartAssertionOptions options = StartAssertionOptions.builder()
-                .username(username)
-                .userVerification(UserVerificationRequirement.PREFERRED)
+                //.username(username)
+                //.userVerification(UserVerificationRequirement.PREFERRED)
+
                 .build();
 
         AssertionRequest request = relyingParty.startAssertion(options);
+
         assertionRequestRepository.save(request.getPublicKeyCredentialRequestOptions().getChallenge(), request);
 
         log.info("Assertion options created and saved for user: {}", username);
