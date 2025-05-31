@@ -43,8 +43,8 @@ public class WebAuthnRegistrationResource {
     /**
      * Completes the WebAuthn registration process for the authenticated user.
      *
-     * @param userDetails the authenticated user details
-     * @param response    the response from the WebAuthn client
+     * @param userDetails             the authenticated user details
+     * @param publicKeyCredentialJson the JSON representation of the PublicKeyCredential
      * @return a ResponseEntity indicating success or failure
      */
     @PostMapping("/finish")
