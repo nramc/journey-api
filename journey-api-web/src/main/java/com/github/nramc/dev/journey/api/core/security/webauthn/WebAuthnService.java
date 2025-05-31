@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.core.security.webauthn;
 
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.yubico.webauthn.AssertionRequest;
+import com.yubico.webauthn.AssertionResult;
 import com.yubico.webauthn.FinishAssertionOptions;
 import com.yubico.webauthn.FinishRegistrationOptions;
 import com.yubico.webauthn.RegisteredCredential;
@@ -24,11 +25,6 @@ import com.yubico.webauthn.exception.RegistrationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/*
-    todo:
-     - add javadoc
-     - add tests
- */
 @Slf4j
 @RequiredArgsConstructor
 public class WebAuthnService {
@@ -97,7 +93,7 @@ public class WebAuthnService {
         return request.getPublicKeyCredentialRequestOptions();
     }
 
-    public void finishAssertion(PublicKeyCredential<AuthenticatorAssertionResponse, ClientAssertionExtensionOutputs> publicKeyCredential)
+    public AssertionResult finishAssertion(PublicKeyCredential<AuthenticatorAssertionResponse, ClientAssertionExtensionOutputs> publicKeyCredential)
             throws AssertionFailedException {
 
         ByteArray challenge = publicKeyCredential.getResponse().getClientData().getChallenge();
@@ -111,10 +107,11 @@ public class WebAuthnService {
                 .response(publicKeyCredential)
                 .build();
 
-        relyingParty.finishAssertion(options);
+        AssertionResult assertionResult = relyingParty.finishAssertion(options);
         log.info("Assertion successful for user with challenge: {}", challenge);
 
         assertionRequestRepository.delete(challenge);
+        return assertionResult;
 
     }
 }
