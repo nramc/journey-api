@@ -10,7 +10,7 @@ import com.yubico.webauthn.exception.RegistrationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,12 +30,12 @@ public class WebAuthnRegistrationResource {
     /**
      * Starts the WebAuthn registration process for the authenticated user.
      *
-     * @param userDetails the authenticated user details
+     * @param authentication the authentication object containing user details
      * @return a ResponseEntity containing PublicKeyCredentialCreationOptions
      */
     @PostMapping("/start")
-    public ResponseEntity<PublicKeyCredentialCreationOptions> startRegistration(@AuthenticationPrincipal AuthUser userDetails) {
-        userDetails = (AuthUser) userDetailsService.loadUserByUsername(userDetails.getUsername());
+    public ResponseEntity<PublicKeyCredentialCreationOptions> startRegistration(Authentication authentication) {
+        AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
         PublicKeyCredentialCreationOptions options = webAuthnService.startRegistration(userDetails);
         return ResponseEntity.ok(options);
     }
@@ -43,14 +43,14 @@ public class WebAuthnRegistrationResource {
     /**
      * Completes the WebAuthn registration process for the authenticated user.
      *
-     * @param userDetails             the authenticated user details
+     * @param authentication          the authentication object containing user details
      * @param publicKeyCredentialJson the JSON representation of the PublicKeyCredential
      * @return a ResponseEntity indicating success or failure
      */
     @PostMapping("/finish")
-    public ResponseEntity<Void> finishRegistration(@AuthenticationPrincipal AuthUser userDetails, @RequestBody String publicKeyCredentialJson)
+    public ResponseEntity<Void> finishRegistration(Authentication authentication, @RequestBody String publicKeyCredentialJson)
             throws IOException, RegistrationFailedException {
-        userDetails = (AuthUser) userDetailsService.loadUserByUsername(userDetails.getUsername());
+        AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
         PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> publicKeyCredential =
                 PublicKeyCredential.parseRegistrationResponseJson(publicKeyCredentialJson);
         webAuthnService.finishRegistration(userDetails, publicKeyCredential);
