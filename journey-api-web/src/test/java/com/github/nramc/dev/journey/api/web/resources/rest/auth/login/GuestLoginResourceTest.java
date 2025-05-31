@@ -8,6 +8,7 @@ import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
 import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.repository.user.UserRepository;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.provider.JwtResponseProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {GuestLoginResource.class})
-@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, JwtResponseProvider.class, WebSecurityConfig.class})
 @EnableConfigurationProperties({JwtProperties.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson
@@ -51,7 +52,7 @@ class GuestLoginResourceTest {
     @Test
     void test() {
         assertDoesNotThrow(() ->
-            assertThat(mockMvc).isNotNull());
+                assertThat(mockMvc).isNotNull());
     }
 
     @Test
