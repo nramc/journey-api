@@ -1,5 +1,7 @@
 package com.github.nramc.dev.journey.api.config.security;
 
+import com.github.nramc.dev.journey.api.core.security.webauthn.AssertionRequestRepository;
+import com.github.nramc.dev.journey.api.core.security.webauthn.InMemoryAssertionRequestRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.InMemoryCredentialRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.InMemoryPublicKeyCredentialCreationOptionRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.PublicKeyCredentialCreationOptionRepository;
@@ -51,10 +53,16 @@ public class WebAuthnConfig {
     }
 
     @Bean
+    AssertionRequestRepository assertionRequestRepository() {
+        return new InMemoryAssertionRequestRepository();
+    }
+
+    @Bean
     WebAuthnService webAuthnService(RelyingParty relyingParty,
                                     PublicKeyCredentialRepository publicKeyCredentialRepository,
-                                    PublicKeyCredentialCreationOptionRepository creationOptionRepository) {
-        return new WebAuthnService(relyingParty, publicKeyCredentialRepository, creationOptionRepository);
+                                    PublicKeyCredentialCreationOptionRepository creationOptionRepository,
+                                    AssertionRequestRepository assertionRequestRepository) {
+        return new WebAuthnService(relyingParty, publicKeyCredentialRepository, creationOptionRepository, assertionRequestRepository);
     }
 }
 

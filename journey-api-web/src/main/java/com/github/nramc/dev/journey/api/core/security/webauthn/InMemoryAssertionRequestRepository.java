@@ -16,41 +16,41 @@ public class InMemoryAssertionRequestRepository implements AssertionRequestRepos
     private final Map<ByteArray, AssertionRequest> store = new ConcurrentHashMap<>();
 
     /**
-     * Saves the AssertionRequest associated with the given userHandle.
+     * Saves the AssertionRequest associated with the given challenge.
      *
-     * @param userHandle the unique identifier for the user
-     * @param request    the AssertionRequest to save
+     * @param challenge the unique identifier for the assertion request
+     * @param request   the AssertionRequest to save
      */
     @Override
-    public void save(ByteArray userHandle, AssertionRequest request) {
-        requireNonNull(userHandle, "User handle must not be null");
-        store.put(userHandle, request);
-        log.info("Saved AssertionRequest for userHandle: {}", userHandle);
+    public void save(ByteArray challenge, AssertionRequest request) {
+        requireNonNull(challenge, "Challenge must not be null");
+        store.put(challenge, request);
+        log.info("Saved AssertionRequest for challenge: {}", challenge);
     }
 
     /**
-     * Retrieves the AssertionRequest associated with the given userHandle.
+     * Retrieves the AssertionRequest associated with the given challenge.
      *
-     * @param userHandle the unique identifier for the user
+     * @param challenge the unique identifier for the user
      * @return the AssertionRequest if found, otherwise null
      */
     @Override
-    public AssertionRequest get(ByteArray userHandle) {
-        requireNonNull(userHandle, "User handle must not be null");
-        AssertionRequest request = store.get(userHandle);
-        log.info("Retrieved AssertionRequest for userHandle: {} exists:{}", userHandle, request != null);
+    public AssertionRequest get(ByteArray challenge) {
+        requireNonNull(challenge, "Challenge to look up must not be null");
+        AssertionRequest request = store.get(challenge);
+        log.info("Retrieved AssertionRequest for challenge: {} exists:{}", challenge, request != null);
         return request;
     }
 
     /**
-     * Deletes the AssertionRequest associated with the given userHandle.
+     * Deletes the AssertionRequest associated with the given challenge.
      *
-     * @param userHandle the unique identifier for the user
+     * @param challenge the unique identifier for the assertion request
      */
     @Override
-    public void delete(ByteArray userHandle) {
-        requireNonNull(userHandle, "User handle must not be null");
-        store.remove(userHandle);
-        log.info("Deleted AssertionRequest for userHandle: {}", userHandle);
+    public void delete(ByteArray challenge) {
+        requireNonNull(challenge, "Challenge must not be null");
+        store.remove(challenge);
+        log.info("Deleted AssertionRequest for challenge: {}", challenge);
     }
 }

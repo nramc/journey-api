@@ -1,16 +1,25 @@
 package com.github.nramc.dev.journey.api.core.security.webauthn;
 
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.yubico.webauthn.AssertionRequest;
+import com.yubico.webauthn.FinishAssertionOptions;
 import com.yubico.webauthn.FinishRegistrationOptions;
 import com.yubico.webauthn.RegisteredCredential;
 import com.yubico.webauthn.RegistrationResult;
 import com.yubico.webauthn.RelyingParty;
+import com.yubico.webauthn.StartAssertionOptions;
 import com.yubico.webauthn.StartRegistrationOptions;
+import com.yubico.webauthn.data.AuthenticatorAssertionResponse;
 import com.yubico.webauthn.data.AuthenticatorAttestationResponse;
+import com.yubico.webauthn.data.ByteArray;
+import com.yubico.webauthn.data.ClientAssertionExtensionOutputs;
 import com.yubico.webauthn.data.ClientRegistrationExtensionOutputs;
 import com.yubico.webauthn.data.PublicKeyCredential;
 import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
+import com.yubico.webauthn.data.PublicKeyCredentialRequestOptions;
 import com.yubico.webauthn.data.UserIdentity;
+import com.yubico.webauthn.data.UserVerificationRequirement;
+import com.yubico.webauthn.exception.AssertionFailedException;
 import com.yubico.webauthn.exception.RegistrationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +35,7 @@ public class WebAuthnService {
     private final RelyingParty relyingParty;
     private final PublicKeyCredentialRepository credentialRepository;
     private final PublicKeyCredentialCreationOptionRepository creationOptionRepository;
+    private final AssertionRequestRepository assertionRequestRepository;
 
 
     public PublicKeyCredentialCreationOptions startRegistration(AuthUser user) {
@@ -72,5 +82,39 @@ public class WebAuthnService {
 
         creationOptionRepository.delete(user);
         log.info("Credential added for user: {}, credential ID: {}", user.getUsername(), credential.getCredentialId());
+    }
+
+    public PublicKeyCredentialRequestOptions startAssertion(String username) {
+        StartAssertionOptions options = StartAssertionOptions.builder()
+                .username(username)
+                .userVerification(UserVerificationRequirement.PREFERRED)
+                .build();
+
+        AssertionRequest request = relyingParty.startAssertion(options);
+        assertionRequestRepository.save(request.getPublicKeyCredentialRequestOptions().getChallenge(), request);
+
+        log.info("Assertion options created and saved for user: {}", username);
+        return request.getPublicKeyCredentialRequestOptions();
+    }
+
+    public void finishAssertion(PublicKeyCredential<AuthenticatorAssertionResponse, ClientAssertionExtensionOutputs> publicKeyCredential)
+            throws AssertionFailedException {
+
+        ByteArray challenge = publicKeyCredential.getResponse().getClientData().getChallenge();
+        AssertionRequest request = assertionRequestRepository.get(challenge);
+        if (request == null) {
+            throw new IllegalStateException("No assertion request found for challenge: " + challenge);
+        }
+
+        FinishAssertionOptions options = FinishAssertionOptions.builder()
+                .request(request)
+                .response(publicKeyCredential)
+                .build();
+
+        relyingParty.finishAssertion(options);
+        log.info("Assertion successful for user with challenge: {}", challenge);
+
+        assertionRequestRepository.delete(challenge);
+
     }
 }
