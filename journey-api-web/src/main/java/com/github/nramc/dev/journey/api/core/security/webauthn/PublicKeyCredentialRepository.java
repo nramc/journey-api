@@ -10,11 +10,10 @@ public interface PublicKeyCredentialRepository extends CredentialRepository {
     /**
      * Adds a credential to the repository.
      *
-     * @param username   the username associated with the credential
-     * @param userHandle the user handle for the credential
-     * @param credential the credential to add
+     * @param credentialMetadata metadata about the credential being added, including username and user handle
+     * @param credential         the credential to add
      */
-    void addCredential(String username, ByteArray userHandle, RegisteredCredential credential);
+    void addCredential(RegisteredCredential credential, CredentialMetadata credentialMetadata);
 
     List<RegisteredCredential> getCredentials(String username);
 

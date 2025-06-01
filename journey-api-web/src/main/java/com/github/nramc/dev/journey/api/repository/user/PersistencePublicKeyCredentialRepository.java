@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.repository.user;
 
+import com.github.nramc.dev.journey.api.core.security.webauthn.CredentialMetadata;
 import com.github.nramc.dev.journey.api.core.security.webauthn.PublicKeyCredentialRepository;
 import com.github.nramc.dev.journey.api.repository.user.credential.UserPublicKeyCredentialEntity;
 import com.github.nramc.dev.journey.api.repository.user.credential.UserPublicKeyCredentialEntityConverter;
@@ -26,21 +27,20 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
      *
      * <p>Implementations of this method MUST NOT return null.
      *
-     * @param username   the username of the user to whom the credential is being added
-     * @param userHandle the user handle of the user to whom the credential is being added
+     * @param metadata   metadata about the credential being added, including username and user handle
      * @param credential the credential to be added
      */
     @Override
-    public void addCredential(String username, ByteArray userHandle, RegisteredCredential credential) {
+    public void addCredential(RegisteredCredential credential, CredentialMetadata metadata) {
         UserPublicKeyCredentialEntity entity = UserPublicKeyCredentialEntity.builder()
-                .username(username)
-                .userHandle(userHandle.getBase64())
+                .username(metadata.username())
+                .userHandle(metadata.userHandle().getBase64())
                 .credentialId(credential.getCredentialId().getBase64())
                 .publicKeyCose(credential.getPublicKeyCose().getBase64())
                 .signatureCount(credential.getSignatureCount())
                 .build();
         credentialRepository.save(entity);
-        log.info("Added credential for user: {}, credential ID: {}", username, credential.getCredentialId());
+        log.info("Added credential for user: {}, credential ID: {}", metadata.username(), credential.getCredentialId());
 
     }
 

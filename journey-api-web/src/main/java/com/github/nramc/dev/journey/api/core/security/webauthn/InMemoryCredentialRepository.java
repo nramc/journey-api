@@ -34,15 +34,14 @@ public class InMemoryCredentialRepository implements PublicKeyCredentialReposito
      *
      * <p>Implementations of this method MUST NOT return null.
      *
-     * @param username   the username of the user to whom the credential belongs
-     * @param userHandle the user handle associated with the credential
-     * @param credential the credential to be added
+     * @param credentialMetadata metadata about the credential being added, including username and user handle
+     * @param credential         the credential to be added
      */
     @Override
-    public void addCredential(String username, ByteArray userHandle, RegisteredCredential credential) {
-        credentialsByUsername.computeIfAbsent(username, k -> new ArrayList<>()).add(credential);
-        usernameByUserHandle.putIfAbsent(userHandle, username);
-        log.info("Added credential for user: {}, credential ID: {}", username, credential.getCredentialId());
+    public void addCredential(RegisteredCredential credential, CredentialMetadata credentialMetadata) {
+        credentialsByUsername.computeIfAbsent(credentialMetadata.username(), k -> new ArrayList<>()).add(credential);
+        usernameByUserHandle.putIfAbsent(credentialMetadata.userHandle(), credentialMetadata.username());
+        log.info("Added credential for user: {}, credential ID: {}", credentialMetadata.username(), credential.getCredentialId());
     }
 
     /**

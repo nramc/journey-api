@@ -27,6 +27,7 @@ import com.yubico.webauthn.exception.RegistrationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -81,11 +82,14 @@ public class WebAuthnService {
                 .signatureCount(result.getSignatureCount())
                 .build();
 
-        credentialRepository.addCredential(
-                user.getUsername(),
-                creationOptions.getUser().getId(),
-                credential
-        );
+        CredentialMetadata credentialMetadata = CredentialMetadata.builder()
+                .createdAt(LocalDateTime.now())
+                .name(creationOptions.getUser().getDisplayName())
+                .username(user.getUsername())
+                .userHandle(creationOptions.getUser().getId())
+                .build();
+
+        credentialRepository.addCredential(credential, credentialMetadata);
 
         creationOptionRepository.delete(user);
         log.info("Credential added for user: {}, credential ID: {}", user.getUsername(), credential.getCredentialId());
