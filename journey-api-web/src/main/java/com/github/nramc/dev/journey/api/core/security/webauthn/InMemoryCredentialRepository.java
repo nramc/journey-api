@@ -46,6 +46,19 @@ public class InMemoryCredentialRepository implements PublicKeyCredentialReposito
     }
 
     /**
+     * Get all credentials registered to the user with the given username.
+     *
+     * <p>Implementations of this method MUST NOT return null.
+     *
+     * @param username the username of the user whose credentials are being queried
+     * @return a set of {@link RegisteredCredential} objects for the specified user
+     */
+    @Override
+    public List<RegisteredCredential> getCredentials(String username) {
+        return credentialsByUsername.get(username);
+    }
+
+    /**
      * Remove the credential with the given ID for the user with the given username.
      *
      * <p>Implementations of this method MUST NOT return null.

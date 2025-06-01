@@ -4,6 +4,8 @@ import com.yubico.webauthn.CredentialRepository;
 import com.yubico.webauthn.RegisteredCredential;
 import com.yubico.webauthn.data.ByteArray;
 
+import java.util.List;
+
 public interface PublicKeyCredentialRepository extends CredentialRepository {
     /**
      * Adds a credential to the repository.
@@ -13,6 +15,8 @@ public interface PublicKeyCredentialRepository extends CredentialRepository {
      * @param credential the credential to add
      */
     void addCredential(String username, ByteArray userHandle, RegisteredCredential credential);
+
+    List<RegisteredCredential> getCredentials(String username);
 
     /**
      * Removes a credential from the repository.

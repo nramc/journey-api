@@ -45,6 +45,21 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
     }
 
     /**
+     * Get all credentials registered to the user with the given username.
+     *
+     * <p>Implementations of this method MUST NOT return null.
+     *
+     * @param username the username of the user whose credentials are being queried
+     */
+    @Override
+    public List<RegisteredCredential> getCredentials(String username) {
+        return credentialRepository.findByUsername(username)
+                .stream()
+                .map(UserPublicKeyCredentialEntityConverter::toRegisteredCredential)
+                .toList();
+    }
+
+    /**
      * Remove the credential with the given credential ID for the user with the given username.
      *
      * <p>Implementations of this method MUST NOT return null.

@@ -27,6 +27,8 @@ import com.yubico.webauthn.exception.RegistrationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 public class WebAuthnService {
@@ -123,6 +125,13 @@ public class WebAuthnService {
 
         assertionRequestRepository.delete(challenge);
         return assertionResult;
+    }
 
+    public List<RegisteredCredential> listCredentials(AuthUser user) {
+        return credentialRepository.getCredentials(user.getUsername());
+    }
+
+    public void deleteCredential(AuthUser userDetails, String credentialId) {
+        credentialRepository.removeCredential(userDetails.getUsername(), ByteArray.fromBase64(credentialId));
     }
 }
