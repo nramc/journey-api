@@ -65,7 +65,6 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
      * returns a value suitable for inclusion in this set.
      *
      * <p>Implementations of this method MUST NOT return null.
-     * <p>
      * Reference:
      * <a href="https://github.com/Yubico/java-webauthn-server/blob/main/webauthn-server-demo/src/main/java/demo/webauthn/InMemoryRegistrationStorage.java>InMemoryRegistrationStorage.java</a>
      *

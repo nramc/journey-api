@@ -15,20 +15,29 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/*
- * todo:
- *  - add Javadoc
- * - refactor to use a database instead of in-memory storage
- * - refactor to use streams for better readability
+/**
+ * An in-memory implementation of the {@link PublicKeyCredentialRepository} interface.
+ * This class is used to store and manage WebAuthn credentials in memory, suitable for testing or
+ * development purposes.
  *
- * */
-
+ * <p>Note: This implementation is not persistent and will lose all data when the application stops.
+ * It is intended for demonstration and testing only.
+ */
 @Slf4j
 public class InMemoryCredentialRepository implements PublicKeyCredentialRepository {
     private final Map<String, List<RegisteredCredential>> credentialsByUsername = new ConcurrentHashMap<>();
     private final Map<ByteArray, String> usernameByUserHandle = new ConcurrentHashMap<>();
 
 
+    /**
+     * Add a new credential for the given username.
+     *
+     * <p>Implementations of this method MUST NOT return null.
+     *
+     * @param username   the username of the user to whom the credential belongs
+     * @param userHandle the user handle associated with the credential
+     * @param credential the credential to be added
+     */
     @Override
     public void addCredential(String username, ByteArray userHandle, RegisteredCredential credential) {
         credentialsByUsername.computeIfAbsent(username, k -> new ArrayList<>()).add(credential);
@@ -36,6 +45,14 @@ public class InMemoryCredentialRepository implements PublicKeyCredentialReposito
         log.info("Added credential for user: {}, credential ID: {}", username, credential.getCredentialId());
     }
 
+    /**
+     * Remove the credential with the given ID for the user with the given username.
+     *
+     * <p>Implementations of this method MUST NOT return null.
+     *
+     * @param username     the username of the user from whom the credential is being removed
+     * @param credentialId the ID of the credential to be removed
+     */
     @Override
     public void removeCredential(String username, ByteArray credentialId) {
         List<RegisteredCredential> credentials = credentialsByUsername.get(username);
@@ -55,7 +72,6 @@ public class InMemoryCredentialRepository implements PublicKeyCredentialReposito
      * returns a value suitable for inclusion in this set.
      *
      * <p>Implementations of this method MUST NOT return null.
-     * <p>
      * Reference:
      * <a href="https://github.com/Yubico/java-webauthn-server/blob/main/webauthn-server-demo/src/main/java/demo/webauthn/InMemoryRegistrationStorage.java>InMemoryRegistrationStorage.java</a>
      *
