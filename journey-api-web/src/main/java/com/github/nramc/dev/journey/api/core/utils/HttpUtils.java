@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.core.utils;
 
-
 import org.apache.commons.lang3.StringUtils;
 import ua_parser.Client;
 import ua_parser.Parser;
