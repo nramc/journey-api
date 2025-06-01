@@ -44,4 +44,17 @@ class WebAuthnRegistrationResourceTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void finishRegistration_whenUserAuthenticated_thenShouldCompleteRegistration() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/webauthn/register/finish")
+                        .with(httpBasic(WithMockAuthenticatedUser.USERNAME, WithMockAuthenticatedUser.PASSWORD))
+                        .header("User-Agent", "TestUserAgent")
+                        .contentType("application/json")
+                        .content("""
+                                {"type":"public-key","id":"BXcFzYFax4P75xdYKyXlpA","rawId":"BXcFzYFax4P75xdYKyXlpA","authenticatorAttachment":"platform","response":{"clientDataJSON":"eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiY0R2eGFhSkhPNEV6SnBSanNBd2I1RDVZeUxPS1hveVBSQ0JqYVJ5VjJJayIsIm9yaWdpbiI6Imh0dHBzOi8vbG9jYWxob3N0OjQyMDAiLCJjcm9zc09yaWdpbiI6ZmFsc2V9","attestationObject":"o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YViUSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NdAAAAAOqbjWZNAR0hPOS2tIy1ddQAEAV3Bc2BWseD--cXWCsl5aSlAQIDJiABIVggeoSqqwoxWtfK6g-wXEOmVhb6tIR3mHSSCAFkt8wCI8giWCA05VJ8-siXNdLsSI-GwOQIk-rzvTob3TLTPS3P1pHoHQ","transports":["hybrid","internal"]},"clientExtensionResults":{"credProps":{"rk":true}}}
+                                """) // Replace with actual JSON content
+                ).andDo(print())
+                .andExpect(status().isOk());
+    }
+
 }
