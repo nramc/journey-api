@@ -9,7 +9,7 @@ public final class WebAuthnUtils {
     private static final Random random = new SecureRandom();
 
     private WebAuthnUtils() {
-        // Utility class should not be instantiated
+        throw new IllegalStateException("Utility class");
     }
 
     public static ByteArray newUserHandle() {
