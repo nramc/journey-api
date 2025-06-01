@@ -34,6 +34,8 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
     @Override
     public void addCredential(RegisteredCredential credential, CredentialMetadata metadata) {
         UserPublicKeyCredentialEntity entity = UserPublicKeyCredentialEntity.builder()
+                .name(metadata.name())
+                .createdAt(metadata.createdAt())
                 .username(metadata.username())
                 .userHandle(metadata.userHandle().getBase64())
                 .credentialId(credential.getCredentialId().getBase64())
