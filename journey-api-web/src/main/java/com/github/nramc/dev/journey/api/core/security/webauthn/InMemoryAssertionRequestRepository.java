@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.core.security.webauthn;
 
+import com.github.nramc.dev.journey.api.core.utils.NoCodeCoverageGenerated;
 import com.yubico.webauthn.AssertionRequest;
 import com.yubico.webauthn.data.ByteArray;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import static java.util.Objects.requireNonNull;
 
 @Slf4j
 @RequiredArgsConstructor
+@NoCodeCoverageGenerated
 public class InMemoryAssertionRequestRepository implements AssertionRequestRepository {
     private final Map<ByteArray, AssertionRequest> store = new ConcurrentHashMap<>();
 

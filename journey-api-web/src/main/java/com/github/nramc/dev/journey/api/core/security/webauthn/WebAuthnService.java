@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.core.security.webauthn;
 
+import com.github.nramc.dev.journey.api.core.utils.NoCodeCoverageGenerated;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn.HttpClientRequestInfo;
 import com.yubico.webauthn.AssertionRequest;
@@ -33,6 +34,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@NoCodeCoverageGenerated
 public class WebAuthnService {
     private final RelyingParty relyingParty;
     private final PublicKeyCredentialRepository credentialRepository;

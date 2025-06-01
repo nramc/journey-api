@@ -12,7 +12,14 @@ class HttpUtilsTest {
         String expected = "Mac(Mac OS X) Chrome";
         String deviceInfo = HttpUtils.extractDeviceInfo(userAgent, "Unknown Device");
         assertEquals(expected, deviceInfo);
+    }
 
+    @Test
+    void extractDeviceInfoWithEmptyUserAgent() {
+        String userAgent = "";
+        String expected = "Unknown Device";
+        String deviceInfo = HttpUtils.extractDeviceInfo(userAgent, expected);
+        assertEquals(expected, deviceInfo);
     }
 
 }

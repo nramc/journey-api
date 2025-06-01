@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.core.security.webauthn;
 
+import com.github.nramc.dev.journey.api.core.utils.NoCodeCoverageGenerated;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
+@NoCodeCoverageGenerated
 public class InMemoryPublicKeyCredentialCreationOptionRepository implements PublicKeyCredentialCreationOptionRepository {
     private static final Map<String, PublicKeyCredentialCreationOptions> store = new HashMap<>();
 
