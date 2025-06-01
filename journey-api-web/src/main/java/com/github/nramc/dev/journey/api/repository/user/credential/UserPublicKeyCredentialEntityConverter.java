@@ -1,5 +1,7 @@
 package com.github.nramc.dev.journey.api.repository.user.credential;
 
+import com.github.nramc.dev.journey.api.core.security.webauthn.CredentialMetadata;
+import com.github.nramc.dev.journey.api.core.security.webauthn.StoredCredentialInformation;
 import com.yubico.webauthn.RegisteredCredential;
 import com.yubico.webauthn.data.ByteArray;
 import com.yubico.webauthn.data.PublicKeyCredentialDescriptor;
@@ -15,12 +17,19 @@ public final class UserPublicKeyCredentialEntityConverter {
                 .build();
     }
 
-    public static RegisteredCredential toRegisteredCredential(UserPublicKeyCredentialEntity entity) {
-        return RegisteredCredential.builder()
+    public static StoredCredentialInformation toRegisteredCredential(UserPublicKeyCredentialEntity entity) {
+        RegisteredCredential credential = RegisteredCredential.builder()
                 .credentialId(ByteArray.fromBase64(entity.getCredentialId()))
                 .userHandle(ByteArray.fromBase64(entity.getUserHandle()))
                 .publicKeyCose(ByteArray.fromBase64(entity.getPublicKeyCose()))
                 .signatureCount(entity.getSignatureCount())
                 .build();
+        CredentialMetadata metadata = CredentialMetadata.builder()
+                .username(entity.getUsername())
+                .userHandle(ByteArray.fromBase64(entity.getUserHandle()))
+                .name(entity.getName())
+                .createdAt(entity.getCreatedAt())
+                .build();
+        return new StoredCredentialInformation(credential, metadata);
     }
 }

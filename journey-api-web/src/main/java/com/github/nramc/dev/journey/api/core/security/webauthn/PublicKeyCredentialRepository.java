@@ -15,7 +15,7 @@ public interface PublicKeyCredentialRepository extends CredentialRepository {
      */
     void addCredential(RegisteredCredential credential, CredentialMetadata credentialMetadata);
 
-    List<RegisteredCredential> getCredentials(String username);
+    List<StoredCredentialInformation> getCredentials(String username);
 
     /**
      * Removes a credential from the repository.

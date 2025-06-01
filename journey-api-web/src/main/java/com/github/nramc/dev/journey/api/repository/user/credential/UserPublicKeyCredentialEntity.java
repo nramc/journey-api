@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,4 +22,6 @@ public class UserPublicKeyCredentialEntity {
     private String credentialId;
     private String publicKeyCose;
     private long signatureCount;
+    private String name;
+    private LocalDateTime createdAt;
 }

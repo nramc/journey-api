@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.repository.user;
 
 import com.github.nramc.dev.journey.api.core.security.webauthn.CredentialMetadata;
 import com.github.nramc.dev.journey.api.core.security.webauthn.PublicKeyCredentialRepository;
+import com.github.nramc.dev.journey.api.core.security.webauthn.StoredCredentialInformation;
 import com.github.nramc.dev.journey.api.repository.user.credential.UserPublicKeyCredentialEntity;
 import com.github.nramc.dev.journey.api.repository.user.credential.UserPublicKeyCredentialEntityConverter;
 import com.github.nramc.dev.journey.api.repository.user.credential.UserPublicKeyCredentialRepository;
@@ -52,7 +53,7 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
      * @param username the username of the user whose credentials are being queried
      */
     @Override
-    public List<RegisteredCredential> getCredentials(String username) {
+    public List<StoredCredentialInformation> getCredentials(String username) {
         return credentialRepository.findByUsername(username)
                 .stream()
                 .map(UserPublicKeyCredentialEntityConverter::toRegisteredCredential)
@@ -158,7 +159,7 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
         Optional<UserPublicKeyCredentialEntity> entity = credentialRepository.findByCredentialIdAndUserHandle(credentialId.getBase64(), userHandle.getBase64());
         if (entity.isPresent()) {
             log.info("Found credential with ID: {} for user handle: {}", credentialId, userHandle);
-            return entity.map(UserPublicKeyCredentialEntityConverter::toRegisteredCredential);
+            return entity.map(UserPublicKeyCredentialEntityConverter::toRegisteredCredential).map(StoredCredentialInformation::credential);
         }
         log.info("No credential found with ID: {} for user handle: {}", credentialId, userHandle);
         return Optional.empty();
@@ -184,6 +185,9 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
             return Set.of();
         }
         log.info("Found {} credentials with ID: {}", entities.size(), credentialId);
-        return entities.stream().map(UserPublicKeyCredentialEntityConverter::toRegisteredCredential).collect(Collectors.toSet());
+        return entities.stream()
+                .map(UserPublicKeyCredentialEntityConverter::toRegisteredCredential)
+                .map(StoredCredentialInformation::credential)
+                .collect(Collectors.toSet());
     }
 }

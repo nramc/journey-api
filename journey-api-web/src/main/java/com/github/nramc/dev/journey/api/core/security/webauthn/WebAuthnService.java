@@ -131,7 +131,7 @@ public class WebAuthnService {
         return assertionResult;
     }
 
-    public List<RegisteredCredential> listCredentials(AuthUser user) {
+    public List<StoredCredentialInformation> listCredentials(AuthUser user) {
         return credentialRepository.getCredentials(user.getUsername());
     }
 

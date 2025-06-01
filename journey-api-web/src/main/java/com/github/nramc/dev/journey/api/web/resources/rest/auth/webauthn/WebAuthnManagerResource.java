@@ -24,7 +24,7 @@ public class WebAuthnManagerResource {
     public List<CredentialInfo> listCredentials(Authentication authentication) {
         AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
         return webAuthnService.listCredentials(userDetails).stream()
-                .map(credential -> CredentialInfo.of(credential.getCredentialId(), credential.getUserHandle()))
+                .map(CredentialInfo::from)
                 .toList();
     }
 

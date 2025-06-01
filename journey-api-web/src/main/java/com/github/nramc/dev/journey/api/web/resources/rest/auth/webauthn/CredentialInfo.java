@@ -1,12 +1,19 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn;
 
-import com.yubico.webauthn.data.ByteArray;
+import com.github.nramc.dev.journey.api.core.security.webauthn.StoredCredentialInformation;
 import lombok.Builder;
 
-@Builder(toBuilder = true)
-public record CredentialInfo(String credentialId, String userHandle) {
+import java.time.LocalDateTime;
 
-    public static CredentialInfo of(ByteArray credentialId, ByteArray userHandle) {
-        return new CredentialInfo(credentialId.getBase64(), userHandle.getBase64());
+@Builder(toBuilder = true)
+public record CredentialInfo(String credentialId, String userHandle, String name, LocalDateTime createdAt) {
+
+    public static CredentialInfo from(StoredCredentialInformation credential) {
+        return CredentialInfo.builder()
+                .credentialId(credential.credential().getCredentialId().getBase64())
+                .userHandle(credential.credential().getUserHandle().getBase64())
+                .name(credential.metadata().name())
+                .createdAt(credential.metadata().createdAt())
+                .build();
     }
 }
