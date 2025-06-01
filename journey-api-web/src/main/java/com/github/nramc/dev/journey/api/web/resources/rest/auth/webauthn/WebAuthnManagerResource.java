@@ -20,6 +20,13 @@ public class WebAuthnManagerResource {
     private final UserDetailsService userDetailsService;
     private final WebAuthnService webAuthnService;
 
+    /**
+     * This class provides endpoints for managing WebAuthn credentials.
+     * It allows listing credentials associated with the authenticated user.
+     *
+     * @param authentication the current authenticated user
+     * @return a list of WebAuthn credentials for the user
+     */
     @GetMapping
     public List<CredentialInfo> listCredentials(Authentication authentication) {
         AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
@@ -28,6 +35,12 @@ public class WebAuthnManagerResource {
                 .toList();
     }
 
+    /**
+     * Deletes a WebAuthn credential by its ID.
+     *
+     * @param authentication the current authenticated user
+     * @param credentialId   the ID of the credential to delete
+     */
     @DeleteMapping
     public void deleteCredential(Authentication authentication, @RequestParam String credentialId) {
         AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
