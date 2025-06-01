@@ -2,10 +2,10 @@ package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
 
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType;
-import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
 import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.provider.JwtResponseProvider;
 import com.github.nramc.dev.journey.api.web.resources.rest.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +31,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 @RequiredArgsConstructor
 @Tag(name = "Login", description = "Login as application user")
 public class LoginResource {
-    private final JwtGenerator jwtGenerator;
+    private final JwtResponseProvider jwtResponseProvider;
     private final UserSecurityAttributeService attributeService;
     private final UserDetailsService userDetailsService;
 
@@ -46,7 +45,7 @@ public class LoginResource {
         if (userDetails.isMfaEnabled()) {
             return additionalFactorResponse(userDetails);
         } else {
-            return jwtResponse(userDetails);
+            return jwtResponseProvider.jwtResponse(userDetails);
         }
     }
 
@@ -64,18 +63,5 @@ public class LoginResource {
                 .securityAttributes(availableAttributes)
                 .build();
     }
-
-    private LoginResponse jwtResponse(AuthUser userDetails) {
-        Jwt jwt = jwtGenerator.generate(userDetails);
-
-        return LoginResponse.builder()
-                .additionalFactorRequired(false)
-                .token(jwt.getTokenValue())
-                .expiredAt(jwt.getExpiresAt())
-                .name(userDetails.getName())
-                .authorities(Set.of(jwt.getClaimAsString("scope").split(" ")))
-                .build();
-    }
-
 
 }

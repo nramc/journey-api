@@ -22,6 +22,10 @@ app:
   version: '@project.version@'
   ui-app-url: https://nramc.github.io/journeys
   security:
+    webauthn:
+      rp-id: nramc.github.io
+      rp-name: Journey
+      origin: https://nramc.github.io
     totp:
       number-of-digits: 6
       secret-length: 32
