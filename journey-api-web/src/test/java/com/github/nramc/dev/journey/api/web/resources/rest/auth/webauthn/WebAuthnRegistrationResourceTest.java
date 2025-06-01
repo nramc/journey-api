@@ -1,15 +1,16 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn;
 
 import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebAuthnConfig;
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -20,12 +21,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {WebAuthnRegistrationResource.class})
-@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class, WebAuthnConfig.class})
+@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson
 class WebAuthnRegistrationResourceTest {
     @Autowired
     MockMvc mockMvc;
+
+    @MockitoBean
+    WebAuthnService webAuthnService;
 
     @Test
     void test() {
