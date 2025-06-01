@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.core.security.webauthn;
 
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn.HttpClientRequestInfo;
 import com.yubico.webauthn.AssertionRequest;
 import com.yubico.webauthn.AssertionResult;
 import com.yubico.webauthn.FinishAssertionOptions;
@@ -62,7 +63,9 @@ public class WebAuthnService {
         return creationOptions;
     }
 
-    public void finishRegistration(AuthUser user, PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> publicKeyCredential)
+    public void finishRegistration(AuthUser user,
+                                   PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> publicKeyCredential,
+                                   HttpClientRequestInfo requestInfo)
             throws RegistrationFailedException {
         PublicKeyCredentialCreationOptions creationOptions = creationOptionRepository.get(user);
 
@@ -85,6 +88,7 @@ public class WebAuthnService {
         CredentialMetadata credentialMetadata = CredentialMetadata.builder()
                 .createdAt(LocalDateTime.now())
                 .name(creationOptions.getUser().getDisplayName())
+                .deviceInfo(requestInfo.deviceInfo())
                 .username(user.getUsername())
                 .userHandle(creationOptions.getUser().getId())
                 .build();

@@ -41,6 +41,7 @@ public class PersistencePublicKeyCredentialRepository implements PublicKeyCreden
                 .credentialId(credential.getCredentialId().getBase64())
                 .publicKeyCose(credential.getPublicKeyCose().getBase64())
                 .signatureCount(credential.getSignatureCount())
+                .deviceInfo(metadata.deviceInfo())
                 .build();
         credentialRepository.save(entity);
         log.info("Added credential for user: {}, credential ID: {}", metadata.username(), credential.getCredentialId());

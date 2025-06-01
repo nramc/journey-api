@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn;
 
 import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnService;
+import com.github.nramc.dev.journey.api.core.utils.HttpUtils;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.yubico.webauthn.data.AuthenticatorAttestationResponse;
 import com.yubico.webauthn.data.ClientRegistrationExtensionOutputs;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,12 +50,18 @@ public class WebAuthnRegistrationResource {
      * @return a ResponseEntity indicating success or failure
      */
     @PostMapping("/finish")
-    public ResponseEntity<Void> finishRegistration(Authentication authentication, @RequestBody String publicKeyCredentialJson)
+    public ResponseEntity<Void> finishRegistration(
+            Authentication authentication,
+            @RequestBody String publicKeyCredentialJson,
+            @RequestHeader("User-Agent") String userAgent)
             throws IOException, RegistrationFailedException {
         AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
+        HttpClientRequestInfo requestInfo = HttpClientRequestInfo.builder()
+                .deviceInfo(HttpUtils.extractDeviceInfo(userAgent, userDetails.getName()))
+                .build();
         PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> publicKeyCredential =
                 PublicKeyCredential.parseRegistrationResponseJson(publicKeyCredentialJson);
-        webAuthnService.finishRegistration(userDetails, publicKeyCredential);
+        webAuthnService.finishRegistration(userDetails, publicKeyCredential, requestInfo);
         return ResponseEntity.ok().build();
     }
 }

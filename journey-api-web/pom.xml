@@ -89,6 +89,10 @@
             <artifactId>webauthn-server-core</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.ua-parser</groupId>
+            <artifactId>uap-java</artifactId>
+        </dependency>
 
 
         <dependency>

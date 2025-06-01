@@ -23,5 +23,6 @@ public class UserPublicKeyCredentialEntity {
     private String publicKeyCose;
     private long signatureCount;
     private String name;
+    private String deviceInfo;
     private LocalDateTime createdAt;
 }

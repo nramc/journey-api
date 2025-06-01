@@ -10,5 +10,6 @@ public record CredentialMetadata(
         String username,
         ByteArray userHandle,
         LocalDateTime createdAt,
-        String name) {
+        String name,
+        String deviceInfo) {
 }

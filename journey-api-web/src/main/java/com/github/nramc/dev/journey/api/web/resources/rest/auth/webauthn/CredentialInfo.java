@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder(toBuilder = true)
-public record CredentialInfo(String credentialId, String userHandle, String name, LocalDateTime createdAt) {
+public record CredentialInfo(String credentialId, String userHandle, String name, LocalDateTime createdAt, String deviceInfo) {
 
     public static CredentialInfo from(StoredCredentialInformation credential) {
         return CredentialInfo.builder()
@@ -14,6 +14,7 @@ public record CredentialInfo(String credentialId, String userHandle, String name
                 .userHandle(credential.credential().getUserHandle().getBase64())
                 .name(credential.metadata().name())
                 .createdAt(credential.metadata().createdAt())
+                .deviceInfo(credential.metadata().deviceInfo())
                 .build();
     }
 }

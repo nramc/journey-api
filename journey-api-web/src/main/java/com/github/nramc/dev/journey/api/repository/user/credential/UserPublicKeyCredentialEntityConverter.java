@@ -29,6 +29,7 @@ public final class UserPublicKeyCredentialEntityConverter {
                 .userHandle(ByteArray.fromBase64(entity.getUserHandle()))
                 .name(entity.getName())
                 .createdAt(entity.getCreatedAt())
+                .deviceInfo(entity.getDeviceInfo())
                 .build();
         return new StoredCredentialInformation(credential, metadata);
     }
