@@ -50,7 +50,7 @@ public class InMemoryCredentialRepository implements PublicKeyCredentialReposito
      * <p>Implementations of this method MUST NOT return null.
      *
      * @param username the username of the user whose credentials are being queried
-     * @return a set of {@link RegisteredCredential} objects for the specified user
+     * @return a list of {@link RegisteredCredential} objects for the specified user
      */
     @Override
     public List<RegisteredCredential> getCredentials(String username) {
