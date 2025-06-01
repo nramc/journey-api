@@ -66,4 +66,3 @@ public class WebAuthnConfig {
         return new WebAuthnService(relyingParty, publicKeyCredentialRepository, creationOptionRepository, assertionRequestRepository);
     }
 }
-
