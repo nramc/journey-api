@@ -2,12 +2,13 @@ package com.github.nramc.dev.journey.api.config.security;
 
 import com.github.nramc.dev.journey.api.core.security.webauthn.AssertionRequestRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.InMemoryAssertionRequestRepository;
-import com.github.nramc.dev.journey.api.core.security.webauthn.InMemoryCredentialRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.InMemoryPublicKeyCredentialCreationOptionRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.PublicKeyCredentialCreationOptionRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.PublicKeyCredentialRepository;
 import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnConfigurationProperties;
 import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnService;
+import com.github.nramc.dev.journey.api.repository.user.PersistencePublicKeyCredentialRepository;
+import com.github.nramc.dev.journey.api.repository.user.credential.UserPublicKeyCredentialRepository;
 import com.yubico.webauthn.CredentialRepository;
 import com.yubico.webauthn.RelyingParty;
 import com.yubico.webauthn.data.RelyingPartyIdentity;
@@ -43,8 +44,8 @@ public class WebAuthnConfig {
     }
 
     @Bean
-    PublicKeyCredentialRepository publicKeyCredentialRepository() {
-        return new InMemoryCredentialRepository();
+    PublicKeyCredentialRepository publicKeyCredentialRepository(UserPublicKeyCredentialRepository credentialRepository) {
+        return new PersistencePublicKeyCredentialRepository(credentialRepository);
     }
 
     @Bean
