@@ -1,7 +1,7 @@
 # Maven Build
 FROM maven:3-eclipse-temurin-21-alpine AS build
 COPY . .
-RUN mvn clean package -Pprod -DskipTests
+RUN mvn clean package -P prod -DskipTests -P release -pl '!journey-api-tests'
 
 
 # Run jar file with appropriate veriables
