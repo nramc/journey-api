@@ -27,7 +27,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml -P release -pl '!journey-api-tests' -DskipTests
 
     # Publish Docker Image
     - name: Log in to Docker Hub

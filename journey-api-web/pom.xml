@@ -8,6 +8,7 @@
     <artifactId>journey-api-web</artifactId>
     <name>journey-api-web</name>
     <url>https://nramc.github.io/journeys/</url>
+    <packaging>jar</packaging>
 
 
     <dependencies>
@@ -160,6 +161,23 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 
 </project>
