@@ -4,7 +4,9 @@ import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfi
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnService;
+import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,6 +28,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test"})
 @AutoConfigureJson
 class WebAuthnRegistrationResourceTest {
+    private static final String CREATION_OPTIONS_JSON = """
+            {
+              "rp": {
+                "name": "Example Corp",
+                "id": "example.com"
+              },
+              "user": {
+                "id": "dXNlcklE",
+                "name": "johndoe",
+                "displayName": "John Doe"
+              },
+              "challenge": "5kH1hHkzT74Uq9F5Uu5K5g",
+              "pubKeyCredParams": [
+                {
+                  "type": "public-key",
+                  "alg": -7
+                },
+                {
+                  "type": "public-key",
+                  "alg": -257
+                }
+              ],
+              "authenticatorSelection": {
+                "authenticatorAttachment": "platform",
+                "residentKey": "preferred",
+                "userVerification": "preferred"
+              },
+              "timeout": 60000,
+              "attestation": "none",
+              "excludeCredentials": [],
+              "extensions": {}
+            }
+            """;
+
     @Autowired
     MockMvc mockMvc;
 
@@ -38,6 +75,7 @@ class WebAuthnRegistrationResourceTest {
 
     @Test
     void startRegistration_whenUserAuthenticated_thenShouldGetCreateOptions() throws Exception {
+        Mockito.when(webAuthnService.startRegistration(any())).thenReturn(PublicKeyCredentialCreationOptions.fromJson(CREATION_OPTIONS_JSON));
         mockMvc.perform(MockMvcRequestBuilders.post("/webauthn/register/start")
                         .with(httpBasic(WithMockAuthenticatedUser.USERNAME, WithMockAuthenticatedUser.PASSWORD))
                 ).andDo(print())

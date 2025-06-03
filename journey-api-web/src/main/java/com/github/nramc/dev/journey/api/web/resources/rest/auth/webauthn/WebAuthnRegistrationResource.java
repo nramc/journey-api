@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnService;
 import com.github.nramc.dev.journey.api.core.utils.HttpUtils;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
@@ -29,17 +30,19 @@ public class WebAuthnRegistrationResource {
     private final UserDetailsService userDetailsService;
     private final WebAuthnService webAuthnService;
 
+
     /**
      * Starts the WebAuthn registration process for the authenticated user.
      *
      * @param authentication the authentication object containing user details
-     * @return a ResponseEntity containing PublicKeyCredentialCreationOptions
+     * @return PublicKeyCredentialCreationOptions for the frontend
+     * @throws JsonProcessingException if there is an error processing JSON
      */
     @PostMapping("/start")
-    public ResponseEntity<PublicKeyCredentialCreationOptions> startRegistration(Authentication authentication) {
+    public String startRegistration(Authentication authentication) throws JsonProcessingException {
         AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
         PublicKeyCredentialCreationOptions options = webAuthnService.startRegistration(userDetails);
-        return ResponseEntity.ok(options);
+        return options.toCredentialsCreateJson();
     }
 
     /**
