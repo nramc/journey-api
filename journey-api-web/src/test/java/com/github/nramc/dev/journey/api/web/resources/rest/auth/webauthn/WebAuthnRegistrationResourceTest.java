@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {WebAuthnRegistrationResource.class})
@@ -79,7 +80,10 @@ class WebAuthnRegistrationResourceTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/webauthn/register/start")
                         .with(httpBasic(WithMockAuthenticatedUser.USERNAME, WithMockAuthenticatedUser.PASSWORD))
                 ).andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {"publicKey":{"rp":{"name":"Example Corp","id":"example.com"},"user":{"name":"johndoe","displayName":"John Doe","id":"dXNlcklE"},"challenge":"5kH1hHkzT74Uq9F5Uu5K5g","pubKeyCredParams":[{"alg":-7,"type":"public-key"},{"alg":-257,"type":"public-key"}],"timeout":60000,"hints":[],"excludeCredentials":[],"authenticatorSelection":{"authenticatorAttachment":"platform","requireResidentKey":false,"residentKey":"preferred","userVerification":"preferred"},"attestation":"none","extensions":{}}}
+                        """));
     }
 
     @Test
