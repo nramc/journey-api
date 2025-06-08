@@ -8,7 +8,7 @@
     <artifactId>journey-api-web</artifactId>
     <packaging>jar</packaging>
     <name>journey-api-web</name>
-    <url>https://nramc.github.io/journeys/</url>
+    <url>https://journey.codewithram.dev/</url>
 
 
     <dependencies>

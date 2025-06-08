@@ -2,7 +2,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nramc_journey-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nramc_journey-api)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=nramc_journey-api&metric=coverage)](https://sonarcloud.io/summary/new_code?id=nramc_journey-api)
 [![Release](https://img.shields.io/github/release/nramc/journey-api.svg?style=for-the-badge?logoColor=fff&style=flat)](https://github.com/nramc/journey-api/releases)
-[![Documentation](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=black&style=for-the-badge)](https://journey-api-nxm5.onrender.com/doc/swagger-ui.html)
+[![Documentation](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=black&style=for-the-badge)](https://api.journey.codewithram.dev/doc/swagger-ui.html)
 [![Docker](https://img.shields.io/badge/Docker-2CA5E0?logo=docker&logoColor=white&style=flat)](https://hub.docker.com/r/codewithram/journey-api)
 [![Badge](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=159&style=flat)](https://www.linkedin.com/in/ramachandran-nellaiyappan/)
 
@@ -11,7 +11,7 @@
 <hr />
 
 This **Java-based Backend For Frontend (BFF)** service is designed to seamlessly integrate with
-the [Journeys](https://nramc.github.io/journeys/) Single Page
+the [Journeys](https://journey.codewithram.dev) Single Page
 Application (SPA), offering robust backend support for frontend operations.
 
 Built using the powerful [Spring Framework](https://spring.io/), this service handles complex request processing with a
@@ -26,9 +26,9 @@ focus on geographical data management. Key features include:
 
 ## Helpful Links
 
-- [Journeys Application](https://nramc.github.io/journeys/)
-- [REST API Documentation](https://journey-api-nxm5.onrender.com/doc/swagger-ui.html)
-- [REST Open API YML Configuration](https://journey-api-nxm5.onrender.com/doc/openapi)
+- [Journeys Application](https://journey.codewithram.dev)
+- [REST API Documentation](https://api.journey.codewithram.dev/doc/swagger-ui.html)
+- [REST Open API YML Configuration](https://api.journey.codewithram.dev/doc/openapi)
 
 ## Getting Started
 

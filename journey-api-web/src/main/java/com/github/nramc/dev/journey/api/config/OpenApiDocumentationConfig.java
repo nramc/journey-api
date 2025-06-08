@@ -26,7 +26,7 @@ public class OpenApiDocumentationConfig {
                         .contact(new Contact()
                                 .name("Ramachandran Nellaiyappan")
                                 .email("ramachandrannellai@gmail.com")
-                                .url("https://nramc.github.io/journeys")
+                                .url("https://journey.codewithram.dev")
                         )
                 ).addSecurityItem(new SecurityRequirement().addList(basicAuth, bearerAuth))
                 .components(new Components()

@@ -20,7 +20,7 @@ spring:
 app:
   name: Journey API
   version: '@project.version@'
-  ui-app-url: https://nramc.github.io/journeys
+  ui-app-url: https://journey.codewithram.dev
   security:
     webauthn:
       rp-id: nramc.github.io
