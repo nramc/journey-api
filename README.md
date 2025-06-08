@@ -87,7 +87,7 @@ You can also simply open an issue with the tag "enhancement".
 
 ## Contact
 
-[Ramachandran Nellaiyappan](https://nramc.github.io/my-profile/contact.html)
+[Ramachandran Nellaiyappan](https://myprofile.codewithram.dev/contact.html)
 
 ## Credits
 
