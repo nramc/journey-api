@@ -25,7 +25,7 @@ public record QRCodeData(
                 + "&algorithm=" + uriEncode(algorithm)
                 + "&digits=" + digits
                 + "&period=" + period
-                + "&image=" + uriEncode("https://nramc.github.io/journeys/assets/journey-logo.png");
+                + "&image=" + uriEncode("https://journey.codewithram.dev/assets/journey-logo.png");
     }
 
     private String uriEncode(String text) {

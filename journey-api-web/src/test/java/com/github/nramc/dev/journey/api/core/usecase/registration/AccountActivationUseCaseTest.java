@@ -39,7 +39,7 @@ class AccountActivationUseCaseTest {
             .username(USERNAME)
             .build();
     private static final EmailToken EMAIL_TOKEN = EmailToken.valueOf("2fbbd48c-c16a-4638-9bce-988502cc6f11");
-    private static final String JOURNEY_UI_BASE_URL = "https://nramc.github.io/journeys";
+    private static final String JOURNEY_UI_BASE_URL = "https://journey.codewithram.dev";
     @Mock
     private ApplicationProperties applicationProperties;
     @Mock

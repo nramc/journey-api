@@ -20,12 +20,12 @@ spring:
 app:
   name: Journey API
   version: '@project.version@'
-  ui-app-url: https://nramc.github.io/journeys
+  ui-app-url: https://journey.codewithram.dev
   security:
     webauthn:
-      rp-id: nramc.github.io
+      rp-id: journey.codewithram.dev
       rp-name: Journey
-      origin: https://nramc.github.io
+      origin: https://journey.codewithram.dev
     totp:
       number-of-digits: 6
       secret-length: 32
@@ -39,7 +39,7 @@ app:
     cors:
       properties:
         - path: /**
-          allowed-origins: https://nramc.github.io
+          allowed-origins: https://nramc.github.io, https://journey.codewithram.dev
           allowed-methods: GET, POST, PUT, OPTIONS, DELETE
           allowed-headers:
             - Authorization
