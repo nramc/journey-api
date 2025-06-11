@@ -50,7 +50,7 @@
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven-build-cache-extension.version>1.2.0</maven-build-cache-extension.version>
         <archunit-junit5.version>1.4.1</archunit-junit5.version>
-        <wiremock-standalone.version>3.13.0</wiremock-standalone.version>
+        <wiremock-standalone.version>3.13.1</wiremock-standalone.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <checkstyle.version>10.23.1</checkstyle.version>
         <webauthn-server-core.version>2.7.0</webauthn-server-core.version>
