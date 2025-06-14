@@ -18,8 +18,6 @@ spring:
       mail.smtp.starttls.required: true
 
 management:
-  server:
-    port: 8081
   endpoints:
     web:
       exposure:

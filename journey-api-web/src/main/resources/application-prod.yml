@@ -7,3 +7,6 @@ spring:
       database: journey
       uri: mongodb+srv://mongo-db-username:qiA06vQwVX25H8Gt@mongo-db-cluster.1myeutr.mongodb.net/?retryWrites=true&w=majority&appName=mongo-db-cluster
 
+management:
+  server:
+    port: 8081
