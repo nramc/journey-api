@@ -4,8 +4,8 @@ spring:
     port: 587
   data:
     mongodb:
-      database: journey
-      uri: mongodb+srv://mongo-db-username:qiA06vQwVX25H8Gt@mongo-db-cluster.1myeutr.mongodb.net/?retryWrites=true&w=majority&appName=mongo-db-cluster
+      database: ${MONGODB_DATABASE_NAME}
+      uri: ${MONGODB_CONNECTION_URL}
 
 management:
   server:
