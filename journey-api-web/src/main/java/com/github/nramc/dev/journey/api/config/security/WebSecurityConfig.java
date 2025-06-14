@@ -61,6 +61,7 @@ import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURI
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_MFA;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.NEW_JOURNEY;
+import static com.github.nramc.dev.journey.api.web.resources.Resources.PROMETHEUS;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.REST_DOC;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SIGNUP;
@@ -121,6 +122,7 @@ public class WebSecurityConfig {
 
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(GET, HEALTH_CHECK).permitAll()
+                        .requestMatchers(GET, PROMETHEUS).permitAll()
 
                         .requestMatchers(HOME).permitAll()
                         .requestMatchers(GET, API_VERSION).permitAll()

@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.web.resources;
 public final class Resources {
     public static final String HOME = "/";
     public static final String HEALTH_CHECK = "/actuator/health";
+    public static final String PROMETHEUS = "/actuator/prometheus";
     public static final String REST_DOC = "/doc/**";
 
     public static final String API_VERSION = "/rest/version";
