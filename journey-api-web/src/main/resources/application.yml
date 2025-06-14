@@ -17,6 +17,19 @@ spring:
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  endpoint:
+    prometheus:
+      access: read_only
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 app:
   name: Journey API
   version: '@project.version@'

@@ -44,3 +44,7 @@ server:
     key-store: classpath:keystore/localhost.p12
     key-store-password: "changeit"
     key-alias: localhost-dev
+
+management:
+  server:
+    port: 8081

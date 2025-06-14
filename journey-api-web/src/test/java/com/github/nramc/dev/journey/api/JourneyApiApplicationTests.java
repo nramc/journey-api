@@ -39,4 +39,11 @@ class JourneyApiApplicationTests {
                         .expectStatus().isOk());
     }
 
+    @Test
+    void prometheusEndpoint() {
+        assertDoesNotThrow(() ->
+                webTestClient.get().uri("/actuator/prometheus").exchange()
+                        .expectStatus().isOk());
+    }
+
 }
