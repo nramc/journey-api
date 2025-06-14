@@ -102,6 +102,7 @@ service:
     root-directory: journey/journey-dev
 
 server:
+  address: 0.0.0.0
   compression:
     enabled: true
     mime-types: application/json,application/geo+json,text/html
