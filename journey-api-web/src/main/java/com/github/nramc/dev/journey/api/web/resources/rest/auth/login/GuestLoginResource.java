@@ -26,8 +26,8 @@ public class GuestLoginResource {
 
     @Operation(summary = "login as Guest user without credential and retrieve JWT token")
     @RestDocCommonResponse
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT",
-            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))})})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))})})
     @PostMapping(GUEST_LOGIN)
     public LoginResponse guestLogin() {
         AuthUser userDetails = authUserDetailsService.getGuestUserDetails();
