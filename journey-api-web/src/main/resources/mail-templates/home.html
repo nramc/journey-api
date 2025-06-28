@@ -2,10 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello World</title>
+    <title>Journey API Service</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 40px;
+            background: #f7f9fa;
+            color: #333;
+        }
+
+        header {
+            border-bottom: 2px solid #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0;
+        }
+
+        .subtitle {
+            color: #34495e;
+            margin-top: 5px;
+        }
+
+        .section {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #e1e4e8;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .links a {
+            margin-right: 20px;
+            color: #2980b9;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .info-table td {
+            padding: 6px 12px;
+        }
+
+        .info-table tr:nth-child(even) {
+            background: #f2f6fa;
+        }
+
+        .footer {
+            margin-top: 40px;
+            color: #888;
+            font-size: 0.95em;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-<p>Hello World..!</p>
-</p>
+<header>
+    <h1>Journey API Service</h1>
+    <div class="subtitle">RESTful backend for the Journey application</div>
+</header>
+
+<div class="section">
+    <h2>About</h2>
+    <table class="info-table">
+        <tr>
+            <td><strong>API Documentation</strong></td>
+            <td><a href="/doc/swagger-ui.html" target="_blank">Swagger UI</a></td>
+        </tr>
+        <tr>
+            <td><strong>Version</strong></td>
+            <td th:text="${appVersion}">1.0.0</td>
+        </tr>
+        <tr>
+            <td><strong>Status</strong></td>
+            <td>Online</td>
+        </tr>
+        <tr>
+            <td><strong>Contact</strong></td>
+            <td><a href="https://myprofile.codewithram.dev/contact.html" target="_blank">Ramachandran Nellaiyappan</a>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Mission</strong></td>
+            <td><a href="https://journey.codewithram.dev/aboutUs" target="_blank">About Us</a></td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Quick Start</h2>
+
+    <ol>
+        <li>Review the <a href="/doc/swagger-ui.html">API documentation</a> for available endpoints.</li>
+        <li>Authenticate using your API key or OAuth2 token, Basic Auth(testing only).</li>
+        <li>Send requests using <code>curl</code>, Postman, or your preferred HTTP client.</li>
+    </ol>
+    <p>Example request:</p>
+    <pre><code>curl -X GET https://api.journey.codewithram.dev/rest/version</code></pre>
+</div>
+
+<div class="section">
+    <h2>Resources</h2>
+    <ul>
+        <li><a href="/actuator/env">About Journey</a></li>
+        <li><a href="https://github.com/nramc/journey-api" target="_blank">GitHub Repository</a></li>
+        <li><a href="https://journey.codewithram.dev/user-manual" target="_blank">Application User Manual</a></li>
+    </ul>
+</div>
+
+<div class="footer">
+    <p>Made with ❤️ by <a href="https://myprofile.codewithram.dev/" target="_blank">Ramachandran Nellaiyappan</a></p>
+</div>
 </body>
 </html>
