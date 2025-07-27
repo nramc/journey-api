@@ -33,8 +33,6 @@ public final class JourneyCriteriaUtils {
     private static Criteria getCriteriaWhenDateRangeFallsCrossMonths(LocalDate startDate, LocalDate endDate) {
         List<Criteria> criteriaList = new ArrayList<>();
         // Start of the month
-
-
         criteriaList.add(new Criteria().andOperator(
                 Criteria.where("$expr").is(new Document("eq", List.of(new Document("$month", "$journeyDate"), startDate.getMonthValue()))),
                 Criteria.where("$expr").is(new Document("$gte", List.of(new Document("$dayOfMonth", "$journeyDate"), startDate.getDayOfMonth())))
@@ -44,8 +42,8 @@ public final class JourneyCriteriaUtils {
         Stream.iterate(YearMonth.from(startDate),
                         ym -> !ym.isAfter(YearMonth.from(endDate)),
                         ym -> ym.plusMonths(1))
-                .skip(1) // Skip the first month as it is already handled
-                .limit(ChronoUnit.MONTHS.between(YearMonth.from(startDate), YearMonth.from(endDate)) - 1) // Exclude the last month as it is handled separately
+                .skip(1)// Skip the first month as it is already handled
+                .limit(ChronoUnit.MONTHS.between(YearMonth.from(startDate), YearMonth.from(endDate)) - 1)// Exclude the last month as it is handled separately
                 .map(YearMonth::getMonthValue)
                 .forEach(month ->
                         criteriaList.add(Criteria.where("$expr").is(new Document("$eq", List.of(new Document("$month", "$journeyDate"), month))))
