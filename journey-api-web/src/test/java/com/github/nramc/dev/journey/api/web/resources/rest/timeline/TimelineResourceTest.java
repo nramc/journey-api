@@ -10,7 +10,6 @@ import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsE
 import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
 import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -410,7 +409,6 @@ class TimelineResourceTest {
     @ParameterizedTest
     @ValueSource(ints = {3, 5, 10, 15, 25, 31, 60, 90, 120, 180})
     @WithMockAuthenticatedUser
-    @Disabled("Disabled due to the test data setup, needs to be fixed")
     void getTimelineData_forUpcomingDays_whenJourneyExists_shouldReturnResult(int numberOfDays) throws Exception {
         // setup data
         IntStream.range(1, numberOfDays + 1).forEach(index -> journeyRepository.save(
