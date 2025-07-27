@@ -93,7 +93,7 @@ public class FindJourneyByQueryResource {
 
     @GetMapping(path = FIND_UPCOMING_ANNIVERSARY, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Journey> getUpcomingAnniversaries(
-            @RequestParam(value = "days", defaultValue = "7") int upcomingAnniversaryDays,
+            @RequestParam(value = "days", defaultValue = "1") int upcomingAnniversaryDays,
             Authentication authentication) {
         AppUser user = AuthUtils.toAppUser(authentication);
         return journeyService.getAnniversariesInNextDays(user, upcomingAnniversaryDays);
