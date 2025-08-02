@@ -10,6 +10,7 @@ spring:
         completions-path: /chat/completions
         options:
           model: gemini-2.0-flash
+          max-completion-tokens: 2048
   data:
     mongodb:
       database: journey-dev
