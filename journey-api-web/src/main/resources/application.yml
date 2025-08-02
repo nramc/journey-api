@@ -2,6 +2,15 @@ spring:
   application:
     name: ${app.name}
     version: ${app.version}
+  ai:
+    openai:
+      api-key: ${GEMINI_API_KEY}
+      base-url: https://generativelanguage.googleapis.com/v1beta/openai
+      chat:
+        completions-path: /chat/completions
+        options:
+          model: gemini-2.0-flash
+          max-completion-tokens: 2048
   data:
     mongodb:
       database: journey-dev

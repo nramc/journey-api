@@ -32,5 +32,4 @@ recipeList:
   # commeted out to exclude org.openrewrite.java.testing.cleanup.TestsShouldIncludeAssertions
   #  - org.openrewrite.java.testing.cleanup.BestPractices
   - org.openrewrite.java.testing.cleanup.RemoveTestPrefix
-  - org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe
   - org.openrewrite.java.testing.testcontainers.TestContainersBestPractices
