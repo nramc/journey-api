@@ -1,11 +1,13 @@
 package com.github.nramc.dev.journey.api.web.ai.narration;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
 class NarrationEnhancerResource {
@@ -81,7 +83,7 @@ class NarrationEnhancerResource {
         this.chatClient = chatClientBuilder.build();
     }
 
-    @GetMapping("/rest/ai/enhance-narration")
+    @PostMapping(value = "/rest/ai/enhance-narration", consumes = APPLICATION_JSON_VALUE)
     String enhanceNarration(@Valid @RequestBody NarrationEnhancerRequest request) {
         return this.chatClient.prompt()
                 .system(SYSTEM_PROMPT)

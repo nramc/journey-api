@@ -130,6 +130,7 @@ public class WebSecurityConfig {
 
                         // AI Resources
                         .requestMatchers(GET, "/rest/ai/**").access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(POST, "/rest/ai/**").access(authenticatedUserAuthorizationManager)
 
                         // Registration Resources
                         .requestMatchers(SIGNUP).permitAll()
