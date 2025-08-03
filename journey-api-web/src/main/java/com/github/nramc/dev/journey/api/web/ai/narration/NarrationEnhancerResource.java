@@ -84,11 +84,12 @@ class NarrationEnhancerResource {
     }
 
     @PostMapping(value = "/rest/ai/enhance-narration", consumes = APPLICATION_JSON_VALUE)
-    String enhanceNarration(@Valid @RequestBody NarrationEnhancerRequest request) {
-        return this.chatClient.prompt()
+    NarrationEnhancerResponse enhanceNarration(@Valid @RequestBody NarrationEnhancerRequest request) {
+        String enhancedNarration = this.chatClient.prompt()
                 .system(SYSTEM_PROMPT)
                 .user(USER_PROMPT_TEMPLATE.formatted(request.tone(), request.narration()))
                 .call()
                 .content();
+        return new NarrationEnhancerResponse(enhancedNarration, request.tone());
     }
 }
