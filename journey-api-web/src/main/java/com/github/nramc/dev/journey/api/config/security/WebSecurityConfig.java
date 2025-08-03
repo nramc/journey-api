@@ -128,6 +128,10 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, API_VERSION).permitAll()
                         .requestMatchers(REST_DOC).permitAll()
 
+                        // AI Resources
+                        .requestMatchers(GET, "/rest/ai/**").access(authenticatedUserAuthorizationManager)
+                        .requestMatchers(POST, "/rest/ai/**").access(authenticatedUserAuthorizationManager)
+
                         // Registration Resources
                         .requestMatchers(SIGNUP).permitAll()
                         .requestMatchers(ACTIVATE_ACCOUNT).permitAll()
