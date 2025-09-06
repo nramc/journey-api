@@ -15,7 +15,7 @@
 
         <!-- test dependencies properties -->
         <allure.version>2.29.1</allure.version>
-        <allure-commandline.version>2.34.1</allure-commandline.version>
+        <allure-commandline.version>2.35.1</allure-commandline.version>
         <allure-maven.version>2.15.2</allure-maven.version>
         <aspectjweaver.version>1.9.23</aspectjweaver.version>
         <rest-assured-bom.version>5.5.6</rest-assured-bom.version>
