@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- test dependencies properties -->
-        <allure.version>2.31.0</allure.version>
+        <allure.version>2.32.0</allure.version>
         <allure-commandline.version>2.36.0</allure-commandline.version>
         <allure-maven.version>2.17.0</allure-maven.version>
         <aspectjweaver.version>1.9.23</aspectjweaver.version>
