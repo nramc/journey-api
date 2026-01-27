@@ -38,7 +38,7 @@ public class FindJourneyByQueryResource {
 
     @Operation(summary = "Find Journeys for given query", tags = {"Search Journey"})
     @RestDocCommonResponse
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Returns available Journeys for given query")})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Returns available Journeys for given query"))
     @GetMapping(value = FIND_JOURNEYS, produces = MediaType.APPLICATION_JSON_VALUE)
     public DataPageable<Journey> find(
             @RequestParam(name = "pageIndex", defaultValue = "0") int pageIndex,

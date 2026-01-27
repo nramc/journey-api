@@ -11,8 +11,6 @@
 
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <!-- test dependencies properties -->
         <allure.version>2.32.0</allure.version>
         <allure-commandline.version>2.36.0</allure-commandline.version>

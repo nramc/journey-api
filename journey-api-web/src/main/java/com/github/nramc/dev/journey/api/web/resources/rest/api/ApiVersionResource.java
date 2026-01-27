@@ -22,8 +22,8 @@ class ApiVersionResource {
     private final ApplicationProperties applicationProperties;
 
     @Operation(summary = "Get application name and version")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Return application Name and Version", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiVersionResponse.class))})})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Return application Name and Version", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiVersionResponse.class))}))
     @RestDocCommonResponse
     @GetMapping(value = API_VERSION, produces = MediaType.APPLICATION_JSON_VALUE)
     ApiVersionResponse version() {

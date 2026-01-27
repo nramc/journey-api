@@ -32,9 +32,9 @@ public class EmailCodeVerificationResource {
     private final EmailCodeUseCase emailCodeUseCase;
 
     @Operation(summary = "Verify Email Confirmation code which was sent to registered email address")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Email code has been send successfully")})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Email code has been send successfully"))
     @RestDocCommonResponse
-    @PostMapping(value = VERIFY_EMAIL_CODE)
+    @PostMapping(VERIFY_EMAIL_CODE)
     public ResponseEntity<Void> verifyEmailCode(Authentication authentication,
                                                 @RequestBody @Valid EmailCodeVerificationRequest request) {
         AuthUser authUser = Optional.of(authentication)

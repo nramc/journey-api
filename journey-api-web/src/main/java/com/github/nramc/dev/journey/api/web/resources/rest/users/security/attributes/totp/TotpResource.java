@@ -74,7 +74,7 @@ public class TotpResource {
     @Operation(summary = "Deactivate TOTP 2FA for the user")
     @RestDocCommonResponse
     @ApiResponse(responseCode = "200", description = "2FA TOTP activated")
-    @DeleteMapping(value = MY_SECURITY_ATTRIBUTE_TOTP)
+    @DeleteMapping(MY_SECURITY_ATTRIBUTE_TOTP)
     public void deactivate(Authentication authentication) {
         AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
         totpUseCase.deactivateTotp(authUser);

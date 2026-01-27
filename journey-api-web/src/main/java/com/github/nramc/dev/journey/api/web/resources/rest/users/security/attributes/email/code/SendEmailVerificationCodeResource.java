@@ -28,9 +28,9 @@ public class SendEmailVerificationCodeResource {
     private final EmailCodeUseCase emailCodeUseCase;
 
     @Operation(summary = "Send Email Confirmation Code to registered email address")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Email code has been send successfully")})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Email code has been send successfully"))
     @RestDocCommonResponse
-    @PostMapping(value = SEND_EMAIL_CODE)
+    @PostMapping(SEND_EMAIL_CODE)
     public void sendEmailCode(Authentication authentication) {
         AuthUser authUser = Optional.of(authentication)
                 .map(Authentication::getName)
