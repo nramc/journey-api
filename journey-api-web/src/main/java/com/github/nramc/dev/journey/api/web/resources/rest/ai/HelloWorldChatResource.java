@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.ai;
+package com.github.nramc.dev.journey.api.web.resources.rest.ai;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.GetMapping;

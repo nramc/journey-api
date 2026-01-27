@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.web.ai.narration;
+package com.github.nramc.dev.journey.api.web.resources.rest.ai.narration;
 
 import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;

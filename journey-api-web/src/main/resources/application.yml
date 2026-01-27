@@ -9,7 +9,7 @@ spring:
       chat:
         completions-path: /chat/completions
         options:
-          model: gemini-2.0-flash
+          model: gemini-2.5-flash
           max-completion-tokens: 2048
   data:
     mongodb:
