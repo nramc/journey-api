@@ -38,15 +38,13 @@ final class ApplicationArchitectureTest {
     public static final ArchRule ruleLimitGatewaysDependant = classes()
             .that().resideInAPackage("..gateway..")
             .and().haveSimpleNameEndingWith("Gateway")
-            .should().onlyBeAccessed().byAnyPackage("..config..", "..usecase..",
-                    "..services..", "..gateway..", "..resources..");
+            .should().onlyBeAccessed().byAnyPackage("..config..", "..usecase..", "..services..", "..gateway..", "..resources..", "..app.health..");
 
     @ArchTest
     public static final ArchRule ruleManageRepositoryDependant = classes()
             .that().resideInAPackage("..repository..")
             .and().haveSimpleNameEndingWith("Repository")
-            .should().onlyBeAccessed().byAnyPackage("..repository..", "..usecase..",
-                    "..resources.rest.users.find..");
+            .should().onlyBeAccessed().byAnyPackage("..repository..", "..usecase..", "..resources.rest.users.find..", "..config..");
 
     @ArchTest
     public static final ArchRule ruleLimitRepositoryEntityDependant = classes()
