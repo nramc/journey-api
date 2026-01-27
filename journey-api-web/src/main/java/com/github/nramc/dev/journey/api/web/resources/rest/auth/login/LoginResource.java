@@ -37,8 +37,8 @@ public class LoginResource {
 
     @Operation(summary = "login with credentials and retrieve JWT token")
     @RestDocCommonResponse
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))})})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))}))
     @PostMapping(LOGIN)
     public LoginResponse login(@AuthenticationPrincipal AuthUser userDetails) {
         userDetails = (AuthUser) userDetailsService.loadUserByUsername(userDetails.getUsername());

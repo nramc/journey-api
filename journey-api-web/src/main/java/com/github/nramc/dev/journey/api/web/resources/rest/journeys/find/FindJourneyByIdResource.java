@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +35,12 @@ public class FindJourneyByIdResource {
 
     @Operation(summary = "Find Journey for given ID if exists, else throw error.", tags = {"Search Journey"})
     @RestDocCommonResponse
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Journey created successfully",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = Journey.class))}),
-            @ApiResponse(responseCode = "404", description = "Journey not exists",
-                    content = {@Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetail.class))})
-    })
+
+    @ApiResponse(responseCode = "200", description = "Journey created successfully",
+            content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = Journey.class))})
+    @ApiResponse(responseCode = "404", description = "Journey not exists",
+            content = {@Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetail.class))})
+
     @GetMapping(value = FIND_JOURNEY_BY_ID, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Journey> find(
             @Valid @NotBlank @PathVariable String id,

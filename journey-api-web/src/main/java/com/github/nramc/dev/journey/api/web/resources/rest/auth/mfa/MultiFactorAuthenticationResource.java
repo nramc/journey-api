@@ -40,8 +40,8 @@ public class MultiFactorAuthenticationResource {
 
     @Operation(summary = "Multi factor authentication and retrieve JWT token")
     @RestDocCommonResponse
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))})})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))}))
     @PostMapping(value = LOGIN_MFA, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public LoginResponse mfa(@AuthenticationPrincipal AuthUser userDetails,
                              @Valid @RequestBody MultiFactorAuthenticationRequest request) {
