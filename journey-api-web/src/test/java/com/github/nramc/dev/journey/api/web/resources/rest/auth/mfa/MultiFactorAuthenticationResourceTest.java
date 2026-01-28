@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -56,7 +56,7 @@ class MultiFactorAuthenticationResourceTest {
     @Test
     void test() {
         assertDoesNotThrow(() ->
-            assertThat(mockMvc).isNotNull());
+                assertThat(mockMvc).isNotNull());
     }
 
     @Test
@@ -87,7 +87,7 @@ class MultiFactorAuthenticationResourceTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(REQUEST_PAYLOAD.formatted(EMAIL_ADDRESS, "123456"))
                 ).andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isUnprocessableContent());
     }
 
 }

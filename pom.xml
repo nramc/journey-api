@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.10</version>
+        <version>4.0.2</version>
         <relativePath />
         <!-- lookup parent from repository -->
     </parent>
@@ -120,6 +120,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-contract-dependencies</artifactId>
                 <version>${spring-cloud-contract.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>2.0.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

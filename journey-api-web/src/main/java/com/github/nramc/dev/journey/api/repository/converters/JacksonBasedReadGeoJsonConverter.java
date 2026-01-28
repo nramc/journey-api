@@ -1,10 +1,10 @@
 package com.github.nramc.dev.journey.api.repository.converters;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nramc.geojson.domain.GeoJson;
 import org.bson.Document;
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNull;
+import tools.jackson.databind.ObjectMapper;
 
 public class JacksonBasedReadGeoJsonConverter implements Converter<Document, GeoJson> {
 
