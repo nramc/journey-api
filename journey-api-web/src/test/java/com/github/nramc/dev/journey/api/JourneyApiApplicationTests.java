@@ -1,11 +1,9 @@
 package com.github.nramc.dev.journey.api;
 
-import com.github.nramc.dev.journey.api.config.MailConfig;
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
 import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryGateway;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.mail.autoconfigure.MailSenderAutoConfiguration;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({TestContainersConfiguration.class, MailConfig.class, MailSenderAutoConfiguration.class})
+@Import({TestContainersConfiguration.class})
 @ActiveProfiles("test")
 @AutoConfigureRestTestClient
 @Testcontainers
