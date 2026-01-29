@@ -43,9 +43,9 @@
         <rewrite-maven-plugin.version>6.15.0</rewrite-maven-plugin.version>
         <rewrite-static-analysis.version>2.26.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.14.1</rewrite-testing-frameworks.version>
-        <spring-ai.version>1.1.2</spring-ai.version>
+        <spring-ai.version>2.0.0-M2</spring-ai.version>
         <spring-cloud-contract.version>4.3.1</spring-cloud-contract.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.8.15</springdoc-openapi-starter-webmvc-ui.version>
+        <springdoc-openapi-starter-webmvc-ui.version>3.0.1</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.4</zxing-qr.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
