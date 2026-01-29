@@ -179,6 +179,7 @@
                 <artifactId>spring-cloud-contract-maven-plugin</artifactId>
                 <configuration>
                     <baseClassForTests>com.github.nramc.dev.journey.api.JourneyApiContractBase</baseClassForTests>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

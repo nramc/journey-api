@@ -44,7 +44,7 @@
         <rewrite-static-analysis.version>2.26.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.14.1</rewrite-testing-frameworks.version>
         <spring-ai.version>2.0.0-M2</spring-ai.version>
-        <spring-cloud-contract.version>4.3.1</spring-cloud-contract.version>
+        <spring-cloud-contract.version>5.0.1</spring-cloud-contract.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.0.1</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.4</zxing-qr.version>
