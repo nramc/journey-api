@@ -15,6 +15,9 @@ spring:
     mongodb:
       database: journey-dev
       auto-index-creation: true
+  jackson:
+    deserialization:
+      fail-on-null-for-primitives: false
   mail:
     host:
     port:
