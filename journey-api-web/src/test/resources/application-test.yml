@@ -13,8 +13,13 @@ spring:
     openai:
       api-key: _
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+    exclude: org.springframework.boot.mail.autoconfigure.MailSenderValidatorAutoConfiguration
   mail:
     host: localhost
     username: testuser@localhost.com
     password: test
+    port: 1025
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+      mail.smtp.starttls.required: false
