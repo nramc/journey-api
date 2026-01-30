@@ -47,11 +47,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"prod", "test"})
 class PublishJourneyResourceTest {
     private static final JourneyEntity JOURNEY_ENTITY = JourneyData.JOURNEY_ENTITY.toBuilder().build();
-    private static final ResultMatcher[] STATUS_AND_CONTENT_TYPE_MATCH = new ResultMatcher[] {
+    private static final ResultMatcher[] STATUS_AND_CONTENT_TYPE_MATCH = new ResultMatcher[]{
             status().isOk(),
             content().contentType(MediaType.APPLICATION_JSON)
     };
-    private static final ResultMatcher[] JOURNEY_BASE_DETAILS_MATCH = new ResultMatcher[] {
+    private static final ResultMatcher[] JOURNEY_BASE_DETAILS_MATCH = new ResultMatcher[]{
             jsonPath("$.name").value("First Flight Experience"),
             jsonPath("$.description").value("Travelled first time for work deputation to Germany, Munich city"),
             jsonPath("$.tags").isArray(),
