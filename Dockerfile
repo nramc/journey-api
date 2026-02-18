@@ -6,6 +6,7 @@ RUN mvn clean package -P prod -DskipTests -P release -pl '!journey-api-tests'
 
 # Run jar file with appropriate veriables
 FROM eclipse-temurin:25.0.2_10-jre-alpine
+RUN apk add --no-cache ca-certificates bind-tools busybox-extras
 EXPOSE 8080
 COPY --from=build journey-api-web/target/*.jar journey-api.jar
 ENV SPRING_PROFILES_ACTIVE=prod
