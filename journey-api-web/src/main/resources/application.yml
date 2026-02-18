@@ -13,7 +13,6 @@ spring:
           max-completion-tokens: 2048
   data:
     mongodb:
-      database: journey-dev
       auto-index-creation: true
   jackson:
     deserialization:
@@ -28,6 +27,8 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
+  mongodb:
+    database: journey-dev
 
 management:
   endpoints:

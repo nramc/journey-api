@@ -2,10 +2,9 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-  data:
-    mongodb:
-      database: ${MONGODB_DATABASE_NAME}
-      uri: ${MONGODB_CONNECTION_URL}
+  mongodb:
+    uri: ${MONGODB_CONNECTION_URL}
+    database: ${MONGODB_DATABASE_NAME}
 
 management:
   server:
