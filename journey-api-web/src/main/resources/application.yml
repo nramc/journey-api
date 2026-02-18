@@ -84,6 +84,7 @@ springdoc:
   api-docs:
     enabled: true
     path: /doc/openapi
+    version: openapi_3_0
 
   swagger-ui:
     queryConfigEnabled: true
