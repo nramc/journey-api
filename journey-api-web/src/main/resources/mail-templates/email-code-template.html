@@ -5,13 +5,26 @@
     <style th:utext="${styles}">/* styles injected at runtime */</style>
 </head>
 <body>
-<div th:replace="~{layout/emailLayout.html :: layout('Email', ~{::content})}">
+<div th:replace="~{layout/emailLayout.html :: layout('Your One-Time Token', ~{::content})}">
     <th:block th:ref="content">
+
+        <p class="section-title">Your One-Time Token (OTT)</p>
+
         <p th:text="'Hello, ' + ${name} + '!'"></p>
-        <p>Good day,</p>
-        <p>Please find below your One-Time-Token(OTT) for your request.</p>
-        <p>Kindly keep it secret and do not share it with anyone.</p>
-        <div class="important align-center fs-large" style="margin: 2rem"><p th:text="${ottPin}"></p></div>
+        <p>We received a request that requires verification. Please use the token below to complete your request.</p>
+
+        <div class="code-box" th:text="${ottPin}">123456</div>
+
+        <hr class="divider"/>
+
+        <div class="info-box">
+            ⚠️ &nbsp;<strong>Keep this token secret.</strong>
+            Do not share it with anyone. The Journey Team will never ask you for this code.
+        </div>
+
+        <p class="text-muted">If you did not make this request, please ignore this email. No changes have been made to
+            your account.</p>
+
     </th:block>
 </div>
 </body>

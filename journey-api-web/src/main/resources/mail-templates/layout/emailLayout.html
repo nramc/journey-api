@@ -1,35 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Journey</title>
-    <link href="style.css" rel="stylesheet">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title th:text="${title} + ' | Journey'">Journey</title>
+    <style th:utext="${styles}">/* styles injected at runtime */</style>
 </head>
 <body class="email-template">
+
+<!-- Pre-header: shown as preview text in inbox, hidden in email body -->
+<span class="preheader" th:text="${preheader} ?: 'A message from your Journey Team'"></span>
+
 <div th:fragment="layout(title, content)" class="container">
-    <div class="header align-center">
-        <h1 style="width: 100%" class="align-center">
-            <img src="cid:logo.png" class="brand-logo" alt="Journey" width="64" height="64">Journey
+
+    <!-- Header -->
+    <div class="header">
+        <h1>
+            <img src="cid:logo.png" class="brand-logo" alt="Journey" width="40" height="40"/>
+            Journey
         </h1>
     </div>
-    <div class="content fs-medium">
+
+    <!-- Main content -->
+    <div class="content">
         <th:block th:replace="${content}"/>
     </div>
-    <br/>
-    <div class="div-regards fw-bold fs-medium">
-        <p>
-            <span>Regards,</span><br/>
-            <span>Your Journey Team</span>
+
+    <!-- Regards -->
+    <div class="div-regards">
+        <p>Warm regards,<br/>
+            <strong>The Journey Team</strong>
         </p>
     </div>
-    <div style="color: darkgrey;" class="div-disclaimer fs-medium">
-        <p>Note: Please do not reply to this email directly.</p>
-        <p>Contact us with any queries by creating ticket:
-            <a href="https://github.com/nramc/journeys/issues" target="_blank">GitHub: Journey Issues</a>
+
+    <!-- Disclaimer -->
+    <div class="div-disclaimer">
+        <p>Please do not reply to this email. This mailbox is not monitored.</p>
+        <p>For support, please
+            <a href="https://github.com/nramc/journeys/issues" target="_blank">open a ticket on GitHub</a>.
         </p>
     </div>
-    <div class="footer align-center fs-medium">
-        <p style="width: 100%">&copy; <span th:text="${copyrightYear} + ' Journey. All rights reserved.'"></span> </p>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; <span th:text="${copyrightYear} ?: '2024'"></span> Journey. All rights reserved.</p>
     </div>
+
 </div>
 </body>
 </html>
