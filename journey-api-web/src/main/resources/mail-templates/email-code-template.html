@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/emailLayout.html}" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Email</title>
+    <title>Journey</title>
+    <style th:utext="${styles}">/* styles injected at runtime */</style>
 </head>
 <body>
-<div layout:fragment="content">
-    <p th:text="'Hello, ' + ${name} + '!'"></p>
-    <p>Good day,</p>
-    <p>Please find below your One-Time-Token(OTT) for your request.</p>
-    <p>Kindly keep it secret and do not share it with anyone.</p>
-    <p class="important align-center fs-large" style="margin: 2rem" th:text="${ottPin}"></p>
+<div th:replace="~{layout/emailLayout.html :: layout('Email', ~{::content})}">
+    <th:block th:ref="content">
+        <p th:text="'Hello, ' + ${name} + '!'"></p>
+        <p>Good day,</p>
+        <p>Please find below your One-Time-Token(OTT) for your request.</p>
+        <p>Kindly keep it secret and do not share it with anyone.</p>
+        <div class="important align-center fs-large" style="margin: 2rem"><p th:text="${ottPin}"></p></div>
+    </th:block>
 </div>
 </body>
 </html>

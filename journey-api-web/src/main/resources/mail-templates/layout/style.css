@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, Helvetica, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    color: #333333;
+}
+
+.header, .footer {
+    display: inline-flex;
+    width: 100%;
+    background-color: rgba(52, 89, 230, 1) !important;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.content {
+    padding: 20px;
+    text-align: center;
+    color: #3459e6;
+}
+
+.important {
+    font-weight: bold;
+    color: #3459e6;
+}
+
+.align-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.div-regards {
+    padding: 0 20px 0 20px;
+    color: #333333;
+}
+
+.fs-large {
+    font-size: 2rem;
+}
+
+.fs-medium {
+    font-size: 0.85rem;
+}
+
+.fs-small {
+    font-size: 0.5rem;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.div-disclaimer {
+    padding: 1rem;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #3459e6;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.cta-btn:hover {
+    background-color: #0056b3;
+}
+
+.brand-logo {
+    margin: 0 10px 0 10px;
+}
