@@ -1,7 +1,6 @@
 package com.github.nramc.dev.journey.api.config;
 
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +32,6 @@ public class MailConfig {
             @Qualifier("thymeleafEmailTemplateResolver") ITemplateResolver thymeleafEmailTemplateResolver) {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(thymeleafEmailTemplateResolver);
-        templateEngine.addDialect(new LayoutDialect());
 
         return templateEngine;
     }
@@ -41,10 +39,11 @@ public class MailConfig {
     @Bean
     public MailService mailService(
             @Value("classpath:/assets/logo.png") Resource logoResource,
+            @Value("classpath:/mail-templates/layout/style.css") Resource cssResource,
             JavaMailSender emailSender,
             SpringTemplateEngine templateEngine
     ) {
-        return new MailService(logoResource, emailSender, templateEngine);
+        return new MailService(logoResource, cssResource, emailSender, templateEngine);
     }
 
 }

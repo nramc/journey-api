@@ -2,7 +2,6 @@ package com.github.nramc.dev.journey.api.core.services.mail;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,15 +10,30 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@RequiredArgsConstructor
 public class MailService {
     private final Resource logoResource;
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
+    private final String emailStyles;
+
+    public MailService(Resource logoResource, Resource cssResource, JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
+        this.logoResource = logoResource;
+        this.emailSender = emailSender;
+        this.templateEngine = templateEngine;
+        try {
+            this.emailStyles = cssResource != null ? cssResource.getContentAsString(StandardCharsets.UTF_8) : "";
+        } catch (IOException e) {
+            throw new UncheckedIOException("Failed to load email stylesheet", e);
+        }
+    }
 
     public void sendSimpleEmail(List<String> toAddresses, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -34,6 +48,8 @@ public class MailService {
             throws MessagingException {
         Context context = new Context();
         context.setVariables(placeholders);
+        context.setVariable("styles", emailStyles);
+        context.setVariable("copyrightYear", LocalDateTime.now().getYear());
 
         String htmlBody = templateEngine.process(template, context);
 

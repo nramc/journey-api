@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/emailLayout.html}" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Account Activation</title>
+    <title>Journey</title>
+    <style th:utext="${styles}">/* styles injected at runtime */</style>
 </head>
 <body>
-<div layout:fragment="content">
-    <p th:text="'Hello, ' + ${name} + '!'"></p>
-    <p>Welcome to Journey !</p>
-    <p>Thank you for registering with us. We're excited to have you on board. To complete your registration and activate
-        your account, please click the button below:</p>
+<div th:replace="~{layout/emailLayout.html :: layout('Activate Your Account', ~{::content})}">
+    <th:block th:ref="content">
 
-    <div class="important align-center" style="margin: 2rem">
-        <a class="cta-btn" th:href="@{${activationUrl}}">Activate your account</a>
-    </div>
-    <p>
-        <strong>Need Help?</strong>
-        If you encounter any issues during the activation process or have any questions, please do not hesitate to
-        <a href="https://github.com/nramc/journeys/issues" target="_blank">contact us</a>. We're here to help!
-    </p>
+        <p class="section-title">Welcome to Journey! 🎉</p>
 
-    <p>If you did not create an account with us, please ignore this email. Your account will not be activated, and you
-        will not receive any further emails from us.</p>
+        <p th:text="'Hello, ' + ${name} + '!'"></p>
+        <p>Thank you for registering. We're thrilled to have you on board!</p>
+        <p>To complete your registration and activate your account, please click the button below:</p>
+
+        <div class="cta-wrapper">
+            <a class="cta-btn" th:href="@{${activationUrl}}">Activate My Account</a>
+        </div>
+
+        <hr class="divider"/>
+
+        <div class="info-box">
+            ⏳ &nbsp;<strong>This link may expire.</strong>
+            If it no longer works, please request a new activation email from the login page.
+        </div>
+
+        <p><strong>Need help?</strong> If you have any questions or run into issues,
+            <a href="https://github.com/nramc/journeys/issues" target="_blank">open a support ticket</a> — we're happy
+            to help.</p>
+
+        <p class="text-muted">If you did not create this account, you can safely ignore this email. Your account will
+            not be activated.</p>
+
+    </th:block>
 </div>
 </body>
 </html>

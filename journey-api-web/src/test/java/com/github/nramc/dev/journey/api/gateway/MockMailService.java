@@ -12,7 +12,7 @@ import java.util.Map;
 public class MockMailService extends MailService {
 
     public MockMailService() {
-        super(null, null, null);
+        super(null, null, null, null);
     }
 
     @Override
