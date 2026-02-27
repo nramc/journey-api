@@ -52,7 +52,6 @@ jobs:
           name: v$VERSION
           draft: false
           prerelease: false
-          token: $RELEASE_TOKEN
+          token: ${{ secrets.RELEASE_TOKEN }}
         env:
           VERSION: ${{ inputs.releaseVersion }}
-          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
