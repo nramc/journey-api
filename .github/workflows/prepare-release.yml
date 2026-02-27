@@ -48,10 +48,8 @@ jobs:
         with:
           commit: main
           generateReleaseNotes: true
-          tag: v$VERSION
-          name: v$VERSION
+          tag: v${{ inputs.releaseVersion }}
+          name: v${{ inputs.releaseVersion }}
           draft: false
           prerelease: false
           token: ${{ secrets.RELEASE_TOKEN }}
-        env:
-          VERSION: ${{ inputs.releaseVersion }}
