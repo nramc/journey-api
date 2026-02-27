@@ -39,15 +39,20 @@ jobs:
           git config --global user.name "Deploy Bot"
 
       - name: Prepare Release
-        run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=${{ inputs.releaseVersion }}
+        run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=$VERSION
+        env:
+          VERSION: ${{ inputs.releaseVersion }}
 
       - name: Create Release Tag with Notes
         uses: ncipollo/release-action@v1
         with:
           commit: main
           generateReleaseNotes: true
-          tag: v${{ inputs.releaseVersion }}
-          name: v${{ inputs.releaseVersion }}
+          tag: v$VERSION
+          name: v$VERSION
           draft: false
           prerelease: false
-          token: ${{ secrets.RELEASE_TOKEN }}
+          token: $RELEASE_TOKEN
+        env:
+          VERSION: ${{ inputs.releaseVersion }}
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
