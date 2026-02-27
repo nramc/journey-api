@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.imageio.ImageIO;
-
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
