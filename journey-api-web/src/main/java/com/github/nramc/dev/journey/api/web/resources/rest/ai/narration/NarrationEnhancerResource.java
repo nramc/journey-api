@@ -1,11 +1,10 @@
 package com.github.nramc.dev.journey.api.web.resources.rest.ai.narration;
 
+import jakarta.validation.Valid;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
