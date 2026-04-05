@@ -222,4 +222,3 @@ class TelegramGatewayTest {
         assertThatNoException().isThrownBy(() -> telegramGateway.sendMessage("Hello"));
     }
 }
-

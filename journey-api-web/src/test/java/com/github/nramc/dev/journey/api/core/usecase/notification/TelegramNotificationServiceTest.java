@@ -142,5 +142,3 @@ class TelegramNotificationServiceTest {
         assertThat(ParseMode.NONE.mode()).isEmpty();
     }
 }
-
-

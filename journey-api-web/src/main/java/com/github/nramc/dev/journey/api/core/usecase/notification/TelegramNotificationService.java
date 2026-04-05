@@ -73,4 +73,3 @@ public class TelegramNotificationService {
         telegramGateway.sendMessage(formatted);
     }
 }
-

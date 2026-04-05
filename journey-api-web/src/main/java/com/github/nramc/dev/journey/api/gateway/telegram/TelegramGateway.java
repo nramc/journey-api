@@ -92,4 +92,3 @@ public class TelegramGateway {
             String description) {
     }
 }
-

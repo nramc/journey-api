@@ -38,4 +38,3 @@ public class TelegramConfig {
         return new TelegramNotificationService(telegramGateway);
     }
 }
-
