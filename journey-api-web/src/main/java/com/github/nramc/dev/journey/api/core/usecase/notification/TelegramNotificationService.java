@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class TelegramNotificationService {
+public class TelegramNotificationService implements NotificationService {
 
     private final TelegramGateway telegramGateway;
 
@@ -48,28 +48,30 @@ public class TelegramNotificationService {
      * <p>The message is wrapped in a standard alert template with a bell emoji
      * and bold header so it stands out in the channel feed.
      *
-     * @param notificationText the body of the alert
+     * @param message the body of the alert
      */
-    public void notifyAdmin(String notificationText) {
+    @Override
+    public void notify(String message) {
         String formatted = """
                 🔔 <b>Admin Notification</b>
                 
                 %s
-                """.formatted(notificationText);
+                """.formatted(message);
         telegramGateway.sendMessage(formatted);
     }
 
     /**
      * Sends an error alert to the channel.
      *
-     * @param errorSummary a short description of the error
+     * @param message a short description of the error
      */
-    public void notifyError(String errorSummary) {
+    @Override
+    public void notifyError(String message) {
         String formatted = """
                 🚨 <b>Error Alert</b>
                 
                 %s
-                """.formatted(errorSummary);
+                """.formatted(message);
         telegramGateway.sendMessage(formatted);
     }
 }

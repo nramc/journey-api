@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfi
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
-import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
@@ -47,13 +48,13 @@ class RegistrationUseCaseTest {
     @MockitoBean
     AccountActivationUseCase accountActivationUseCase;
     @MockitoBean
-    EmailNotificationUseCase emailNotificationUseCase;
+    NotificationService notificationService;
 
     private RegistrationUseCase registrationUseCase;
 
     @BeforeEach
     void setUp() {
-        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase, emailNotificationUseCase);
+        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase, List.of(notificationService));
     }
 
     @Test
@@ -67,7 +68,7 @@ class RegistrationUseCaseTest {
                 .satisfies(user -> assertThat(user.enabled()).isFalse())
                 .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
                 .satisfies(user -> assertThat(user.createdDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
-        verify(emailNotificationUseCase).notifyAdmin("New User signup - juniper_eliasxcsx@cultural.ycw");
+        verify(notificationService).notify("New User signup - juniper_eliasxcsx@cultural.ycw");
     }
 
     @Test

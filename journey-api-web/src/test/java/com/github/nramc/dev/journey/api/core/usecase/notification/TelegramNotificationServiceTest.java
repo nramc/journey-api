@@ -64,32 +64,32 @@ class TelegramNotificationServiceTest {
     }
 
     @Test
-    void notifyAdmin_shouldDelegateToGateway() {
-        telegramNotificationService.notifyAdmin("New user signed up");
+    void notify_shouldDelegateToGateway() {
+        telegramNotificationService.notify("New user signed up");
 
         verify(telegramGateway).sendMessage(assertArg(msg -> assertThat(msg).isNotBlank()));
     }
 
     @Test
-    void notifyAdmin_messageShouldContainBellEmoji() {
-        telegramNotificationService.notifyAdmin("New user signed up");
+    void notify_messageShouldContainBellEmoji() {
+        telegramNotificationService.notify("New user signed up");
 
         verify(telegramGateway).sendMessage(assertArg(msg ->
                 assertThat(msg).contains("🔔")));
     }
 
     @Test
-    void notifyAdmin_messageShouldContainBoldAdminNotificationHeader() {
-        telegramNotificationService.notifyAdmin("New user signed up");
+    void notifyAdmin_messageShouldContainBoldNotificationHeader() {
+        telegramNotificationService.notify("New user signed up");
 
         verify(telegramGateway).sendMessage(assertArg(msg ->
                 assertThat(msg).contains("<b>Admin Notification</b>")));
     }
 
     @Test
-    void notifyAdmin_messageShouldContainOriginalNotificationText() {
+    void notify_messageShouldContainOriginalNotificationText() {
         String notificationText = "New user registered: john@example.com";
-        telegramNotificationService.notifyAdmin(notificationText);
+        telegramNotificationService.notify(notificationText);
 
         verify(telegramGateway).sendMessage(assertArg(msg ->
                 assertThat(msg).contains(notificationText)));
