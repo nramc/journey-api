@@ -114,6 +114,12 @@ service:
     additional-properties:
       secure: true
     root-directory: journey/journey-dev
+  telegram:
+    enabled: ${TELEGRAM_ENABLED:false}
+    bot-token: ${TELEGRAM_BOT_TOKEN:}
+    channel-id: ${TELEGRAM_CHANNEL_ID:}
+    parse-mode: HTML
+    base-url: https://api.telegram.org
 
 server:
   address: 0.0.0.0

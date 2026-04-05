@@ -7,16 +7,17 @@ import com.github.nramc.dev.journey.api.core.domain.user.Role;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
-import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import jakarta.mail.MessagingException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
@@ -49,9 +50,16 @@ class AccountActivationUseCaseTest {
     @Mock
     private AuthUserDetailsService userDetailsService;
     @Mock
-    private EmailNotificationUseCase emailNotificationUseCase;
-    @InjectMocks
+    private NotificationService notificationService;
+
     private AccountActivationUseCase accountActivationUseCase;
+
+    @BeforeEach
+    void setUp() {
+        accountActivationUseCase = new AccountActivationUseCase(
+                applicationProperties, emailTokenUseCase, mailService,
+                userDetailsService, List.of(notificationService));
+    }
 
     @Test
     void sendActivationEmail_shouldGenerateEmailToken_andShouldSendEmailWithActivationLink() throws MessagingException {
@@ -83,7 +91,7 @@ class AccountActivationUseCaseTest {
 
         accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER);
         verify(userDetailsService).updateUser(argThat(entity -> entity.isEnabled() && USERNAME.equals(entity.getUsername())));
-        verify(emailNotificationUseCase).notifyAdmin("User completed onboarding - " + USERNAME);
+        verify(notificationService).notify("User completed onboarding - " + USERNAME);
     }
 
 }

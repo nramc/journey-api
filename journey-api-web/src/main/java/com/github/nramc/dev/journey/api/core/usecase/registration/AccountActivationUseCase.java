@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
 import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
-import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
 import jakarta.mail.MessagingException;
@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -26,7 +27,7 @@ public class AccountActivationUseCase {
     private final EmailTokenUseCase emailTokenUseCase;
     private final MailService mailService;
     private final AuthUserDetailsService userDetailsService;
-    private final EmailNotificationUseCase emailNotificationUseCase;
+    private final List<NotificationService> notificationServices;
 
     public void sendActivationEmail(AppUser user) {
         EmailToken emailToken = emailTokenUseCase.generateEmailToken(user);
@@ -58,7 +59,7 @@ public class AccountActivationUseCase {
         AuthUser updatedUserEntity = userEntity.toBuilder().enabled(true).build();
         userDetailsService.updateUser(updatedUserEntity);
 
-        emailNotificationUseCase.notifyAdmin("User completed onboarding - " + userEntity.getUsername());
+        notificationServices.forEach(svc -> svc.notify("User completed onboarding - " + userEntity.getUsername()));
     }
 
     private String getActivationUrl(EmailToken emailToken, AppUser user) {

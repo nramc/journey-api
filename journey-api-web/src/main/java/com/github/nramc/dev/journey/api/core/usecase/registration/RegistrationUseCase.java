@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.core.usecase.registration;
 
 import com.github.nramc.dev.journey.api.core.domain.AppUser;
 import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
-import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.repository.user.AppUserConvertor.toEntity;
@@ -24,7 +25,7 @@ public class RegistrationUseCase {
     private final PasswordEncoder passwordEncoder;
     private final Validator validator;
     private final AccountActivationUseCase accountActivationUseCase;
-    private final EmailNotificationUseCase emailNotificationUseCase;
+    private final List<NotificationService> notificationServices;
 
     public AppUser register(AppUser user) {
         validate(user);
@@ -41,7 +42,7 @@ public class RegistrationUseCase {
         AuthUser userEntity = toEntity(onboardingUser);
         userDetailsManager.createUser(userEntity);
         accountActivationUseCase.sendActivationEmail(onboardingUser);
-        emailNotificationUseCase.notifyAdmin("New User signup - " + onboardingUser.username());
+        notificationServices.forEach(svc -> svc.notify("New User signup - " + onboardingUser.username()));
 
         return onboardingUser;
     }

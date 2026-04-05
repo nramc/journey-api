@@ -11,7 +11,8 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpCodeVerifier
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
-import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationUseCase;
+import com.github.nramc.dev.journey.api.core.usecase.notification.EmailNotificationService;
+import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
 import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
 import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
@@ -23,14 +24,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 
+import java.util.List;
+
 @Configuration
 public class ApplicationUseCaseConfig {
 
     @Bean
     public RegistrationUseCase registrationUseCase(
             UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder, Validator validator,
-            AccountActivationUseCase accountActivationUseCase, EmailNotificationUseCase emailNotificationUseCase) {
-        return new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase, emailNotificationUseCase);
+            AccountActivationUseCase accountActivationUseCase,
+            List<NotificationService> notificationServices) {
+        return new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase, notificationServices);
     }
 
     @Bean
@@ -39,8 +43,8 @@ public class ApplicationUseCaseConfig {
     }
 
     @Bean
-    public EmailNotificationUseCase emailNotificationUseCase(MailService mailService, AuthUserDetailsService userDetailsService) {
-        return new EmailNotificationUseCase(mailService, userDetailsService);
+    public EmailNotificationService emailNotificationService(MailService mailService, AuthUserDetailsService userDetailsService) {
+        return new EmailNotificationService(mailService, userDetailsService);
     }
 
     @Bean
@@ -49,8 +53,8 @@ public class ApplicationUseCaseConfig {
             EmailTokenUseCase emailTokenUseCase,
             MailService mailService,
             AuthUserDetailsService userDetailsService,
-            EmailNotificationUseCase emailNotificationUseCase) {
-        return new AccountActivationUseCase(properties, emailTokenUseCase, mailService, userDetailsService, emailNotificationUseCase);
+            List<NotificationService> notificationServices) {
+        return new AccountActivationUseCase(properties, emailTokenUseCase, mailService, userDetailsService, notificationServices);
     }
 
     @Bean
