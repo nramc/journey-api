@@ -17,6 +17,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * <p>The bot must be added as an <b>Administrator</b> of the target channel
  * with the "Post Messages" permission before it can send messages.
+ * </p>
  */
 @ConfigurationProperties("service.telegram")
 public record TelegramProperties(
@@ -37,8 +38,7 @@ public record TelegramProperties(
      * <p>The {@link #mode()} maps each constant to the string the Telegram Bot API
      * expects in the {@code parse_mode} field.
      *
-     * @see <a href="https://core.telegram.org/bots/api#formatting-options">
-     * Telegram – Formatting Options</a>
+     * @see <a href="https://core.telegram.org/bots/api#formatting-options">Telegram – Formatting Options</a>
      */
     public enum ParseMode {
 
