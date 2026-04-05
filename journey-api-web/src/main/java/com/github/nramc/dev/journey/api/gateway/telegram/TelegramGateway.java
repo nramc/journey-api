@@ -19,8 +19,6 @@ import org.springframework.web.client.RestClient;
 @Slf4j
 public class TelegramGateway {
 
-    private static final String TELEGRAM_API_BASE_URL = "https://api.telegram.org/%s";
-
     private final TelegramProperties properties;
     private final RestClient restClient;
 
@@ -34,7 +32,8 @@ public class TelegramGateway {
                     "service.telegram.channel-id must be set when Telegram notifications are enabled");
         }
         this.properties = properties;
-        this.restClient = restClientBuilder.baseUrl(TELEGRAM_API_BASE_URL.formatted(properties.botToken())).build();
+        String restClientBaseUrl = properties.baseUrl() + "/" + properties.botToken();
+        this.restClient = restClientBuilder.baseUrl(restClientBaseUrl).build();
     }
 
     /**

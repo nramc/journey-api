@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.gateway.telegram;
 
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -22,9 +21,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("service.telegram")
 public record TelegramProperties(
         boolean enabled,
-        @NotBlank String botToken,
-        @NotBlank String channelId,
-        ParseMode parseMode
+        String botToken,
+        String channelId,
+        ParseMode parseMode,
+        String baseUrl
 ) {
 
     public TelegramProperties {
@@ -38,11 +38,13 @@ public record TelegramProperties(
      * expects in the {@code parse_mode} field.
      *
      * @see <a href="https://core.telegram.org/bots/api#formatting-options">
-     *      Telegram – Formatting Options</a>
+     * Telegram – Formatting Options</a>
      */
     public enum ParseMode {
 
-        /** Telegram HTML subset: {@code <b>}, {@code <i>}, {@code <code>}, {@code <pre>}, {@code <a>}. */
+        /**
+         * Telegram HTML subset: {@code <b>}, {@code <i>}, {@code <code>}, {@code <pre>}, {@code <a>}.
+         */
         HTML("HTML"),
 
         /**
@@ -51,7 +53,9 @@ public record TelegramProperties(
          */
         MARKDOWN_V2("MarkdownV2"),
 
-        /** No formatting — message is treated as plain text. */
+        /**
+         * No formatting — message is treated as plain text.
+         */
         NONE("");
 
         private final String mode;
