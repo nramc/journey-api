@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.gateway.telegram;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -83,6 +84,7 @@ public class TelegramGateway {
     private record SendMessageRequest(
             @JsonProperty("chat_id") String chatId,
             @JsonProperty("text") String text,
+            @JsonInclude(JsonInclude.Include.NON_EMPTY)
             @JsonProperty("parse_mode") String parseMode) {
     }
 
