@@ -9,12 +9,16 @@
 name: Prepare Release
 
 on:
+  # Runs every Sunday at 06:00 UTC for automated weekly releases
+  schedule:
+    - cron: '30 17 * * 0'
+  # Allow manual trigger with an optional version override
   workflow_dispatch:
     inputs:
       releaseVersion:
-        description: 'Release Version'
-        required: true
-        default: MAJOR.MINOR.PATCH
+        description: 'Release Version (leave blank to auto-derive from pom.xml SNAPSHOT)'
+        required: false
+        default: ''
         type: string
 
 jobs:
@@ -38,18 +42,30 @@ jobs:
           git config --global user.email "ramachandrannellai@gmail.com"
           git config --global user.name "Deploy Bot"
 
+      - name: Resolve release version
+        id: resolve_version
+        run: |
+          if [ -n "${{ inputs.releaseVersion }}" ]; then
+            echo "version=${{ inputs.releaseVersion }}" >> "$GITHUB_OUTPUT"
+          else
+            # Derive version from pom.xml: strip the -SNAPSHOT suffix
+            SNAPSHOT_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec 2>/dev/null)
+            RELEASE_VERSION="${SNAPSHOT_VERSION%-SNAPSHOT}"
+            echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Prepare Release
         run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=$VERSION
         env:
-          VERSION: ${{ inputs.releaseVersion }}
+          VERSION: ${{ steps.resolve_version.outputs.version }}
 
       - name: Create Release Tag with Notes
         uses: ncipollo/release-action@v1
         with:
           commit: main
           generateReleaseNotes: true
-          tag: v${{ inputs.releaseVersion }}
-          name: v${{ inputs.releaseVersion }}
+          tag: v${{ steps.resolve_version.outputs.version }}
+          name: v${{ steps.resolve_version.outputs.version }}
           draft: false
           prerelease: false
           token: ${{ secrets.RELEASE_TOKEN }}
