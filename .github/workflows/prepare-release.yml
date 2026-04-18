@@ -11,7 +11,7 @@ name: Prepare Release
 on:
   # Runs every Sunday at 06:00 UTC for automated weekly releases
   schedule:
-    - cron: '30 17 * * 0'
+    - cron: '33 17 * * 6'
   # Allow manual trigger with an optional version override
   workflow_dispatch:
     inputs:
