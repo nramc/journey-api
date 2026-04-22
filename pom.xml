@@ -42,7 +42,7 @@
         <rewrite-logging-frameworks.version>3.27.1</rewrite-logging-frameworks.version>
         <rewrite-maven-plugin.version>6.36.0</rewrite-maven-plugin.version>
         <rewrite-static-analysis.version>2.33.0</rewrite-static-analysis.version>
-        <rewrite-testing-frameworks.version>3.34.0</rewrite-testing-frameworks.version>
+        <rewrite-testing-frameworks.version>3.35.0</rewrite-testing-frameworks.version>
         <spring-ai.version>2.0.0-M4</spring-ai.version>
         <spring-cloud-contract.version>5.0.2</spring-cloud-contract.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.0.3</springdoc-openapi-starter-webmvc-ui.version>
