@@ -26,8 +26,11 @@ docker compose up -d
 
 - Dev profile enables HTTPS (`keystore/localhost.p12`), JWT keys from classpath (`app.key`/`app.pub`), and Mailpit at
   `localhost:1025`
+- Dev actuator runs on port **8081** (separate from the app port)
 - Mongo Express UI: http://localhost:9090
 - Mailpit UI: http://localhost:8025
+- **`workspace` profile** (`application-workspace.yml`): disables Spring Docker Compose integration — use this in CI or
+  when the infrastructure is already running externally
 
 ### Build & test
 
@@ -51,16 +54,29 @@ Tests use **Testcontainers** for MongoDB — no manual DB setup needed for unit/
 ```
 com.github.nramc.dev.journey.api
 ├── config/          # @Configuration + @Bean declarations ONLY (all beans wired here)
+│   ├── security/    # WebSecurityConfig, WebAuthnConfig, CorsProperties
+│   └── ...          # CloudinaryConfig, TelegramConfig, TotpConfig, MailConfig, etc.
 ├── core/
+│   ├── app/health/  # Custom HealthIndicator impls (e.g. CloudinaryHealthIndicator)
 │   ├── domain/      # Pure domain records/enums — no framework deps, no outward deps
 │   ├── journey/     # Journey aggregate (Journey record, Visibility, JourneyAuthorizationManager)
+│   ├── jwt/         # JwtGenerator + JwtProperties (token creation)
+│   ├── security/
+│   │   └── webauthn/ # WebAuthnService (passkey/FIDO2 registration & authentication)
 │   ├── usecase/     # Business logic — accessed only by web resources and config
 │   ├── services/    # MailService (infrastructure service)
 │   ├── exceptions/  # BusinessException, TechnicalException, NonTechnicalException
+│   ├── validation/  # Custom constraint annotations (e.g. @ValidateVisibilities)
 │   └── utils/       # Stateless utilities (no deps on web/gateway/repository/usecase)
 ├── gateway/         # External integrations: Cloudinary, Telegram
 ├── repository/      # MongoDB entities + Spring Data repos + converters
-├── web/resources/   # @RestController classes (must end with "Resource")
+│   ├── journey/     # JourneyEntity, JourneyRepository, converters
+│   └── user/        # AuthUser, UserRepository, credential/code/attributes sub-packages
+├── web/
+│   ├── exceptions/  # GlobalRestExceptionHandler (@RestControllerAdvice → ProblemDetail)
+│   └── resources/
+│       ├── mvc/     # Thymeleaf MVC controllers (home page)
+│       └── rest/    # @RestController classes (must end with "Resource")
 └── migration/       # Data migration rules (excluded from coverage)
 ```
 
@@ -71,6 +87,7 @@ com.github.nramc.dev.journey.api
 - No field-level `@Autowired` — constructor injection only, wired via `config/` classes
 - No cyclic dependencies within `core.*` packages
 - All `@Bean` methods must live in `..config..` classes annotated with `@Configuration`
+- `Repository` classes may be accessed directly from `resources.rest.users.find` (ArchUnit allows this exception)
 
 ### Security model
 
@@ -78,6 +95,10 @@ com.github.nramc.dev.journey.api
 - Roles: `GUEST_USER`, `AUTHENTICATED_USER`, `MAINTAINER`, `ADMINISTRATOR`
 - All route permissions defined in `WebSecurityConfig`; all endpoint paths as constants in `Resources.java`
 - Journey visibility controlled by `JourneyAuthorizationManager` (per-resource authorization)
+- **WebAuthn (passkey/FIDO2):** enabled via `WebAuthnConfig` + `WebAuthnService`; endpoints at `/webauthn/register`,
+  `/webauthn/authenticate`, `/webauthn/manage`
+- **TOTP MFA:** configured in `TotpConfig`; login flow — `POST /rest/login` returns an MFA challenge when MFA is
+  enabled, completed with `POST /rest/mfa`
 
 ### Journey update API uses custom media types (content-negotiation dispatch)
 
@@ -92,12 +113,13 @@ PUT /rest/journey/{id}
 
 ### External integrations
 
-| Service     | Gateway class           | Config properties                       |
-|-------------|-------------------------|-----------------------------------------|
-| Cloudinary  | `CloudinaryGateway`     | `service.cloudinary.*` / env vars       |
-| Telegram    | `TelegramGateway`       | `service.telegram.*` / `TELEGRAM_*`     |
-| AI (Gemini) | Spring AI OpenAI compat | `GEMINI_API_KEY`; dev uses local Ollama |
-| Email       | `MailService`           | `spring.mail.*` / env vars              |
+| Service     | Gateway class           | Config properties                               |
+|-------------|-------------------------|-------------------------------------------------|
+| Cloudinary  | `CloudinaryGateway`     | `service.cloudinary.*` / env vars               |
+| Telegram    | `TelegramGateway`       | `service.telegram.*` / `TELEGRAM_*`             |
+| AI (Gemini) | Spring AI OpenAI compat | `GEMINI_API_KEY`; model `gemini-2.5-flash`; dev uses local Ollama (`qwen2.5vl`) |
+| Email       | `MailService`           | `spring.mail.*` / env vars                      |
+| WebAuthn    | `WebAuthnService`       | `app.security.webauthn.*` (rp-id, origin)       |
 
 ### GeoJSON handling
 
@@ -112,5 +134,10 @@ MongoDB stores GeoJSON via custom Jackson converters in `repository/converters/`
 - `config/security/WebSecurityConfig.java` — all security rules in one place
 - `ApplicationArchitectureTest.java` — ArchUnit rules; violations = build failure
 - `application-dev.yml` — dev overrides (SSL, local JWT keys, Mailpit, Ollama AI)
+- `application-workspace.yml` — workspace/CI profile (disables Docker Compose auto-start)
 - `docker-compose.yml` — infrastructure for local dev (MongoDB, Mongo Express, Mailpit)
+- `web/exceptions/GlobalRestExceptionHandler.java` — `@RestControllerAdvice` mapping
+  `BusinessException` → 400/422, `TechnicalException` → 500, `NonTechnicalException` → 422
+- `web/resources/rest/doc/RestDocCommonResponse.java` — composite annotation to attach standard
+  OpenAPI error responses (401, 403, 400, 422, 500) to controller methods
 
