@@ -40,7 +40,7 @@
         <geojson4j.version>1.0.9</geojson4j.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
         <rewrite-logging-frameworks.version>3.27.2</rewrite-logging-frameworks.version>
-        <rewrite-maven-plugin.version>6.36.0</rewrite-maven-plugin.version>
+        <rewrite-maven-plugin.version>6.38.0</rewrite-maven-plugin.version>
         <rewrite-static-analysis.version>2.34.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.35.2</rewrite-testing-frameworks.version>
         <spring-ai.version>2.0.0-M5</spring-ai.version>
