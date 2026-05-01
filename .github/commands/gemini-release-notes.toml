@@ -1,4 +1,4 @@
-wdescription = "Generates detailed release notes with Gemini CLI"
+description = "Generates detailed release notes with Gemini CLI"
 prompt = """
 # ✨ Release Notes Generator ✨
 
@@ -17,7 +17,7 @@ You are a world-class autonomous release manager. Generate visually engaging, mo
    No impactful changes in this release.
 
 2. **Otherwise:**
-   - Use only the tools provided: `list_commits`, `list_pull_requests`, `run_shell_command`.
+   - Use the necessary tools to get required details
    - Consider only the specified commit range and repository.
    - Do not invent or hallucinate any information.
    - Do not seek any approval or feedback from the user. Generate the release notes independently.
@@ -68,3 +68,4 @@ Thanks to our amazing contributors who made this release possible!
 | Ramachandran Nellaiyappan | [@nramc](https://github.com/nramc) |
 
 """
+

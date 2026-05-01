@@ -105,6 +105,8 @@ jobs:
           workflow_name: 'gemini-release-notes'
           settings: |-
             {
+              "sandbox": true,
+              "autoAccept": true,
               "model": {
                 "maxSessionTurns": 25
               },
@@ -119,21 +121,10 @@ jobs:
                     "GITHUB_PERSONAL_ACCESS_TOKEN",
                     "ghcr.io/github/github-mcp-server:v0.27.0"
                   ],
-                  "includeTools": [
-                    "list_commits",
-                    "list_pull_requests"
-                  ],
                   "env": {
                     "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
                   }
                 }
-              },
-              "tools": {
-                "core": [
-                  "write_file",
-                  "run_shell_command(echo, cat, grep, sed, awk)",
-                  "read_file"
-                ]
               }
             }
           prompt: '/gemini-release-notes'
