@@ -21,8 +21,12 @@ focus on geographical data management. Key features include:
   service ensures reliable and scalable data storage.
 - Geospatial Support: With geographical information at its core, the service
   utilizes [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946) data format, made simple
-  through the [Commons GeoJson](https://github.com/nramc/commons) library, for accurate and efficient handling of
+  through the [geojson4j](https://github.com/nramc/geojson4j) library, for accurate and efficient handling of
   location-based data.
+- Passkey / FIDO2 Authentication: Supports [WebAuthn](https://webauthn.io/) passwordless login via passkeys.
+- Multi-Factor Authentication (MFA): TOTP-based MFA for enhanced account security.
+- AI-Powered Features: Integrates [Spring AI](https://spring.io/projects/spring-ai) with Google Gemini (
+  `gemini-2.5-flash`) for intelligent journey assistance.
 
 ## Helpful Links
 
@@ -36,9 +40,11 @@ Please find below steps to setup and run application in your workstation.
 
 ### Prerequisites
 
-The service uses MongoDB for persistence.
-For Local development, Local MongoDB instance created with help of Docker CLI.
-So make sure you have installed Docker CLI or any other docker container tool.
+The service uses MongoDB for persistence and Mailpit for local email testing.
+Spring Boot's Docker Compose integration automatically starts all required infrastructure (MongoDB, Mongo Express,
+Mailpit)
+when the application is run with the `dev` profile — no manual `docker compose up` needed.
+Make sure you have **Docker** and **Java 21** installed.
 
 ### Installation
 
@@ -46,14 +52,15 @@ So make sure you have installed Docker CLI or any other docker container tool.
    ```sh
    git clone https://github.com/nramc/journey-api.git 
    ```
-2. Run Application with spring profile `dev`
+2. Run Application with spring profile `dev` (infrastructure starts automatically)
    ```sh
-   mvn spring-boot:run -Dspring-boot.run.profiles=dev
+   ./mvnw spring-boot:run -pl journey-api-web -Dspring-boot.run.profiles=dev
    ```
-3. Local MongoDB can be accessed in [http://localhost:9090/](http://localhost:9090/) with help
-   of [Mongo Express](https://github.com/mongo-express/mongo-express)
-4. To test REST resource,
-   use [IntelJ Http Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html) scripts
+3. Local MongoDB can be accessed at [http://localhost:9090/](http://localhost:9090/) via
+   [Mongo Express](https://github.com/mongo-express/mongo-express); Mailpit UI
+   at [http://localhost:8025](http://localhost:8025)
+4. To test REST resources,
+   use [IntelliJ Http Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html) scripts
    available in ``src/test/resources/http-scripts/`` directory.
 
 ### Contributing
@@ -95,10 +102,13 @@ Sincere Thanks to following open source community for their wonderful efforts to
 
 - [Spring IO](https://spring.io/) - Java Web Framework
 - [MongoDB](https://www.mongodb.com/) - Persistence Layer
+- [geojson4j](https://github.com/nramc/geojson4j) - GeoJSON domain types
+- [Spring AI](https://spring.io/projects/spring-ai) - AI integration (Google Gemini)
 - [Spring Rest Doc](https://springdoc.org) - Spring REST Doc with Open API support for Swagger UI
 - [OpenRewrite](https://docs.openrewrite.org/) - Automated source code refactoring
 - [Docker](https://www.docker.com/) - Containerization
 - [Testcontainers](https://testcontainers.com/) - Run containers on-demand for development and testing
+- [Mailpit](https://mailpit.axllent.org/) - Local email testing
 
 ## Show your support
 

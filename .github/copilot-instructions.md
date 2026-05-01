@@ -124,8 +124,7 @@ Key env vars (prod): `GEMINI_API_KEY`, `NOREPLY_EMAIL`, `NOREPLY_EMAIL_PWD`, `CL
 ## Build Commands
 
 ```bash
-docker compose up -d                              # start MongoDB, Mongo Express, Mailpit
-./mvnw spring-boot:run -pl journey-api-web -Dspring-boot.run.profiles=dev  # run locally
+./mvnw spring-boot:run -pl journey-api-web -Dspring-boot.run.profiles=dev  # auto-starts MongoDB, Mailpit via Docker Compose
 ./mvnw verify                                     # build + checkstyle + all tests
 ./mvnw verify -P coverage                         # with JaCoCo report
 ./mvnw verify -P open-rewrite                     # apply OpenRewrite recipes first
