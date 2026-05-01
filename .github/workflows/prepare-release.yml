@@ -90,7 +90,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           REPOSITORY: ${{ github.repository }}
-          COMMIT_RANGE: ${{ steps.get_prev_tag.outputs.tag }}..v${{ steps.resolve_version.outputs.version }}
           CLEAN_CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
           RELEASE_NOTES_FILE: 'RELEASE_NOTES.md'
           GEMINI_CLI_TRUST_WORKSPACE: true
