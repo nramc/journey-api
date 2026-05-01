@@ -41,7 +41,7 @@ You are a world-class autonomous release manager. Generate visually engaging, mo
 3. **Output**
    - Write the final release notes to the output file **RELEASE_NOTES.md** in Markdown format.
    - Append the release notes to the GitHub Actions summary using:
-      `cat RELEASE_NOTES.md >> GITHUB_STEP_SUMMARY`
+      `cat RELEASE_NOTES.md >> $GITHUB_STEP_SUMMARY`
    - Ensure the generated release notes are properly escaped for the shell command.
 
 ## Example Output (no changes)
