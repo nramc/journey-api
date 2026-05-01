@@ -20,6 +20,11 @@ on:
         required: false
         default: ''
         type: string
+      geminiModel:
+        description: 'Gemini model to use (e.g., gemini-3.1-flash-lite-preview, gemini-3-flash-preview, gemini-2.5-flash-lite, gemini-2.5-flash)'
+        required: false
+        default: 'gemini-2.5-flash-lite'
+        type: string
 
 jobs:
   build:
@@ -96,7 +101,7 @@ jobs:
           GEMINI_CLI_TRUST_WORKSPACE: true
         with:
           gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
-          gemini_model: 'gemini-2.5-flash'
+          gemini_model: ${{ github.event.inputs.gemini_model != '' && github.event.inputs.gemini_model || vars.GEMINI_MODEL }}
           workflow_name: 'gemini-release-notes'
           settings: |-
             {
@@ -126,8 +131,8 @@ jobs:
               "tools": {
                 "core": [
                   "write_file",
-                  "run_shell_command(echo)",
-                  "run_shell_command(cat)"
+                  "run_shell_command(echo, cat, grep, sed, awk)",
+                  "read_file"
                 ]
               }
             }
