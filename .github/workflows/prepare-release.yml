@@ -97,33 +97,17 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           COMMIT_RANGE: ${{ steps.get_prev_tag.outputs.tag }}..v${{ steps.resolve_version.outputs.version }}
           CLEAN_CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
-          RELEASE_NOTES_FILE: 'RELEASE_NOTES.md'
           GEMINI_CLI_TRUST_WORKSPACE: true
         with:
           gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
           gemini_model: ${{ github.event.inputs.gemini_model != '' && github.event.inputs.gemini_model || vars.GEMINI_MODEL }}
           workflow_name: 'gemini-release-notes'
+          upload_artifacts: 'true'
           settings: |-
             {
               "autoAccept": true,
               "model": {
                 "maxSessionTurns": 25
-              },
-              "mcpServers": {
-                "github": {
-                  "command": "docker",
-                  "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "-e",
-                    "GITHUB_PERSONAL_ACCESS_TOKEN",
-                    "ghcr.io/github/github-mcp-server:v0.27.0"
-                  ],
-                  "env": {
-                    "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
-                  }
-                }
               }
             }
           prompt: '/gemini-release-notes'
