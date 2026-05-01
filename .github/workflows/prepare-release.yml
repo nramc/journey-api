@@ -74,7 +74,6 @@ jobs:
           skip-tag: 'true'          # Maven handles tag creation
           skip-commit: 'true'       # do not commit changelog
           git-push: 'false'         # do not push
-          output-file: 'true'      # we only need the output variables, not a file
 
       - name: Prepare Release
         run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=$VERSION
@@ -118,7 +117,7 @@ jobs:
           if [ -f RELEASE_NOTES.md ]; then
             NOTES="$(cat RELEASE_NOTES.md)"
           else
-            NOTES="No release notes generated."
+            NOTES="No impactful changes in this release."
           fi
           delimiter="__RELEASE_NOTES_EOF__"
           echo "notes<<$delimiter" >> "$GITHUB_OUTPUT"
