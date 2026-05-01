@@ -29,6 +29,8 @@ jobs:
     steps:
 
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0   # full history needed to collect commits since last tag
 
       - name: Set up Java
         uses: actions/setup-java@v5
@@ -59,11 +61,77 @@ jobs:
         env:
           VERSION: ${{ steps.resolve_version.outputs.version }}
 
-      - name: Create Release Tag with Notes
+      - name: Get previous tag
+        id: get_prev_tag
+        run: |
+          git fetch --tags
+          CURRENT_TAG="v${{ steps.resolve_version.outputs.version }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 "${CURRENT_TAG}^" 2>/dev/null || echo "")
+          echo "tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate AI-Enhanced Release Notes with Gemini
+        id: ai_release_notes
+        uses: 'google-github-actions/run-gemini-cli@v0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_RANGE: ${{ steps.get_prev_tag.outputs.tag }}..v${{ steps.resolve_version.outputs.version }}
+          RELEASE_NOTES_FILE: 'RELEASE_NOTES.md'
+        with:
+          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          gemini_model: 'gemini-2.5-flash'
+          workflow_name: 'gemini-release-notes'
+          settings: |-
+            {
+              "model": {
+                "maxSessionTurns": 25
+              },
+              "mcpServers": {
+                "github": {
+                  "command": "docker",
+                  "args": [
+                    "run",
+                    "-i",
+                    "--rm",
+                    "-e",
+                    "GITHUB_PERSONAL_ACCESS_TOKEN",
+                    "ghcr.io/github/github-mcp-server:v0.27.0"
+                  ],
+                  "includeTools": [
+                    "list_commits",
+                    "list_pull_requests"
+                  ],
+                  "env": {
+                    "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+                  }
+                }
+              },
+              "tools": {
+                "core": [
+                  "run_shell_command(echo)"
+                ]
+              }
+            }
+          prompt: '/gemini-release-notes'
+
+      - name: Read Release Notes
+        id: read_release_notes
+        run: |
+          if [ -f RELEASE_NOTES.md ]; then
+            NOTES="$(cat RELEASE_NOTES.md)"
+          else
+            NOTES="No release notes generated."
+          fi
+          delimiter="__RELEASE_NOTES_EOF__"
+          echo "notes<<$delimiter" >> "$GITHUB_OUTPUT"
+          echo "$NOTES" >> "$GITHUB_OUTPUT"
+          echo "$delimiter" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release Tag with AI-Enhanced Notes
         uses: ncipollo/release-action@v1
         with:
           commit: main
-          generateReleaseNotes: true
+          body: ${{ steps.read_release_notes.outputs.notes }}
           tag: v${{ steps.resolve_version.outputs.version }}
           name: v${{ steps.resolve_version.outputs.version }}
           draft: false
