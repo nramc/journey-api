@@ -110,7 +110,7 @@ jobs:
               "tools": {
                 "core": [
                   "write_file",
-                  "run_shell_command(echo,cat)"
+                  "run_shell_command"
                 ]
               }
             }
