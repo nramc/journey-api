@@ -105,8 +105,7 @@ jobs:
           workflow_name: 'gemini-release-notes'
           settings: |-
             {
-              "sandbox": true,
-              "autoAccept": true,
+              "autoAccept": true
               "model": {
                 "maxSessionTurns": 25
               },
