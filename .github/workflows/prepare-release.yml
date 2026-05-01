@@ -77,6 +77,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           COMMIT_RANGE: ${{ steps.get_prev_tag.outputs.tag }}..v${{ steps.resolve_version.outputs.version }}
           RELEASE_NOTES_FILE: 'RELEASE_NOTES.md'
+          GEMINI_CLI_TRUST_WORKSPACE: true
         with:
           gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
           gemini_model: 'gemini-2.5-flash'
