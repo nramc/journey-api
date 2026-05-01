@@ -9,10 +9,12 @@ Generate visually engaging, modern, and highly useful release notes for the curr
 ## Context
 - **Repository**: !{echo $REPOSITORY}
 - **Commit Range**: !{echo $COMMIT_RANGE}
+- **Base Changelog**:
+!{echo "$CLEAN_CHANGELOG"}
 
 ## Guidelines
 
-1. **If there are no commits in the commit range, output only:**
+1. **If the base changelog is empty or there are no categorized changes, output only:**
    No impactful changes in this release.
 
 2. **Otherwise:**

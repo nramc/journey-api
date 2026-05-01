@@ -26,6 +26,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write   # required to create releases and write RELEASE_NOTES.md
+      id-token: write   # required for OIDC token (Gemini CLI auth)
+
     steps:
 
       - uses: actions/checkout@v6
@@ -56,6 +60,17 @@ jobs:
             echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Generate Changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v6
+        with:
+          github-token: ${{ secrets.RELEASE_TOKEN }}
+          skip-on-empty: 'false'
+          skip-tag: 'true'          # Maven handles tag creation
+          skip-commit: 'true'       # do not commit changelog
+          git-push: 'false'         # do not push
+          output-file: 'true'      # we only need the output variables, not a file
+
       - name: Prepare Release
         run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=$VERSION
         env:
@@ -76,6 +91,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           REPOSITORY: ${{ github.repository }}
           COMMIT_RANGE: ${{ steps.get_prev_tag.outputs.tag }}..v${{ steps.resolve_version.outputs.version }}
+          CLEAN_CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
           RELEASE_NOTES_FILE: 'RELEASE_NOTES.md'
           GEMINI_CLI_TRUST_WORKSPACE: true
         with:
@@ -110,7 +126,8 @@ jobs:
               "tools": {
                 "core": [
                   "write_file",
-                  "run_shell_command"
+                  "run_shell_command(echo)",
+                  "run_shell_command(cat)"
                 ]
               }
             }
