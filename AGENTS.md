@@ -17,10 +17,7 @@ Persists geospatial journey data in MongoDB Atlas using GeoJSON (`geojson4j` lib
 ### Local development
 
 ```bash
-# Start infrastructure (MongoDB + Mongo Express + Mailpit)
-docker compose up -d
-
-# Run app with dev profile (uses classpath JWT keys, local Mailpit, local Ollama AI)
+# Run app with dev profile — Spring Boot auto-starts MongoDB, Mongo Express & Mailpit via Docker Compose
 ./mvnw spring-boot:run -pl journey-api-web -Dspring-boot.run.profiles=dev
 ```
 
