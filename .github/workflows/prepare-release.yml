@@ -116,6 +116,8 @@ jobs:
         run: |
           if [ -f RELEASE_NOTES.md ]; then
             NOTES="$(cat RELEASE_NOTES.md)"
+          elif [ -n "${{ steps.changelog.outputs.clean_changelog }}" ]; then
+            NOTES="${{ steps.changelog.outputs.clean_changelog }}"
           else
             NOTES="No impactful changes in this release."
           fi
