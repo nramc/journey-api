@@ -109,7 +109,8 @@ jobs:
               },
               "tools": {
                 "core": [
-                  "run_shell_command(echo)"
+                  "write_file",
+                  "run_shell_command(echo,cat)"
                 ]
               }
             }

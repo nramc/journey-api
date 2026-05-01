@@ -16,7 +16,7 @@ Generate visually engaging, modern, and highly useful release notes for the curr
    No impactful changes in this release.
 
 2. **Otherwise:**
-   - Use only the tools provided: `list_commits`, `list_pull_requests`, `run_shell_command`.
+   - **To fetch commits and pull requests**, use ONLY the MCP tools `list_commits` and `list_pull_requests` with the repository and commit range provided above.
    - Consider only the specified commit range and repository.
    - Do not invent or hallucinate any information.
    - Do not seek any approval or feedback from the user. Generate the release notes independently.
@@ -43,10 +43,8 @@ Generate visually engaging, modern, and highly useful release notes for the curr
    - Do NOT include raw commit hashes in the output.
 
 3. **Output**
-   - Write the final release notes to the output file **RELEASE_NOTES.md** in Markdown format.
-   - Append the release notes to the GitHub Actions summary using:
-      `cat RELEASE_NOTES.md >> $GITHUB_STEP_SUMMARY`
-   - Ensure the generated release notes are properly escaped for the shell command.
+   - Use the `write_file` tool to write the final release notes to **RELEASE_NOTES.md** in Markdown format.
+   - Then append the release notes to the GitHub Actions summary by running: `cat RELEASE_NOTES.md >> $GITHUB_STEP_SUMMARY`
 
 ## Example Output (no changes)
 No impactful changes in this release.
