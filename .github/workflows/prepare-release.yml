@@ -106,7 +106,7 @@ jobs:
             {
               "autoAccept": true,
               "model": {
-                "maxSessionTurns": 25
+                "maxSessionTurns": 100
               },
               "mcpServers": {
                 "github": {
