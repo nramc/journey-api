@@ -6,7 +6,6 @@ import com.github.nramc.dev.journey.api.core.services.mail.MailService;
 import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
 import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
-import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -21,14 +20,13 @@ import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.Emai
 import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -59,10 +57,9 @@ class EmailCodeUseCaseTest {
     }
 
     @Test
-    void send_whenDataValid_shouldSendEmailCodeSuccessfully() throws MessagingException {
-        doNothing().when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
+    void send_whenDataValid_shouldSendEmailCodeSuccessfully() throws Exception {
 
-        assertDoesNotThrow(() -> emailCodeUseCase.send(AUTHENTICATED_USER));
+        assertThatCode(() -> emailCodeUseCase.send(AUTHENTICATED_USER)).doesNotThrowAnyException();
 
         verify(mailService).sendEmailUsingTemplate(
                 eq(EMAIL_CODE_TEMPLATE_HTML),
@@ -82,7 +79,7 @@ class EmailCodeUseCaseTest {
     }
 
     @Test
-    void send_whenSendingEmailCodeFailed_shouldThrowError() throws MessagingException {
+    void send_whenSendingEmailCodeFailed_shouldThrowError() throws Exception {
         doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
         assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailCodeUseCase.send(AUTHENTICATED_USER));
         verifyNoInteractions(codeRepository);

@@ -2,7 +2,6 @@ package com.github.nramc.dev.journey.api.core.usecase.codes.totp;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -33,14 +32,14 @@ class QRCodeGeneratorTest {
             .build();
 
     @Test
-    void something() throws IOException {
+    void something() throws Exception {
         QRCodeGenerator generator = new QRCodeGenerator();
         Path tempFile = Files.write(Files.createTempFile("qr_test", ".png"), generator.generate(QR_DATA));
         assertThat(tempFile).isNotNull();
     }
 
     @Test
-    void qRCodeGenerator() throws IOException {
+    void qRCodeGenerator() throws Exception {
         QRCodeGenerator generator = new QRCodeGenerator();
         Path tempFile = Files.write(Files.createTempFile("qr_test", ".png"), generator.generateWithLogo(QR_DATA));
         assertThat(tempFile).isNotNull();

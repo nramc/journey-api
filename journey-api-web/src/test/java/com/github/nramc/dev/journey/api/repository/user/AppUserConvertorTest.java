@@ -54,7 +54,7 @@ class AppUserConvertorTest {
                 .satisfies(user -> assertThat(user.name()).isEqualTo(USER_ENTITY.getName()))
                 .satisfies(user -> assertThat(user.username()).isEqualTo(USER_ENTITY.getUsername()))
                 .satisfies(user -> assertThat(user.password()).isNullOrEmpty())
-                .satisfies(user -> assertThat(user.roles()).isEqualTo(USER_ENTITY.getRoles()))
+                .satisfies(user -> assertThat(user.roles()).hasSameElementsAs(USER_ENTITY.getRoles()))
                 .satisfies(user -> assertThat(user.enabled()).isEqualTo(USER_ENTITY.isEnabled()))
                 .satisfies(user -> assertThat(user.mfaEnabled()).isEqualTo(USER_ENTITY.isMfaEnabled()))
                 .satisfies(user -> assertThat(user.createdDate()).isEqualTo(USER_ENTITY.getCreatedDate()))

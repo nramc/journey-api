@@ -44,13 +44,13 @@ class ConfirmationCodeRepositoryTest {
         confirmationCodeRepository.save(EMAIL_CODE_ENTITY);
 
         List<ConfirmationCodeEntity> entities = confirmationCodeRepository.findAllByUsername(USERNAME);
-        assertThat(entities).isNotNull().hasSize(1);
+        assertThat(entities).hasSize(1);
     }
 
     @Test
     void findAllByUsername_whenCodeNotExists_thenShouldReturnEmptyList() {
         List<ConfirmationCodeEntity> entities = confirmationCodeRepository.findAllByUsername(USERNAME);
-        assertThat(entities).isNotNull().isEmpty();
+        assertThat(entities).isEmpty();
     }
 
 

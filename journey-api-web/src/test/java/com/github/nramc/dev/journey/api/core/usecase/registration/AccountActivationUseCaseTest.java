@@ -10,7 +10,6 @@ import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCa
 import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
 import com.github.nramc.dev.journey.api.repository.user.AuthUser;
 import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
-import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,7 +61,7 @@ class AccountActivationUseCaseTest {
     }
 
     @Test
-    void sendActivationEmail_shouldGenerateEmailToken_andShouldSendEmailWithActivationLink() throws MessagingException {
+    void sendActivationEmail_shouldGenerateEmailToken_andShouldSendEmailWithActivationLink() throws Exception {
         when(applicationProperties.uiAppUrl()).thenReturn(JOURNEY_UI_BASE_URL);
         when(emailTokenUseCase.generateEmailToken(ONBOARDING_USER)).thenReturn(EMAIL_TOKEN);
 

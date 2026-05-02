@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.ACTIVATE_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.SIGNUP;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,8 +50,8 @@ class AccountRegistrationResourceTest {
 
     @Test
     void context() {
-        assertDoesNotThrow(() ->
-            assertThat(mockMvc).isNotNull());
+        assertThatCode(() ->
+                assertThat(mockMvc).isNotNull()).doesNotThrowAnyException();
     }
 
     @ParameterizedTest

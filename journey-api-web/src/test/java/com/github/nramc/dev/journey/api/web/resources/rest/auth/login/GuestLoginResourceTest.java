@@ -23,10 +23,10 @@ import tools.jackson.databind.ObjectMapper;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.GUEST_LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.GUEST_USER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -51,8 +51,8 @@ class GuestLoginResourceTest {
 
     @Test
     void test() {
-        assertDoesNotThrow(() ->
-                assertThat(mockMvc).isNotNull());
+        assertThatCode(() ->
+                assertThat(mockMvc).isNotNull()).doesNotThrowAnyException();
     }
 
     @Test

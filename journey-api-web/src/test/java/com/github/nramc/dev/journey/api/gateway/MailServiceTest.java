@@ -2,7 +2,6 @@ package com.github.nramc.dev.journey.api.gateway;
 
 import com.github.nramc.dev.journey.api.config.MailConfig;
 import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
@@ -68,14 +67,14 @@ class MailServiceTest {
         mailService.sendSimpleEmail(List.of("example-email@example.com"), "Example Subject", "Example Body");
         verify(emailSender).send(assertArg((SimpleMailMessage mailMessage) ->
                 assertThat(mailMessage).isNotNull()
-                        .satisfies(mail -> assertThat(mail.getTo()).hasSize(1).containsExactly("example-email@example.com"))
+                        .satisfies(mail -> assertThat(mail.getTo()).containsExactly("example-email@example.com"))
                         .satisfies(mail -> assertThat(mail.getSubject()).isEqualTo("Example Subject"))
                         .satisfies(mail -> assertThat(mail.getText()).isEqualTo("Example Body"))
         ));
     }
 
     @Test
-    void sendEmailUsingTemplate_whenTemplateEmailCode_shouldSendEmailWithExpectation() throws MessagingException {
+    void sendEmailUsingTemplate_whenTemplateEmailCode_shouldSendEmailWithExpectation() throws Exception {
         String toEmailAddress = "example-email@example.com";
         Map<String, Object> placeholders = new HashMap<>();
         String name = "John Doe";
@@ -87,7 +86,7 @@ class MailServiceTest {
 
         verify(emailSender).send(assertArg((MimeMessage mailMessage) -> {
                     assertThat(mailMessage).isNotNull()
-                            .satisfies(mail -> assertThat(mail.getAllRecipients()).hasSize(1).containsExactly(InternetAddress.parse(toEmailAddress)))
+                            .satisfies(mail -> assertThat(mail.getAllRecipients()).containsExactly(InternetAddress.parse(toEmailAddress)))
                             .satisfies(mail -> assertThat(mail.getSubject()).isEqualTo("Example Subject"))
                             .satisfies(mail -> assertThat(mail.getContent()).isInstanceOf(Multipart.class))
                             .satisfies(mail -> assertThat(mail.getContent()).isInstanceOf(MimeMultipart.class));

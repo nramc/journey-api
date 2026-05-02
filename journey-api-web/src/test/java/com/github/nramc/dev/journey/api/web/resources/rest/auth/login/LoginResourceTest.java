@@ -29,10 +29,10 @@ import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttr
 import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.TOTP_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
@@ -56,8 +56,8 @@ class LoginResourceTest {
 
     @Test
     void test() {
-        assertDoesNotThrow(() ->
-                assertThat(mockMvc).isNotNull());
+        assertThatCode(() ->
+                assertThat(mockMvc).isNotNull()).doesNotThrowAnyException();
     }
 
     @Test
