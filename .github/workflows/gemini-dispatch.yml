@@ -77,6 +77,7 @@ jobs:
         env:
           EVENT_TYPE: '${{ github.event_name }}.${{ github.event.action }}'
           REQUEST: '${{ github.event.comment.body || github.event.review.body || github.event.issue.body }}'
+          GEMINI_CLI_TRUST_WORKSPACE: 'true'
         with:
           script: |
             const eventType = process.env.EVENT_TYPE;
