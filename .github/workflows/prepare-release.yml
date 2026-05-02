@@ -88,14 +88,24 @@ jobs:
           PREV_TAG=$(git describe --tags --abbrev=0 "${CURRENT_TAG}^" 2>/dev/null || echo "")
           echo "tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
 
-      - name: Generate AI-Enhanced Release Notes with Gemini
+      - name: Prepare Release Context for Gemini
+        run: |
+          mkdir -p .gemini
+          {
+            echo "- **Repository**: ${{ github.repository }}"
+            echo "- **Commit Range**: ${{ steps.get_prev_tag.outputs.tag }}..${{ steps.released_version.outputs.tag }}"
+            echo "- **Base Changelog**:"
+            echo ""
+            printf '%s\n' "$CLEAN_CHANGELOG"
+          } > .gemini/release-context.md
+        env:
+          CLEAN_CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
+
+      - name: Generate Enhanced Release Notes with Gemini
         id: ai_release_notes
         uses: 'google-github-actions/run-gemini-cli@v0'
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          COMMIT_RANGE: ${{ steps.get_prev_tag.outputs.tag }}..v${{ steps.resolve_version.outputs.version }}
-          CLEAN_CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
           GEMINI_CLI_TRUST_WORKSPACE: true
         with:
           gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
@@ -142,7 +152,7 @@ jobs:
           echo "$NOTES" >> "$GITHUB_OUTPUT"
           echo "$delimiter" >> "$GITHUB_OUTPUT"
 
-      - name: Create Release Tag with AI-Enhanced Notes
+      - name: Create Release Tag
         uses: ncipollo/release-action@v1
         with:
           commit: main
