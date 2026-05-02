@@ -64,7 +64,7 @@ class RegistrationUseCaseTest {
                 .satisfies(user -> assertThat(user.name()).isEqualTo(ONBOARDING_USER.name()))
                 .satisfies(user -> assertThat(user.username()).isEqualTo(ONBOARDING_USER.username()))
                 .satisfies(user -> assertThat(user.password()).isNotBlank())
-                .satisfies(user -> assertThat(user.roles()).isEqualTo(Set.of(Role.AUTHENTICATED_USER)))
+                .satisfies(user -> assertThat(user.roles()).hasSameElementsAs(Set.of(Role.AUTHENTICATED_USER)))
                 .satisfies(user -> assertThat(user.enabled()).isFalse())
                 .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
                 .satisfies(user -> assertThat(user.createdDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));

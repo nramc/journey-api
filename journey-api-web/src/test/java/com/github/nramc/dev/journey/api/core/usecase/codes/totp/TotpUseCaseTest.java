@@ -93,7 +93,7 @@ class TotpUseCaseTest {
 
         Optional<UserSecurityAttribute> attributeOptional = totpUseCase.getTotpAttributeIfExists(AUTHENTICATED_USER);
 
-        assertThat(attributeOptional).isNotEmpty().hasValueSatisfying(attribute -> assertThat(attribute).isNotNull());
+        assertThat(attributeOptional).isPresent().hasValueSatisfying(attribute -> assertThat(attribute).isNotNull());
     }
 
     @Test

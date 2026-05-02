@@ -41,7 +41,7 @@ class EmailNotificationServiceTest {
         emailNotificationService.notify("Signup Completed");
 
         verify(mailService).sendSimpleEmail(
-                assertArg(emails -> assertThat(emails).isNotNull().hasSize(1).contains(ADMINISTRATOR_USER.getUsername())),
+                assertArg(emails -> assertThat(emails).hasSize(1).contains(ADMINISTRATOR_USER.getUsername())),
                 eq("Notification: Signup Completed"),
                 eq("Notification: Signup Completed")
         );
@@ -103,7 +103,7 @@ class EmailNotificationServiceTest {
         emailNotificationService.notifyError("MongoDB connection failed");
 
         verify(mailService).sendSimpleEmail(
-                assertArg(emails -> assertThat(emails).isNotNull().hasSize(1).contains(ADMINISTRATOR_USER.getUsername())),
+                assertArg(emails -> assertThat(emails).hasSize(1).contains(ADMINISTRATOR_USER.getUsername())),
                 eq("Error Alert: MongoDB connection failed"),
                 eq("Error Alert: MongoDB connection failed")
         );

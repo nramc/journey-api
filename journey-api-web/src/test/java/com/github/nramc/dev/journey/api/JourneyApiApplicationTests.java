@@ -20,7 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -56,16 +56,16 @@ class JourneyApiApplicationTests {
     @Test
     void healthCheckEndpoint() {
         when(cloudinaryGateway.isAvailable()).thenReturn(true);
-        assertDoesNotThrow(() ->
+        assertThatCode(() ->
                 restTestClient.get().uri("/actuator/health").exchange()
-                        .expectStatus().isOk());
+                        .expectStatus().isOk()).doesNotThrowAnyException();
     }
 
     @Test
     void prometheusEndpoint() {
-        assertDoesNotThrow(() ->
+        assertThatCode(() ->
                 restTestClient.get().uri("/actuator/prometheus").exchange()
-                        .expectStatus().isOk());
+                        .expectStatus().isOk()).doesNotThrowAnyException();
     }
 
 }

@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -71,7 +71,7 @@ class WebAuthnRegistrationResourceTest {
 
     @Test
     void test() {
-        assertDoesNotThrow(() -> assertThat(mockMvc).isNotNull());
+        assertThatCode(() -> assertThat(mockMvc).isNotNull()).doesNotThrowAnyException();
     }
 
     @Test

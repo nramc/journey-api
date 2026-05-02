@@ -40,7 +40,7 @@ class JourneyRepositoryTest {
         journeyRepository.save(JOURNEY_ENTITY);
 
         Optional<JourneyEntity> optionalJourney = journeyRepository.findById(JOURNEY_ENTITY.getId());
-        assertThat(optionalJourney).isNotEmpty();
+        assertThat(optionalJourney).isPresent();
     }
 
     @Test
@@ -52,7 +52,7 @@ class JourneyRepositoryTest {
         journeyRepository.save(journey);
 
         List<Journey> journeys = journeyService.findAllPublishedJourneys(AUTHENTICATED_APP_USER);
-        assertThat(journeys).isNotNull().hasSize(1);
+        assertThat(journeys).hasSize(1);
     }
 
 }

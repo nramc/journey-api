@@ -24,7 +24,7 @@ import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.M
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.web.resources.Resources.DELETE_USER_BY_USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -42,8 +42,8 @@ class DeleteUserResourceTest {
 
     @Test
     void context() {
-        assertDoesNotThrow(() ->
-            assertThat(mockMvc).isNotNull());
+        assertThatCode(() ->
+                assertThat(mockMvc).isNotNull()).doesNotThrowAnyException();
     }
 
     @Test

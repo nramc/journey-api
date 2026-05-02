@@ -123,7 +123,7 @@ class PersistencePublicKeyCredentialRepositoryTest {
         persistencePublicKeyCredentialRepository.addCredential(REGISTERED_CREDENTIAL, CREDENTIAL_METADATA);
 
         Optional<ByteArray> userHandle = persistencePublicKeyCredentialRepository.getUserHandleForUsername(CREDENTIAL_METADATA.username());
-        assertThat(userHandle).isNotEmpty().hasValue(CREDENTIAL_METADATA.userHandle());
+        assertThat(userHandle).hasValue(CREDENTIAL_METADATA.userHandle());
     }
 
     @Test
@@ -137,7 +137,7 @@ class PersistencePublicKeyCredentialRepositoryTest {
         persistencePublicKeyCredentialRepository.addCredential(REGISTERED_CREDENTIAL, CREDENTIAL_METADATA);
 
         Optional<String> username = persistencePublicKeyCredentialRepository.getUsernameForUserHandle(CREDENTIAL_METADATA.userHandle());
-        assertThat(username).isNotEmpty().hasValue(CREDENTIAL_METADATA.username());
+        assertThat(username).hasValue(CREDENTIAL_METADATA.username());
     }
 
     @Test
@@ -153,7 +153,7 @@ class PersistencePublicKeyCredentialRepositoryTest {
         Optional<RegisteredCredential> credential = persistencePublicKeyCredentialRepository.lookup(
                 REGISTERED_CREDENTIAL.getCredentialId(), REGISTERED_CREDENTIAL.getUserHandle());
 
-        assertThat(credential).isNotEmpty().hasValue(REGISTERED_CREDENTIAL);
+        assertThat(credential).hasValue(REGISTERED_CREDENTIAL);
     }
 
     @Test
