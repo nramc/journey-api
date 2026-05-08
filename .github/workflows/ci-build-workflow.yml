@@ -74,7 +74,7 @@ jobs:
           timeout 60 bash -c 'until curl -s http://localhost:8080/actuator/health; do sleep 5; done'
 
       - name: ZAP Scan
-        uses: zaproxy/action-af@v0.2.0
+        uses: zaproxy/action-af@v0.3.0
         with:
           plan: '.github/workflows/zap/journey-openapi-plan.yaml'
           cmd_options: '-port 8090'
