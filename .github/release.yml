@@ -1,0 +1,42 @@
+# Controls how GitHub auto-generates release notes.
+# PRs merged since the previous tag are grouped into sections by their labels.
+# Applied by: ncipollo/release-action with generateReleaseNotes: true
+# Docs: https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - skip-changelog
+  categories:
+    - title: 🚀 New Features
+      labels:
+        - feature
+        - enhancement
+    - title: 🐛 Bug Fixes
+      labels:
+        - bug
+        - fix
+    - title: 🔒 Security
+      labels:
+        - security
+    - title: 📦 Dependencies
+      labels:
+        - dependencies
+    - title: ⚙️ Configuration & CI
+      labels:
+        - configuration
+        - ci
+    - title: 📚 Documentation
+      labels:
+        - documentation
+    - title: 🧪 Tests
+      labels:
+        - tests
+    - title: 🔨 Refactoring
+      labels:
+        - refactoring
+    - title: 🔄 Other Changes
+      labels:
+        - "*"
+

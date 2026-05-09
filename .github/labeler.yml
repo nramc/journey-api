@@ -1,0 +1,70 @@
+# Label rules for actions/labeler@v5.
+# Labels applied here are consumed by .github/release.yml to build categorised release notes.
+# Docs: https://github.com/actions/labeler
+
+# ── Dependency updates ────────────────────────────────────────────────────────
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+        - '**/pom.xml'
+        - 'renovate.json5'
+        - 'rewrite.yml'
+
+# ── Documentation ─────────────────────────────────────────────────────────────
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+        - '**/*.md'
+        - '.github/ISSUE_TEMPLATE/**'
+
+# ── CI / build infrastructure ─────────────────────────────────────────────────
+ci:
+  - changed-files:
+    - any-glob-to-any-file:
+        - '.github/workflows/**'
+        - '.github/*.yml'
+        - 'Dockerfile'
+        - 'docker-compose.yml'
+
+# ── Application configuration ─────────────────────────────────────────────────
+configuration:
+  - changed-files:
+    - any-glob-to-any-file:
+        - 'journey-api-web/src/main/resources/**/*.yml'
+        - 'journey-api-web/src/main/resources/**/*.yaml'
+        - 'journey-api-web/src/main/resources/**/*.properties'
+        - 'config/**'
+        - 'lombok.config'
+
+# ── Tests ─────────────────────────────────────────────────────────────────────
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+        - '**/src/test/**'
+        - 'journey-api-tests/**'
+
+# ── Security ──────────────────────────────────────────────────────────────────
+security:
+  - changed-files:
+    - any-glob-to-any-file:
+        - '**/security/**'
+        - '**/config/security/**'
+        - '**/webauthn/**'
+
+# ── Branch-name patterns (applied on top of file-path rules) ──────────────────
+feature:
+  - head-branch:
+      - '^feat/.*'
+      - '^feature/.*'
+
+bug:
+  - head-branch:
+      - '^fix/.*'
+      - '^bugfix/.*'
+      - '^hotfix/.*'
+
+refactoring:
+  - head-branch:
+      - '^refactor/.*'
+      - '^chore/.*'
+
