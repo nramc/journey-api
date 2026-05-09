@@ -1,10 +1,6 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# Prepares a new release: bumps the Maven version, creates a Git tag via
+# `mvn release:prepare`, then publishes a GitHub Release with auto-generated
+# release notes (categorised by PR labels via .github/release.yml).
 
 name: Prepare Release
 
@@ -20,11 +16,6 @@ on:
         required: false
         default: ''
         type: string
-      geminiModel:
-        description: 'Gemini model to use (e.g., gemini-3.1-flash-lite-preview, gemini-3-flash-preview, gemini-2.5-flash-lite, gemini-2.5-flash)'
-        required: false
-        default: 'gemini-2.5-flash-lite'
-        type: string
 
 jobs:
   build:
@@ -32,14 +23,13 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write   # required to create releases and write RELEASE_NOTES.md
-      id-token: write   # required for OIDC token (Gemini CLI auth)
+      contents: write   # required to create releases and push the release tag
 
     steps:
 
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0   # full history needed to collect commits since last tag
+          fetch-depth: 0   # full history needed so Maven can inspect tags
 
       - name: Set up Java
         uses: actions/setup-java@v5
@@ -48,7 +38,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: setup git properties for preparation
+      - name: Setup git identity
         run: |
           git config --global user.email "ramachandrannellai@gmail.com"
           git config --global user.name "Deploy Bot"
@@ -65,100 +55,18 @@ jobs:
             echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Generate Changelog
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@v6
-        with:
-          github-token: ${{ secrets.RELEASE_TOKEN }}
-          skip-on-empty: 'false'
-          skip-tag: 'true'          # Maven handles tag creation
-          skip-commit: 'true'       # do not commit changelog
-          git-push: 'false'         # do not push
-
       - name: Prepare Release
         run: mvn -B -DpushChanges=true release:prepare -DscmCommentPrefix='chore:' -DreleaseVersion=$VERSION
         env:
           VERSION: ${{ steps.resolve_version.outputs.version }}
 
-      - name: Get previous tag
-        id: get_prev_tag
-        run: |
-          git fetch --tags
-          CURRENT_TAG="v${{ steps.resolve_version.outputs.version }}"
-          PREV_TAG=$(git describe --tags --abbrev=0 "${CURRENT_TAG}^" 2>/dev/null || echo "")
-          echo "tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
-
-      - name: Prepare Release Context for Gemini
-        run: |
-          mkdir -p .gemini
-          {
-            echo "- **Repository**: ${{ github.repository }}"
-            echo "- **Commit Range**: ${{ steps.get_prev_tag.outputs.tag }}..${{ steps.released_version.outputs.tag }}"
-            echo "- **Base Changelog**:"
-            echo ""
-            printf '%s\n' "$CLEAN_CHANGELOG"
-          } > .gemini/release-context.md
-        env:
-          CLEAN_CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
-
-      - name: Generate Enhanced Release Notes with Gemini
-        id: ai_release_notes
-        uses: 'google-github-actions/run-gemini-cli@v0'
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GEMINI_CLI_TRUST_WORKSPACE: true
-        with:
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
-          gemini_model: ${{ github.event.inputs.gemini_model != '' && github.event.inputs.gemini_model || vars.GEMINI_MODEL }}
-          workflow_name: 'gemini-release-notes'
-          upload_artifacts: 'true'
-          settings: |-
-            {
-              "autoAccept": true,
-              "model": {
-                "maxSessionTurns": 100
-              },
-              "mcpServers": {
-                "github": {
-                  "command": "docker",
-                  "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "-e",
-                    "GITHUB_PERSONAL_ACCESS_TOKEN",
-                    "ghcr.io/github/github-mcp-server:v0.27.0"
-                  ],
-                  "env": {
-                    "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
-                  }
-                }
-              }
-            }
-          prompt: '/gemini-release-notes'
-
-      - name: Read Release Notes
-        id: read_release_notes
-        run: |
-          if [ -f RELEASE_NOTES.md ]; then
-            NOTES="$(cat RELEASE_NOTES.md)"
-          elif [ -n "${{ steps.changelog.outputs.clean_changelog }}" ]; then
-            NOTES="${{ steps.changelog.outputs.clean_changelog }}"
-          else
-            NOTES="No impactful changes in this release."
-          fi
-          delimiter="__RELEASE_NOTES_EOF__"
-          echo "notes<<$delimiter" >> "$GITHUB_OUTPUT"
-          echo "$NOTES" >> "$GITHUB_OUTPUT"
-          echo "$delimiter" >> "$GITHUB_OUTPUT"
-
-      - name: Create Release Tag
+      - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
           commit: main
-          body: ${{ steps.read_release_notes.outputs.notes }}
           tag: v${{ steps.resolve_version.outputs.version }}
           name: v${{ steps.resolve_version.outputs.version }}
+          generateReleaseNotes: true
           draft: false
           prerelease: false
           token: ${{ secrets.RELEASE_TOKEN }}
