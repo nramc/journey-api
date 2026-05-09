@@ -1,0 +1,24 @@
+# Auto-labels PRs based on changed file paths and branch name patterns.
+# Label rules are defined in .github/labeler.yml.
+# Labels then drive GitHub release notes categories defined in .github/release.yml.
+
+name: PR Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          sync-labels: true   # removes labels when files no longer match the rules
+
