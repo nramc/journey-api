@@ -61,6 +61,7 @@ com.github.nramc.dev.journey.api
 │   ├── security/
 │   │   └── webauthn/ # WebAuthnService (passkey/FIDO2 registration & authentication)
 │   ├── usecase/     # Business logic — accessed only by web resources and config
+│   │   └── notification/ # NotificationService interface; injected as List<NotificationService>; impls: EmailNotificationService, TelegramNotificationService
 │   ├── services/    # MailService (infrastructure service)
 │   ├── exceptions/  # BusinessException, TechnicalException, NonTechnicalException
 │   ├── validation/  # Custom constraint annotations (e.g. @ValidateVisibilities)
@@ -74,6 +75,7 @@ com.github.nramc.dev.journey.api
 │   └── resources/
 │       ├── mvc/     # Thymeleaf MVC controllers (home page)
 │       └── rest/    # @RestController classes (must end with "Resource")
+│           └── ai/  # AI resources (ChatClient-based); paths are hardcoded strings, not Resources.java constants
 └── migration/       # Data migration rules (excluded from coverage)
 ```
 
@@ -85,6 +87,8 @@ com.github.nramc.dev.journey.api
 - No cyclic dependencies within `core.*` packages
 - All `@Bean` methods must live in `..config..` classes annotated with `@Configuration`
 - `Repository` classes may be accessed directly from `resources.rest.users.find` (ArchUnit allows this exception)
+- `Entity` classes may be accessed directly from `resources.rest.journeys`, `core.journey.security`, `usecase`,
+  `repository`, and `migration` (ArchUnit `ruleLimitRepositoryEntityDependant`)
 
 ### Security model
 
@@ -108,15 +112,40 @@ PUT /rest/journey/{id}
   application/vnd.journey.api.publish.v1+json  → PublishJourneyResource
 ```
 
+### AI endpoints
+
+AI resources live in `web/resources/rest/ai/` and are the **only** `@RestController` classes that hardcode their paths
+instead of referencing `Resources.java` constants. `WebSecurityConfig` guards them with a wildcard:
+
+```java
+.requestMatchers(GET,  "/rest/ai/**").
+
+access(authenticatedUserAuthorizationManager)
+.
+
+requestMatchers(POST, "/rest/ai/**").
+
+access(authenticatedUserAuthorizationManager)
+```
+
+Current AI resources:
+
+| Path                              | Class                       | Purpose                         |
+|-----------------------------------|-----------------------------|---------------------------------|
+| `GET /rest/ai/hello`              | `HelloWorldChatResource`    | Simple chat prompt pass-through |
+| `POST /rest/ai/enhance-narration` | `NarrationEnhancerResource` | Enhance journey narration text  |
+
+New AI resources should use hardcoded paths and are covered by the existing wildcard security rule.
+
 ### External integrations
 
-| Service     | Gateway class           | Config properties                               |
-|-------------|-------------------------|-------------------------------------------------|
-| Cloudinary  | `CloudinaryGateway`     | `service.cloudinary.*` / env vars               |
-| Telegram    | `TelegramGateway`       | `service.telegram.*` / `TELEGRAM_*`             |
+| Service     | Gateway class           | Config properties                                                               |
+|-------------|-------------------------|---------------------------------------------------------------------------------|
+| Cloudinary  | `CloudinaryGateway`     | `service.cloudinary.*` / env vars                                               |
+| Telegram    | `TelegramGateway`       | `service.telegram.*` / `TELEGRAM_*`                                             |
 | AI (Gemini) | Spring AI OpenAI compat | `GEMINI_API_KEY`; model `gemini-2.5-flash`; dev uses local Ollama (`qwen2.5vl`) |
-| Email       | `MailService`           | `spring.mail.*` / env vars                      |
-| WebAuthn    | `WebAuthnService`       | `app.security.webauthn.*` (rp-id, origin)       |
+| Email       | `MailService`           | `spring.mail.*` / env vars                                                      |
+| WebAuthn    | `WebAuthnService`       | `app.security.webauthn.*` (rp-id, origin)                                       |
 
 ### GeoJSON handling
 
@@ -137,4 +166,8 @@ MongoDB stores GeoJSON via custom Jackson converters in `repository/converters/`
   `BusinessException` → 400/422, `TechnicalException` → 500, `NonTechnicalException` → 422
 - `web/resources/rest/doc/RestDocCommonResponse.java` — composite annotation to attach standard
   OpenAPI error responses (401, 403, 400, 422, 500) to controller methods
+- `src/test/resources/http-scripts/` — IntelliJ HTTP Client scripts for manual REST testing (journey CRUD, auth,
+  my-account, users)
+- `config/timezone/TimezoneInitialization.java` — forces JVM to UTC at startup; all date/time values must be
+  UTC-compatible
 
