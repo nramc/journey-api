@@ -1,15 +1,15 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.security.attributes.totp;
+package com.github.nramc.dev.journey.api.account.web.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
-import com.github.nramc.dev.journey.api.core.usecase.codes.TotpCode;
-import com.github.nramc.dev.journey.api.core.usecase.codes.totp.QRImageDetails;
-import com.github.nramc.dev.journey.api.core.usecase.codes.totp.TotpUseCase;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.account.codes.TotpCode;
+import com.github.nramc.dev.journey.api.account.codes.totp.QRImageDetails;
+import com.github.nramc.dev.journey.api.account.codes.totp.TotpUseCase;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_ATTRIBUTE_TOTP_VERIFY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;

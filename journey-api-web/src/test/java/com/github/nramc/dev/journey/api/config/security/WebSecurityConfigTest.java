@@ -1,7 +1,7 @@
-package com.github.nramc.dev.journey.api.config.security;
+package com.github.nramc.dev.journey.api.infrastructure.security;
 
-import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
-import com.github.nramc.dev.journey.api.web.resources.mvc.home.HomeResource;
+import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import com.github.nramc.dev.journey.api.infrastructure.web.mvc.home.HomeResource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

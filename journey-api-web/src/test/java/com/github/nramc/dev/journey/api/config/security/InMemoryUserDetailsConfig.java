@@ -1,6 +1,6 @@
-package com.github.nramc.dev.journey.api.config.security;
+package com.github.nramc.dev.journey.api.infrastructure.security;
 
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

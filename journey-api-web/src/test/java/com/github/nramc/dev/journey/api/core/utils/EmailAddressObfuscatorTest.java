@@ -1,6 +1,6 @@
-package com.github.nramc.dev.journey.api.core.utils;
+package com.github.nramc.dev.journey.api.shared.utils;
 
-import com.github.nramc.dev.journey.api.core.domain.EmailAddress;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

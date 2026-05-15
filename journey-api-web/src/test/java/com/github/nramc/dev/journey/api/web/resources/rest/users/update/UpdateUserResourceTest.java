@@ -1,14 +1,14 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.update;
+package com.github.nramc.dev.journey.api.account.web.users.update;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.account.repository.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.account.web.users.UsersData;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintainerUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -22,8 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.MY_SECURITY_MFA;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_MY_ACCOUNT;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_MFA;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.UPDATE_MY_ACCOUNT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;

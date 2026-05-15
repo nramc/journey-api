@@ -1,7 +1,7 @@
-package com.github.nramc.dev.journey.api.repository.journey;
+package com.github.nramc.dev.journey.api.journey.repository;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
+import com.github.nramc.dev.journey.api.journey.domain.Journey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_APP_USER;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_APP_USER;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest

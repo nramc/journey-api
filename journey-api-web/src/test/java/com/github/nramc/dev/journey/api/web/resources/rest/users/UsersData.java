@@ -1,16 +1,16 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users;
+package com.github.nramc.dev.journey.api.account.web.users;
 
-import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.shared.domain.AppUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.TOTP;
 
 public final class UsersData {
     public static final AuthUser AUTHENTICATED_USER = AuthUser.builder()

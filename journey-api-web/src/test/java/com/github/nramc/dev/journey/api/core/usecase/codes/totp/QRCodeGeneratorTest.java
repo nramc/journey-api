@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.usecase.codes.totp;
+package com.github.nramc.dev.journey.api.account.codes.totp;
 
 import org.junit.jupiter.api.Test;
 

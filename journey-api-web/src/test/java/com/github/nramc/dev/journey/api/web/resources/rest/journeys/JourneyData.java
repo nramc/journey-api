@@ -1,13 +1,13 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.journeys;
+package com.github.nramc.dev.journey.api.journey.web.journeys;
 
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyGeoDetailsEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImageDetailEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyImagesDetailsEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyVideoDetailEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyVideosDetailsEntity;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyGeoDetailsEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyImageDetailEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyImagesDetailsEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyVideoDetailEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyVideosDetailsEntity;
+import com.github.nramc.dev.journey.api.shared.domain.Visibility;
 import com.github.nramc.geojson.domain.Feature;
 import com.github.nramc.geojson.domain.FeatureCollection;
 import com.github.nramc.geojson.domain.Point;

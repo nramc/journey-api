@@ -1,12 +1,12 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.auth.mfa;
+package com.github.nramc.dev.journey.api.account.web.auth.mfa;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
-import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
-import com.github.nramc.dev.journey.api.core.usecase.codes.ConfirmationCodeUseCase;
-import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
+import com.github.nramc.dev.journey.api.account.codes.ConfirmationCodeUseCase;
+import com.github.nramc.dev.journey.api.account.codes.EmailCode;
+import com.github.nramc.dev.journey.api.account.jwt.JwtGenerator;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.JwtProperties;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,9 +19,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN_MFA;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN_MFA;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.hamcrest.Matchers.blankOrNullString;

@@ -1,10 +1,9 @@
-package com.github.nramc.dev.journey.api.core.usecase.registration;
+package com.github.nramc.dev.journey.api.account.usecase;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
-import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
-import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.shared.domain.AppUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.validation.autoconfigure.ValidationAutoConfiguration;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -21,13 +21,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
@@ -48,13 +48,13 @@ class RegistrationUseCaseTest {
     @MockitoBean
     AccountActivationUseCase accountActivationUseCase;
     @MockitoBean
-    NotificationService notificationService;
+    ApplicationEventPublisher applicationEvents;
 
     private RegistrationUseCase registrationUseCase;
 
     @BeforeEach
     void setUp() {
-        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase, List.of(notificationService));
+        registrationUseCase = new RegistrationUseCase(userDetailsManager, passwordEncoder, validator, accountActivationUseCase, applicationEvents);
     }
 
     @Test
@@ -68,7 +68,7 @@ class RegistrationUseCaseTest {
                 .satisfies(user -> assertThat(user.enabled()).isFalse())
                 .satisfies(user -> assertThat(user.mfaEnabled()).isFalse())
                 .satisfies(user -> assertThat(user.createdDate()).isCloseTo(LocalDateTime.now(), within(10, ChronoUnit.MINUTES)));
-        verify(notificationService).notify("New User signup - juniper_eliasxcsx@cultural.ycw");
+        verify(applicationEvents).publishEvent(any(Object.class));
     }
 
     @Test

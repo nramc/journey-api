@@ -1,22 +1,23 @@
-package com.github.nramc.dev.journey.api.core.journey.security;
+package com.github.nramc.dev.journey.api.journey.domain.security;
 
-import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockMaintainerUser;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintainerUser;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
+import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
 
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MAINTAINER;
-import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.shared.domain.Visibility.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.shared.domain.Visibility.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MAINTAINER;
+import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;

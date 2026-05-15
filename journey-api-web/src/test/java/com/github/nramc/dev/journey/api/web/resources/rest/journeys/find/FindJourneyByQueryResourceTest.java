@@ -1,10 +1,10 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
+package com.github.nramc.dev.journey.api.journey.web.journeys.find;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_JOURNEYS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_UPCOMING_ANNIVERSARY;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_JOURNEYS;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_UPCOMING_ANNIVERSARY;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;

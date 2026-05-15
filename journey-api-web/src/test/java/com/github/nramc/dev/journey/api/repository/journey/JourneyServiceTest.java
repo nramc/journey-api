@@ -1,9 +1,9 @@
-package com.github.nramc.dev.journey.api.repository.journey;
+package com.github.nramc.dev.journey.api.journey.repository;
 
+import com.github.nramc.dev.journey.api.account.web.users.UsersData;
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
+import com.github.nramc.dev.journey.api.journey.domain.Journey;
+import com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

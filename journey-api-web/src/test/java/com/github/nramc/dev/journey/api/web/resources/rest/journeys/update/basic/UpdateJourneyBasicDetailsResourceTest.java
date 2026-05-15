@@ -1,11 +1,11 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.basic;
+package com.github.nramc.dev.journey.api.journey.web.journeys.update.basic;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.web.resources.Resources;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
+import com.github.nramc.dev.journey.api.shared.web.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Optional;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.UPDATE_JOURNEY;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.NEW_JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.UPDATE_JOURNEY;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;

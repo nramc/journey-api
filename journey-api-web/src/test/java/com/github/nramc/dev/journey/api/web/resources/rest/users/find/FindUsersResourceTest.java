@@ -1,12 +1,12 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.find;
+package com.github.nramc.dev.journey.api.account.web.users.find;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAdministratorUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.repository.user.UserRepository;
-import com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData;
+import com.github.nramc.dev.journey.api.account.repository.UserRepository;
+import com.github.nramc.dev.journey.api.account.web.users.UsersData;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdministratorUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -21,11 +21,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.core.domain.user.Role.Constants.MAINTAINER;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_MY_ACCOUNT;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_USERS;
+import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_MY_ACCOUNT;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_USERS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;

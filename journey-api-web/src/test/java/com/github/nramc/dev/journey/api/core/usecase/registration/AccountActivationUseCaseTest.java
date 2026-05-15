@@ -1,28 +1,28 @@
-package com.github.nramc.dev.journey.api.core.usecase.registration;
+package com.github.nramc.dev.journey.api.account.usecase;
 
-import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
-import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.core.domain.EmailToken;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
-import com.github.nramc.dev.journey.api.core.exceptions.BusinessException;
-import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.core.usecase.codes.token.EmailTokenUseCase;
-import com.github.nramc.dev.journey.api.core.usecase.notification.NotificationService;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.account.AccountActivatedEvent;
+import com.github.nramc.dev.journey.api.account.AccountActivationEmailRequestedEvent;
+import com.github.nramc.dev.journey.api.account.codes.token.EmailTokenUseCase;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.account.repository.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import com.github.nramc.dev.journey.api.shared.domain.AppUser;
+import com.github.nramc.dev.journey.api.shared.domain.EmailToken;
+import com.github.nramc.dev.journey.api.shared.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
-import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.argThat;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,35 +45,27 @@ class AccountActivationUseCaseTest {
     @Mock
     private EmailTokenUseCase emailTokenUseCase;
     @Mock
-    private MailService mailService;
-    @Mock
     private AuthUserDetailsService userDetailsService;
     @Mock
-    private NotificationService notificationService;
+    private ApplicationEventPublisher applicationEvents;
 
     private AccountActivationUseCase accountActivationUseCase;
 
     @BeforeEach
     void setUp() {
         accountActivationUseCase = new AccountActivationUseCase(
-                applicationProperties, emailTokenUseCase, mailService,
-                userDetailsService, List.of(notificationService));
+                applicationProperties, emailTokenUseCase,
+                userDetailsService, applicationEvents);
     }
 
     @Test
-    void sendActivationEmail_shouldGenerateEmailToken_andShouldSendEmailWithActivationLink() throws Exception {
+    void sendActivationEmail_shouldGenerateEmailToken_andPublishEvent() {
         when(applicationProperties.uiAppUrl()).thenReturn(JOURNEY_UI_BASE_URL);
         when(emailTokenUseCase.generateEmailToken(ONBOARDING_USER)).thenReturn(EMAIL_TOKEN);
 
         accountActivationUseCase.sendActivationEmail(ONBOARDING_USER);
 
-        String expectedActivationUrl = JOURNEY_UI_BASE_URL + "/activation?identifier=" + ONBOARDING_USER.username() + "&token=" + EMAIL_TOKEN.token();
-
-        verify(mailService).sendEmailUsingTemplate(eq("account-activation-template.html"), eq(ONBOARDING_USER.username()), eq("Journey: Activate your account"),
-                argThat(placeholders -> ONBOARDING_USER.name().equals(placeholders.get("name"))
-                        && expectedActivationUrl.equals(placeholders.get("activationUrl"))
-                )
-        );
+        verify(applicationEvents).publishEvent(any(AccountActivationEmailRequestedEvent.class));
     }
 
     @Test
@@ -90,7 +82,7 @@ class AccountActivationUseCaseTest {
 
         accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER);
         verify(userDetailsService).updateUser(argThat(entity -> entity.isEnabled() && USERNAME.equals(entity.getUsername())));
-        verify(notificationService).notify("User completed onboarding - " + USERNAME);
+        verify(applicationEvents).publishEvent(any(AccountActivatedEvent.class));
     }
 
 }

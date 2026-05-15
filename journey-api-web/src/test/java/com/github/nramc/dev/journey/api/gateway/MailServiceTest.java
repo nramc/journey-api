@@ -1,7 +1,8 @@
 package com.github.nramc.dev.journey.api.gateway;
 
-import com.github.nramc.dev.journey.api.config.MailConfig;
-import com.github.nramc.dev.journey.api.core.services.mail.MailService;
+import com.github.nramc.dev.journey.api.notification.config.NotificationConfig;
+import com.github.nramc.dev.journey.api.notification.mail.MailService;
+import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
@@ -16,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -27,14 +29,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
+import static com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.assertArg;
 import static org.mockito.Mockito.verify;
 
 @Testcontainers
 @SpringBootTest(classes = {
-        MailConfig.class,
+        NotificationConfig.class,
         MailSenderAutoConfiguration.class
 })
 @ActiveProfiles({"dev"})
@@ -56,6 +58,9 @@ class MailServiceTest {
 
     @MockitoSpyBean
     JavaMailSender emailSender;
+
+    @MockitoBean
+    AdminEmailProvider adminEmailProvider;
 
     @Test
     void context() {

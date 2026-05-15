@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.tests.application.config;
 
 import com.cloudinary.Cloudinary;
-import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryGateway;
-import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryProperties;
+import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryGateway;
+import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryProperties;
 
 public class CloudinaryGatewayStub extends CloudinaryGateway {
 

@@ -1,0 +1,24 @@
+package com.github.nramc.dev.journey.api.infrastructure.web.mvc.home;
+
+import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import static com.github.nramc.dev.journey.api.shared.web.Resources.HOME;
+
+@Controller
+@RequiredArgsConstructor
+public class HomeResource {
+    private final ApplicationProperties applicationProperties;
+
+    @GetMapping(value = HOME, produces = MediaType.TEXT_HTML_VALUE)
+    public String home(Model model) {
+        model.addAttribute("appVersion", applicationProperties.version());
+
+        return "home";
+    }
+
+}

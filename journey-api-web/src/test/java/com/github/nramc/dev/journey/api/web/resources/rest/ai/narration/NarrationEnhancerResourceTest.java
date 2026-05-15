@@ -1,7 +1,7 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.ai.narration;
+package com.github.nramc.dev.journey.api.ai.web.narration;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,11 +1,11 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.statistics;
+package com.github.nramc.dev.journey.api.journey.web.statistics;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.core.journey.Journey;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyService;
-import com.github.nramc.dev.journey.api.repository.journey.converter.JourneyConverter;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.journey.domain.Journey;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
+import com.github.nramc.dev.journey.api.journey.repository.converter.JourneyConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.GET_STATISTICS;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.GET_STATISTICS;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.any;

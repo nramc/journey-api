@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.security.webauthn;
+package com.github.nramc.dev.journey.api.account.webauthn;
 
 import org.junit.jupiter.api.Test;
 

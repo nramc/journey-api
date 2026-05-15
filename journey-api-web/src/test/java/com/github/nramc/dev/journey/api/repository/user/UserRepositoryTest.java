@@ -1,7 +1,7 @@
-package com.github.nramc.dev.journey.api.repository.user;
+package com.github.nramc.dev.journey.api.account.repository;
 
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.domain.user.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.ADMINISTRATOR_USER;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.GUEST_USER;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.ADMINISTRATOR_USER;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.GUEST_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest

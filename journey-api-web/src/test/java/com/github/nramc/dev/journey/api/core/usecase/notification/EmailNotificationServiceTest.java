@@ -1,7 +1,8 @@
 package com.github.nramc.dev.journey.api.core.usecase.notification;
 
-import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.repository.user.AuthUserDetailsService;
+import com.github.nramc.dev.journey.api.notification.email.EmailNotificationService;
+import com.github.nramc.dev.journey.api.notification.mail.MailService;
+import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.ADMINISTRATOR_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.assertArg;
@@ -24,7 +24,7 @@ class EmailNotificationServiceTest {
     @Mock
     private MailService mailService;
     @Mock
-    private AuthUserDetailsService authUserDetailsService;
+    private AdminEmailProvider adminEmailProvider;
     @InjectMocks
     private EmailNotificationService emailNotificationService;
 
@@ -36,12 +36,12 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyAdmin_whenExists_shouldSendEmailToAllAdmins() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER));
+        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
 
         emailNotificationService.notify("Signup Completed");
 
         verify(mailService).sendSimpleEmail(
-                assertArg(emails -> assertThat(emails).hasSize(1).contains(ADMINISTRATOR_USER.getUsername())),
+                assertArg(emails -> assertThat(emails).hasSize(1).contains("admin@example.com")),
                 eq("Notification: Signup Completed"),
                 eq("Notification: Signup Completed")
         );
@@ -49,7 +49,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_subjectShouldContainNotificationPrefix() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER));
+        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
 
         emailNotificationService.notify("New user registered");
 
@@ -62,7 +62,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_subjectShouldContainOriginalNotificationText() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER));
+        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
         String notificationText = "New user registered: john@example.com";
 
         emailNotificationService.notify(notificationText);
@@ -76,7 +76,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_whenNoAdminsExist_shouldNotSendAnyEmail() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(Collections.emptyList());
+        when(adminEmailProvider.getAdminEmails()).thenReturn(Collections.emptyList());
 
         emailNotificationService.notify("Signup Completed");
 
@@ -85,7 +85,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_whenMultipleAdminsExist_shouldSendEmailToAllOfThem() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER, ADMINISTRATOR_USER));
+        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin1@example.com", "admin2@example.com"));
 
         emailNotificationService.notify("System update");
 
@@ -98,12 +98,12 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_whenAdminExists_shouldSendErrorEmailToAllAdmins() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER));
+        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
 
         emailNotificationService.notifyError("MongoDB connection failed");
 
         verify(mailService).sendSimpleEmail(
-                assertArg(emails -> assertThat(emails).hasSize(1).contains(ADMINISTRATOR_USER.getUsername())),
+                assertArg(emails -> assertThat(emails).hasSize(1).contains("admin@example.com")),
                 eq("Error Alert: MongoDB connection failed"),
                 eq("Error Alert: MongoDB connection failed")
         );
@@ -111,7 +111,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_subjectShouldContainErrorAlertPrefix() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER));
+        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
 
         emailNotificationService.notifyError("Disk full");
 
@@ -124,7 +124,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_subjectShouldContainOriginalErrorSummary() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(List.of(ADMINISTRATOR_USER));
+        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
         String errorSummary = "MongoDB connection failed after 3 retries";
 
         emailNotificationService.notifyError(errorSummary);
@@ -138,7 +138,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_whenNoAdminsExist_shouldNotSendAnyEmail() {
-        when(authUserDetailsService.findAllAdministratorUsers()).thenReturn(Collections.emptyList());
+        when(adminEmailProvider.getAdminEmails()).thenReturn(Collections.emptyList());
 
         emailNotificationService.notifyError("Critical failure");
 

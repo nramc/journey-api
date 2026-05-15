@@ -1,0 +1,50 @@
+package com.github.nramc.dev.journey.api.account.repository.attributes;
+
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@RequiredArgsConstructor
+public class UserSecurityAttributeService {
+    private final UserSecurityAttributesRepository attributesRepository;
+
+    public List<UserSecurityAttribute> getAllAvailableUserSecurityAttributes(AuthUser userDetails) {
+        List<UserSecurityAttributeEntity> attributeEntities = attributesRepository.findAllByUserId(userDetails.getId().toHexString());
+        return CollectionUtils.emptyIfNull(attributeEntities).stream().map(UserSecurityAttributeConverter::toModel).toList();
+    }
+
+    public Optional<UserSecurityAttribute> getAttributeByType(AuthUser userDetails, UserSecurityAttributeType type) {
+        List<UserSecurityAttributeEntity> attributes = attributesRepository.findAllByUserIdAndType(userDetails.getId().toHexString(), type);
+        return Optional.ofNullable(attributes)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(List::getFirst)
+                .map(UserSecurityAttributeConverter::toModel);
+    }
+
+    public void saveTOTPSecret(AuthUser authUser, TotpSecret secret) {
+        UserSecurityAttributeEntity totpAttribute = UserSecurityAttributeEntity.builder()
+                .type(UserSecurityAttributeType.TOTP)
+                .value(secret.secret())
+                .userId(authUser.getId().toHexString())
+                .username(authUser.getUsername())
+                .creationDate(LocalDate.now())
+                .lastUpdateDate(LocalDate.now())
+                .enabled(true)
+                .verified(true)
+                .build();
+        attributesRepository.save(totpAttribute);
+    }
+
+    public void deleteAttributeByType(AuthUser userDetails, UserSecurityAttributeType type) {
+        getAttributeByType(userDetails, type).ifPresent(attribute ->
+                attributesRepository.deleteAllByUserIdAndType(userDetails.getId().toHexString(), UserSecurityAttributeType.TOTP));
+    }
+
+}

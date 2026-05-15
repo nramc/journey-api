@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.utils;
+package com.github.nramc.dev.journey.api.shared.utils;
 
 import org.junit.jupiter.api.Test;
 

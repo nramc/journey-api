@@ -1,9 +1,9 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.users.registration;
+package com.github.nramc.dev.journey.api.account.web.users.registration;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.core.usecase.registration.AccountActivationUseCase;
-import com.github.nramc.dev.journey.api.core.usecase.registration.RegistrationUseCase;
+import com.github.nramc.dev.journey.api.account.usecase.AccountActivationUseCase;
+import com.github.nramc.dev.journey.api.account.usecase.RegistrationUseCase;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.stream.Stream;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.ACTIVATE_ACCOUNT;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.SIGNUP;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.ACTIVATE_ACCOUNT;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.SIGNUP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

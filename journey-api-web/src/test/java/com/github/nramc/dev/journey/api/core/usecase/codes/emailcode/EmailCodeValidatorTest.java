@@ -1,10 +1,10 @@
-package com.github.nramc.dev.journey.api.core.usecase.codes.emailcode;
+package com.github.nramc.dev.journey.api.account.codes.emailcode;
 
-import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
-import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeEntity;
-import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.account.codes.EmailCode;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeEntity;
+import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeValidator.EMAIL_CODE_VALIDITY_MINUTES;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeValidator.EMAIL_CODE_VALIDITY_MINUTES;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 

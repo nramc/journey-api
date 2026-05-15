@@ -1,8 +1,8 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.api;
+package com.github.nramc.dev.journey.api.account.web.api;
 
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.core.app.ApplicationProperties;
-import com.github.nramc.dev.journey.api.web.resources.Resources;
+import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.shared.web.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

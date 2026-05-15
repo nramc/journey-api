@@ -1,6 +1,6 @@
-package com.github.nramc.dev.journey.api.core.app.health;
+package com.github.nramc.dev.journey.api.journey.health;
 
-import com.github.nramc.dev.journey.api.gateway.cloudinary.CloudinaryGateway;
+import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

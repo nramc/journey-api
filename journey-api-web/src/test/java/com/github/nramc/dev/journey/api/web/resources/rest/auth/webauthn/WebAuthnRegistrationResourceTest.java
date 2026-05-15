@@ -1,9 +1,9 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.auth.webauthn;
+package com.github.nramc.dev.journey.api.account.web.auth.webauthn;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.core.security.webauthn.WebAuthnService;
+import com.github.nramc.dev.journey.api.account.webauthn.WebAuthnService;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

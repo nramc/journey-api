@@ -1,11 +1,11 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.journeys.find;
+package com.github.nramc.dev.journey.api.journey.web.journeys.find;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -18,10 +18,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.web.resources.Resources.FIND_PUBLISHED_JOURNEYS;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.MediaType.JOURNEYS_GEO_JSON;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.JOURNEY_ENTITY;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.NEW_JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_PUBLISHED_JOURNEYS;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;

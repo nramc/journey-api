@@ -1,8 +1,8 @@
-package com.github.nramc.dev.journey.api.repository.user;
+package com.github.nramc.dev.journey.api.account.repository;
 
+import com.github.nramc.dev.journey.api.account.repository.credential.UserPublicKeyCredentialRepository;
+import com.github.nramc.dev.journey.api.account.webauthn.CredentialMetadata;
 import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
-import com.github.nramc.dev.journey.api.core.security.webauthn.CredentialMetadata;
-import com.github.nramc.dev.journey.api.repository.user.credential.UserPublicKeyCredentialRepository;
 import com.yubico.webauthn.RegisteredCredential;
 import com.yubico.webauthn.data.ByteArray;
 import com.yubico.webauthn.data.PublicKeyCredentialDescriptor;

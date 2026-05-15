@@ -1,11 +1,11 @@
-package com.github.nramc.dev.journey.api.core.usecase.codes.emailcode;
+package com.github.nramc.dev.journey.api.account.codes.emailcode;
 
-import com.github.nramc.dev.journey.api.core.domain.user.ConfirmationCodeType;
-import com.github.nramc.dev.journey.api.core.exceptions.TechnicalException;
-import com.github.nramc.dev.journey.api.core.services.mail.MailService;
-import com.github.nramc.dev.journey.api.core.usecase.codes.EmailCode;
-import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeEntity;
-import com.github.nramc.dev.journey.api.repository.user.code.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.account.codes.EmailCode;
+import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeEntity;
+import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
+import com.github.nramc.dev.journey.api.notification.mail.MailService;
+import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.exceptions.TechnicalException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -16,9 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.CODE_LENGTH;
-import static com.github.nramc.dev.journey.api.core.usecase.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase.CODE_LENGTH;
+import static com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;

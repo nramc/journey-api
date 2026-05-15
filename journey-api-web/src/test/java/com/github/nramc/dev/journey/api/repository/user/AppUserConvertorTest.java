@@ -1,7 +1,7 @@
-package com.github.nramc.dev.journey.api.repository.user;
+package com.github.nramc.dev.journey.api.account.repository;
 
-import com.github.nramc.dev.journey.api.core.domain.AppUser;
-import com.github.nramc.dev.journey.api.core.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.domain.AppUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.Role;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 

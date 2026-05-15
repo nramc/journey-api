@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.core.usecase.codes.recovery;
+package com.github.nramc.dev.journey.api.account.codes.recovery;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;

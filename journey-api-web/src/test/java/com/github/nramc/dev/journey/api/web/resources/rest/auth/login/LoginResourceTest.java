@@ -1,14 +1,14 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.auth.login;
+package com.github.nramc.dev.journey.api.account.web.auth.login;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.core.jwt.JwtGenerator;
-import com.github.nramc.dev.journey.api.core.jwt.JwtProperties;
-import com.github.nramc.dev.journey.api.repository.user.AuthUser;
-import com.github.nramc.dev.journey.api.repository.user.attributes.UserSecurityAttributeService;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.dto.LoginResponse;
-import com.github.nramc.dev.journey.api.web.resources.rest.auth.provider.JwtResponseProvider;
+import com.github.nramc.dev.journey.api.account.jwt.JwtGenerator;
+import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.account.repository.attributes.UserSecurityAttributeService;
+import com.github.nramc.dev.journey.api.account.web.auth.dto.LoginResponse;
+import com.github.nramc.dev.journey.api.account.web.auth.provider.JwtResponseProvider;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.JwtProperties;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,10 +24,10 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.core.domain.user.UserSecurityAttributeType.TOTP;
-import static com.github.nramc.dev.journey.api.web.resources.Resources.LOGIN;
-import static com.github.nramc.dev.journey.api.web.resources.rest.users.UsersData.TOTP_ATTRIBUTE;
+import static com.github.nramc.dev.journey.api.account.web.users.UsersData.TOTP_ATTRIBUTE;
+import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.hamcrest.Matchers.blankOrNullString;

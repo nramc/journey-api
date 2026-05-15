@@ -1,15 +1,15 @@
-package com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.publish;
+package com.github.nramc.dev.journey.api.journey.web.journeys.update.publish;
 
-import com.github.nramc.dev.journey.api.config.security.InMemoryUserDetailsConfig;
-import com.github.nramc.dev.journey.api.config.security.WebSecurityConfig;
-import com.github.nramc.dev.journey.api.config.security.WithMockAuthenticatedUser;
-import com.github.nramc.dev.journey.api.config.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.core.journey.security.Visibility;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyEntity;
-import com.github.nramc.dev.journey.api.repository.journey.JourneyRepository;
-import com.github.nramc.dev.journey.api.web.resources.Resources;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData;
-import com.github.nramc.dev.journey.api.web.resources.rest.journeys.update.validator.JourneyValidator;
+import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
+import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
+import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
+import com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData;
+import com.github.nramc.dev.journey.api.journey.web.journeys.update.validator.JourneyValidator;
+import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.web.Resources;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,8 +30,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.github.nramc.dev.journey.api.core.journey.security.Visibility.MYSELF;
-import static com.github.nramc.dev.journey.api.web.resources.rest.journeys.JourneyData.NEW_JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.NEW_JOURNEY_ENTITY;
+import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.any;
