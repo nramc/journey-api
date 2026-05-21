@@ -39,7 +39,7 @@
         <!--    mvn versions:display-property-updates    -->
         <geojson4j.version>1.0.22</geojson4j.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
-        <rewrite-logging-frameworks.version>3.27.3</rewrite-logging-frameworks.version>
+        <rewrite-logging-frameworks.version>3.28.0</rewrite-logging-frameworks.version>
         <rewrite-maven-plugin.version>6.40.0</rewrite-maven-plugin.version>
         <rewrite-static-analysis.version>2.34.1</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.35.3</rewrite-testing-frameworks.version>
