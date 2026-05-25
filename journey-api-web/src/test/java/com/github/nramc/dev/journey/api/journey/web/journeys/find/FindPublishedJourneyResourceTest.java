@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Example;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,7 +22,6 @@ import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.
 import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_PUBLISHED_JOURNEYS;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.MediaType.JOURNEYS_GEO_JSON;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -59,7 +57,7 @@ class FindPublishedJourneyResourceTest {
         List<JourneyEntity> journeyEntities = List.of(NEW_JOURNEY_ENTITY.toBuilder()
                 .isPublished(true)
                 .build());
-        when(journeyRepository.findAll(any(Example.class))).thenReturn(journeyEntities);
+        when(journeyRepository.findAllByIsPublished(true)).thenReturn(journeyEntities);
 
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_PUBLISHED_JOURNEYS)
                         .accept(JOURNEYS_GEO_JSON)
@@ -76,7 +74,7 @@ class FindPublishedJourneyResourceTest {
         List<JourneyEntity> journeyEntities = List.of(
                 JOURNEY_ENTITY.toBuilder().isPublished(true).build()
         );
-        when(journeyRepository.findAll(any(Example.class))).thenReturn(journeyEntities);
+        when(journeyRepository.findAllByIsPublished(true)).thenReturn(journeyEntities);
 
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_PUBLISHED_JOURNEYS, VALID_UUID)
                         .accept(JOURNEYS_GEO_JSON)
