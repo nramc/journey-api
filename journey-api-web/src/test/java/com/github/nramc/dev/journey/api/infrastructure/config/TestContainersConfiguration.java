@@ -13,6 +13,7 @@ public class TestContainersConfiguration {
     @ServiceConnection
     public MongoDBContainer mongoDBContainer() {
         return new MongoDBContainer(DockerImageName.parse("mongo:latest"))
+                .withReplicaSet()
                 .withExposedPorts(27017)
                 .withReuse(true);
     }
