@@ -31,6 +31,8 @@ spring:
     database: journey-dev
     representation:
       uuid: standard
+
+management:
   endpoints:
     web:
       exposure:
