@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api;
 
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.infrastructure.config.TestContainersConfiguration;
 import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryGateway;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

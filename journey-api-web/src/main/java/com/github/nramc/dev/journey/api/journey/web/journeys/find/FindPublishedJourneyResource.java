@@ -10,7 +10,6 @@ import com.github.nramc.geojson.domain.GeoJson;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,11 +30,7 @@ public class FindPublishedJourneyResource {
     public GeoJson find(
             Authentication authentication
     ) {
-        JourneyEntity journeyEntity = new JourneyEntity();
-        journeyEntity.setIsPublished(true);
-
-        Example<JourneyEntity> journeyExample = Example.of(journeyEntity);
-        List<JourneyEntity> entities = journeyRepository.findAll(journeyExample);
+        List<JourneyEntity> entities = journeyRepository.findAllByIsPublished(true);
 
         List<Feature> features = entities.stream()
                 .filter(entity -> JourneyAuthorizationManager.isAuthorized(entity, authentication))

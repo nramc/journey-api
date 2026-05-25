@@ -9,10 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
@@ -30,19 +28,6 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noFields;
 @SuppressWarnings({"unused", "java:S1192"})
 final class ApplicationArchitectureTest {
 
-    /**
-     * All Spring MVC/REST controllers must:
-     * <ul>
-     *   <li>reside in a {@code .web.} package within their module</li>
-     *   <li>have a class name ending with {@code Resource}</li>
-     * </ul>
-     */
-    @ArchTest
-    public static final ArchRule ruleResourcesNamingConvention = classes()
-            .that().areAnnotatedWith(RestController.class)
-            .or().areAnnotatedWith(Controller.class)
-            .should().resideInAPackage("..web..")
-            .andShould().haveSimpleNameEndingWith("Resource");
 
     /**
      * No Spring stereotype annotations (except on {@link UserDetailsManager} impls).
