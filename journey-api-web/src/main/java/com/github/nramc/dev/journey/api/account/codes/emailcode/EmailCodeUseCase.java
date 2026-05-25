@@ -12,6 +12,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.HashedMap;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class EmailCodeUseCase {
     static final int CODE_LENGTH = 6;
     public static final String EMAIL_CODE_TEMPLATE_HTML = "email-code-template.html";

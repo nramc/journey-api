@@ -28,6 +28,7 @@ import com.yubico.webauthn.exception.AssertionFailedException;
 import com.yubico.webauthn.exception.RegistrationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +36,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @NoCodeCoverageGenerated
+@Transactional
 public class WebAuthnService {
     private final RelyingParty relyingParty;
     private final PublicKeyCredentialRepository credentialRepository;

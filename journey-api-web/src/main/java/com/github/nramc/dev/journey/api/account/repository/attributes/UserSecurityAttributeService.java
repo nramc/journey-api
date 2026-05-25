@@ -6,12 +6,14 @@ import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute
 import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Transactional
 public class UserSecurityAttributeService {
     private final UserSecurityAttributesRepository attributesRepository;
 

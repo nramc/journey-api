@@ -8,14 +8,16 @@ import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class EmailTokenUseCase {
     private final ConfirmationCodeRepository codeRepository;
 
@@ -30,7 +32,7 @@ public class EmailTokenUseCase {
         return CollectionUtils.emptyIfNull(codeEntities).stream()
                 .filter(ConfirmationCodeEntity::isActive)
                 .filter(entity -> ConfirmationCodeType.EMAIL_TOKEN == entity.getType())
-                .anyMatch(entity -> StringUtils.equals(entity.getCode(), emailToken.token()));
+                .anyMatch(entity -> Objects.equals(entity.getCode(), emailToken.token()));
     }
 
     private void saveEmailToken(EmailToken emailToken, AppUser appUser) {
