@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -27,6 +28,7 @@ public class RegistrationUseCase {
     private final AccountActivationUseCase accountActivationUseCase;
     private final ApplicationEventPublisher applicationEvents;
 
+    @Transactional
     public AppUser register(AppUser user) {
         validate(user);
 

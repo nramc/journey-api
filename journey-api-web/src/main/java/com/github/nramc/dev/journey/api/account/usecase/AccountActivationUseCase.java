@@ -12,6 +12,7 @@ import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
@@ -23,6 +24,7 @@ public class AccountActivationUseCase {
     private final AuthUserDetailsService userDetailsService;
     private final ApplicationEventPublisher applicationEvents;
 
+    @Transactional
     public void sendActivationEmail(AppUser user) {
         EmailToken emailToken = emailTokenUseCase.generateEmailToken(user);
         String activationUrl = getActivationUrl(emailToken, user);
@@ -30,6 +32,7 @@ public class AccountActivationUseCase {
                 new AccountActivationEmailRequestedEvent(user.username(), user.name(), activationUrl));
     }
 
+    @Transactional
     public void activateAccount(EmailToken emailToken, AppUser user) {
         if (emailTokenUseCase.verifyEmailToken(emailToken, user)) {
             activate(user);

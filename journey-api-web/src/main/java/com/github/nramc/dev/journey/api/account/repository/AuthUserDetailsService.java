@@ -8,12 +8,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
+@Transactional
 public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPasswordService, AdminEmailProvider {
     private final UserRepository userRepository;
 

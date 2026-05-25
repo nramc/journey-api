@@ -29,8 +29,8 @@ spring:
       mail.smtp.starttls.required: true
   mongodb:
     database: journey-dev
-
-management:
+    representation:
+      uuid: standard
   endpoints:
     web:
       exposure:
