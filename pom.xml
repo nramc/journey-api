@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.github.nramc.dev.journey</groupId>
     <artifactId>journey-api</artifactId>
-    <version>1.6.30-SNAPSHOT</version>
+    <version>1.6.32-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Journey-API</name>
     <description>Journey-API</description>
@@ -37,12 +37,12 @@
         <rewrite-maven-plugin.skip.dry-run-execution>false</rewrite-maven-plugin.skip.dry-run-execution>
 
         <!--    mvn versions:display-property-updates    -->
-        <geojson4j.version>1.0.21</geojson4j.version>
+        <geojson4j.version>1.0.23</geojson4j.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
-        <rewrite-logging-frameworks.version>3.27.3</rewrite-logging-frameworks.version>
-        <rewrite-maven-plugin.version>6.39.0</rewrite-maven-plugin.version>
-        <rewrite-static-analysis.version>2.34.1</rewrite-static-analysis.version>
-        <rewrite-testing-frameworks.version>3.35.3</rewrite-testing-frameworks.version>
+        <rewrite-logging-frameworks.version>3.28.0</rewrite-logging-frameworks.version>
+        <rewrite-maven-plugin.version>6.40.0</rewrite-maven-plugin.version>
+        <rewrite-static-analysis.version>2.35.0</rewrite-static-analysis.version>
+        <rewrite-testing-frameworks.version>3.36.0</rewrite-testing-frameworks.version>
         <spring-ai.version>2.0.0-M6</spring-ai.version>
         <spring-cloud-contract.version>5.0.2</spring-cloud-contract.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.0.3</springdoc-openapi-starter-webmvc-ui.version>
@@ -180,7 +180,7 @@
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>5.6.0.6792</version>
+                    <version>5.7.0.6970</version>
                 </plugin>
                 <plugin>
                     <groupId>org.springframework.cloud</groupId>
