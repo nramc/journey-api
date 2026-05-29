@@ -1,23 +1,13 @@
 package com.github.nramc.dev.journey.api.journey.web.timeline;
 
+import com.github.nramc.dev.journey.api.journey.domain.Journey;
 import lombok.Builder;
 
 import java.util.List;
-import java.util.Map;
 
 @Builder(toBuilder = true)
 public record TimelineData(
         String heading,
-        List<TimelineImage> images
+        List<Journey> journeys
 ) {
-
-    @Builder(toBuilder = true)
-    public record TimelineImage(
-            String title,
-            String src,
-            String caption,
-            Map<String, String> args
-    ) {
-    }
-
 }

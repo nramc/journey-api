@@ -3,7 +3,6 @@ package com.github.nramc.dev.journey.api.journey.web.timeline;
 import com.github.nramc.dev.journey.api.journey.domain.Journey;
 import com.github.nramc.dev.journey.api.journey.repository.JourneySearchCriteria;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
-import com.github.nramc.dev.journey.api.journey.web.timeline.tranformer.TimelineDataTransformer;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
 import com.github.nramc.dev.journey.api.shared.domain.Visibility;
 import com.github.nramc.dev.journey.api.shared.utils.AuthUtils;
@@ -31,8 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TimelineResource {
     private final JourneyService journeyService;
 
-
-    @Operation(summary = "Get Timeline data")
+    @Operation(summary = "Get Journeys for timeline")
     @GetMapping(value = GET_TIMELINE_DATA, produces = APPLICATION_JSON_VALUE)
     public TimelineData getTimelineData(
             @RequestParam(name = "IDs", defaultValue = "") List<String> journeyIDs,
@@ -60,9 +58,10 @@ public class TimelineResource {
                 .build();
 
         List<Journey> journeys = journeyService.findAllJourneys(searchCriteria);
-        return TimelineDataTransformer.transform(journeys, journeyIDs, cities, countries, categories, years, today,
-                upcomingJourneysTillDays != null);
+        return TimelineData.builder()
+                .heading(TimelineHeadingResolver.resolve(
+                        journeyIDs, cities, countries, categories, years, today, upcomingJourneysTillDays, journeys))
+                .journeys(journeys)
+                .build();
     }
-
-
 }

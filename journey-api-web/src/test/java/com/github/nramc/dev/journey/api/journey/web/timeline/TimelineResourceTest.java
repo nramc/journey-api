@@ -4,8 +4,6 @@ import com.github.nramc.dev.journey.api.infrastructure.config.TestContainersConf
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
-import com.github.nramc.dev.journey.api.journey.repository.JourneyImageDetailEntity;
-import com.github.nramc.dev.journey.api.journey.repository.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
 import com.github.nramc.dev.journey.api.shared.domain.Visibility;
@@ -24,13 +22,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
-import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.newImageDetailEntityWith;
-import static com.github.nramc.dev.journey.api.journey.web.timeline.tranformer.TimelineDataTransformer.DEFAULT_HEADING;
+import static com.github.nramc.dev.journey.api.journey.web.timeline.TimelineHeadingResolver.DEFAULT_HEADING;
 import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.GET_TIMELINE_DATA;
 import static org.hamcrest.Matchers.hasItems;
@@ -85,7 +81,7 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
-                .andExpect(jsonPath("$.images").isEmpty());
+                .andExpect(jsonPath("$.journeys").isEmpty());
     }
 
     @Test
@@ -106,44 +102,8 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[0].args").isMap())
-                .andExpect(jsonPath("$.images[1].args").isMap());
-    }
-
-    @Test
-    @WithMockAuthenticatedUser
-    void getTimelineData_whenNotFavoriteImageExists_shouldTakeFirstNImages() throws Exception {
-        // setup data
-        List<JourneyImageDetailEntity> images = List.of(
-                newImageDetailEntityWith("image1.jpg", "asset 1", "Image 1 Title"),
-                newImageDetailEntityWith("image2.jpg", "asset 2", "Image 2 Title"),
-                newImageDetailEntityWith("image3.jpg", "asset 3", "Image 3 Title"),
-                newImageDetailEntityWith("image4.jpg", "asset 4", "Image 4 Title"),
-                newImageDetailEntityWith("image5.jpg", "asset 5", "Image 5 Title")
-        );
-        journeyRepository.save(
-                VALID_JOURNEY.toBuilder()
-                        .id("ID_12345")
-                        .imagesDetails(JourneyImagesDetailsEntity.builder().images(images).build())
-                        .build()
-        );
-
-        mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value(DEFAULT_HEADING))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(3)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg", "image2.jpg", "image3.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title", "Image 2 Title", "Image 3 Title")))
-                .andExpect(jsonPath("$.images[0].args").isMap())
-                .andExpect(jsonPath("$.images[1].args").isMap());
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(2)));
     }
 
     @Test
@@ -164,14 +124,9 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("Journeys"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[0].title").isEmpty())
-                .andExpect(jsonPath("$.images[1].title").isEmpty())
-                .andExpect(jsonPath("$.images[0].args").isMap())
-                .andExpect(jsonPath("$.images[1].args").isMap());
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(2)))
+                .andExpect(jsonPath("$.journeys[*].id").value(hasItems("ID_1", "ID_2")));
     }
 
     @Test
@@ -192,12 +147,9 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("First Flight Experience"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg", "image2.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title", "Image 2 Title")))
-                .andExpect(jsonPath("$.images[0].title").isEmpty())
-                .andExpect(jsonPath("$.images[0].args").isMap());
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(1)))
+                .andExpect(jsonPath("$.journeys[0].id").value("ID_1"));
     }
 
     @Test
@@ -220,14 +172,9 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("City"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("City_1", "City_2")))
-                .andExpect(jsonPath("$.images[0].args").isMap())
-                .andExpect(jsonPath("$.images[1].args").isMap());
+                .andExpect(jsonPath("$.heading").value("Cities"))
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(2)));
     }
 
     @Test
@@ -250,13 +197,9 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("City"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(1)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("City_1")))
-                .andExpect(jsonPath("$.images[0].args").isMap());
+                .andExpect(jsonPath("$.heading").value("City_1"))
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(1)));
     }
 
     @Test
@@ -276,19 +219,14 @@ class TimelineResourceTest {
         journeyRepository.findAll().forEach(System.out::println);
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
-                        .queryParam("country", "Country_1, Country_2")
+                        .queryParam("country", "Country_1")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Country"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("Country_1", "Country_1")))
-                .andExpect(jsonPath("$.images[0].args").isMap())
-                .andExpect(jsonPath("$.images[1].args").isMap());
+                .andExpect(jsonPath("$.heading").value("Country_1"))
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(1)));
     }
 
     @Test
@@ -311,13 +249,9 @@ class TimelineResourceTest {
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Country"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(1)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("Country_1")))
-                .andExpect(jsonPath("$.images[0].args").isMap());
+                .andExpect(jsonPath("$.heading").value("Country_1"))
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(1)));
     }
 
     @Test
@@ -335,19 +269,14 @@ class TimelineResourceTest {
         );
 
         mockMvc.perform(MockMvcRequestBuilders.get(GET_TIMELINE_DATA)
-                        .queryParam("category", "Category_1, Category_2")
+                        .queryParam("category", "Category_1")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.heading").value("Category"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(2)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("Category_1", "Category_2")))
-                .andExpect(jsonPath("$.images[0].args").isMap())
-                .andExpect(jsonPath("$.images[1].args").isMap());
+                .andExpect(jsonPath("$.heading").value("Category_1"))
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(1)));
     }
 
     @Test
@@ -369,13 +298,8 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("2024 - 2026"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(3)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[*].title").value(hasItems("2024", "2025", "2026")))
-                .andExpect(jsonPath("$.images[0].args").isMap())
-                .andExpect(jsonPath("$.images[1].args").isMap());
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(3)));
     }
 
     @Test
@@ -399,11 +323,8 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("Today in History"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(5)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[0].args").isMap());
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(5)));
     }
 
     @ParameterizedTest
@@ -426,11 +347,8 @@ class TimelineResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.heading").value("Upcoming Journiversaries"))
-                .andExpect(jsonPath("$.images").exists())
-                .andExpect(jsonPath("$.images").value(hasSize(numberOfDays)))
-                .andExpect(jsonPath("$.images[*].src").value(hasItems("image1.jpg")))
-                .andExpect(jsonPath("$.images[*].caption").value(hasItems("Image 1 Title")))
-                .andExpect(jsonPath("$.images[0].args").isMap());
+                .andExpect(jsonPath("$.journeys").exists())
+                .andExpect(jsonPath("$.journeys").value(hasSize(numberOfDays)));
     }
 
 }

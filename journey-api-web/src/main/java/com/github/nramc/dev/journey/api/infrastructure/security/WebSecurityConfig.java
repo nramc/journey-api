@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.infrastructure.security;
 
-import com.github.nramc.dev.journey.api.infrastructure.security.JwtProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -94,7 +93,7 @@ public class WebSecurityConfig {
     );
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
                 // configure CORS security
                 .cors(Customizer.withDefaults())
