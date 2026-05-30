@@ -2,7 +2,9 @@ package com.github.nramc.dev.journey.api.shared.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.UUID;
+import org.jspecify.annotations.NonNull;
 
+// todo: should go inside user.security
 public record EmailToken(@UUID @NotBlank String token) {
 
     public static EmailToken valueOf(String token) {
@@ -10,7 +12,7 @@ public record EmailToken(@UUID @NotBlank String token) {
     }
 
     @Override
-    public String toString() {
+    public @NonNull String toString() {
         return "EmailToken{token='***'}";
     }
 }

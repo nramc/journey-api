@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public interface MailSender {
 
+    // todo: move it to notification module and with proper DTO parameter
     void sendEmailUsingTemplate(String template, String to, String subject, Map<String, Object> placeholders)
             throws MessagingException;
 }

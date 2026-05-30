@@ -28,6 +28,7 @@ public class NotificationEventHandler {
 
     private static final String ACTIVATION_EMAIL_TEMPLATE = "account-activation-template.html";
 
+    // todo: remove direct dependency with mail service
     private final MailService mailService;
     private final List<NotificationService> notificationServices;
 

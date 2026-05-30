@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+// todo: move this file to "email" package to organize all email related stuff in one place.
 public class MailService implements MailSender {
     private final Resource logoResource;
     private final JavaMailSender emailSender;

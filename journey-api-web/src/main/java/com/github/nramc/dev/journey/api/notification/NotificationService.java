@@ -1,5 +1,7 @@
 package com.github.nramc.dev.journey.api.notification;
 
+import com.github.nramc.dev.journey.api.notification.email.EmailNotificationService;
+
 /**
  * Common contract for all application notification channels.
  *

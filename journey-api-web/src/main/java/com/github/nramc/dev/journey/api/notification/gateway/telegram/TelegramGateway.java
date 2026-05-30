@@ -17,6 +17,7 @@ import org.springframework.web.client.RestClient;
  * never interrupts the application's primary flows.
  */
 @Slf4j
+// todo: move this file into "telegram" package to keep all related stuff in one place
 public class TelegramGateway {
 
     private final TelegramProperties properties;
