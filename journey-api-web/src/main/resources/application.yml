@@ -31,6 +31,15 @@ spring:
     database: journey-dev
     representation:
       uuid: standard
+  modulith:
+    events:
+      completion-mode: delete
+      republish-outstanding-events-on-restart: on
+      staleness:
+        check-intervall: 60s
+        published: 5m
+        processing: 5m
+        resubmitted: 5m
 
 management:
   endpoints:
@@ -75,6 +84,17 @@ app:
             - X-Async-Process
           allow-credentials: true
 
+
+journey:
+  module:
+    infrastructure:
+      event:
+        republisher:
+          retry-delay: 1m
+          min-age: 1m
+          least-last-retried: 1m
+          batch-size: 100
+          max-immediate-retry: 3
 
 jwt:
   private-key: 'file:/etc/secrets/jwt-private.key'

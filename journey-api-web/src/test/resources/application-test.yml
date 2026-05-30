@@ -23,3 +23,14 @@ spring:
       mail.smtp.auth: false
       mail.smtp.starttls.enable: false
       mail.smtp.starttls.required: false
+
+journey:
+  module:
+    infrastructure:
+      event:
+        republisher:
+          retry-delay: 1s
+          least-last-retried: 1s
+          min-age: 1s
+          batch-size: 100
+          max-immediate-retry: 3
