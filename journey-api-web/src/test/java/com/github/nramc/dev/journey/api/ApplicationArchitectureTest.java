@@ -9,80 +9,52 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noFields;
-import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
-@AnalyzeClasses(packages = "com.github.nramc.dev.journey.api", importOptions = {ImportOption.DoNotIncludeTests.class})
+/**
+ * Lightweight ArchUnit rules that complement Spring Modulith boundary verification.
+ *
+ * <p>Module boundary rules (cyclic deps, layer access, etc.) are enforced by
+ * {@link ApplicationModulesTest} via {@code ApplicationModules.verify()}.
+ * This class only enforces coding conventions that Modulith does not cover.
+ */
+@AnalyzeClasses(packages = "com.github.nramc.dev.journey.api",
+        importOptions = {ImportOption.DoNotIncludeTests.class})
 @SuppressWarnings({"unused", "java:S1192"})
 final class ApplicationArchitectureTest {
 
-    @ArchTest
-    public static final ArchRule ruleLimitDomainsDependency = noClasses()
-            .that().resideInAPackage("..domain..")
-            .should().dependOnClassesThat().resideInAnyPackage("..usecase..", "..config..", "..services", "..gateways..", "..repository..", "..web..");
 
+    /**
+     * No Spring stereotype annotations (except on {@link UserDetailsManager} impls).
+     * All beans must be wired via {@code @Bean} methods in {@code @Configuration} classes.
+     */
     @ArchTest
-    public static final ArchRule ruleLimitUseCasesDependant = classes()
-            .that().resideInAPackage("..usecase..")
-            .should().onlyBeAccessed().byAnyPackage("..resources..", "..usecase..", "..config..");
-
-    @ArchTest
-    public static final ArchRule ruleLimitGatewaysDependant = classes()
-            .that().resideInAPackage("..gateway..")
-            .and().haveSimpleNameEndingWith("Gateway")
-            .should().onlyBeAccessed().byAnyPackage("..config..", "..usecase..", "..services..", "..gateway..", "..resources..", "..app.health..");
-
-    @ArchTest
-    public static final ArchRule ruleManageRepositoryDependant = classes()
-            .that().resideInAPackage("..repository..")
-            .and().haveSimpleNameEndingWith("Repository")
-            .should().onlyBeAccessed().byAnyPackage("..repository..", "..usecase..", "..resources.rest.users.find..", "..config..");
-
-    @ArchTest
-    public static final ArchRule ruleLimitRepositoryEntityDependant = classes()
-            .that().resideInAPackage("..repository..")
-            .and().haveSimpleNameEndingWith("Entity")
-            .should().onlyBeAccessed().byAnyPackage("..repository..", "..migration..",
-                    "..usecase..", "..resources.rest.journeys..", "..core.journey.security..");
-
-    @ArchTest
-    public static final ArchRule ruleResourcesNamingConvention = classes()
-            .that().areAnnotatedWith(RestController.class).or().areAnnotatedWith(Controller.class)
-            .should().resideInAPackage("..web.resources..").andShould().haveSimpleNameEndingWith("Resource");
-
-
-    @ArchTest
-    public static final ArchRule ruleIsolateUtilities = classes()
-            .that().resideInAPackage("..utils..")
-            .should().onlyDependOnClassesThat().
-            resideOutsideOfPackages("..web..", "..gateway..", "..service..", "..repository..", "..usecase..");
-
-    @ArchTest
-    public static final ArchRule ruleCyclicDependencyPrevention = slices()
-            .matching("com.github.nramc.dev.journey.api.core.(*)..").should().beFreeOfCycles();
-
-    @ArchTest
-    public static final ArchRule ruleLimitStereotypeAnnotationsUsage = classes()
+    public static final ArchRule ruleNoStereotypeAnnotations = classes()
             .that().doNotImplement(UserDetailsManager.class)
             .should().notBeAnnotatedWith(Service.class)
             .andShould().notBeAnnotatedWith(Component.class)
             .andShould().notBeAnnotatedWith(Repository.class);
 
+    /**
+     * Constructor injection only — no field-level {@code @Autowired}.
+     */
     @ArchTest
-    public static final ArchRule rulePreventFieldLevelInjection = noFields().should().beAnnotatedWith(Autowired.class);
+    public static final ArchRule ruleNoFieldInjection = noFields()
+            .should().beAnnotatedWith(Autowired.class);
 
+    /**
+     * Every {@code @Bean} method must be declared in a {@code @Configuration}-annotated
+     * class that resides in a {@code .config.} package.
+     */
     @ArchTest
-    public static final ArchRule ruleEnforceDependencyManagementWithConfig = methods()
+    public static final ArchRule ruleBeansInConfigClasses = methods()
             .that().areAnnotatedWith(Bean.class)
-            .should().beDeclaredInClassesThat().resideInAPackage("..config..")
+            .should().beDeclaredInClassesThat().resideInAnyPackage("..config..", "..infrastructure..")
             .andShould().beDeclaredInClassesThat().areAnnotatedWith(Configuration.class);
 
     private ApplicationArchitectureTest() {

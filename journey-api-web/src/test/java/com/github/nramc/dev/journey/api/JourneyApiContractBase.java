@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api;
 
-import com.github.nramc.dev.journey.api.config.TestContainersConfiguration;
+import com.github.nramc.dev.journey.api.infrastructure.config.TestContainersConfiguration;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
