@@ -29,7 +29,9 @@ class ApplicationModulesTest {
     void generatesDocumentation() {
         var documenter = new Documenter(MODULES, Options.defaults())
                 .writeModulesAsPlantUml(DiagramOptions.defaults())
-                .writeIndividualModulesAsPlantUml(DiagramOptions.defaults());
+                .writeIndividualModulesAsPlantUml(DiagramOptions.defaults())
+                .writeModuleCanvases()
+                .writeAggregatingDocument();
         Assertions.assertThat(documenter).isNotNull();
     }
 }
