@@ -1,17 +1,16 @@
 package com.github.nramc.dev.journey.api.account.codes.emailcode;
 
+import com.github.nramc.dev.journey.api.account.EmailCodeRequestedEvent;
 import com.github.nramc.dev.journey.api.account.codes.ConfirmationCode;
 import com.github.nramc.dev.journey.api.account.codes.EmailCode;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
-import com.github.nramc.dev.journey.api.shared.exceptions.TechnicalException;
-import com.github.nramc.dev.journey.api.shared.mail.MailSender;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.HashedMap;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
@@ -26,11 +25,10 @@ import java.util.UUID;
 @Transactional
 public class EmailCodeUseCase {
     static final int CODE_LENGTH = 6;
-    public static final String EMAIL_CODE_TEMPLATE_HTML = "email-code-template.html";
     private static final SecureRandom RANDOM = new SecureRandom();
-    private final MailSender mailService;
     private final ConfirmationCodeRepository codeRepository;
     private final EmailCodeValidator emailCodeValidator;
+    private final ApplicationEventPublisher applicationEvents;
 
     /**
      * Generate Email code securely
@@ -44,7 +42,7 @@ public class EmailCodeUseCase {
 
         EmailCode emailCode = generateEmailCode();
 
-        sendEmailCode(emailCode, authUser);
+        sendEmailCodeEvent(emailCode, authUser);
 
         saveEmailCode(emailCode, authUser);
 
@@ -77,17 +75,12 @@ public class EmailCodeUseCase {
         return EmailCode.valueOf(code);
     }
 
-    private void sendEmailCode(EmailCode emailCode, AuthUser authUser) {
-        try {
-            Map<String, Object> parameters = new HashedMap<>();
-            parameters.put("name", authUser.getName());
-            parameters.put("ottPin", emailCode.code());
+    private void sendEmailCodeEvent(EmailCode emailCode, AuthUser authUser) {
+        Map<String, Object> parameters = new HashedMap<>();
+        parameters.put("name", authUser.getName());
+        parameters.put("ottPin", emailCode.code());
 
-            mailService.sendEmailUsingTemplate(
-                    EMAIL_CODE_TEMPLATE_HTML, List.of(authUser.getUsername()), "Journey: Confirmation Required", parameters);
-        } catch (RuntimeException | MessagingException ex) {
-            throw new TechnicalException("Unable to send Email Code", ex);
-        }
+        applicationEvents.publishEvent(new EmailCodeRequestedEvent(authUser.getUsername(), parameters));
     }
 
     private void saveEmailCode(EmailCode code, AuthUser authUser) {

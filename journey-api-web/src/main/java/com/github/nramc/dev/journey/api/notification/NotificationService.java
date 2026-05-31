@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.notification;
 
-import com.github.nramc.dev.journey.api.notification.email.EmailNotificationService;
+import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
 import org.jspecify.annotations.NonNull;
 
 /**

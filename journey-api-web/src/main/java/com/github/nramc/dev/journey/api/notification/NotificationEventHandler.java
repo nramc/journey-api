@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.notification;
 
 import com.github.nramc.dev.journey.api.account.AccountActivatedEvent;
 import com.github.nramc.dev.journey.api.account.AccountActivationEmailRequestedEvent;
+import com.github.nramc.dev.journey.api.account.EmailCodeRequestedEvent;
 import com.github.nramc.dev.journey.api.account.UserRegisteredEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +63,23 @@ public class NotificationEventHandler {
     void onAccountActivated(AccountActivatedEvent event) {
         log.debug("Handling AccountActivatedEvent for user: {}", event.username());
         var notificationData = NotificationData.of("User completed onboarding - " + event.username());
+        notificationServices.forEach(svc -> svc.notify(notificationData));
+    }
+
+    /**
+     * Send email code to requested end user.
+     *
+     * @param event dedicated event with metadata
+     */
+    @ApplicationModuleListener
+    void onAccountActivated(EmailCodeRequestedEvent event) {
+        log.debug("Handling EmailCodeRequestedEvent for user: {}", event.username());
+        var notificationData = NotificationData.ofEmail(
+                "Journey: Confirmation Required",
+                List.of(event.username()),
+                "email-code-template.html",
+                event.metadata()
+        );
         notificationServices.forEach(svc -> svc.notify(notificationData));
     }
 }

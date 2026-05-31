@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.notification.mail;
 
-import com.github.nramc.dev.journey.api.shared.mail.MailSender;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-// todo: move this file to "email" package to organize all email related stuff in one place.
-public class MailService implements MailSender {
+public class MailSender {
     private final Resource logoResource;
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
     private final String emailStyles;
 
-    public MailService(Resource logoResource, Resource cssResource, JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
+    public MailSender(Resource logoResource, Resource cssResource, JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
         this.logoResource = logoResource;
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;

@@ -2,10 +2,10 @@ package com.github.nramc.dev.journey.api.notification.config;
 
 import com.github.nramc.dev.journey.api.notification.NotificationEventHandler;
 import com.github.nramc.dev.journey.api.notification.NotificationService;
-import com.github.nramc.dev.journey.api.notification.email.EmailNotificationService;
 import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGateway;
 import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties;
-import com.github.nramc.dev.journey.api.notification.mail.MailService;
+import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
+import com.github.nramc.dev.journey.api.notification.mail.MailSender;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,12 +56,12 @@ public class NotificationConfig {
     }
 
     @Bean
-    public MailService mailService(
+    public MailSender mailService(
             @Value("classpath:/assets/logo.png") Resource logoResource,
             @Value("classpath:/mail-templates/layout/style.css") Resource cssResource,
             JavaMailSender emailSender,
             SpringTemplateEngine templateEngine) {
-        return new MailService(logoResource, cssResource, emailSender, templateEngine);
+        return new MailSender(logoResource, cssResource, emailSender, templateEngine);
     }
 
     // ── Telegram (conditional) ────────────────────────────────────────────
@@ -82,8 +82,8 @@ public class NotificationConfig {
     // ── Email notification service ────────────────────────────────────────
 
     @Bean
-    public EmailNotificationService emailNotificationService(MailService mailService) {
-        return new EmailNotificationService(mailService);
+    public EmailNotificationService emailNotificationService(MailSender mailSender) {
+        return new EmailNotificationService(mailSender);
     }
 
     // ── Cross-module event handler ─────────────────────────────────────────

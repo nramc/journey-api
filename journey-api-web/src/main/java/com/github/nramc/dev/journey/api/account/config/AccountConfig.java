@@ -22,7 +22,6 @@ import com.github.nramc.dev.journey.api.account.usecase.RegistrationUseCase;
 import com.github.nramc.dev.journey.api.account.web.auth.provider.JwtResponseProvider;
 import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
 import com.github.nramc.dev.journey.api.infrastructure.security.JwtProperties;
-import com.github.nramc.dev.journey.api.shared.mail.MailSender;
 import jakarta.validation.Validator;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -111,10 +110,10 @@ public class AccountConfig {
 
     @Bean
     public EmailCodeUseCase emailCodeUseCase(
-            MailSender mailService,
             ConfirmationCodeRepository codeRepository,
-            EmailCodeValidator codeValidator) {
-        return new EmailCodeUseCase(mailService, codeRepository, codeValidator);
+            EmailCodeValidator codeValidator,
+            ApplicationEventPublisher eventPublisher) {
+        return new EmailCodeUseCase(codeRepository, codeValidator, eventPublisher);
     }
 
     @Bean

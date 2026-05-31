@@ -1,7 +1,8 @@
 package com.github.nramc.dev.journey.api.notification.email;
 
 import com.github.nramc.dev.journey.api.notification.NotificationData;
-import com.github.nramc.dev.journey.api.notification.mail.MailService;
+import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
+import com.github.nramc.dev.journey.api.notification.mail.MailSender;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,13 +29,13 @@ class EmailNotificationServiceTest {
             .recipients(List.of("admin@example.com"))
             .build();
     @Mock
-    private MailService mailService;
+    private MailSender mailSender;
     @InjectMocks
     private EmailNotificationService emailNotificationService;
 
     @Test
     void contextTest_shouldInitialiseCorrectly() {
-        assertThat(mailService).isNotNull();
+        assertThat(mailSender).isNotNull();
         assertThat(emailNotificationService).isNotNull();
     }
 
@@ -43,7 +44,7 @@ class EmailNotificationServiceTest {
 
         emailNotificationService.notify(EMAIL_NOTIFICATION_DATA);
 
-        verify(mailService).sendSimpleEmail(
+        verify(mailSender).sendSimpleEmail(
                 assertArg(emails -> assertThat(emails).hasSize(1).contains("admin@example.com")),
                 eq("Test Subject"),
                 eq("Test Message")
@@ -56,7 +57,7 @@ class EmailNotificationServiceTest {
         var notificationData = EMAIL_NOTIFICATION_DATA.toBuilder().recipients(recipients).build();
         emailNotificationService.notify(notificationData);
 
-        verify(mailService).sendSimpleEmail(recipients, "Test Subject", "Test Message");
+        verify(mailSender).sendSimpleEmail(recipients, "Test Subject", "Test Message");
     }
 
     @Test
@@ -89,7 +90,7 @@ class EmailNotificationServiceTest {
                 .type(NotificationData.NotificationType.TELEGRAM_ONLY)
                 .build();
         emailNotificationService.notify(unsupported);
-        verify(mailService, org.mockito.Mockito.never()).sendSimpleEmail(
+        verify(mailSender, org.mockito.Mockito.never()).sendSimpleEmail(
                 org.mockito.ArgumentMatchers.anyList(),
                 org.mockito.ArgumentMatchers.anyString(),
                 org.mockito.ArgumentMatchers.anyString()
@@ -99,10 +100,10 @@ class EmailNotificationServiceTest {
     @Test
     void notify_withTemplateEmail_shouldSendTemplateEmail() throws MessagingException {
         var notificationData = EMAIL_NOTIFICATION_DATA.toBuilder()
-                .metadata(Map.of("template", "welcome-email", "placeholders", Map.of("user", "Alice")))
+                .metadata(Map.of("template", "welcome-email", "metadata", Map.of("user", "Alice")))
                 .build();
         emailNotificationService.notify(notificationData);
-        verify(mailService).sendEmailUsingTemplate(
+        verify(mailSender).sendEmailUsingTemplate(
                 "welcome-email",
                 notificationData.recipients(),
                 notificationData.subject(),

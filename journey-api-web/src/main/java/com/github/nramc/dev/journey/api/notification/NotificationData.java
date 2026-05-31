@@ -41,7 +41,7 @@ public record NotificationData(
                 .message("")// message is not used for email notifications, but we can set it to an empty string to avoid nulls
                 .recipients(recipients)
                 .type(NotificationType.EMAIL_ONLY)
-                .metadata(Map.of("template", template, "placeholders", placeholders))
+                .metadata(Map.of("template", template, "metadata", placeholders))
                 .build();
     }
 }
