@@ -1,8 +1,7 @@
-package com.github.nramc.dev.journey.api.journey.repository;
+package com.github.nramc.dev.journey.api.shared.domain.data;
 
 import lombok.Builder;
 
-// todo: move it to shared module's data package
 @Builder(toBuilder = true)
 public record PagingProperty(
         int pageIndex,

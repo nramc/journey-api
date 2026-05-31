@@ -25,8 +25,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 
 import static com.github.nramc.dev.journey.api.account.web.users.UsersData.TOTP_ATTRIBUTE;
-import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.EMAIL_ADDRESS;
-import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType.EMAIL_ADDRESS;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType.TOTP;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;

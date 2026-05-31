@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.account.web.users.security.attributes.email.code;
 
-import com.github.nramc.dev.journey.api.account.codes.EmailCode;
 import com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailCode;
 import com.github.nramc.dev.journey.api.shared.web.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

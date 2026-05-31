@@ -1,19 +1,19 @@
 package com.github.nramc.dev.journey.api.account.codes.emailcode;
 
-import com.github.nramc.dev.journey.api.account.codes.ConfirmationCode;
-import com.github.nramc.dev.journey.api.account.codes.EmailCode;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -33,7 +33,7 @@ public class EmailCodeValidator {
         List<ConfirmationCodeEntity> codes = codeRepository.findAllByUsername(authUser.getUsername());
 
         ConfirmationCodeEntity confirmationCodeEntity = CollectionUtils.emptyIfNull(codes).stream()
-                .filter(entity -> StringUtils.equals(entity.getCode(), code.code())).findFirst().orElse(null);
+                .filter(entity -> Objects.equals(entity.getCode(), code.code())).findFirst().orElse(null);
 
         if (CollectionUtils.isEmpty(codes) || confirmationCodeEntity == null) { // Email Code does not exists for user
             log.info("Email Code verification failed. Reason:[code not exists]");

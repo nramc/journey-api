@@ -1,8 +1,8 @@
-package com.github.nramc.dev.journey.api.shared.mail;
+package com.github.nramc.dev.journey.api.notification.email;
 
 import com.github.nramc.dev.journey.api.notification.config.NotificationConfig;
-import com.github.nramc.dev.journey.api.notification.mail.MailService;
-import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
+import com.github.nramc.dev.journey.api.notification.mail.MailSender;
+import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase.EMAIL_CODE_TEMPLATE_HTML;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.assertArg;
 import static org.mockito.Mockito.verify;
@@ -40,7 +39,7 @@ import static org.mockito.Mockito.verify;
         MailSenderAutoConfiguration.class
 })
 @ActiveProfiles({"dev"})
-class MailServiceTest {
+class MailSenderTest {
     @Container
     static GenericContainer<?> mailpitContainer = new GenericContainer<>("axllent/mailpit:latest")
             .withExposedPorts(1025, 8025)
@@ -54,7 +53,7 @@ class MailServiceTest {
     }
 
     @Autowired
-    MailService mailService;
+    MailSender mailSender;
 
     @MockitoSpyBean
     JavaMailSender emailSender;
@@ -64,12 +63,12 @@ class MailServiceTest {
 
     @Test
     void context() {
-        assertThat(mailService).isNotNull();
+        assertThat(mailSender).isNotNull();
     }
 
     @Test
     void sendSimpleEmail_shouldSendEmailWithExpectation() {
-        mailService.sendSimpleEmail(List.of("example-email@example.com"), "Example Subject", "Example Body");
+        mailSender.sendSimpleEmail(List.of("example-email@example.com"), "Example Subject", "Example Body");
         verify(emailSender).send(assertArg((SimpleMailMessage mailMessage) ->
                 assertThat(mailMessage).isNotNull()
                         .satisfies(mail -> assertThat(mail.getTo()).containsExactly("example-email@example.com"))
@@ -86,7 +85,7 @@ class MailServiceTest {
         placeholders.put("name", name);
         String emailCode = "223344";
         placeholders.put("ottPin", emailCode);
-        mailService.sendEmailUsingTemplate(EMAIL_CODE_TEMPLATE_HTML, toEmailAddress, "Example Subject", placeholders);
+        mailSender.sendEmailUsingTemplate("email-code-template.html", List.of(toEmailAddress), "Example Subject", placeholders);
 
 
         verify(emailSender).send(assertArg((MimeMessage mailMessage) -> {

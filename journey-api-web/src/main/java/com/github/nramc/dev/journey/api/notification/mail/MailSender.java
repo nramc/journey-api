@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.notification.mail;
 
-import com.github.nramc.dev.journey.api.shared.mail.MailSender;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-// todo: move this file to "email" package to organize all email related stuff in one place.
-public class MailService implements MailSender {
+public class MailSender {
     private final Resource logoResource;
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
     private final String emailStyles;
 
-    public MailService(Resource logoResource, Resource cssResource, JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
+    public MailSender(Resource logoResource, Resource cssResource, JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
         this.logoResource = logoResource;
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;
@@ -46,7 +44,7 @@ public class MailService implements MailSender {
         log.info("Simple Email has been sent successfully");
     }
 
-    public void sendEmailUsingTemplate(String template, String to, String subject, Map<String, Object> placeholders)
+    public void sendEmailUsingTemplate(String template, List<String> to, String subject, Map<String, Object> placeholders)
             throws MessagingException {
         Context context = new Context();
         context.setVariables(placeholders);
@@ -59,10 +57,10 @@ public class MailService implements MailSender {
         log.info("Email using template[{}] has been sent successfully", template);
     }
 
-    private void sendHtmlEmail(String to, String subject, String htmlBody) throws MessagingException {
+    private void sendHtmlEmail(List<String> to, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(to);
+        helper.setTo(to.toArray(new String[0]));
         helper.setSubject(subject);
         helper.setText(htmlBody, true);
         helper.addInline("logo.png", logoResource);

@@ -1,13 +1,13 @@
 package com.github.nramc.dev.journey.api.account.web.auth.mfa;
 
-import com.github.nramc.dev.journey.api.account.codes.ConfirmationCode;
 import com.github.nramc.dev.journey.api.account.codes.ConfirmationCodeUseCase;
-import com.github.nramc.dev.journey.api.account.codes.EmailCode;
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
 import com.github.nramc.dev.journey.api.account.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.account.web.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.account.web.auth.dto.MultiFactorAuthenticationRequest;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
 import com.github.nramc.dev.journey.api.shared.web.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

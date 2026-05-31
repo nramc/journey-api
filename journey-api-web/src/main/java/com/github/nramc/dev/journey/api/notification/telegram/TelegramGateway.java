@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.notification.gateway.telegram;
+package com.github.nramc.dev.journey.api.notification.telegram;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +17,6 @@ import org.springframework.web.client.RestClient;
  * never interrupts the application's primary flows.
  */
 @Slf4j
-// todo: move this file into "telegram" package to keep all related stuff in one place
 public class TelegramGateway {
 
     private final TelegramProperties properties;

@@ -2,7 +2,7 @@ package com.github.nramc.dev.journey.api.account.usecase;
 
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;

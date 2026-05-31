@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.account.codes;
+package com.github.nramc.dev.journey.api.shared.domain.user.security;
 
 import jakarta.validation.constraints.NotBlank;
 

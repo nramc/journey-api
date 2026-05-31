@@ -2,12 +2,11 @@ package com.github.nramc.dev.journey.api.notification.config;
 
 import com.github.nramc.dev.journey.api.notification.NotificationEventHandler;
 import com.github.nramc.dev.journey.api.notification.NotificationService;
-import com.github.nramc.dev.journey.api.notification.email.EmailNotificationService;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGateway;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties;
-import com.github.nramc.dev.journey.api.notification.mail.MailService;
+import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
+import com.github.nramc.dev.journey.api.notification.mail.MailSender;
+import com.github.nramc.dev.journey.api.notification.telegram.TelegramGateway;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
-import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
+import com.github.nramc.dev.journey.api.notification.telegram.TelegramProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -57,12 +56,12 @@ public class NotificationConfig {
     }
 
     @Bean
-    public MailService mailService(
+    public MailSender mailService(
             @Value("classpath:/assets/logo.png") Resource logoResource,
             @Value("classpath:/mail-templates/layout/style.css") Resource cssResource,
             JavaMailSender emailSender,
             SpringTemplateEngine templateEngine) {
-        return new MailService(logoResource, cssResource, emailSender, templateEngine);
+        return new MailSender(logoResource, cssResource, emailSender, templateEngine);
     }
 
     // ── Telegram (conditional) ────────────────────────────────────────────
@@ -83,16 +82,14 @@ public class NotificationConfig {
     // ── Email notification service ────────────────────────────────────────
 
     @Bean
-    public EmailNotificationService emailNotificationService(MailService mailService,
-                                                             AdminEmailProvider adminEmailProvider) {
-        return new EmailNotificationService(mailService, adminEmailProvider);
+    public EmailNotificationService emailNotificationService(MailSender mailSender) {
+        return new EmailNotificationService(mailSender);
     }
 
     // ── Cross-module event handler ─────────────────────────────────────────
 
     @Bean
-    public NotificationEventHandler notificationEventHandler(MailService mailService,
-                                                              List<NotificationService> notificationServices) {
-        return new NotificationEventHandler(mailService, notificationServices);
+    public NotificationEventHandler notificationEventHandler(List<NotificationService> notificationServices) {
+        return new NotificationEventHandler(notificationServices);
     }
 }

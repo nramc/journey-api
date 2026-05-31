@@ -4,6 +4,7 @@ import com.github.nramc.dev.journey.api.journey.domain.Journey;
 import com.github.nramc.dev.journey.api.journey.repository.converter.JourneyConverter;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
 import com.github.nramc.dev.journey.api.shared.domain.data.DataPageable;
+import com.github.nramc.dev.journey.api.shared.domain.data.PagingProperty;
 import com.github.nramc.dev.journey.api.shared.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;

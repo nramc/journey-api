@@ -1,10 +1,11 @@
 package com.github.nramc.dev.journey.api.notification.telegram;
 
+import com.github.nramc.dev.journey.api.notification.NotificationData;
 import com.github.nramc.dev.journey.api.notification.NotificationService;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGateway;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties.ParseMode;
+import com.github.nramc.dev.journey.api.notification.telegram.TelegramProperties.ParseMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Use-case service for sending notifications to the application's Telegram channel.
@@ -25,11 +26,11 @@ public class TelegramNotificationService implements NotificationService {
     /**
      * Sends a plain notification message to the channel.
      *
-     * @param message the text to send (HTML formatting supported by default)
+     * @param notificationData the notification data, including a message and optional metadata
      */
-    public void sendNotification(String message) {
-        log.debug("Sending Telegram notification: {}", message);
-        telegramGateway.sendMessage(message);
+    public void sendNotification(NotificationData notificationData) {
+        log.debug("Sending Telegram notification: {}", notificationData.message());
+        telegramGateway.sendMessage(notificationData.message());
     }
 
     /**
@@ -49,30 +50,16 @@ public class TelegramNotificationService implements NotificationService {
      * <p>The message is wrapped in a standard alert template with a bell emoji
      * and bold header so it stands out in the channel feed.
      *
-     * @param message the body of the alert
+     * @param notificationData the notification data, including a message and optional metadata
      */
     @Override
-    public void notify(String message) {
+    public void notify(@NonNull NotificationData notificationData) {
         String formatted = """
                 🔔 <b>Admin Notification</b>
                 
                 %s
-                """.formatted(message);
+                """.formatted(notificationData.message());
         telegramGateway.sendMessage(formatted);
     }
 
-    /**
-     * Sends an error alert to the channel.
-     *
-     * @param message a short description of the error
-     */
-    @Override
-    public void notifyError(String message) {
-        String formatted = """
-                🚨 <b>Error Alert</b>
-                
-                %s
-                """.formatted(message);
-        telegramGateway.sendMessage(formatted);
-    }
 }

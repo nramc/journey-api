@@ -1,14 +1,14 @@
 package com.github.nramc.dev.journey.api.journey.web.journeys.create;
 
 import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.MYSELF;
 
 
 final class CreateJourneyConverter {

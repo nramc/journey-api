@@ -5,8 +5,8 @@ import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenti
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintainerUser;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
-import com.github.nramc.dev.journey.api.shared.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
@@ -14,10 +14,10 @@ import org.springframework.security.core.Authentication;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.ADMINISTRATOR;
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MAINTAINER;
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.ADMINISTRATOR;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.MAINTAINER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.MYSELF;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;

@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.infrastructure.security;
 
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.lang.annotation.ElementType;
@@ -12,8 +12,8 @@ import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintainerUser.PASSWORD;
 import static com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintainerUser.USERNAME;
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.MAINTAINER;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

@@ -1,13 +1,13 @@
 package com.github.nramc.dev.journey.api.account.web.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpAlgorithm;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpCodeGenerator;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpCodeVerifier;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpProperties;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpSecretGenerator;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpTimeStepWindowProvider;
-import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
 
 public final class TotpDemo {
 

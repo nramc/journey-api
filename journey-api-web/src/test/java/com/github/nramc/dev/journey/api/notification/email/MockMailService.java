@@ -1,6 +1,6 @@
-package com.github.nramc.dev.journey.api.shared.mail;
+package com.github.nramc.dev.journey.api.notification.email;
 
-import com.github.nramc.dev.journey.api.notification.mail.MailService;
+import com.github.nramc.dev.journey.api.notification.mail.MailSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class MockMailService extends MailService {
+public class MockMailService extends MailSender {
 
     public MockMailService() {
         super(null, null, null, null);
@@ -21,7 +21,7 @@ public class MockMailService extends MailService {
     }
 
     @Override
-    public void sendEmailUsingTemplate(String template, String to, String subject, Map<String, Object> variables) {
+    public void sendEmailUsingTemplate(String template, List<String> to, String subject, Map<String, Object> variables) {
         log.info("No operation required for sendEmailUsingTemplate()");
     }
 

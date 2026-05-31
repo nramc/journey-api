@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.notification.gateway.telegram;
+package com.github.nramc.dev.journey.api.notification.telegram;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

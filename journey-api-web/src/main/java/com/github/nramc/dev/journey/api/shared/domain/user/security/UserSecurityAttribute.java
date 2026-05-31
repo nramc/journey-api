@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.shared.domain.user;
+package com.github.nramc.dev.journey.api.shared.domain.user.security;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.dev.journey.api.shared.utils.EmailAddressObfuscator;

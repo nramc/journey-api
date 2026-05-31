@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.shared.domain;
+package com.github.nramc.dev.journey.api.shared.domain.user.security;
 
 /**
  * Visibility of Journey.

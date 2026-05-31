@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.account.repository.attributes;
 
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

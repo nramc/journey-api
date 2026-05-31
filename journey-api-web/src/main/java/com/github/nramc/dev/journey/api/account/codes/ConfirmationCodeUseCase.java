@@ -3,6 +3,9 @@ package com.github.nramc.dev.journey.api.account.codes;
 import com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpUseCase;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

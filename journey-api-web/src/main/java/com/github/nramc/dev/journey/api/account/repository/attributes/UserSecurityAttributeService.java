@@ -1,9 +1,9 @@
 package com.github.nramc.dev.journey.api.account.repository.attributes;
 
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType;
-import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;

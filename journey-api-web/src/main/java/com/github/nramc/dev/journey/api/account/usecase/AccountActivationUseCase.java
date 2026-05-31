@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.account.repository.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.EmailToken;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailToken;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

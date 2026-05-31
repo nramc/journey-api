@@ -1,11 +1,11 @@
 package com.github.nramc.dev.journey.api.account.codes.totp;
 
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.account.repository.attributes.UserSecurityAttributeService;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType;
-import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

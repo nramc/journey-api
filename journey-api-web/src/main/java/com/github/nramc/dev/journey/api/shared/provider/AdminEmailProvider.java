@@ -1,4 +1,6 @@
-package com.github.nramc.dev.journey.api.shared;
+package com.github.nramc.dev.journey.api.shared.provider;
+
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 
 import java.util.List;
 
@@ -17,6 +19,5 @@ public interface AdminEmailProvider {
      *
      * @return non-null, possibly empty list of admin e-mail addresses
      */
-    // todo: Return List<EmailAddress> instead of List<String> to promote domain based implementation
-    List<String> getAdminEmails();
+    List<EmailAddress> get();
 }

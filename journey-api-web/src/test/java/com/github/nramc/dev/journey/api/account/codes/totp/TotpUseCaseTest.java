@@ -1,9 +1,9 @@
 package com.github.nramc.dev.journey.api.account.codes.totp;
 
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
 import com.github.nramc.dev.journey.api.account.repository.attributes.UserSecurityAttributeService;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
-import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType.TOTP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;

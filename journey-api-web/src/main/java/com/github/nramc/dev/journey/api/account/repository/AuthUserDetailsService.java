@@ -1,7 +1,8 @@
 package com.github.nramc.dev.journey.api.account.repository;
 
-import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
-import com.github.nramc.dev.journey.api.shared.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
+import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,9 +68,10 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
     }
 
     @Override
-    public List<String> getAdminEmails() {
+    public List<EmailAddress> get() {
         return findAllAdministratorUsers().stream()
                 .map(AuthUser::getUsername)
+                .map(EmailAddress::valueOf)
                 .toList();
     }
 

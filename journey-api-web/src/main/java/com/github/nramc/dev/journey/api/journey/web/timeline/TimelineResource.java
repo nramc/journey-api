@@ -4,7 +4,7 @@ import com.github.nramc.dev.journey.api.journey.domain.Journey;
 import com.github.nramc.dev.journey.api.journey.repository.JourneySearchCriteria;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import com.github.nramc.dev.journey.api.shared.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

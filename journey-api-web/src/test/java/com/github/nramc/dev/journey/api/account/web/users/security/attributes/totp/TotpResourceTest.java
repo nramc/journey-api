@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.account.web.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
 import com.github.nramc.dev.journey.api.account.codes.totp.QRImageDetails;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpUseCase;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
@@ -8,7 +7,8 @@ import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDeta
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
