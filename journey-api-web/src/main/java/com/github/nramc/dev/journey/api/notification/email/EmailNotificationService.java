@@ -2,7 +2,8 @@ package com.github.nramc.dev.journey.api.notification.email;
 
 import com.github.nramc.dev.journey.api.notification.NotificationService;
 import com.github.nramc.dev.journey.api.notification.mail.MailService;
-import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
+import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -28,7 +29,8 @@ public class EmailNotificationService implements NotificationService {
 
     @Override
     public void notify(String message) {
-        List<String> adminEmails = adminEmailProvider.getAdminEmails();
+        List<String> adminEmails = adminEmailProvider.get().stream().map(EmailAddress::value).toList();
+
         if (CollectionUtils.isNotEmpty(adminEmails)) {
             mailService.sendSimpleEmail(adminEmails,
                     SUBJECT_PREFIX + message,
@@ -39,7 +41,7 @@ public class EmailNotificationService implements NotificationService {
 
     @Override
     public void notifyError(String message) {
-        List<String> adminEmails = adminEmailProvider.getAdminEmails();
+        List<String> adminEmails = adminEmailProvider.get().stream().map(EmailAddress::value).toList();
         if (CollectionUtils.isNotEmpty(adminEmails)) {
             mailService.sendSimpleEmail(adminEmails,
                     ERROR_SUBJECT_PREFIX + message,

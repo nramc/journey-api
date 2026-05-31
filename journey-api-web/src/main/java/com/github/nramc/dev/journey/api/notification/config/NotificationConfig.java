@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGa
 import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties;
 import com.github.nramc.dev.journey.api.notification.mail.MailService;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
-import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
+import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

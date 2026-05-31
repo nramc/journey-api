@@ -1,7 +1,8 @@
 package com.github.nramc.dev.journey.api.notification.email;
 
 import com.github.nramc.dev.journey.api.notification.mail.MailService;
-import com.github.nramc.dev.journey.api.shared.AdminEmailProvider;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
+import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EmailNotificationServiceTest {
+    public static final List<EmailAddress> ADMIN_EMAILS = List.of(EmailAddress.valueOf("admin@example.com"));
     @Mock
     private MailService mailService;
     @Mock
@@ -35,7 +37,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyAdmin_whenExists_shouldSendEmailToAllAdmins() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
+        when(adminEmailProvider.get()).thenReturn(ADMIN_EMAILS);
 
         emailNotificationService.notify("Signup Completed");
 
@@ -48,7 +50,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_subjectShouldContainNotificationPrefix() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
+        when(adminEmailProvider.get()).thenReturn(ADMIN_EMAILS);
 
         emailNotificationService.notify("New user registered");
 
@@ -61,7 +63,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_subjectShouldContainOriginalNotificationText() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
+        when(adminEmailProvider.get()).thenReturn(ADMIN_EMAILS);
         String notificationText = "New user registered: john@example.com";
 
         emailNotificationService.notify(notificationText);
@@ -75,7 +77,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_whenNoAdminsExist_shouldNotSendAnyEmail() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(Collections.emptyList());
+        when(adminEmailProvider.get()).thenReturn(Collections.emptyList());
 
         emailNotificationService.notify("Signup Completed");
 
@@ -84,7 +86,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notify_whenMultipleAdminsExist_shouldSendEmailToAllOfThem() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin1@example.com", "admin2@example.com"));
+        when(adminEmailProvider.get()).thenReturn(List.of(EmailAddress.valueOf("admin1@example.com"), EmailAddress.valueOf("admin2@example.com")));
 
         emailNotificationService.notify("System update");
 
@@ -97,7 +99,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_whenAdminExists_shouldSendErrorEmailToAllAdmins() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
+        when(adminEmailProvider.get()).thenReturn(ADMIN_EMAILS);
 
         emailNotificationService.notifyError("MongoDB connection failed");
 
@@ -110,7 +112,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_subjectShouldContainErrorAlertPrefix() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
+        when(adminEmailProvider.get()).thenReturn(ADMIN_EMAILS);
 
         emailNotificationService.notifyError("Disk full");
 
@@ -123,7 +125,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_subjectShouldContainOriginalErrorSummary() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(List.of("admin@example.com"));
+        when(adminEmailProvider.get()).thenReturn(ADMIN_EMAILS);
         String errorSummary = "MongoDB connection failed after 3 retries";
 
         emailNotificationService.notifyError(errorSummary);
@@ -137,7 +139,7 @@ class EmailNotificationServiceTest {
 
     @Test
     void notifyError_whenNoAdminsExist_shouldNotSendAnyEmail() {
-        when(adminEmailProvider.getAdminEmails()).thenReturn(Collections.emptyList());
+        when(adminEmailProvider.get()).thenReturn(Collections.emptyList());
 
         emailNotificationService.notifyError("Critical failure");
 
