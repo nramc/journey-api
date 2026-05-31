@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.journey.web.journeys.find;
 import com.github.nramc.dev.journey.api.journey.domain.Journey;
 import com.github.nramc.dev.journey.api.journey.repository.JourneySearchCriteria;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
-import com.github.nramc.dev.journey.api.journey.repository.PagingProperty;
+import com.github.nramc.dev.journey.api.shared.domain.data.PagingProperty;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
 import com.github.nramc.dev.journey.api.shared.domain.data.DataPageable;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
