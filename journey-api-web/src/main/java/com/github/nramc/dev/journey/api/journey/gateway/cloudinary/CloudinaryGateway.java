@@ -16,7 +16,6 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
-// todo: move cloudinary related files to infrastructure module
 public class CloudinaryGateway {
     private static final String PUBLIC_ID = "public_id";
     private final Cloudinary cloudinary;
