@@ -4,7 +4,6 @@ import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.Objects;
