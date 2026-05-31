@@ -2,11 +2,11 @@ package com.github.nramc.dev.journey.api.notification.config;
 
 import com.github.nramc.dev.journey.api.notification.NotificationEventHandler;
 import com.github.nramc.dev.journey.api.notification.NotificationService;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGateway;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties;
 import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
 import com.github.nramc.dev.journey.api.notification.mail.MailSender;
+import com.github.nramc.dev.journey.api.notification.telegram.TelegramGateway;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
+import com.github.nramc.dev.journey.api.notification.telegram.TelegramProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

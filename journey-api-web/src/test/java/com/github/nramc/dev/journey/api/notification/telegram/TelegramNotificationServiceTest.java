@@ -1,8 +1,7 @@
 package com.github.nramc.dev.journey.api.notification.telegram;
 
 import com.github.nramc.dev.journey.api.notification.NotificationData;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGateway;
-import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties.ParseMode;
+import com.github.nramc.dev.journey.api.notification.telegram.TelegramProperties.ParseMode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

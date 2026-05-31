@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.notification.gateway.telegram;
+package com.github.nramc.dev.journey.api.notification.telegram;
 
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
