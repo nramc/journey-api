@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_USERS;
 import static org.assertj.core.api.Assertions.assertThat;

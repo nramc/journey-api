@@ -1,4 +1,4 @@
-package com.github.nramc.dev.journey.api.shared.domain.user.settings.security;
+package com.github.nramc.dev.journey.api.shared.domain.user.security;
 
 import org.jspecify.annotations.NonNull;
 

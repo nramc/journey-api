@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_JOURNEYS;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.FIND_UPCOMING_ANNIVERSARY;
 import static org.hamcrest.Matchers.contains;

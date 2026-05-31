@@ -5,8 +5,8 @@ import com.github.nramc.dev.journey.api.journey.repository.JourneySearchCriteria
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
 import com.github.nramc.dev.journey.api.journey.repository.PagingProperty;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
 import com.github.nramc.dev.journey.api.shared.domain.data.DataPageable;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import com.github.nramc.dev.journey.api.shared.utils.AuthUtils;
 import com.github.nramc.dev.journey.api.shared.web.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;

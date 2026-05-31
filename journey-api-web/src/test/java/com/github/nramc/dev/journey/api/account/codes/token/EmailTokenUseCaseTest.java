@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.account.codes.token;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.EmailToken;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailToken;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType.EMAIL_CODE;
-import static com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType.EMAIL_TOKEN;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCodeType.EMAIL_CODE;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCodeType.EMAIL_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.assertArg;
 import static org.mockito.Mockito.verify;

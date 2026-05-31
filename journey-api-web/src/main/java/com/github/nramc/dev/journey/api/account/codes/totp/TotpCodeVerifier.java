@@ -1,12 +1,13 @@
 package com.github.nramc.dev.journey.api.account.codes.totp;
 
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
-import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ public class TotpCodeVerifier {
                 .sorted(Collections.reverseOrder())
                 .map(value -> timeStepWindowProvider.provide() + value)
                 .map(timeStepWindow -> codeGenerator.generate(secret, timeStepWindow))
-                .anyMatch(expectedCode -> StringUtils.equals(expectedCode.code(), code.code()));
+                .anyMatch(expectedCode -> Objects.equals(expectedCode.code(), code.code()));
     }
 
 }

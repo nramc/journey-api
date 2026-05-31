@@ -9,7 +9,7 @@ import com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintain
 import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryGateway;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import com.github.nramc.dev.journey.api.shared.web.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

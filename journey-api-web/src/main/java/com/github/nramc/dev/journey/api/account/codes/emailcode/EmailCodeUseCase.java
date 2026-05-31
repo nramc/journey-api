@@ -1,12 +1,12 @@
 package com.github.nramc.dev.journey.api.account.codes.emailcode;
 
 import com.github.nramc.dev.journey.api.account.EmailCodeRequestedEvent;
-import com.github.nramc.dev.journey.api.account.codes.ConfirmationCode;
-import com.github.nramc.dev.journey.api.account.codes.EmailCode;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.HashedMap;

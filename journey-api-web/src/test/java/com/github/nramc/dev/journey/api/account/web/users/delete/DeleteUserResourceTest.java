@@ -18,9 +18,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.AUTHENTICATED_USER;
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.GUEST_USER;
-import static com.github.nramc.dev.journey.api.shared.domain.user.Role.Constants.MAINTAINER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.AUTHENTICATED_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.GUEST_USER;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Role.Constants.MAINTAINER;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.DELETE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.DELETE_USER_BY_USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;

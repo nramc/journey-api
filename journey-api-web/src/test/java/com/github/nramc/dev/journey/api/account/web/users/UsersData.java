@@ -5,12 +5,12 @@ import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdminist
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttribute;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
 
-import static com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType.TOTP;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType.TOTP;
 
 public final class UsersData {
     public static final AuthUser AUTHENTICATED_USER = AuthUser.builder()

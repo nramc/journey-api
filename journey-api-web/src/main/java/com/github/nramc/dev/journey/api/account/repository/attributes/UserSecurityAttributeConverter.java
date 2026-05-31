@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.account.repository.attributes;
 
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttribute;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttribute;
 
 public final class UserSecurityAttributeConverter {
 

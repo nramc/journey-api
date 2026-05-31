@@ -1,10 +1,10 @@
 package com.github.nramc.dev.journey.api.account.web.users.security.attributes.totp;
 
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
 import com.github.nramc.dev.journey.api.account.codes.totp.QRImageDetails;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpUseCase;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
-import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
 import com.github.nramc.dev.journey.api.shared.web.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

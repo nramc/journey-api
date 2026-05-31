@@ -6,7 +6,7 @@ import com.github.nramc.dev.journey.api.infrastructure.security.WithMockMaintain
 import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 
 import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.JOURNEY_ENTITY;
 import static com.github.nramc.dev.journey.api.journey.web.timeline.TimelineHeadingResolver.DEFAULT_HEADING;
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.MYSELF;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.GET_TIMELINE_DATA;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;

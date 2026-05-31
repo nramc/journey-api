@@ -8,7 +8,7 @@ import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyRepository;
 import com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData;
 import com.github.nramc.dev.journey.api.journey.web.journeys.update.validator.JourneyValidator;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import com.github.nramc.dev.journey.api.shared.web.Resources;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData.NEW_JOURNEY_ENTITY;
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.MYSELF;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.any;

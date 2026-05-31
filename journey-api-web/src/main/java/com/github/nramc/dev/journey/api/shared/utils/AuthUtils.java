@@ -1,8 +1,8 @@
 package com.github.nramc.dev.journey.api.shared.utils;
 
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
-import com.github.nramc.dev.journey.api.shared.domain.user.Role;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

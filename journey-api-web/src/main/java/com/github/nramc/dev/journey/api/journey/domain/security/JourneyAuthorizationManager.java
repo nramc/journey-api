@@ -1,10 +1,12 @@
 package com.github.nramc.dev.journey.api.journey.domain.security;
 
 import com.github.nramc.dev.journey.api.journey.repository.JourneyEntity;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
+
+import java.util.Objects;
 
 import static com.github.nramc.dev.journey.api.shared.utils.AuthUtils.isAdministratorRoleExists;
 import static com.github.nramc.dev.journey.api.shared.utils.AuthUtils.isAuthenticatedUser;
@@ -31,7 +33,7 @@ public final class JourneyAuthorizationManager {
     }
 
     private static boolean isJourneyOwnedByLoggedInUser(JourneyEntity journeyEntity, Authentication authentication) {
-        return StringUtils.equals(authentication.getName(), journeyEntity.getCreatedBy());
+        return Objects.equals(authentication.getName(), journeyEntity.getCreatedBy());
     }
 
     private JourneyAuthorizationManager() {

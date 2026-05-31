@@ -1,12 +1,12 @@
 package com.github.nramc.dev.journey.api.account.web.users.security.attributes.email.code;
 
-import com.github.nramc.dev.journey.api.account.codes.ConfirmationCode;
 import com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

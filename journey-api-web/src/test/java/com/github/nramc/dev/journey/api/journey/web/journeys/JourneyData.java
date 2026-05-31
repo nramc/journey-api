@@ -7,7 +7,7 @@ import com.github.nramc.dev.journey.api.journey.repository.JourneyImageDetailEnt
 import com.github.nramc.dev.journey.api.journey.repository.JourneyImagesDetailsEntity;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyVideoDetailEntity;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyVideosDetailsEntity;
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import com.github.nramc.geojson.domain.Feature;
 import com.github.nramc.geojson.domain.FeatureCollection;
 import com.github.nramc.geojson.domain.Point;

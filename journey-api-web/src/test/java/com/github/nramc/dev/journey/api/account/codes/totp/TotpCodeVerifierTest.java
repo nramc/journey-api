@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.account.codes.totp;
 
-import com.github.nramc.dev.journey.api.account.codes.TotpCode;
-import com.github.nramc.dev.journey.api.shared.domain.user.settings.security.TotpSecret;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

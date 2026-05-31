@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.account.web.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.github.nramc.dev.journey.api.shared.domain.user.UserSecurityAttributeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType;
 import lombok.Builder;
 
 import java.time.Instant;

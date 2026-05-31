@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.account.repository.code;
 
-import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCodeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

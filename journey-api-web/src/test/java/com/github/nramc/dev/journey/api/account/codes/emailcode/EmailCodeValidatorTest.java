@@ -1,10 +1,10 @@
 package com.github.nramc.dev.journey.api.account.codes.emailcode;
 
-import com.github.nramc.dev.journey.api.account.codes.EmailCode;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeEntity;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
-import com.github.nramc.dev.journey.api.shared.domain.user.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.ConfirmationCodeType;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

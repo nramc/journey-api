@@ -1,6 +1,6 @@
 package com.github.nramc.dev.journey.api.shared.validation.validator;
 
-import com.github.nramc.dev.journey.api.shared.domain.Visibility;
+import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import com.github.nramc.dev.journey.api.shared.validation.ValidateVisibilities;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -8,7 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Set;
 
-import static com.github.nramc.dev.journey.api.shared.domain.Visibility.MYSELF;
+import static com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility.MYSELF;
 
 public class ValidateVisibilitiesValidator implements ConstraintValidator<ValidateVisibilities, Set<Visibility>> {
 
