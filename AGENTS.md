@@ -5,10 +5,15 @@
 Java 21 + Spring Boot 4 **BFF (Backend For Frontend)** REST API for the [Journeys SPA](https://journey.codewithram.dev).
 Persists geospatial journey data in MongoDB Atlas using GeoJSON (`geojson4j` library). Deployed via Docker to Render.
 
+
 **Multi-module Maven project:**
 
 - `journey-api-web` — the runnable Spring Boot application (all source code lives here)
 - `journey-api-tests` — separate integration/contract test module with Allure results
+
+**Spring Modulith:**
+
+- The project uses [Spring Modulith](https://docs.spring.io/spring-modulith/docs/current/reference/html/) for modularity and event publication. See `infrastructure/event/EventRepublisher.java` and `infrastructure/config/InfrastructureConfig.java` for event republishing and configuration.
 
 ---
 
@@ -46,10 +51,20 @@ Tests use **Testcontainers** for MongoDB — no manual DB setup needed for unit/
 
 ## Architecture
 
+
 ### Package structure (enforced by ArchUnit — see `ApplicationArchitectureTest`)
 
 ```
 com.github.nramc.dev.journey.api
+├── infrastructure/  # Cross-cutting config, event republisher, OpenAPI config, security, MongoDB, timezone, etc.
+│   ├── event/       # EventRepublisher, EventRepublisherProperties
+│   ├── openapi/     # OpenApiDocumentationConfig
+│   ├── security/    # WebSecurityConfig, WebAuthnConfig, CorsProperties
+│   ├── mongodb/     # MongoConfig, JacksonBased*Converter
+│   ├── actuator/    # ApplicationProperties
+│   ├── config/      # InfrastructureConfig
+│   ├── web/         # GlobalRestExceptionHandler, MVC controllers
+│   └── timezone/    # TimezoneInitialization
 ├── config/          # @Configuration + @Bean declarations ONLY (all beans wired here)
 │   ├── security/    # WebSecurityConfig, WebAuthnConfig, CorsProperties
 │   └── ...          # CloudinaryConfig, TelegramConfig, TotpConfig, MailConfig, etc.
@@ -79,7 +94,12 @@ com.github.nramc.dev.journey.api
 └── migration/       # Data migration rules (excluded from coverage)
 ```
 
+
 **Key enforced rules:**
+### Event Republisher
+
+- Incomplete events are automatically retried by a scheduled republisher (`infrastructure/event/EventRepublisher.java`).
+- Retry logic and batch size are configured in `infrastructure/event/EventRepublisherProperties.java` and wired in `infrastructure/config/InfrastructureConfig.java`.
 
 - No `@Service`, `@Component`, or `@Repository` stereotypes (except `UserDetailsManager` impl) — use `@Bean` in
   `config/`
@@ -147,6 +167,7 @@ New AI resources should use hardcoded paths and are covered by the existing wild
 | Email       | `MailService`           | `spring.mail.*` / env vars                                                      |
 | WebAuthn    | `WebAuthnService`       | `app.security.webauthn.*` (rp-id, origin)                                       |
 
+
 ### GeoJSON handling
 
 MongoDB stores GeoJSON via custom Jackson converters in `repository/converters/`. The `geojson4j` library (
@@ -154,7 +175,9 @@ MongoDB stores GeoJSON via custom Jackson converters in `repository/converters/`
 
 ---
 
+
 ## Key Files
+
 
 - `web/resources/Resources.java` — canonical list of all API paths and custom media types
 - `config/security/WebSecurityConfig.java` — all security rules in one place
@@ -170,4 +193,7 @@ MongoDB stores GeoJSON via custom Jackson converters in `repository/converters/`
   my-account, users)
 - `config/timezone/TimezoneInitialization.java` — forces JVM to UTC at startup; all date/time values must be
   UTC-compatible
+- `infrastructure/openapi/OpenApiDocumentationConfig.java` — OpenAPI/Swagger documentation configuration
+- `infrastructure/event/EventRepublisher.java` — scheduled republisher for incomplete events
+- `infrastructure/config/InfrastructureConfig.java` — root infrastructure configuration and event republisher wiring
 
