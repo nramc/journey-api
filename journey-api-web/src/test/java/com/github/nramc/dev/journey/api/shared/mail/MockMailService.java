@@ -21,7 +21,7 @@ public class MockMailService extends MailService {
     }
 
     @Override
-    public void sendEmailUsingTemplate(String template, String to, String subject, Map<String, Object> variables) {
+    public void sendEmailUsingTemplate(String template, List<String> to, String subject, Map<String, Object> variables) {
         log.info("No operation required for sendEmailUsingTemplate()");
     }
 

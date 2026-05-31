@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.notification.telegram;
 
+import com.github.nramc.dev.journey.api.notification.NotificationData;
 import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGateway;
 import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties.ParseMode;
 import org.junit.jupiter.api.Test;
@@ -29,17 +30,17 @@ class TelegramNotificationServiceTest {
 
     @Test
     void sendNotification_shouldDelegateToGatewayWithSameText() {
-        telegramNotificationService.sendNotification("Hello World");
+        telegramNotificationService.sendNotification(NotificationData.of("Hello World"));
 
         verify(telegramGateway).sendMessage("Hello World");
     }
 
     @Test
     void sendNotification_shouldPassTextUnmodified() {
-        String message = "Journey: user registered <b>john@example.com</b>";
-        telegramNotificationService.sendNotification(message);
+        NotificationData notificationData = NotificationData.of("Journey: user registered <b>john@example.com</b>");
+        telegramNotificationService.sendNotification(notificationData);
 
-        verify(telegramGateway).sendMessage(message);
+        verify(telegramGateway).sendMessage(notificationData.message());
     }
 
     @Test
@@ -65,14 +66,14 @@ class TelegramNotificationServiceTest {
 
     @Test
     void notify_shouldDelegateToGateway() {
-        telegramNotificationService.notify("New user signed up");
+        telegramNotificationService.notify(NotificationData.of("New user signed up"));
 
         verify(telegramGateway).sendMessage(assertArg(msg -> assertThat(msg).isNotBlank()));
     }
 
     @Test
     void notify_messageShouldContainBellEmoji() {
-        telegramNotificationService.notify("New user signed up");
+        telegramNotificationService.notify(NotificationData.of("New user signed up"));
 
         verify(telegramGateway).sendMessage(assertArg(msg ->
                 assertThat(msg).contains("🔔")));
@@ -80,7 +81,7 @@ class TelegramNotificationServiceTest {
 
     @Test
     void notifyAdmin_messageShouldContainBoldNotificationHeader() {
-        telegramNotificationService.notify("New user signed up");
+        telegramNotificationService.notify(NotificationData.of("New user signed up"));
 
         verify(telegramGateway).sendMessage(assertArg(msg ->
                 assertThat(msg).contains("<b>Admin Notification</b>")));
@@ -88,43 +89,11 @@ class TelegramNotificationServiceTest {
 
     @Test
     void notify_messageShouldContainOriginalNotificationText() {
-        String notificationText = "New user registered: john@example.com";
-        telegramNotificationService.notify(notificationText);
+        var notificationData = NotificationData.of("New user registered: john@example.com");
+        telegramNotificationService.notify(notificationData);
 
         verify(telegramGateway).sendMessage(assertArg(msg ->
-                assertThat(msg).contains(notificationText)));
-    }
-
-    @Test
-    void notifyError_shouldDelegateToGateway() {
-        telegramNotificationService.notifyError("MongoDB connection failed");
-
-        verify(telegramGateway).sendMessage(assertArg(msg -> assertThat(msg).isNotBlank()));
-    }
-
-    @Test
-    void notifyError_messageShouldContainAlertEmoji() {
-        telegramNotificationService.notifyError("MongoDB connection failed");
-
-        verify(telegramGateway).sendMessage(assertArg(msg ->
-                assertThat(msg).contains("🚨")));
-    }
-
-    @Test
-    void notifyError_messageShouldContainBoldErrorAlertHeader() {
-        telegramNotificationService.notifyError("MongoDB connection failed");
-
-        verify(telegramGateway).sendMessage(assertArg(msg ->
-                assertThat(msg).contains("<b>Error Alert</b>")));
-    }
-
-    @Test
-    void notifyError_messageShouldContainOriginalErrorSummary() {
-        String errorSummary = "MongoDB connection failed after 3 retries";
-        telegramNotificationService.notifyError(errorSummary);
-
-        verify(telegramGateway).sendMessage(assertArg(msg ->
-                assertThat(msg).contains(errorSummary)));
+                assertThat(msg).contains(notificationData.message())));
     }
 
     @Test

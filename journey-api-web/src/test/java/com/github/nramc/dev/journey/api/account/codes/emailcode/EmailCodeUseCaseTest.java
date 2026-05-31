@@ -63,7 +63,7 @@ class EmailCodeUseCaseTest {
 
         verify(mailService).sendEmailUsingTemplate(
                 eq(EMAIL_CODE_TEMPLATE_HTML),
-                eq("test.user@example.com"),
+                eq(List.of("test.user@example.com")),
                 eq("Journey: Confirmation Required"),
                 assertArg(params -> assertThat(params)
                         .containsEntry("name", AUTHENTICATED_USER.getName())
@@ -80,7 +80,7 @@ class EmailCodeUseCaseTest {
 
     @Test
     void send_whenSendingEmailCodeFailed_shouldThrowError() throws Exception {
-        doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), anyString(), anyString(), any());
+        doThrow(new RuntimeException("mocked")).when(mailService).sendEmailUsingTemplate(anyString(), any(), anyString(), any());
         assertThatExceptionOfType(TechnicalException.class).isThrownBy(() -> emailCodeUseCase.send(AUTHENTICATED_USER));
         verifyNoInteractions(codeRepository);
     }

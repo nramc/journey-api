@@ -7,7 +7,6 @@ import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramGa
 import com.github.nramc.dev.journey.api.notification.gateway.telegram.TelegramProperties;
 import com.github.nramc.dev.journey.api.notification.mail.MailService;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
-import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -83,16 +82,14 @@ public class NotificationConfig {
     // ── Email notification service ────────────────────────────────────────
 
     @Bean
-    public EmailNotificationService emailNotificationService(MailService mailService,
-                                                             AdminEmailProvider adminEmailProvider) {
-        return new EmailNotificationService(mailService, adminEmailProvider);
+    public EmailNotificationService emailNotificationService(MailService mailService) {
+        return new EmailNotificationService(mailService);
     }
 
     // ── Cross-module event handler ─────────────────────────────────────────
 
     @Bean
-    public NotificationEventHandler notificationEventHandler(MailService mailService,
-                                                              List<NotificationService> notificationServices) {
-        return new NotificationEventHandler(mailService, notificationServices);
+    public NotificationEventHandler notificationEventHandler(List<NotificationService> notificationServices) {
+        return new NotificationEventHandler(notificationServices);
     }
 }

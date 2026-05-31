@@ -3,8 +3,6 @@ package com.github.nramc.dev.journey.api.notification;
 import com.github.nramc.dev.journey.api.account.AccountActivatedEvent;
 import com.github.nramc.dev.journey.api.account.AccountActivationEmailRequestedEvent;
 import com.github.nramc.dev.journey.api.account.UserRegisteredEvent;
-import com.github.nramc.dev.journey.api.notification.mail.MailService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.modulith.events.ApplicationModuleListener;
@@ -25,11 +23,8 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationEventHandler {
-
     private static final String ACTIVATION_EMAIL_TEMPLATE = "account-activation-template.html";
 
-    // todo: remove direct dependency with mail service
-    private final MailService mailService;
     private final List<NotificationService> notificationServices;
 
     /**
@@ -38,8 +33,8 @@ public class NotificationEventHandler {
     @ApplicationModuleListener
     void onUserRegistered(UserRegisteredEvent event) {
         log.debug("Handling UserRegisteredEvent for user: {}", event.username());
-        notificationServices.forEach(svc ->
-                svc.notify("New User signup - " + event.username()));
+        var notificationData = NotificationData.of("New User signup - " + event.username());
+        notificationServices.forEach(svc -> svc.notify(notificationData));
     }
 
     /**
@@ -48,18 +43,16 @@ public class NotificationEventHandler {
     @ApplicationModuleListener
     void onActivationEmailRequested(AccountActivationEmailRequestedEvent event) {
         log.debug("Sending activation email to: {}", event.username());
-        try {
-            Map<String, Object> placeholders = new HashMap<>();
-            placeholders.put("name", event.name());
-            placeholders.put("activationUrl", event.activationUrl());
-            mailService.sendEmailUsingTemplate(
-                    ACTIVATION_EMAIL_TEMPLATE,
-                    event.username(),
-                    "Journey: Activate your account",
-                    placeholders);
-        } catch (MessagingException ex) {
-            log.error("Failed to send activation email to {}", event.username(), ex);
-        }
+
+        Map<String, Object> placeholders = new HashMap<>();
+        placeholders.put("name", event.name());
+        placeholders.put("activationUrl", event.activationUrl());
+        var notificationData = NotificationData.ofEmail(
+                "Journey: Activate your account",
+                List.of(event.username()),
+                ACTIVATION_EMAIL_TEMPLATE, placeholders
+        );
+        notificationServices.forEach(svc -> svc.notify(notificationData));
     }
 
     /**
@@ -68,7 +61,7 @@ public class NotificationEventHandler {
     @ApplicationModuleListener
     void onAccountActivated(AccountActivatedEvent event) {
         log.debug("Handling AccountActivatedEvent for user: {}", event.username());
-        notificationServices.forEach(svc ->
-                svc.notify("User completed onboarding - " + event.username()));
+        var notificationData = NotificationData.of("User completed onboarding - " + event.username());
+        notificationServices.forEach(svc -> svc.notify(notificationData));
     }
 }

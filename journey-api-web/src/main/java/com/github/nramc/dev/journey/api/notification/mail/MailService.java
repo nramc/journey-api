@@ -46,7 +46,7 @@ public class MailService implements MailSender {
         log.info("Simple Email has been sent successfully");
     }
 
-    public void sendEmailUsingTemplate(String template, String to, String subject, Map<String, Object> placeholders)
+    public void sendEmailUsingTemplate(String template, List<String> to, String subject, Map<String, Object> placeholders)
             throws MessagingException {
         Context context = new Context();
         context.setVariables(placeholders);
@@ -59,10 +59,10 @@ public class MailService implements MailSender {
         log.info("Email using template[{}] has been sent successfully", template);
     }
 
-    private void sendHtmlEmail(String to, String subject, String htmlBody) throws MessagingException {
+    private void sendHtmlEmail(List<String> to, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(to);
+        helper.setTo(to.toArray(new String[0]));
         helper.setSubject(subject);
         helper.setText(htmlBody, true);
         helper.addInline("logo.png", logoResource);

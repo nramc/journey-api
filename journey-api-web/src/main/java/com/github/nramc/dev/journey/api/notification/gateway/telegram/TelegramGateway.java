@@ -18,6 +18,7 @@ import org.springframework.web.client.RestClient;
  */
 @Slf4j
 // todo: move this file into "telegram" package to keep all related stuff in one place
+// todo add toggle to enable/disable notification
 public class TelegramGateway {
 
     private final TelegramProperties properties;

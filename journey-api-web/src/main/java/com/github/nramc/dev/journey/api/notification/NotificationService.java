@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.notification;
 
 import com.github.nramc.dev.journey.api.notification.email.EmailNotificationService;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Common contract for all application notification channels.
@@ -17,14 +18,8 @@ public interface NotificationService {
     /**
      * Sends an admin notification to the channel.
      *
-     * @param message the body of the notification
+     * @param notificationData the notification data, including a message and optional metadata
      */
-    void notify(String message);
+    void notify(@NonNull NotificationData notificationData);
 
-    /**
-     * Sends an error alert to the channel.
-     *
-     * @param message a short description of the error
-     */
-    void notifyError(String message);
 }

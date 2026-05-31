@@ -84,7 +84,7 @@ public class EmailCodeUseCase {
             parameters.put("ottPin", emailCode.code());
 
             mailService.sendEmailUsingTemplate(
-                    EMAIL_CODE_TEMPLATE_HTML, authUser.getUsername(), "Journey: Confirmation Required", parameters);
+                    EMAIL_CODE_TEMPLATE_HTML, List.of(authUser.getUsername()), "Journey: Confirmation Required", parameters);
         } catch (RuntimeException | MessagingException ex) {
             throw new TechnicalException("Unable to send Email Code", ex);
         }

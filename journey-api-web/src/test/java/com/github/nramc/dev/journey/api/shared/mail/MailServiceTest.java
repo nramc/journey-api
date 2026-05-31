@@ -86,7 +86,7 @@ class MailServiceTest {
         placeholders.put("name", name);
         String emailCode = "223344";
         placeholders.put("ottPin", emailCode);
-        mailService.sendEmailUsingTemplate(EMAIL_CODE_TEMPLATE_HTML, toEmailAddress, "Example Subject", placeholders);
+        mailService.sendEmailUsingTemplate(EMAIL_CODE_TEMPLATE_HTML, List.of(toEmailAddress), "Example Subject", placeholders);
 
 
         verify(emailSender).send(assertArg((MimeMessage mailMessage) -> {
