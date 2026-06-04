@@ -330,6 +330,3 @@ class CloudinaryGatewayTest {
         }
     }
 }
-
-
-
