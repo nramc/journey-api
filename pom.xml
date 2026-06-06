@@ -48,7 +48,7 @@
         <springdoc-openapi-starter-webmvc-ui.version>3.0.3</springdoc-openapi-starter-webmvc-ui.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.4</zxing-qr.version>
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <maven-build-cache-extension.version>1.2.0</maven-build-cache-extension.version>
         <archunit-junit5.version>1.4.2</archunit-junit5.version>
         <spring-modulith.version>2.0.6</spring-modulith.version>
