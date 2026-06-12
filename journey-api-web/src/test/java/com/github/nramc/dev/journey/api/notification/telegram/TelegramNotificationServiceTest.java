@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.assertArg;
 import static org.mockito.Mockito.verify;
@@ -93,9 +92,9 @@ class TelegramNotificationServiceTest {
     void sendNotification_withBlankMessage_shouldThrowException() {
         var notificationData = NotificationData.of("   ");
 
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> telegramNotificationService.sendNotification(notificationData))
-                .withMessage("Notification message cannot be null or blank");
+        assertThatThrownBy(() -> telegramNotificationService.sendNotification(notificationData))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Notification message cannot be null or blank");
 
         verifyNoInteractions(telegramGateway);
     }
@@ -185,9 +184,8 @@ class TelegramNotificationServiceTest {
     void notify_withBlankMessage_shouldThrowException() {
         var notificationData = NotificationData.of("\t\n");
 
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> telegramNotificationService.notify(notificationData))
-                .withMessage("Notification message cannot be null or blank");
+        assertThatThrownBy(() -> telegramNotificationService.notify(notificationData)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Notification message cannot be null or blank");
 
         verifyNoInteractions(telegramGateway);
     }

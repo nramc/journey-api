@@ -1,11 +1,12 @@
 package com.github.nramc.dev.journey.api;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.modulith.docs.Documenter;
 import org.springframework.modulith.docs.Documenter.DiagramOptions;
 import org.springframework.modulith.docs.Documenter.Options;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Spring Modulith structural verification and documentation generation.
@@ -32,6 +33,6 @@ class ApplicationModulesTest {
                 .writeIndividualModulesAsPlantUml(DiagramOptions.defaults())
                 .writeModuleCanvases()
                 .writeAggregatingDocument();
-        Assertions.assertThat(documenter).isNotNull();
+        assertThat(documenter).isNotNull();
     }
 }

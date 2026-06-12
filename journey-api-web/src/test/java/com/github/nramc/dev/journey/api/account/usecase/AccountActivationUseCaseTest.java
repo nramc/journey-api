@@ -10,6 +10,7 @@ import com.github.nramc.dev.journey.api.shared.domain.AppUser;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailToken;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +21,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.argThat;
 import static org.mockito.Mockito.verify;
@@ -72,7 +73,7 @@ class AccountActivationUseCaseTest {
     void activateAccount_whenTokenNotExistsOrInvalid_shouldThrowError() {
         when(emailTokenUseCase.verifyEmailToken(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
 
-        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER));
+        assertThatThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER)).asInstanceOf(InstanceOfAssertFactories.throwable(BusinessException.class));
     }
 
     @Test
