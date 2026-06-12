@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.notification.config;
 
+import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
 import com.github.nramc.dev.journey.api.notification.NotificationEventHandler;
 import com.github.nramc.dev.journey.api.notification.NotificationService;
 import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 @Configuration(proxyBeanMethods = false)
 @Profile("!test")
-@EnableConfigurationProperties(TelegramProperties.class)
+@EnableConfigurationProperties({TelegramProperties.class, ApplicationProperties.class})
 public class NotificationConfig {
 
     // ── Mail ──────────────────────────────────────────────────────────────
@@ -75,8 +76,8 @@ public class NotificationConfig {
 
     @Bean
     @ConditionalOnProperty(name = "service.telegram.enabled", havingValue = "true")
-    public TelegramNotificationService telegramNotificationService(TelegramGateway telegramGateway) {
-        return new TelegramNotificationService(telegramGateway);
+    public TelegramNotificationService telegramNotificationService(TelegramGateway telegramGateway, TelegramProperties telegramProperties) {
+        return new TelegramNotificationService(telegramGateway, telegramProperties);
     }
 
     // ── Email notification service ────────────────────────────────────────
@@ -89,7 +90,9 @@ public class NotificationConfig {
     // ── Cross-module event handler ─────────────────────────────────────────
 
     @Bean
-    public NotificationEventHandler notificationEventHandler(List<NotificationService> notificationServices) {
-        return new NotificationEventHandler(notificationServices);
+    public NotificationEventHandler notificationEventHandler(
+            List<NotificationService> notificationServices,
+            ApplicationProperties applicationProperties) {
+        return new NotificationEventHandler(notificationServices, applicationProperties);
     }
 }
