@@ -6,7 +6,6 @@ import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -74,14 +73,14 @@ class RegistrationUseCaseTest {
 
     @Test
     void register_whenRegistrationDetailsNotValid_thenShouldThrowException() {
-        assertThatThrownBy(() ->
-                registrationUseCase.register(ONBOARDING_USER.toBuilder().username("invalid-user-name").build())).asInstanceOf(InstanceOfAssertFactories.throwable(ConstraintViolationException.class));
+        var user = ONBOARDING_USER.toBuilder().username("invalid-user-name").build();
+        assertThatThrownBy(() -> registrationUseCase.register(user)).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void register_whenUserAlreadyExists_thenShouldThrowException() {
-        assertThatThrownBy(() ->
-                registrationUseCase.register(ONBOARDING_USER.toBuilder().username(AUTHENTICATED_USER.getUsername()).build())).asInstanceOf(InstanceOfAssertFactories.throwable(BusinessException.class));
+        var user = ONBOARDING_USER.toBuilder().username(AUTHENTICATED_USER.getUsername()).build();
+        assertThatThrownBy(() -> registrationUseCase.register(user)).isInstanceOf(BusinessException.class);
     }
 
 }

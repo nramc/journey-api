@@ -3,7 +3,7 @@ package com.github.nramc.dev.journey.api.journey.event.handler;
 import com.github.nramc.dev.journey.api.journey.domain.Journey;
 import com.github.nramc.dev.journey.api.journey.domain.JourneyImageDetail;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
-import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryDetectedEvent;
+import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryEvent;
 import com.github.nramc.dev.journey.api.shared.provider.ActiveUserProvider;
 import com.github.nramc.dev.journey.api.shared.provider.ActiveUserProvider.ActiveUser;
 import com.github.nramc.dev.journey.api.shared.utils.AuthUtils;
@@ -38,7 +38,7 @@ public class DayHasPassedEventHandler {
             if (CollectionUtils.isEmpty(journeys)) {
                 return;
             }
-            applicationEvents.publishEvent(new JourneyAnniversaryDetectedEvent(
+            applicationEvents.publishEvent(new JourneyAnniversaryEvent(
                     activeUser.emailAddress().value(),
                     activeUser.displayName(),
                     date,
@@ -47,12 +47,12 @@ public class DayHasPassedEventHandler {
         });
     }
 
-    private JourneyAnniversaryDetectedEvent.JourneyAnniversaryItem toAnniversaryItem(Journey journey) {
+    private JourneyAnniversaryEvent.JourneyAnniversaryItem toAnniversaryItem(Journey journey) {
         List<String> imageUrls = journey.imagesDetails() == null
                 ? List.of()
                 : journey.imagesDetails().images().stream().map(JourneyImageDetail::url).toList();
 
-        return new JourneyAnniversaryDetectedEvent.JourneyAnniversaryItem(
+        return new JourneyAnniversaryEvent.JourneyAnniversaryItem(
                 journey.id(),
                 journey.name(),
                 journey.journeyDate(),

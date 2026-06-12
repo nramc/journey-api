@@ -10,7 +10,6 @@ import com.github.nramc.dev.journey.api.shared.domain.AppUser;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailToken;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,7 +72,7 @@ class AccountActivationUseCaseTest {
     void activateAccount_whenTokenNotExistsOrInvalid_shouldThrowError() {
         when(emailTokenUseCase.verifyEmailToken(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
 
-        assertThatThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER)).asInstanceOf(InstanceOfAssertFactories.throwable(BusinessException.class));
+        assertThatThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER)).isInstanceOf(BusinessException.class);
     }
 
     @Test

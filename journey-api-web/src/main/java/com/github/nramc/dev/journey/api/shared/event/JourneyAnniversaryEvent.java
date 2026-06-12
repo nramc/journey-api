@@ -11,7 +11,7 @@ import java.util.List;
  * @param date date that triggered the anniversary detection
  * @param journeys all journeys owned by the user matching month/day on {@code date}
  */
-public record JourneyAnniversaryDetectedEvent(
+public record JourneyAnniversaryEvent(
         String username,
         String recipientName,
         LocalDate date,

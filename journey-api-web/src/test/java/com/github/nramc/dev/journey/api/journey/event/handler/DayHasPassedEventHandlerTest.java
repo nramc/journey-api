@@ -8,8 +8,8 @@ import com.github.nramc.dev.journey.api.journey.web.journeys.JourneyData;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
 import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
-import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryDetectedEvent;
-import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryDetectedEvent.JourneyAnniversaryItem;
+import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryEvent;
+import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryEvent.JourneyAnniversaryItem;
 import com.github.nramc.dev.journey.api.shared.provider.ActiveUserProvider;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
@@ -60,11 +60,11 @@ class DayHasPassedEventHandlerTest {
 
         scenario.publish(DayHasPassed.of(date))
                 .andWaitAtMost(Duration.ofSeconds(5))
-                .forEventOfType(JourneyAnniversaryDetectedEvent.class)
+                .forEventOfType(JourneyAnniversaryEvent.class)
                 .matching(event -> event.username().equals(activeUser.emailAddress().value()))
                 .toArriveAndVerify(detected -> {
-                    assertThat(detected).extracting(JourneyAnniversaryDetectedEvent::username, JourneyAnniversaryDetectedEvent::recipientName,
-                                    JourneyAnniversaryDetectedEvent::date)
+                    assertThat(detected).extracting(JourneyAnniversaryEvent::username, JourneyAnniversaryEvent::recipientName,
+                                    JourneyAnniversaryEvent::date)
                             .containsExactly(activeUser.emailAddress().value(), activeUser.displayName(), date);
 
                     assertThat(detected.journeys()).hasSize(1).first().isNotNull()

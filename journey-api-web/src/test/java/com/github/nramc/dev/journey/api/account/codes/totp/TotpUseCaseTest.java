@@ -5,7 +5,6 @@ import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpCode;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttribute;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -83,7 +82,7 @@ class TotpUseCaseTest {
     void activateTotp_whenCodeInvalid_shouldNotActivateTotp() {
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
-        assertThatThrownBy(() -> totpUseCase.activateTotp(AUTHENTICATED_USER, TOTP_CODE, TOTP_SECRET)).asInstanceOf(InstanceOfAssertFactories.throwable(BusinessException.class));
+        assertThatThrownBy(() -> totpUseCase.activateTotp(AUTHENTICATED_USER, TOTP_CODE, TOTP_SECRET)).isInstanceOf(BusinessException.class);
 
         verifyNoInteractions(userSecurityAttributeService);
     }
