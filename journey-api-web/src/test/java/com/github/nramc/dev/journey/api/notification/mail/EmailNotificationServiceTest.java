@@ -1,12 +1,10 @@
-package com.github.nramc.dev.journey.api.notification.email;
+package com.github.nramc.dev.journey.api.notification.mail;
 
 import com.github.nramc.dev.journey.api.notification.NotificationData;
-import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
-import com.github.nramc.dev.journey.api.notification.mail.MailSender;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -31,8 +29,12 @@ class EmailNotificationServiceTest {
             .build();
     @Mock
     private MailSender mailSender;
-    @InjectMocks
     private EmailNotificationService emailNotificationService;
+
+    @BeforeEach
+    void setup() {
+        emailNotificationService = new EmailNotificationService(mailSender);
+    }
 
     @Test
     void contextTest_shouldInitialiseCorrectly() {

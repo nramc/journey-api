@@ -1,7 +1,6 @@
-package com.github.nramc.dev.journey.api.notification.email;
+package com.github.nramc.dev.journey.api.notification.mail;
 
 import com.github.nramc.dev.journey.api.notification.config.NotificationConfig;
-import com.github.nramc.dev.journey.api.notification.mail.MailSender;
 import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;
