@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.modulith.moments.DayHasPassed;
 
@@ -23,7 +24,7 @@ public class DayHasPassedEventHandler {
     private final ActiveUserProvider activeUserProvider;
     private final ApplicationEventPublisher applicationEvents;
 
-    @ApplicationModuleListener
+    @EventListener
     public void onDayHasPassed(DayHasPassed event) {
         var date = event.getDate();
         List<ActiveUser> activeUsers = activeUserProvider.getActiveUsers();
