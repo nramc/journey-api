@@ -13,7 +13,7 @@
  */
 @ApplicationModule(
         displayName = "Notification",
-        allowedDependencies = {"shared", "account"}
+        allowedDependencies = {"shared", "account", "infrastructure"}
 )
 package com.github.nramc.dev.journey.api.notification;
 

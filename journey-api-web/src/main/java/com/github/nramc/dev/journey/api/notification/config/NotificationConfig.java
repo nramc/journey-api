@@ -1,9 +1,17 @@
 package com.github.nramc.dev.journey.api.notification.config;
 
+import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import com.github.nramc.dev.journey.api.notification.NotificationEventDispatcher;
 import com.github.nramc.dev.journey.api.notification.NotificationEventHandler;
+import com.github.nramc.dev.journey.api.notification.NotificationEventProcessor;
 import com.github.nramc.dev.journey.api.notification.NotificationService;
 import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
 import com.github.nramc.dev.journey.api.notification.mail.MailSender;
+import com.github.nramc.dev.journey.api.notification.processor.AccountActivatedNotificationProcessor;
+import com.github.nramc.dev.journey.api.notification.processor.AccountActivationEmailRequestedNotificationProcessor;
+import com.github.nramc.dev.journey.api.notification.processor.EmailCodeRequestedNotificationProcessor;
+import com.github.nramc.dev.journey.api.notification.processor.JourneyAnniversaryNotificationProcessor;
+import com.github.nramc.dev.journey.api.notification.processor.UserRegisteredNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramGateway;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramProperties;
@@ -31,7 +39,7 @@ import java.util.List;
  */
 @Configuration(proxyBeanMethods = false)
 @Profile("!test")
-@EnableConfigurationProperties(TelegramProperties.class)
+@EnableConfigurationProperties({TelegramProperties.class, ApplicationProperties.class})
 public class NotificationConfig {
 
     // ── Mail ──────────────────────────────────────────────────────────────
@@ -75,8 +83,8 @@ public class NotificationConfig {
 
     @Bean
     @ConditionalOnProperty(name = "service.telegram.enabled", havingValue = "true")
-    public TelegramNotificationService telegramNotificationService(TelegramGateway telegramGateway) {
-        return new TelegramNotificationService(telegramGateway);
+    public TelegramNotificationService telegramNotificationService(TelegramGateway telegramGateway, TelegramProperties telegramProperties) {
+        return new TelegramNotificationService(telegramGateway, telegramProperties);
     }
 
     // ── Email notification service ────────────────────────────────────────
@@ -89,7 +97,41 @@ public class NotificationConfig {
     // ── Cross-module event handler ─────────────────────────────────────────
 
     @Bean
-    public NotificationEventHandler notificationEventHandler(List<NotificationService> notificationServices) {
-        return new NotificationEventHandler(notificationServices);
+    public NotificationEventHandler notificationEventHandler(
+            NotificationEventDispatcher notificationEventDispatcher) {
+        return new NotificationEventHandler(notificationEventDispatcher);
+    }
+
+    @Bean
+    public NotificationEventDispatcher notificationEventDispatcher(
+            List<NotificationService> notificationServices,
+            List<NotificationEventProcessor<?>> notificationEventProcessors) {
+        return new NotificationEventDispatcher(notificationServices, notificationEventProcessors);
+    }
+
+    @Bean
+    public UserRegisteredNotificationProcessor userRegisteredNotificationProcessor() {
+        return new UserRegisteredNotificationProcessor();
+    }
+
+    @Bean
+    public AccountActivationEmailRequestedNotificationProcessor accountActivationEmailRequestedNotificationProcessor() {
+        return new AccountActivationEmailRequestedNotificationProcessor();
+    }
+
+    @Bean
+    public AccountActivatedNotificationProcessor accountActivatedNotificationProcessor() {
+        return new AccountActivatedNotificationProcessor();
+    }
+
+    @Bean
+    public EmailCodeRequestedNotificationProcessor emailCodeRequestedNotificationProcessor() {
+        return new EmailCodeRequestedNotificationProcessor();
+    }
+
+    @Bean
+    public JourneyAnniversaryNotificationProcessor journeyAnniversaryNotificationProcessor(
+            ApplicationProperties applicationProperties) {
+        return new JourneyAnniversaryNotificationProcessor(applicationProperties);
     }
 }

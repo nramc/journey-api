@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.shared.utils;
 import com.github.nramc.dev.journey.api.shared.domain.AppUser;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
+import com.github.nramc.dev.journey.api.shared.provider.ActiveUserProvider;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -81,6 +82,15 @@ public final class AuthUtils {
         return AppUser.builder()
                 .username(authentication.getName())
                 .roles(getRoleFromAuthority(authentication.getAuthorities()))
+                .build();
+    }
+
+    public static AppUser toAppUser(ActiveUserProvider.ActiveUser activeUser) {
+        return AppUser.builder()
+                .username(activeUser.emailAddress().value())
+                .name(activeUser.displayName())
+                .roles(activeUser.roles())
+                .enabled(true)
                 .build();
     }
 

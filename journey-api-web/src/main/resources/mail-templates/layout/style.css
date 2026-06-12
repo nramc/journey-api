@@ -1,5 +1,6 @@
 /* ============================================================
-   Journey Email Styles
+   Journey Email Styles  –  v2.0
+   Professional · Personal · Pixel-perfect
    ============================================================ */
 
 /* --- Reset & Base ----------------------------------------- */
@@ -13,12 +14,21 @@ table, td {
     mso-table-rspace: 0;
 }
 
+img {
+    border: 0;
+    height: auto;
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+}
+
 body {
-    font-family: Arial, Helvetica, Verdana, sans-serif;
-    background-color: #f4f6fb;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif;
+    background-color: #f0f4ff;
     margin: 0;
     padding: 0;
-    color: #333333;
+    color: #1e293b;
 }
 
 /* --- Pre-header (hidden preview text) --------------------- */
@@ -28,14 +38,14 @@ body {
     overflow: hidden;
     font-size: 1px;
     line-height: 1px;
-    color: #f4f6fb;
+    color: #f0f4ff;
     mso-hide: all;
 }
 
 /* --- Outer wrapper ---------------------------------------- */
 .email-template {
-    background-color: #f4f6fb;
-    padding: 32px 16px;
+    background-color: #f0f4ff;
+    padding: 40px 16px;
 }
 
 /* --- Container -------------------------------------------- */
@@ -44,146 +54,350 @@ body {
     max-width: 600px;
     margin: 0 auto;
     background-color: #ffffff;
-    border-radius: 8px;
-    border: 1px solid #e0e4ef;
+    border-radius: 12px;
+    border: 1px solid #dde4f5;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 24px rgba(52, 89, 230, 0.10);
 }
 
 /* --- Header ----------------------------------------------- */
 .header {
-    background-color: #3459e6;
-    padding: 24px 32px;
+    background: linear-gradient(135deg, #3459e6 0%, #1e3bbf 60%, #0f2399 100%);
+    padding: 32px 40px 28px;
     text-align: center;
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f59e0b, #fb923c, #f59e0b);
+    opacity: 0.85;
 }
 
 .header h1 {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: 700;
+    margin: 0 0 6px;
+    font-size: 1.6rem;
+    font-weight: 800;
     color: #ffffff;
     letter-spacing: 0.5px;
+}
+
+.header-tagline {
+    margin: 6px 0 0;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    text-transform: capitalize;
 }
 
 .brand-logo {
     vertical-align: middle;
     margin-right: 10px;
+    border-radius: 8px;
 }
 
 /* --- Content area ----------------------------------------- */
 .content {
-    padding: 36px 40px 28px;
-    color: #333333;
-    font-size: 0.95rem;
-    line-height: 1.7;
+    padding: 40px 44px 32px;
+    color: #1e293b;
+    font-size: 0.97rem;
+    line-height: 1.75;
 }
 
 .content p {
-    margin: 0 0 16px;
+    margin: 0 0 18px;
 }
 
 .content p:last-child {
     margin-bottom: 0;
 }
 
+/* --- Greeting --------------------------------------------- */
+.greeting {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 12px;
+}
+
 /* --- Section title ---------------------------------------- */
 .section-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #3459e6;
-    margin: 0 0 20px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #2341c4;
+    margin: 0 0 22px;
+    line-height: 1.35;
+}
+
+/* --- Hero band (full-width accent inside content) --------- */
+.hero-band {
+    background: linear-gradient(135deg, #eef1fd 0%, #f0f4ff 100%);
+    border-left: 4px solid #3459e6;
+    border-radius: 0 8px 8px 0;
+    padding: 18px 20px;
+    margin: 0 0 26px;
+}
+
+.hero-band p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #2d3d7f;
+    line-height: 1.6;
 }
 
 /* --- Divider ---------------------------------------------- */
 .divider {
     border: none;
-    border-top: 1px solid #e0e4ef;
-    margin: 24px 0;
+    border-top: 1px solid #e8ecf8;
+    margin: 28px 0;
 }
 
 /* --- OTT / Code box --------------------------------------- */
 .code-box {
     display: block;
-    background-color: #f0f4ff;
-    border: 2px dashed #3459e6;
-    border-radius: 8px;
-    padding: 20px 32px;
-    margin: 24px auto;
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: 8px;
-    color: #3459e6;
+    background: linear-gradient(135deg, #eef1fd 0%, #e8edff 100%);
+    border: 2px solid #3459e6;
+    border-radius: 12px;
+    padding: 24px 32px;
+    margin: 28px auto;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: 12px;
+    color: #1e3bbf;
     text-align: center;
-    max-width: 280px;
+    max-width: 300px;
+    box-shadow: 0 4px 16px rgba(52, 89, 230, 0.18);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.code-expiry {
+    text-align: center;
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: -16px 0 20px;
 }
 
 /* --- CTA button ------------------------------------------- */
 .cta-wrapper {
     text-align: center;
-    margin: 28px 0;
+    margin: 32px 0;
 }
 
 .cta-btn {
     display: inline-block;
-    padding: 14px 32px;
-    font-size: 0.95rem;
+    padding: 15px 38px;
+    font-size: 1rem;
     font-weight: 700;
     color: #ffffff !important;
-    background-color: #3459e6;
+    background: linear-gradient(135deg, #3459e6 0%, #2341c4 100%);
     text-decoration: none;
-    border-radius: 6px;
-    letter-spacing: 0.3px;
+    border-radius: 50px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 4px 14px rgba(52, 89, 230, 0.35);
+    transition: box-shadow 0.2s;
+}
+
+/* --- Feature list (for onboarding emails) ----------------- */
+.feature-list {
+    list-style: none;
+    margin: 0 0 22px;
+    padding: 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 0.93rem;
+    color: #334155;
+    line-height: 1.6;
+    border-bottom: 1px solid #f1f4fb;
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    line-height: 1.4;
 }
 
 /* --- Alert / info box ------------------------------------- */
 .info-box {
-    background-color: #fff8e1;
-    border-left: 4px solid #f5a623;
-    border-radius: 4px;
-    padding: 12px 16px;
+    background-color: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    color: #78350f;
+    margin: 24px 0;
+    line-height: 1.6;
+}
+
+.success-box {
+    background-color: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    color: #14532d;
+    margin: 24px 0;
+    line-height: 1.6;
+}
+
+/* --- Anniversary: year badge ------------------------------ */
+.anniversary-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f59e0b 0%, #fb923c 100%);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+
+/* --- Journey card ----------------------------------------- */
+.journey-card {
+    border: 1px solid #dde4f5;
+    border-radius: 12px;
+    margin: 18px 0;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(52, 89, 230, 0.07);
+}
+
+.journey-hero-image {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.journey-body {
+    padding: 18px 22px 20px;
+}
+
+.journey-title {
+    margin: 0 0 6px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.35;
+}
+
+.journey-meta {
+    margin: 0 0 12px;
+    color: #64748b;
     font-size: 0.85rem;
-    color: #7a5c00;
-    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.journey-meta::before {
+    content: '📍';
+    font-size: 0.9rem;
+}
+
+.gallery {
+    margin-top: 12px;
+}
+
+.gallery-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+}
+
+.gallery img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border: 2px solid #e8ecf8;
+}
+
+.inline-cta {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #3459e6 0%, #2341c4 100%);
+    color: #ffffff !important;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 50px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 8px rgba(52, 89, 230, 0.25);
 }
 
 /* --- Regards section -------------------------------------- */
 .div-regards {
-    padding: 0 40px 24px;
-    color: #333333;
-    font-size: 0.9rem;
-    line-height: 1.6;
+    padding: 8px 44px 28px;
+    color: #334155;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    border-top: 1px solid #e8ecf8;
+    margin-top: 8px;
+}
+
+.div-regards strong {
+    color: #2341c4;
 }
 
 /* --- Disclaimer ------------------------------------------- */
 .div-disclaimer {
-    background-color: #f9fafc;
-    border-top: 1px solid #e0e4ef;
-    padding: 16px 40px;
+    background-color: #f8faff;
+    border-top: 1px solid #e8ecf8;
+    padding: 18px 44px;
     font-size: 0.78rem;
-    color: #595959;
-    line-height: 1.6;
+    color: #64748b;
+    line-height: 1.65;
 }
 
 .div-disclaimer p {
-    margin: 0 0 8px;
+    margin: 0 0 6px;
 }
 
 .div-disclaimer a {
     color: #3459e6;
     text-decoration: none;
+    font-weight: 500;
 }
 
 /* --- Footer ----------------------------------------------- */
 .footer {
-    background-color: #3459e6;
-    padding: 16px 32px;
+    background: linear-gradient(135deg, #1e3bbf 0%, #0f2399 100%);
+    padding: 20px 44px;
     text-align: center;
     font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .footer p {
     margin: 0;
+    line-height: 1.8;
+}
+
+.footer a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: underline;
 }
 
 /* --- Utilities -------------------------------------------- */
@@ -196,5 +410,36 @@ body {
 }
 
 .text-muted {
-    color: #888888;
+    color: #94a3b8;
+    font-size: 0.88rem;
+}
+
+.emoji-large {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+/* --- Responsive ------------------------------------------- */
+@media only screen and (max-width: 600px) {
+    .content {
+        padding: 28px 24px 20px;
+    }
+
+    .div-regards {
+        padding: 8px 24px 20px;
+    }
+
+    .div-disclaimer {
+        padding: 16px 24px;
+    }
+
+    .footer {
+        padding: 18px 24px;
+    }
+
+    .code-box {
+        font-size: 2.2rem;
+        letter-spacing: 8px;
+        padding: 20px 24px;
+    }
 }

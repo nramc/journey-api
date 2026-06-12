@@ -1,36 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Journey</title>
+    <title>Journey – Welcome Aboard!</title>
     <style th:utext="${styles}">/* styles injected at runtime */</style>
 </head>
 <body>
 <div th:replace="~{layout/emailLayout.html :: layout('Activate Your Account', ~{::content})}">
     <th:block th:ref="content">
 
+        <!-- Warm welcome -->
         <p class="section-title">Welcome to Journey! 🎉</p>
 
-        <p th:text="'Hello, ' + ${name} + '!'"></p>
-        <p>Thank you for registering. We're thrilled to have you on board!</p>
-        <p>To complete your registration and activate your account, please click the button below:</p>
+        <p class="greeting" th:text="|Hey ${name}, so glad you are here!|">Hey there, so glad you are here!</p>
+
+        <div class="hero-band">
+            <p>You've just taken the first step toward turning your travel memories into a beautiful, personal archive.
+                We can't wait to see the journeys you'll share!</p>
+        </div>
+
+        <p>To get started, click the button below to activate your account. It only takes a second.</p>
 
         <div class="cta-wrapper">
-            <a class="cta-btn" th:href="@{${activationUrl}}">Activate My Account</a>
+            <a class="cta-btn" th:href="@{${activationUrl}}">✨ Activate My Account</a>
         </div>
 
         <hr class="divider"/>
 
+        <!-- What awaits them -->
+        <p style="font-weight: 700; color: #1e293b; margin-bottom: 14px;">Here's what's waiting for you:</p>
+        <ul class="feature-list">
+            <li>
+                <span class="feature-icon">🗺️</span>
+                <span><strong>Map your journeys</strong> — Pin your travels on an interactive map with rich geospatial details.</span>
+            </li>
+            <li>
+                <span class="feature-icon">📸</span>
+                <span><strong>Capture memories</strong> — Add photos and videos to bring your stories to life.</span>
+            </li>
+            <li>
+                <span class="feature-icon">🎂</span>
+                <span><strong>Anniversary reminders</strong> — Relive your favorite moments on their special day, every year.</span>
+            </li>
+            <li>
+                <span class="feature-icon">🔒</span>
+                <span><strong>Private by default</strong> — Your memories are yours. You control what you share.</span>
+            </li>
+        </ul>
+
         <div class="info-box">
-            ⏳ &nbsp;<strong>This link may expire.</strong>
-            If it no longer works, please request a new activation email from the login page.
+            ⏳ &nbsp;<strong>This activation link may expire.</strong>
+            If it no longer works, you can request a new one from the login page — no worries!
         </div>
 
-        <p><strong>Need help?</strong> If you have any questions or run into issues,
-            <a href="https://github.com/nramc/journeys/issues" target="_blank">open a support ticket</a> — we're happy
-            to help.</p>
-
-        <p class="text-muted">If you did not create this account, you can safely ignore this email. Your account will
-            not be activated.</p>
+        <p class="text-muted">Didn't create this account? You can safely ignore this email. Nothing will be activated and
+            no changes will be made.</p>
 
     </th:block>
 </div>

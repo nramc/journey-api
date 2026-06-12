@@ -35,3 +35,9 @@ build/
 
 ### environment files ###
 .env
+
+### OpenRewrite local cache ###
+.rewrite-cache/
+
+### macOS ###
+.DS_Store

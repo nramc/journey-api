@@ -20,7 +20,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.argThat;
 import static org.mockito.Mockito.verify;
@@ -72,7 +72,7 @@ class AccountActivationUseCaseTest {
     void activateAccount_whenTokenNotExistsOrInvalid_shouldThrowError() {
         when(emailTokenUseCase.verifyEmailToken(EMAIL_TOKEN, ONBOARDING_USER)).thenReturn(false);
 
-        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER));
+        assertThatThrownBy(() -> accountActivationUseCase.activateAccount(EMAIL_TOKEN, ONBOARDING_USER)).isInstanceOf(BusinessException.class);
     }
 
     @Test

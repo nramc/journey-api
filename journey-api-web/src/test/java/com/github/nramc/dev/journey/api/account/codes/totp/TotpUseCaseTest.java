@@ -17,7 +17,7 @@ import java.util.Optional;
 import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
 import static com.github.nramc.dev.journey.api.shared.domain.user.security.UserSecurityAttributeType.TOTP;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -82,7 +82,7 @@ class TotpUseCaseTest {
     void activateTotp_whenCodeInvalid_shouldNotActivateTotp() {
         when(codeVerifier.verify(TOTP_SECRET, TOTP_CODE)).thenReturn(false);
 
-        assertThatExceptionOfType(BusinessException.class).isThrownBy(() -> totpUseCase.activateTotp(AUTHENTICATED_USER, TOTP_CODE, TOTP_SECRET));
+        assertThatThrownBy(() -> totpUseCase.activateTotp(AUTHENTICATED_USER, TOTP_CODE, TOTP_SECRET)).isInstanceOf(BusinessException.class);
 
         verifyNoInteractions(userSecurityAttributeService);
     }

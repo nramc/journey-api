@@ -41,6 +41,7 @@
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
         <rewrite-logging-frameworks.version>3.29.0</rewrite-logging-frameworks.version>
         <rewrite-maven-plugin.version>6.41.0</rewrite-maven-plugin.version>
+        <rewrite-pom-cache-dir>${maven.multiModuleProjectDirectory}/.rewrite-cache</rewrite-pom-cache-dir>
         <rewrite-static-analysis.version>2.36.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.37.0</rewrite-testing-frameworks.version>
         <spring-ai.version>2.0.0-M6</spring-ai.version>
@@ -271,6 +272,7 @@
                         </executions>
                         <configuration>
                             <failOnDryRunResults>true</failOnDryRunResults>
+                            <pomCacheDirectory>${rewrite-pom-cache-dir}</pomCacheDirectory>
                             <activeRecipes>
                                 <recipe>com.github.nramc.recipes.sources</recipe>
                                 <recipe>com.github.nramc.recipes.testing</recipe>

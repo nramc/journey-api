@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.notification.telegram;
 
+import lombok.Builder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * </p>
  */
 @ConfigurationProperties("service.telegram")
+@Builder(toBuilder = true)
 public record TelegramProperties(
         boolean enabled,
         String botToken,

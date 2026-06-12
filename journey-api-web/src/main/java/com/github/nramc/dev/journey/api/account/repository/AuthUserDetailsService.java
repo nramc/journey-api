@@ -2,9 +2,12 @@ package com.github.nramc.dev.journey.api.account.repository;
 
 import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Role;
+import com.github.nramc.dev.journey.api.shared.provider.ActiveUserProvider;
 import com.github.nramc.dev.journey.api.shared.provider.AdminEmailProvider;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +20,8 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional
-public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPasswordService, AdminEmailProvider {
+public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPasswordService, AdminEmailProvider,
+        ActiveUserProvider {
     private final UserRepository userRepository;
 
     @Override
@@ -54,7 +58,7 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
     }
 
     @Override
-    public void changePassword(@NonNull String oldPassword, @NonNull String newPassword) {
+    public void changePassword(@Nullable String oldPassword, @Nullable String newPassword) {
         throw new UnsupportedOperationException("change password feature not possible");
     }
 
@@ -72,6 +76,17 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
         return findAllAdministratorUsers().stream()
                 .map(AuthUser::getUsername)
                 .map(EmailAddress::valueOf)
+                .toList();
+    }
+
+    @Override
+    public List<ActiveUser> getActiveUsers() {
+        return userRepository.findByEnabled(true).stream()
+                .map(user -> new ActiveUser(
+                        EmailAddress.valueOf(user.getUsername()),
+                        StringUtils.defaultIfBlank(user.getName(), user.getUsername()),
+                        user.getRoles()
+                ))
                 .toList();
     }
 

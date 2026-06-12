@@ -1,13 +1,12 @@
-package com.github.nramc.dev.journey.api.notification.email;
+package com.github.nramc.dev.journey.api.notification.mail;
 
 import com.github.nramc.dev.journey.api.notification.NotificationData;
-import com.github.nramc.dev.journey.api.notification.mail.EmailNotificationService;
-import com.github.nramc.dev.journey.api.notification.mail.MailSender;
-import jakarta.mail.MessagingException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -30,8 +29,12 @@ class EmailNotificationServiceTest {
             .build();
     @Mock
     private MailSender mailSender;
-    @InjectMocks
     private EmailNotificationService emailNotificationService;
+
+    @BeforeEach
+    void setup() {
+        emailNotificationService = new EmailNotificationService(mailSender);
+    }
 
     @Test
     void contextTest_shouldInitialiseCorrectly() {
@@ -90,15 +93,15 @@ class EmailNotificationServiceTest {
                 .type(NotificationData.NotificationType.TELEGRAM_ONLY)
                 .build();
         emailNotificationService.notify(unsupported);
-        verify(mailSender, org.mockito.Mockito.never()).sendSimpleEmail(
-                org.mockito.ArgumentMatchers.anyList(),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.anyString()
+        verify(mailSender, Mockito.never()).sendSimpleEmail(
+                ArgumentMatchers.anyList(),
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString()
         );
     }
 
     @Test
-    void notify_withTemplateEmail_shouldSendTemplateEmail() throws MessagingException {
+    void notify_withTemplateEmail_shouldSendTemplateEmail() throws Exception {
         var notificationData = EMAIL_NOTIFICATION_DATA.toBuilder()
                 .metadata(Map.of("template", "welcome-email", "metadata", Map.of("user", "Alice")))
                 .build();

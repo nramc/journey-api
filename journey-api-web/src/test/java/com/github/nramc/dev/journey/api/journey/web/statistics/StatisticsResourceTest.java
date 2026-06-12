@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -62,7 +63,7 @@ class StatisticsResourceTest {
                         .createdDate(LocalDate.now().plusDays(index))
                         .visibilities(Set.of(MYSELF))
                         .isPublished(true)
-                        .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index % 2))
+                        .journeyDate(LocalDate.of(2024, Month.JANUARY, 25).plusYears(index % 2))
                         .geoDetails(JOURNEY_ENTITY.getGeoDetails().toBuilder()
                                 .category("Category_" + (index % 2 == 0 ? "even" : "odd"))
                                 .city("City_" + (index % 2 == 0 ? "even" : "odd"))
@@ -106,7 +107,7 @@ class StatisticsResourceTest {
                         .createdDate(LocalDate.now().plusDays(index))
                         .visibilities(Set.of(MYSELF))
                         .isPublished(true)
-                        .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index))
+                        .journeyDate(LocalDate.of(2024, Month.JANUARY, 25).plusYears(index))
                         .geoDetails(JOURNEY_ENTITY.getGeoDetails().toBuilder()
                                 .category("Category_" + index)
                                 .city("City_" + index)

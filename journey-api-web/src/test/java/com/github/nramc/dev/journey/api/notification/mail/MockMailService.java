@@ -1,6 +1,5 @@
-package com.github.nramc.dev.journey.api.notification.email;
+package com.github.nramc.dev.journey.api.notification.mail;
 
-import com.github.nramc.dev.journey.api.notification.mail.MailSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

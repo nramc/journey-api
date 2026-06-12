@@ -1,13 +1,16 @@
 package com.github.nramc.dev.journey.api.journey.config;
 
 import com.cloudinary.Cloudinary;
+import com.github.nramc.dev.journey.api.journey.event.handler.DayHasPassedEventHandler;
 import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryGateway;
 import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryProperties;
 import com.github.nramc.dev.journey.api.journey.health.CloudinaryHealthIndicator;
 import com.github.nramc.dev.journey.api.journey.repository.JourneyService;
 import com.github.nramc.dev.journey.api.journey.web.journeys.update.validator.JourneyValidator;
+import com.github.nramc.dev.journey.api.shared.provider.ActiveUserProvider;
 import jakarta.validation.Validator;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -56,5 +59,13 @@ public class JourneyConfig {
     @Bean
     public JourneyValidator journeyValidator(Validator validator) {
         return new JourneyValidator(validator);
+    }
+
+    @Bean
+    public DayHasPassedEventHandler dayHasPassedEventHandler(
+            JourneyService journeyService,
+            ActiveUserProvider activeUserProvider,
+            ApplicationEventPublisher applicationEvents) {
+        return new DayHasPassedEventHandler(journeyService, activeUserProvider, applicationEvents);
     }
 }

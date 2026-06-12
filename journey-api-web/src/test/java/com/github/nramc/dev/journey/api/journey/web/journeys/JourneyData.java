@@ -14,6 +14,7 @@ import com.github.nramc.geojson.domain.Point;
 import com.github.nramc.geojson.domain.Position;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,8 +39,8 @@ public final class JourneyData {
             .description("Travelled first time for work deputation to Germany, Munich city")
             .tags(List.of("travel", "germany", "munich"))
             .thumbnail("https://example.com/thumbnail.png")
-            .createdDate(LocalDate.of(2024, 3, 27))
-            .journeyDate(LocalDate.of(2024, 3, 27))
+            .createdDate(LocalDate.of(2024, Month.MARCH, 27))
+            .journeyDate(LocalDate.of(2024, Month.MARCH, 27))
             .visibilities(Set.of(Visibility.MYSELF))
             .createdBy(WithMockAuthenticatedUser.USERNAME)
             .isPublished(false)

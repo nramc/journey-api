@@ -40,6 +40,8 @@ spring:
         published: 5m
         processing: 5m
         resubmitted: 5m
+    moments:
+      enable-time-machine: true
 
 management:
   endpoints:

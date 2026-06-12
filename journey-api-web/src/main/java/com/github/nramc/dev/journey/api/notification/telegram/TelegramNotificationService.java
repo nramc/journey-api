@@ -5,7 +5,13 @@ import com.github.nramc.dev.journey.api.notification.NotificationService;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramProperties.ParseMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
+
+import java.util.List;
+
+import static com.github.nramc.dev.journey.api.notification.NotificationData.NotificationType.ALL;
+import static com.github.nramc.dev.journey.api.notification.NotificationData.NotificationType.TELEGRAM_ONLY;
 
 /**
  * Use-case service for sending notifications to the application's Telegram channel.
@@ -22,6 +28,11 @@ import org.jspecify.annotations.NonNull;
 public class TelegramNotificationService implements NotificationService {
 
     private final TelegramGateway telegramGateway;
+    private final TelegramProperties telegramProperties;
+
+    private boolean canSkip(NotificationData notificationData) {
+        return !(telegramProperties.enabled() && List.of(ALL, TELEGRAM_ONLY).contains(notificationData.type()));
+    }
 
     /**
      * Sends a plain notification message to the channel.
@@ -29,6 +40,12 @@ public class TelegramNotificationService implements NotificationService {
      * @param notificationData the notification data, including a message and optional metadata
      */
     public void sendNotification(NotificationData notificationData) {
+        if (canSkip(notificationData)) {
+            return;
+        }
+
+        requireValidNotificationData(notificationData);
+
         log.debug("Sending Telegram notification: {}", notificationData.message());
         telegramGateway.sendMessage(notificationData.message());
     }
@@ -54,12 +71,28 @@ public class TelegramNotificationService implements NotificationService {
      */
     @Override
     public void notify(@NonNull NotificationData notificationData) {
+        if (canSkip(notificationData)) {
+            return;
+        }
+
+        requireValidNotificationData(notificationData);
+
         String formatted = """
                 🔔 <b>Admin Notification</b>
                 
                 %s
                 """.formatted(notificationData.message());
         telegramGateway.sendMessage(formatted);
+    }
+
+    private void requireValidNotificationData(NotificationData notificationData) {
+
+        if (notificationData == null) {
+            throw new IllegalArgumentException("NotificationData cannot be null");
+        }
+        if (StringUtils.isBlank(notificationData.message())) {
+            throw new IllegalArgumentException("Notification message cannot be null or blank");
+        }
     }
 
 }

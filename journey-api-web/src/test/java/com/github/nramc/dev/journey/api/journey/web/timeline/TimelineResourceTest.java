@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -286,7 +287,7 @@ class TimelineResourceTest {
         IntStream.range(0, 5).forEach(index -> journeyRepository.save(
                         VALID_JOURNEY.toBuilder()
                                 .id("ID_" + index)
-                                .journeyDate(LocalDate.of(2024, 1, 25).plusYears(index))
+                                .journeyDate(LocalDate.of(2024, Month.JANUARY, 25).plusYears(index))
                                 .build()
                 )
         );

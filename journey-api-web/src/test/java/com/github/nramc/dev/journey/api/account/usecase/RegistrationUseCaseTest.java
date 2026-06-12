@@ -25,8 +25,8 @@ import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.account.web.users.UsersData.AUTHENTICATED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.within;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 
@@ -73,14 +73,14 @@ class RegistrationUseCaseTest {
 
     @Test
     void register_whenRegistrationDetailsNotValid_thenShouldThrowException() {
-        assertThatExceptionOfType(ConstraintViolationException.class).isThrownBy(() ->
-                registrationUseCase.register(ONBOARDING_USER.toBuilder().username("invalid-user-name").build()));
+        var user = ONBOARDING_USER.toBuilder().username("invalid-user-name").build();
+        assertThatThrownBy(() -> registrationUseCase.register(user)).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void register_whenUserAlreadyExists_thenShouldThrowException() {
-        assertThatExceptionOfType(BusinessException.class).isThrownBy(() ->
-                registrationUseCase.register(ONBOARDING_USER.toBuilder().username(AUTHENTICATED_USER.getUsername()).build()));
+        var user = ONBOARDING_USER.toBuilder().username(AUTHENTICATED_USER.getUsername()).build();
+        assertThatThrownBy(() -> registrationUseCase.register(user)).isInstanceOf(BusinessException.class);
     }
 
 }
