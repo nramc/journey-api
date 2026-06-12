@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
-import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.modulith.moments.DayHasPassed;
 
 import java.util.List;
