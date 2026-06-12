@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Journey</title>
+    <title>Journey – Your Verification Code</title>
     <style th:utext="${styles}">/* styles injected at runtime */</style>
 </head>
 <body>
-<div th:replace="~{layout/emailLayout.html :: layout('Your One-Time Token', ~{::content})}">
+<div th:replace="~{layout/emailLayout.html :: layout('Your Verification Code', ~{::content})}">
     <th:block th:ref="content">
 
-        <p class="section-title">Your One-Time Token (OTT)</p>
+        <p class="section-title">🔐 Your One-Time Verification Code</p>
 
-        <p th:text="'Hello, ' + ${name} + '!'"></p>
-        <p>We received a request that requires verification. Please use the token below to complete your request.</p>
+        <p th:text="'Hi ' + ${name} + ','">Hi there,</p>
+        <p>We received a request that needs a quick identity check. Use the code below to complete your verification.
+            It's valid for a limited time, so please use it soon.</p>
 
+        <!-- Code box -->
         <div class="code-box" th:text="${ottPin}">123456</div>
+        <p class="code-expiry">⏱ This code is time-sensitive — do not share it with anyone.</p>
 
         <hr class="divider"/>
 
-        <div class="info-box">
-            ⚠️ &nbsp;<strong>Keep this token secret.</strong>
-            Do not share it with anyone. The Journey Team will never ask you for this code.
+        <div class="success-box">
+            ✅ &nbsp;<strong>You're almost there!</strong>
+            Enter this code in the app to continue securely.
         </div>
 
-        <p class="text-muted">If you did not make this request, please ignore this email. No changes have been made to
-            your account.</p>
+        <div class="info-box">
+            🛡️ &nbsp;<strong>Never share this code.</strong>
+            The Journey Team will <em>never</em> ask you for this code via email, phone, or chat. If someone does,
+            it's a scam — please ignore them.
+        </div>
+
+        <p class="text-muted">Didn't request a verification code? You can safely ignore this email. Your account is
+            secure and no changes have been made.</p>
 
     </th:block>
 </div>

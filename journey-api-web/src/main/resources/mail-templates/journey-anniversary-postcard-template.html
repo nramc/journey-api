@@ -3,90 +3,74 @@
 <head>
     <title>Journey Anniversary</title>
     <style th:utext="${styles}">/* styles injected at runtime */</style>
-    <style>
-        .journey-card {
-            border: 1px solid #e4e8f3;
-            border-radius: 10px;
-            margin: 14px 0;
-            overflow: hidden;
-            background: #ffffff;
-        }
-
-        .journey-hero-image {
-            width: 100%;
-            max-height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .journey-body {
-            padding: 16px 18px;
-        }
-
-        .journey-title {
-            margin: 0;
-            font-size: 1.05rem;
-            color: #1e2a4a;
-        }
-
-        .journey-meta {
-            margin: 8px 0 10px;
-            color: #5a6686;
-            font-size: 0.86rem;
-        }
-
-        .gallery img {
-            width: 72px;
-            height: 72px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            border: 1px solid #dbe1ef;
-        }
-
-        .inline-cta {
-            margin-top: 8px;
-            display: inline-block;
-            color: #3459e6;
-            font-weight: 700;
-            text-decoration: none;
-        }
-    </style>
 </head>
 <body>
 <div th:replace="~{layout/emailLayout.html :: layout('Journey Anniversary', ~{::content})}">
     <th:block th:ref="content">
 
-        <p class="section-title" th:text="'Happy Journey Anniversary, ' + ${recipientName} + '!'">Happy Journey Anniversary!</p>
-        <p>
-            On <strong th:text="${anniversaryDate}">12 Jun 2026</strong>, you have
-            <strong th:text="${journeyCount}">1</strong>
-            memory to revisit.
+        <!-- Anniversary badge + title -->
+        <div class="align-center" style="margin-bottom: 6px;">
+            <span class="anniversary-badge">🎊 On This Day</span>
+        </div>
+
+        <p class="section-title align-center"
+           th:text="'Happy Anniversary, ' + ${recipientName} + '! 🌟'">
+            Happy Anniversary! 🌟
         </p>
 
+        <!-- Emotional opener -->
+        <div class="hero-band">
+            <p>
+                Some moments are too special to forget.
+                On <strong th:text="${anniversaryDate}">this day</strong>, you created
+                <strong th:text="${journeyCount}">a</strong>
+                <span th:text="${journeyCount == 1} ? 'memory' : 'memories'">memory</span>
+                worth reliving. Take a moment to look back — it's yours to keep, forever. 💙
+            </p>
+        </div>
+
+        <!-- Journey cards -->
         <th:block th:each="journey : ${journeys}">
             <article class="journey-card">
+
+                <!-- Hero image -->
                 <img class="journey-hero-image"
-                     th:src="${journey.thumbnailUrl}" th:alt="${journey.journeyTitle}"/>
+                     th:if="${journey.thumbnailUrl != null and !journey.thumbnailUrl.isEmpty()}"
+                     th:src="${journey.thumbnailUrl}"
+                     th:alt="${journey.journeyTitle}"/>
+
                 <div class="journey-body">
+
                     <h3 class="journey-title" th:text="${journey.journeyTitle}">Journey Title</h3>
                     <p class="journey-meta"
-                       th:text="${journey.journeyDate} + ' | ' + ${journey.geoLocation}">Date | Location</p>
+                       th:text="${journey.journeyDate} + '  ·  ' + ${journey.geoLocation}">
+                        Date · Location
+                    </p>
 
-                    <div class="gallery" th:if="${!#lists.isEmpty(journey.imageUrls)}">
-                        <p class="text-muted fw-bold">Photo Highlights</p>
-                        <img th:each="imageUrl : ${journey.imageUrls}" th:src="${imageUrl}" alt="Journey highlight"/>
+                    <!-- Photo gallery -->
+                    <div class="gallery" th:if="${journey.imageUrls != null and !#lists.isEmpty(journey.imageUrls)}">
+                        <p class="gallery-label">📷 Photo Highlights</p>
+                        <img th:each="imageUrl : ${journey.imageUrls}"
+                             th:src="${imageUrl}"
+                             alt="Journey highlight"/>
                     </div>
 
-                    <a class="inline-cta" th:href="${journey.journeyUrl}">Open Journey</a>
+                    <a class="inline-cta" th:href="${journey.journeyUrl}">
+                        Relive This Journey →
+                    </a>
                 </div>
+
             </article>
         </th:block>
+
+        <hr class="divider"/>
+
+        <p class="text-muted align-center">
+            These anniversary reminders are sent because you enabled them in your Journey settings.<br/>
+            You can manage them anytime from your <a href="https://journey.codewithram.dev" style="color: #3459e6; text-decoration: none;">Journey profile</a>.
+        </p>
 
     </th:block>
 </div>
 </body>
 </html>
-
-

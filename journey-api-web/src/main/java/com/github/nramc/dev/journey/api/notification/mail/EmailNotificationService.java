@@ -63,8 +63,8 @@ public class EmailNotificationService implements NotificationService {
             mailSender.sendEmailUsingTemplate(template, notificationData.recipients(), notificationData.subject(), placeholders);
             log.debug("Notification email sent to {} recipient(s) with template {}", notificationData.recipients().size(), template);
         } catch (Exception e) {
-            log.error("Failed to send admin notification email using template[{}] to recipient: {}", template, notificationData.recipients(), e);
-            throw new TechnicalException("Failed to send admin notification email using template: " + template, e);
+            log.error("Failed to send notification email using template[{}] to recipient: {}", template, notificationData.recipients(), e);
+            throw new TechnicalException("Failed to send notification email using template: " + template, e);
         }
     }
 
