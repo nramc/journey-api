@@ -12,6 +12,7 @@ import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryDetectedE
 import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryDetectedEvent.JourneyAnniversaryItem;
 import com.github.nramc.dev.journey.api.shared.provider.ActiveUserProvider;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatcher;
 import org.springframework.context.annotation.Import;
 import org.springframework.modulith.moments.DayHasPassed;
 import org.springframework.modulith.test.ApplicationModuleTest;
@@ -77,7 +78,7 @@ class DayHasPassedEventHandlerTest {
         verify(journeyService).getAnniversariesInNextDays(argThat(matchesAppUser(activeUser)), eq(0));
     }
 
-    private org.mockito.ArgumentMatcher<AppUser> matchesAppUser(ActiveUserProvider.ActiveUser activeUser) {
+    private ArgumentMatcher<AppUser> matchesAppUser(ActiveUserProvider.ActiveUser activeUser) {
         return appUser -> appUser != null
                 && activeUser.emailAddress().value().equals(appUser.username())
                 && activeUser.displayName().equals(appUser.name())
