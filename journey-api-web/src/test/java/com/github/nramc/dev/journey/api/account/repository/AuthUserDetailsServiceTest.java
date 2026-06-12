@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ class AuthUserDetailsServiceTest {
                 .password("encoded-password")
                 .enabled(true)
                 .roles(roles)
-                .createdDate(LocalDateTime.of(2024, 1, 1, 0, 0))
+                .createdDate(LocalDateTime.of(2024, Month.JANUARY, 1, 0, 0))
                 .build();
     }
 
