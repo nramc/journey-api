@@ -72,7 +72,7 @@ class DayHasPassedEventHandlerTest {
                                     .extracting(JourneyAnniversaryItem::journeyId, JourneyAnniversaryItem::journeyTitle, JourneyAnniversaryItem::geoLocation,
                                             JourneyAnniversaryItem::thumbnailUrl)
                                     .containsExactly("J-100", "Munich Journey", "Airport, Munich, Germany", "https://example.com/thumbnail.png"))
-                            .satisfies(journey -> assertThat(journey.imageUrls()).hasSize(2).containsExactly("image1.jpg", "image2.jpg"));
+                            .satisfies(journey -> assertThat(journey.imageUrls()).containsExactly("image1.jpg", "image2.jpg"));
                 });
 
         verify(journeyService).getAnniversariesInNextDays(argThat(matchesAppUser(activeUser)), eq(0));
@@ -87,8 +87,3 @@ class DayHasPassedEventHandlerTest {
     }
 
 }
-
-
-
-
-

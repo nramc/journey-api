@@ -24,5 +24,3 @@ public interface ActiveUserProvider {
     record ActiveUser(EmailAddress emailAddress, String displayName, Set<Role> roles) {
     }
 }
-
-
