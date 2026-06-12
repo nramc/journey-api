@@ -50,16 +50,6 @@ public class TelegramNotificationService implements NotificationService {
         telegramGateway.sendMessage(notificationData.message());
     }
 
-    private void requireValidNotificationData(NotificationData notificationData) {
-
-        if (notificationData == null) {
-            throw new IllegalArgumentException("NotificationData cannot be null");
-        }
-        if (StringUtils.isBlank(notificationData.message())) {
-            throw new IllegalArgumentException("Notification message cannot be null or blank");
-        }
-    }
-
     /**
      * Sends a notification with an explicit Telegram parse mode.
      *
@@ -93,6 +83,16 @@ public class TelegramNotificationService implements NotificationService {
                 %s
                 """.formatted(notificationData.message());
         telegramGateway.sendMessage(formatted);
+    }
+
+    private void requireValidNotificationData(NotificationData notificationData) {
+
+        if (notificationData == null) {
+            throw new IllegalArgumentException("NotificationData cannot be null");
+        }
+        if (StringUtils.isBlank(notificationData.message())) {
+            throw new IllegalArgumentException("Notification message cannot be null or blank");
+        }
     }
 
 }
