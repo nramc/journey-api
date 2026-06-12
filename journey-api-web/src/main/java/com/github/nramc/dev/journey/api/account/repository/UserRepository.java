@@ -14,4 +14,6 @@ public interface UserRepository extends MongoRepository<AuthUser, String> {
 
     List<AuthUser> findByRolesContainingAndEnabled(Set<Role> roles, boolean enabled);
 
+    List<AuthUser> findByEnabled(boolean enabled);
+
 }
