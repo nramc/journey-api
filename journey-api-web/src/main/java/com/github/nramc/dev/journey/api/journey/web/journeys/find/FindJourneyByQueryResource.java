@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +60,7 @@ public class FindJourneyByQueryResource {
         Set<Boolean> publishedFlags = publishedOnly ? Set.of(true) : Set.of(true, false);
 
         List<String> tagsInLowerCase = tags.stream().map(StringUtils::lowerCase).toList();
-        LocalDate journeyStartDate = year != null ? LocalDate.of(year.intValue(), 1, 1) : null;
+        LocalDate journeyStartDate = year != null ? LocalDate.of(year.intValue(), Month.JANUARY, 1) : null;
         LocalDate journeyLastDate = year != null ? journeyStartDate.with(lastDayOfYear()) : null;
 
         JourneySearchCriteria searchCriteria = JourneySearchCriteria.builder()

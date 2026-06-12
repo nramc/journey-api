@@ -28,14 +28,14 @@ class AuthUserDetailsServiceTest {
     @InjectMocks
     private AuthUserDetailsService userDetailsService;
 
-    private AuthUser user(String username, String name, boolean enabled, Set<Role> roles) {
+    private AuthUser user(String username, String name, Set<Role> roles) {
         return AuthUser.builder()
                 .username(username)
                 .name(name)
                 .password("encoded-password")
-                .enabled(enabled)
+                .enabled(true)
                 .roles(roles)
-                .createdDate(LocalDateTime.now().minusDays(1))
+                .createdDate(LocalDateTime.of(2024, 1, 1, 0, 0))
                 .build();
     }
 
@@ -44,7 +44,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldReturnUserFromRepository() {
-            var expected = user("john@example.com", "John", true, Set.of(Role.AUTHENTICATED_USER));
+            var expected = user("john@example.com", "John", Set.of(Role.AUTHENTICATED_USER));
             when(userRepository.findUserByUsername("john@example.com")).thenReturn(expected);
 
             var actual = userDetailsService.loadUserByUsername("john@example.com");
@@ -59,7 +59,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldLoadGuestUserByFixedUsername() {
-            var guest = user("GUEST", "Guest", true, Set.of(Role.GUEST_USER));
+            var guest = user("GUEST", "Guest", Set.of(Role.GUEST_USER));
             when(userRepository.findUserByUsername("GUEST")).thenReturn(guest);
 
             var actual = userDetailsService.getGuestUserDetails();
@@ -74,7 +74,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldUpdatePasswordAndPasswordChangedAtAndPersist() {
-            var existing = user("jane@example.com", "Jane", true, Set.of(Role.AUTHENTICATED_USER));
+            var existing = user("jane@example.com", "Jane", Set.of(Role.AUTHENTICATED_USER));
             when(userRepository.findUserByUsername("jane@example.com")).thenReturn(existing);
 
             var returned = userDetailsService.updatePassword(existing, "new-password");
@@ -94,7 +94,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldDelegateSaveWithAuthUser() {
-            var user = user("create@example.com", "Create", true, Set.of(Role.AUTHENTICATED_USER));
+            var user = user("create@example.com", "Create", Set.of(Role.AUTHENTICATED_USER));
 
             userDetailsService.createUser(user);
 
@@ -107,7 +107,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldDelegateSaveWithAuthUser() {
-            var user = user("update@example.com", "Update", true, Set.of(Role.MAINTAINER));
+            var user = user("update@example.com", "Update", Set.of(Role.MAINTAINER));
 
             userDetailsService.updateUser(user);
 
@@ -143,7 +143,7 @@ class AuthUserDetailsServiceTest {
         @Test
         void shouldReturnTrueWhenUserFound() {
             when(userRepository.findUserByUsername("found@example.com"))
-                    .thenReturn(user("found@example.com", "Found", true, Set.of(Role.AUTHENTICATED_USER)));
+                    .thenReturn(user("found@example.com", "Found", Set.of(Role.AUTHENTICATED_USER)));
 
             boolean exists = userDetailsService.userExists("found@example.com");
 
@@ -167,7 +167,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldQueryEnabledAdministratorsOnly() {
-            var admin = user("admin@example.com", "Admin", true, Set.of(Role.ADMINISTRATOR));
+            var admin = user("admin@example.com", "Admin", Set.of(Role.ADMINISTRATOR));
             when(userRepository.findByRolesContainingAndEnabled(Set.of(Role.ADMINISTRATOR), true))
                     .thenReturn(List.of(admin));
 
@@ -183,8 +183,8 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldMapAdminUsersToEmailAddresses() {
-            var admin1 = user("admin1@example.com", "Admin One", true, Set.of(Role.ADMINISTRATOR));
-            var admin2 = user("admin2@example.com", "Admin Two", true, Set.of(Role.ADMINISTRATOR));
+            var admin1 = user("admin1@example.com", "Admin One", Set.of(Role.ADMINISTRATOR));
+            var admin2 = user("admin2@example.com", "Admin Two", Set.of(Role.ADMINISTRATOR));
             when(userRepository.findByRolesContainingAndEnabled(Set.of(Role.ADMINISTRATOR), true))
                     .thenReturn(List.of(admin1, admin2));
 
@@ -211,8 +211,8 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldMapEnabledUsersToActiveUserProjection() {
-            var first = user("first@example.com", "First", true, Set.of(Role.AUTHENTICATED_USER));
-            var second = user("second@example.com", "Second", true, Set.of(Role.MAINTAINER));
+            var first = user("first@example.com", "First", Set.of(Role.AUTHENTICATED_USER));
+            var second = user("second@example.com", "Second", Set.of(Role.MAINTAINER));
             when(userRepository.findByEnabled(true)).thenReturn(List.of(first, second));
 
             var activeUsers = userDetailsService.getActiveUsers();
@@ -232,7 +232,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldFallbackDisplayNameToUsernameWhenNameBlank() {
-            var blankName = user("blank@example.com", "   ", true, Set.of(Role.AUTHENTICATED_USER));
+            var blankName = user("blank@example.com", "   ", Set.of(Role.AUTHENTICATED_USER));
             when(userRepository.findByEnabled(true)).thenReturn(List.of(blankName));
 
             var activeUsers = userDetailsService.getActiveUsers();
@@ -244,7 +244,7 @@ class AuthUserDetailsServiceTest {
 
         @Test
         void shouldFallbackDisplayNameToUsernameWhenNameNull() {
-            var nullName = user("null@example.com", null, true, Set.of(Role.AUTHENTICATED_USER));
+            var nullName = user("null@example.com", null, Set.of(Role.AUTHENTICATED_USER));
             when(userRepository.findByEnabled(true)).thenReturn(List.of(nullName));
 
             var activeUsers = userDetailsService.getActiveUsers();

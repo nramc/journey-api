@@ -22,6 +22,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ class DayHasPassedEventHandlerTest {
 
     @Test
     void onDayHasPassed_whenAnniversariesFound_shouldPublishMappedJourneyEvent(Scenario scenario) {
-        LocalDate date = LocalDate.of(2026, 6, 12);
+        LocalDate date = LocalDate.of(2026, Month.JUNE, 12);
         var activeUser = new ActiveUserProvider.ActiveUser(
                 EmailAddress.valueOf("john@example.com"),
                 "John",
@@ -52,7 +53,7 @@ class DayHasPassedEventHandlerTest {
         Journey anniversaryJourney = JourneyConverter.convert(JourneyData.JOURNEY_ENTITY.toBuilder()
                 .id("J-100")
                 .name("Munich Journey")
-                .journeyDate(LocalDate.of(2020, 6, 12))
+                .journeyDate(LocalDate.of(2020, Month.JUNE, 12))
                 .build());
 
         when(activeUserProvider.getActiveUsers()).thenReturn(List.of(activeUser));

@@ -5,6 +5,7 @@ import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryEvent;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 
@@ -12,21 +13,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
 class JourneyAnniversaryNotificationProcessorTest {
+    private static final ApplicationProperties PROPERTIES = ApplicationProperties.builder()
+            .name("journey")
+            .version("1.0.0")
+            .uiAppUrl("https://journey.codewithram.dev/")
+            .build();
+
+    private final JourneyAnniversaryNotificationProcessor processor = new JourneyAnniversaryNotificationProcessor(PROPERTIES);
+
 
     @Test
     void process_shouldBuildTemplateNotificationWithJourneyLinks() {
-        var processor = new JourneyAnniversaryNotificationProcessor(
-                new ApplicationProperties("journey", "1.0.0", "https://journey.codewithram.dev/")
-        );
-
         var event = new JourneyAnniversaryEvent(
                 "john@example.com",
                 "John",
-                LocalDate.of(2026, 6, 12),
+                LocalDate.of(2026, Month.JUNE, 12),
                 List.of(new JourneyAnniversaryEvent.JourneyAnniversaryItem(
                         "abc123",
                         "Trip to Rome",
-                        LocalDate.of(2024, 6, 12),
+                        LocalDate.of(2024, Month.JUNE, 12),
                         "Rome, Italy",
                         null,
                         List.of("https://img.example/1.jpg")
@@ -61,14 +66,10 @@ class JourneyAnniversaryNotificationProcessorTest {
 
     @Test
     void process_shouldReturnEmptyWhenJourneyListIsEmpty() {
-        var processor = new JourneyAnniversaryNotificationProcessor(
-                new ApplicationProperties("journey", "1.0.0", "https://journey.codewithram.dev")
-        );
-
         var event = new JourneyAnniversaryEvent(
                 "john@example.com",
                 "John",
-                LocalDate.of(2026, 6, 12),
+                LocalDate.of(2026, Month.JUNE, 12),
                 List.of()
         );
 

@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 
@@ -91,11 +92,11 @@ class NotificationEventHandlerTest {
             var event = new JourneyAnniversaryEvent(
                     "john@example.com",
                     "John",
-                    LocalDate.of(2026, 6, 12),
+                    LocalDate.of(2026, Month.JUNE, 12),
                     List.of(new JourneyAnniversaryEvent.JourneyAnniversaryItem(
                             "journey-id",
                             "Trip to Rome",
-                            LocalDate.of(2024, 6, 12),
+                            LocalDate.of(2024, Month.JUNE, 12),
                             "Rome, Italy",
                             "https://img.example/hero.jpg",
                             List.of("https://img.example/1.jpg")
