@@ -30,9 +30,8 @@ public class TelegramNotificationService implements NotificationService {
     private final TelegramGateway telegramGateway;
     private final TelegramProperties telegramProperties;
 
-    private boolean isSupported(NotificationData notificationData) {
-        return telegramProperties.enabled()
-                && List.of(ALL, TELEGRAM_ONLY).contains(notificationData.type());
+    private boolean canSkip(NotificationData notificationData) {
+        return !(telegramProperties.enabled() && List.of(ALL, TELEGRAM_ONLY).contains(notificationData.type()));
     }
 
     /**
@@ -41,7 +40,7 @@ public class TelegramNotificationService implements NotificationService {
      * @param notificationData the notification data, including a message and optional metadata
      */
     public void sendNotification(NotificationData notificationData) {
-        if (!isSupported(notificationData)) {
+        if (canSkip(notificationData)) {
             return;
         }
 
@@ -82,7 +81,7 @@ public class TelegramNotificationService implements NotificationService {
      */
     @Override
     public void notify(@NonNull NotificationData notificationData) {
-        if (!isSupported(notificationData)) {
+        if (canSkip(notificationData)) {
             return;
         }
 
