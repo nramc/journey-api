@@ -13,17 +13,21 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.modulith.moments.DayHasPassed;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
 public class DayHasPassedEventHandler {
+    private static final int MAX_IMAGES = 10;
+
     private final JourneyService journeyService;
     private final ActiveUserProvider activeUserProvider;
     private final ApplicationEventPublisher applicationEvents;
 
     @EventListener
+    @Transactional
     public void onDayHasPassed(DayHasPassed event) {
         var date = event.getDate();
         List<ActiveUser> activeUsers = activeUserProvider.getActiveUsers();
@@ -50,7 +54,10 @@ public class DayHasPassedEventHandler {
     private JourneyAnniversaryEvent.JourneyAnniversaryItem toAnniversaryItem(Journey journey) {
         List<String> imageUrls = journey.imagesDetails() == null
                 ? List.of()
-                : journey.imagesDetails().images().stream().map(JourneyImageDetail::url).toList();
+                : journey.imagesDetails().images().stream().map(JourneyImageDetail::url)
+                .filter(url -> !journey.thumbnail().equalsIgnoreCase(url))
+                .limit(MAX_IMAGES)
+                .toList();
 
         return new JourneyAnniversaryEvent.JourneyAnniversaryItem(
                 journey.id(),
