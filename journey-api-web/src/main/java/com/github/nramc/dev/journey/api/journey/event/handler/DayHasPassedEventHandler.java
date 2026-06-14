@@ -20,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class DayHasPassedEventHandler {
+    private static final int MAX_IMAGES = 10;
+
     private final JourneyService journeyService;
     private final ActiveUserProvider activeUserProvider;
     private final ApplicationEventPublisher applicationEvents;
@@ -52,7 +54,10 @@ public class DayHasPassedEventHandler {
     private JourneyAnniversaryEvent.JourneyAnniversaryItem toAnniversaryItem(Journey journey) {
         List<String> imageUrls = journey.imagesDetails() == null
                 ? List.of()
-                : journey.imagesDetails().images().stream().map(JourneyImageDetail::url).toList();
+                : journey.imagesDetails().images().stream().map(JourneyImageDetail::url)
+                .filter(url -> !journey.thumbnail().equalsIgnoreCase(url))
+                .limit(MAX_IMAGES)
+                .toList();
 
         return new JourneyAnniversaryEvent.JourneyAnniversaryItem(
                 journey.id(),
