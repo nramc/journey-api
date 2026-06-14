@@ -13,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.modulith.moments.DayHasPassed;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class DayHasPassedEventHandler {
     private final ApplicationEventPublisher applicationEvents;
 
     @EventListener
+    @Transactional
     public void onDayHasPassed(DayHasPassed event) {
         var date = event.getDate();
         List<ActiveUser> activeUsers = activeUserProvider.getActiveUsers();

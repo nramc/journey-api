@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import static com.github.nramc.dev.journey.api.journey.repository.JourneyCriteri
 import static com.github.nramc.dev.journey.api.journey.repository.JourneyCriteriaUtils.transformSearchCriteria;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class JourneyService {
     private final MongoTemplate mongoTemplate;
 
