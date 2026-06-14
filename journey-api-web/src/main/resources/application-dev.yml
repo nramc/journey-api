@@ -31,11 +31,12 @@ spring:
     openai:
       api-key: ${API_KEY:not-needed}
       chat:
-        base-url: http://localhost:11434
-        completions-path: /v1/chat/completions
+        base-url: http://localhost:11434/v1
         options:
-          model: qwen2.5vl:latest
+          model: qwen2.5vl
           temperature: 0.1
+        model: qwen2.5vl
+        temperature: 0.1
   mail:
     username: noreply@journey.com
     password: test-password
