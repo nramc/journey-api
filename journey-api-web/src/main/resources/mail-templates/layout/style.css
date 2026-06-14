@@ -323,14 +323,34 @@ body {
     margin: 0 0 8px;
 }
 
-.gallery img {
-    width: 72px;
-    height: 72px;
+/* Gallery grid — flex mosaic, driven by inline styles on each cell */
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #f0f4ff; /* gap colour */
+}
+
+.gallery-grid-item {
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 0;
+    position: relative;
+}
+
+.gallery-grid-item img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border: 2px solid #e8ecf8;
+    display: block;
+    transition: transform 0.25s ease;
+}
+
+/* Fallback for email clients that don't support aspect-ratio */
+.gallery-grid-item img {
+    min-height: 80px;
 }
 
 .inline-cta {

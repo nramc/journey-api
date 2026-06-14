@@ -47,12 +47,45 @@
                         Date · Location
                     </p>
 
-                    <!-- Photo gallery -->
+                    <!-- Photo gallery — Google-Photos-style flex mosaic (max 10 images) -->
+                    <!--
+                        Layout rules (hasFeatured = first image spans full width at 16:9):
+                          1 img  → full-width hero (16:9)
+                          2 imgs → 2-col equal  (4:3)
+                          3 imgs → featured + 2-col row  (hasFeatured)
+                          4 imgs → 2×2 grid     (4:3)
+                          5 imgs → featured + 2 rows of 2  (hasFeatured)
+                          6 imgs → 3-col × 2-row grid
+                          7 imgs → featured + 2 rows of 3  (hasFeatured)
+                          8 imgs → 4-col × 2-row grid
+                          9 imgs → 3×3 grid
+                         10 imgs → featured + 3 rows of 3  (hasFeatured)
+                    -->
                     <div class="gallery" th:if="${journey.imageUrls != null and !#lists.isEmpty(journey.imageUrls)}">
                         <p class="gallery-label">📷 Photo Highlights</p>
-                        <img th:each="imageUrl : ${journey.imageUrls}"
-                             th:src="${imageUrl}"
-                             alt="Journey highlight"/>
+                        <div class="gallery-grid"
+                             th:with="
+                                imgCount=${#lists.size(journey.imageUrls)},
+                                hasFeatured=${imgCount == 3 or imgCount == 5 or imgCount == 7 or imgCount == 10},
+                                innerCols=${hasFeatured
+                                    ? ((imgCount == 3 or imgCount == 5) ? 2 : 3)
+                                    : (imgCount == 1 ? 1 : (imgCount == 2 ? 2 : (imgCount == 4 ? 2 : (imgCount == 8 ? 4 : 3))))},
+                                itemBasis=${innerCols == 1
+                                    ? '100%'
+                                    : (innerCols == 2
+                                        ? 'calc(50% - 2px)'
+                                        : (innerCols == 3
+                                            ? 'calc(33.33% - 2px)'
+                                            : 'calc(25% - 2px)'))}">
+
+                            <div class="gallery-grid-item"
+                                 th:each="imageUrl,imgStat : ${journey.imageUrls}"
+                                 th:with="isFeatured=${hasFeatured and imgStat.index == 0}"
+                                 th:style="'flex-basis:' + (${isFeatured} ? '100%' : ${itemBasis}) + ';aspect-ratio:' + (${isFeatured or imgCount == 1} ? '16/9' : '4/3') + ';'">
+                                <img th:src="${imageUrl}" alt="Journey highlight"/>
+                            </div>
+
+                        </div>
                     </div>
 
                     <a class="inline-cta" th:href="${journey.journeyUrl}">
