@@ -1,7 +1,7 @@
 package com.github.nramc.dev.journey.api.journey.config;
 
 import com.cloudinary.Cloudinary;
-import com.github.nramc.dev.journey.api.journey.event.handler.DayHasPassedEventHandler;
+import com.github.nramc.dev.journey.api.journey.event.handler.JourneyAnniversaryEventPublisher;
 import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryGateway;
 import com.github.nramc.dev.journey.api.journey.gateway.cloudinary.CloudinaryProperties;
 import com.github.nramc.dev.journey.api.journey.health.CloudinaryHealthIndicator;
@@ -62,10 +62,10 @@ public class JourneyConfig {
     }
 
     @Bean
-    public DayHasPassedEventHandler dayHasPassedEventHandler(
+    public JourneyAnniversaryEventPublisher dayHasPassedEventHandler(
             JourneyService journeyService,
             ActiveUserProvider activeUserProvider,
             ApplicationEventPublisher applicationEvents) {
-        return new DayHasPassedEventHandler(journeyService, activeUserProvider, applicationEvents);
+        return new JourneyAnniversaryEventPublisher(journeyService, activeUserProvider, applicationEvents);
     }
 }

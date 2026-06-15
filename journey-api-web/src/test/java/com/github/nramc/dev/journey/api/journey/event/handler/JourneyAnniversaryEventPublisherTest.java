@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 @ApplicationModuleTest(extraIncludes = "infrastructure")
 @ActiveProfiles("test")
 @Import(TestContainersConfiguration.class)
-class DayHasPassedEventHandlerTest {
+class JourneyAnniversaryEventPublisherTest {
     @MockitoBean
     private JourneyService journeyService;
     @MockitoBean

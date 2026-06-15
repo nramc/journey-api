@@ -19,7 +19,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-public class DayHasPassedEventHandler {
+public class JourneyAnniversaryEventPublisher {
     private static final int MAX_IMAGES = 10;
 
     private final JourneyService journeyService;
