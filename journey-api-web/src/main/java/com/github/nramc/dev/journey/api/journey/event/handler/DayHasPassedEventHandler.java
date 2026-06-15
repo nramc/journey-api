@@ -29,7 +29,7 @@ public class DayHasPassedEventHandler {
     @EventListener
     @Transactional
     public void onDayHasPassed(DayHasPassed event) {
-        var date = event.getDate();
+        var date = event.getDate().plusDays(1);
         List<ActiveUser> activeUsers = activeUserProvider.getActiveUsers();
 
         if (CollectionUtils.isEmpty(activeUsers)) {
