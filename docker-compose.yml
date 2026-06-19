@@ -45,6 +45,15 @@ services:
       - ME_CONFIG_MONGODB_ADMINPASSWORD=mongodb_pwd
       - ME_CONFIG_MONGODB_URL=mongodb://mongodb_user:mongodb_pwd@mongo:27017/?directConnection=true&authSource=admin
 
+# Piper server configuration: Make sure to align with production environment settings
+  piper:
+    build: piper
+    container_name: piper-server
+    ports:
+      - "5001:5000"
+    restart: unless-stopped
+
+
 volumes:
   data: {}
 
