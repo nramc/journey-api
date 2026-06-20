@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.tts.client;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.nramc.dev.journey.api.tts.config.TtsProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -87,10 +88,15 @@ public class PiperHttpClient {
      * Request body for Piper HTTP server.
      */
     private record PiperSynthesizeRequest(
+            @JsonProperty("text")
             String text,
+            @JsonProperty("voice")
             String voice,
+            @JsonProperty("length_scale")
             double lengthScale,
+            @JsonProperty("noise_scale")
             double noiseScale,
+            @JsonProperty("noise_w_scale")
             double noiseWScale
     ) {
     }
