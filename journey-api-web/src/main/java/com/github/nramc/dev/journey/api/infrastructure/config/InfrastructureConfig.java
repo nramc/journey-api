@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.modulith.events.IncompleteEventPublications;
+import org.springframework.resilience.annotation.EnableResilientMethods;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -21,6 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties({ApplicationProperties.class, EventRepublisherProperties.class})
 @EnableAsync
 @EnableScheduling
+@EnableResilientMethods
 public class InfrastructureConfig {
     @Bean
     public EventRepublisher eventRepublisher(IncompleteEventPublications incompleteEventPublications, EventRepublisherProperties properties) {
