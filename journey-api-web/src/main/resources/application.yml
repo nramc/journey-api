@@ -100,7 +100,7 @@ journey:
     tts:
       base-url: https://piper-tts-service-otp3.onrender.com
       default-voice: en_US-lessac-medium
-      default-length-scale: 1.4
+      default-length-scale: 0.9
       default-noise-scale: 0.7
       default-noise-w-scale: 0.8
 
