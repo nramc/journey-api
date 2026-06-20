@@ -89,9 +89,9 @@ public class PiperHttpClient {
     private record PiperSynthesizeRequest(
             String text,
             String voice,
-            double length_scale,
-            double noise_scale,
-            double noise_w_scale
+            double lengthScale,
+            double noiseScale,
+            double noiseWScale
     ) {
     }
 }
