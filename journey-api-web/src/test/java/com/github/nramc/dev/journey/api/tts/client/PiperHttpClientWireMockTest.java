@@ -291,9 +291,8 @@ class PiperHttpClientWireMockTest {
 
         List<com.github.tomakehurst.wiremock.stubbing.ServeEvent> serveEvents = getAllServeEvents();
         assertThat(serveEvents).hasSize(3);
-        serveEvents.forEach(event -> {
-            assertThat(event.getRequest().getBody()).isNotEmpty();
-        });
+        serveEvents.forEach(event ->
+            assertThat(event.getRequest().getBody()).isNotEmpty());
     }
 
     // ==================== PROPERTIES VERIFICATION ====================
