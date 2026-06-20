@@ -53,7 +53,7 @@ class JourneyAnniversaryEventPublisherTest {
         Journey anniversaryJourney = JourneyConverter.convert(JourneyData.JOURNEY_ENTITY.toBuilder()
                 .id("J-100")
                 .name("Munich Journey")
-                .journeyDate(LocalDate.of(2020, Month.JUNE, 12))
+                .journeyDate(LocalDate.of(2020, Month.JUNE, 13))
                 .build());
 
         when(activeUserProvider.getActiveUsers()).thenReturn(List.of(activeUser));
@@ -66,7 +66,7 @@ class JourneyAnniversaryEventPublisherTest {
                 .toArriveAndVerify(detected -> {
                     assertThat(detected).extracting(JourneyAnniversaryEvent::username, JourneyAnniversaryEvent::recipientName,
                                     JourneyAnniversaryEvent::date)
-                            .containsExactly(activeUser.emailAddress().value(), activeUser.displayName(), date);
+                            .containsExactly(activeUser.emailAddress().value(), activeUser.displayName(), date.plusDays(1));
 
                     assertThat(detected.journeys()).hasSize(1).first().isNotNull()
                             .satisfies(journey -> assertThat(journey)
