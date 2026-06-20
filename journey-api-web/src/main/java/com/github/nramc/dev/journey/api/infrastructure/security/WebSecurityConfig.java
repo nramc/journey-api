@@ -64,6 +64,7 @@ import static com.github.nramc.dev.journey.api.shared.web.Resources.PROMETHEUS;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.REST_DOC;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.SIGNUP;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.TTS_API;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.UPDATE_JOURNEY;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.UPDATE_MY_ACCOUNT;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.VERIFY_EMAIL_CODE;
@@ -126,6 +127,9 @@ public class WebSecurityConfig {
                         .requestMatchers(HOME).permitAll()
                         .requestMatchers(GET, API_VERSION).permitAll()
                         .requestMatchers(REST_DOC).permitAll()
+
+                        // API Resources
+                        .requestMatchers(POST, TTS_API).permitAll()
 
                         // AI Resources
                         .requestMatchers(GET, "/rest/ai/**").access(authenticatedUserAuthorizationManager)
