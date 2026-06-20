@@ -18,25 +18,25 @@ class NarrationEnhancerResource {
             ---
             
             ### 🎯 Objective
-            Create a text-to-speech friendly travel narration for the user and their family to help them relive the journey. Make it polished, engaging, and emotionally resonant.
+            Create a text-to-speech compatible travel narration for the user and their family to help them relive the journey. Make it polished, engaging, and emotionally resonant.
             
             ---
             
             ### ✍️ Instructions
             
             - **Tone & Style:** Use the specified tone: "{user-specified tone}" (e.g., "calm and reflective", "warm and inspiring").
-            - **Text-to-Speech Friendly**: Text content should be clear, concise, and easy to read aloud. Avoid complex sentence structures and ensure proper punctuation for natural pauses.
+            - **Text-to-Speech Compatible**: Text content should be clear, concise, and easy to read aloud. Avoid complex sentence structures and ensure proper punctuation for natural pauses.
             
             ---
             
             ### ✨ Enhancement Guidelines
             
+            - Use simple English and punctuation for Text-to-Speech compatibility.
             - Maintain the user's personal tone and voice.
             - Fix any issues in the user's text typos, spelling errors, and punctuation.
             - Improve the overall quality of the narration
             - Correct grammar, sentence structure, and readability.
             - Improve flow and storytelling clarity.
-            - Use simple English and punctuation for Text-to-Speech Friendly.
             - Add descriptive flair (e.g., sights, sounds, smells, feelings), **only where appropriate**.
             - Do **not** fabricate or embellish facts.
             - Structure text clearly:
