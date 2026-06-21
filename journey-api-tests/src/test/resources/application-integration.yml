@@ -19,7 +19,7 @@ spring:
       file: ../docker-compose.yml
       profiles:
         active:
-          - defaul
+          - default
           - tts
 
 service:
