@@ -28,3 +28,7 @@ service:
       # Wiremock URL for Cloudinary API stub
       upload_prefix: http://localhost:8090/cloudinary/api/
 
+journey:
+  module:
+    tts:
+      base-url: http://localhost:5001
