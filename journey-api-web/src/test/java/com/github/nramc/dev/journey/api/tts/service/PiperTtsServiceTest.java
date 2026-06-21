@@ -57,7 +57,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(emptyText, null, null, null, null);
+        verify(piperHttpClient).synthesize(emptyText, null, null, null, null);
     }
 
     @Test
@@ -72,7 +72,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(
+        verify(piperHttpClient).synthesize(
                 eq(longText), any(), any(), any(), any()
         );
     }
@@ -89,7 +89,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(
+        verify(piperHttpClient).synthesize(
                 eq(unicodeText),
                 any(), any(), any(), any()
         );
@@ -113,7 +113,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(text, voice, lengthScale, noiseScale, noiseWScale);
+        verify(piperHttpClient).synthesize(text, voice, lengthScale, noiseScale, noiseWScale);
     }
 
     @Test
@@ -130,7 +130,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(text, voice, null, null, null);
+        verify(piperHttpClient).synthesize(text, voice, null, null, null);
     }
 
     @Test
@@ -147,7 +147,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(text, null, lengthScale, null, noiseWScale);
+        verify(piperHttpClient).synthesize(text, null, lengthScale, null, noiseWScale);
     }
 
     // ==================== synthesizeWithVoice Tests ====================
@@ -165,7 +165,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(text, voice, null, null, null);
+        verify(piperHttpClient).synthesize(text, voice, null, null, null);
     }
 
     @Test
@@ -180,7 +180,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(text, null, null, null, null);
+        verify(piperHttpClient).synthesize(text, null, null, null, null);
     }
 
     // ==================== Multiple Calls Tests ====================
@@ -244,7 +244,7 @@ class PiperTtsServiceTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Piper server error");
 
-        verify(piperHttpClient, times(1)).synthesize(eq(text), any(), any(), any(), any());
+        verify(piperHttpClient).synthesize(eq(text), any(), any(), any(), any());
     }
 
     @Test
@@ -268,7 +268,7 @@ class PiperTtsServiceTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Connection failed");
 
-        verify(piperHttpClient, times(1)).synthesize(
+        verify(piperHttpClient).synthesize(
                 text, voice, lengthScale, noiseScale, noiseWScale
         );
     }
@@ -288,7 +288,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(
+        verify(piperHttpClient).synthesize(
                 eq(text),
                 any(),
                 eq(0.0),
@@ -310,7 +310,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(
+        verify(piperHttpClient).synthesize(
                 eq(text),
                 any(),
                 any(),
@@ -332,7 +332,7 @@ class PiperTtsServiceTest {
         // Then
         assertThat(result).isEqualTo(mockAudioData);
 
-        verify(piperHttpClient, times(1)).synthesize(
+        verify(piperHttpClient).synthesize(
                 eq(text),
                 any(),
                 any(),

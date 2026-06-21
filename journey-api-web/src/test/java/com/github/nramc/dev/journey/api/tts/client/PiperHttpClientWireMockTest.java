@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -289,7 +290,7 @@ class PiperHttpClientWireMockTest {
 
         verify(3, postRequestedFor(urlEqualTo("/")));
 
-        List<com.github.tomakehurst.wiremock.stubbing.ServeEvent> serveEvents = getAllServeEvents();
+        List<ServeEvent> serveEvents = getAllServeEvents();
         assertThat(serveEvents).hasSize(3);
         serveEvents.forEach(event ->
             assertThat(event.getRequest().getBody()).isNotEmpty());
