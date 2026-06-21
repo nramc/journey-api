@@ -6,6 +6,9 @@ services:
     ports:
       - "127.0.0.1:1025:1025"
       - "127.0.0.1:8025:8025"
+    profiles:
+      - default
+
   mongodb:
     image: mongo
     container_name: mongo
@@ -31,6 +34,8 @@ services:
         catch(e) { rs.initiate({_id:'rs0', members:[{_id:0, host:'localhost:27017'}]}).ok }"
       interval: 5s
       start_period: 15s
+    profiles:
+      - default
 
   mongo-express:
     image: mongo-express
@@ -44,6 +49,8 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=mongodb_user
       - ME_CONFIG_MONGODB_ADMINPASSWORD=mongodb_pwd
       - ME_CONFIG_MONGODB_URL=mongodb://mongodb_user:mongodb_pwd@mongo:27017/?directConnection=true&authSource=admin
+    profiles:
+      - default
 
 # Piper server configuration: Make sure to align with production environment settings
   piper:
@@ -51,8 +58,8 @@ services:
     container_name: piper-server
     ports:
       - "5001:5000"
-    restart: unless-stopped
     profiles:
+      - default
       - tts
 
 

@@ -49,7 +49,7 @@ spring:
   docker:
     compose:
       profiles:
-        active: tts
+        active: default, tts
 
 server:
   ssl:
