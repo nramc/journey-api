@@ -39,7 +39,7 @@
         <!--    mvn versions:display-property-updates    -->
         <geojson4j.version>2.0.2</geojson4j.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
-        <rewrite-logging-frameworks.version>3.29.0</rewrite-logging-frameworks.version>
+        <rewrite-logging-frameworks.version>3.29.1</rewrite-logging-frameworks.version>
         <rewrite-maven-plugin.version>6.41.0</rewrite-maven-plugin.version>
         <rewrite-pom-cache-dir>${maven.multiModuleProjectDirectory}/.rewrite-cache</rewrite-pom-cache-dir>
         <rewrite-static-analysis.version>2.36.0</rewrite-static-analysis.version>
