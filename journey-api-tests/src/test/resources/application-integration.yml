@@ -18,7 +18,7 @@ spring:
     compose:
       file: ../docker-compose.yml
       profiles:
-        active: default
+        active: default, tts
 
 service:
   cloudinary:
