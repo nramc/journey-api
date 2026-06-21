@@ -10,11 +10,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.MediaType;
-import org.springframework.web.client.RestClient;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -59,7 +63,7 @@ class PiperHttpClientWireMockTest {
 
         String baseUrl = "http://localhost:" + wireMockRuntimeInfo.getHttpPort();
         var ttsProperties = PROPERTIES.toBuilder().baseUrl(baseUrl).build();
-        piperHttpClient = new PiperHttpClient(ttsProperties, RestClient.builder());
+        piperHttpClient = new PiperHttpClient(ttsProperties);
     }
 
     @AfterEach
@@ -101,40 +105,25 @@ class PiperHttpClientWireMockTest {
         verify(postRequestedFor(urlEqualTo("/")).withRequestBody(equalToJson(expectedBody)));
     }
 
-    @Test
-    void synthesize_withNullOptionalParameters_shouldUseDefaultsFromProperties() {
-        stubForSuccessResponse(mockAudioData);
-
-        byte[] result = piperHttpClient.synthesize("Partial test", null, null, null, null);
-
-        assertThat(result).isEqualTo(mockAudioData);
-
-        String expectedBody = "{\"text\":\"Partial test\",\"voice\":\"en_US-lessac-medium\",\"length_scale\":1.0,\"noise_scale\":0.7,\"noise_w_scale\":0.8}";
-        verify(postRequestedFor(urlEqualTo("/")).withRequestBody(equalToJson(expectedBody)));
+    private static Stream<Arguments> textInputsWithDefaultParams() {
+        return Stream.of(
+                Arguments.of("Partial test",
+                        "{\"text\":\"Partial test\",\"voice\":\"en_US-lessac-medium\",\"length_scale\":1.0,\"noise_scale\":0.7,\"noise_w_scale\":0.8}"),
+                Arguments.of("",
+                        "{\"text\":\"\",\"voice\":\"en_US-lessac-medium\",\"length_scale\":1.0,\"noise_scale\":0.7,\"noise_w_scale\":0.8}"),
+                Arguments.of("Hello 世界! 🌍",
+                        "{\"text\":\"Hello 世界! 🌍\",\"voice\":\"en_US-lessac-medium\",\"length_scale\":1.0,\"noise_scale\":0.7,\"noise_w_scale\":0.8}")
+        );
     }
 
-    @Test
-    void synthesize_withEmptyText_shouldHandleEmptyString() {
+    @ParameterizedTest(name = "should use default parameters for text: ''{0}''")
+    @MethodSource("textInputsWithDefaultParams")
+    void synthesize_withNullOptionalParams_shouldUseDefaultsFromProperties(String text, String expectedBody) {
         stubForSuccessResponse(mockAudioData);
 
-        byte[] result = piperHttpClient.synthesize("", null, null, null, null);
+        byte[] result = piperHttpClient.synthesize(text, null, null, null, null);
 
         assertThat(result).isEqualTo(mockAudioData);
-
-        String expectedBody = "{\"text\":\"\",\"voice\":\"en_US-lessac-medium\",\"length_scale\":1.0,\"noise_scale\":0.7,\"noise_w_scale\":0.8}";
-        verify(postRequestedFor(urlEqualTo("/")).withRequestBody(equalToJson(expectedBody)));
-    }
-
-    @Test
-    void synthesize_withUnicodeText_shouldHandleUnicodeCharacters() {
-        stubForSuccessResponse(mockAudioData);
-
-        String unicodeText = "Hello 世界! 🌍";
-        byte[] result = piperHttpClient.synthesize(unicodeText, null, null, null, null);
-
-        assertThat(result).isEqualTo(mockAudioData);
-
-        String expectedBody = "{\"text\":\"Hello 世界! 🌍\",\"voice\":\"en_US-lessac-medium\",\"length_scale\":1.0,\"noise_scale\":0.7,\"noise_w_scale\":0.8}";
         verify(postRequestedFor(urlEqualTo("/")).withRequestBody(equalToJson(expectedBody)));
     }
 
@@ -191,55 +180,17 @@ class PiperHttpClientWireMockTest {
 
     // ==================== ERROR SCENARIOS ====================
 
-    @Test
-    void synthesize_whenServerReturns400_shouldThrowException() {
+    @ParameterizedTest(name = "should throw exception for HTTP {0}")
+    @ValueSource(ints = {400, 404, 500, 503})
+    void synthesize_whenServerReturnsErrorStatus_shouldThrowException(int statusCode) {
         WireMock.stubFor(post("/")
                 .willReturn(aResponse()
-                        .withStatus(400)
+                        .withStatus(statusCode)
                         .withHeader("Content-Type", "application/json")
-                        .withBody("{\"error\": \"Invalid request\"}")));
+                        .withBody("{\"error\": \"Error response\"}")));
 
         assertThatThrownBy(() -> piperHttpClient.synthesize("Test", null, null, null, null))
-                .as("Exception from 400 Bad Request")
-                .isInstanceOf(Exception.class);
-    }
-
-    @Test
-    void synthesize_whenServerReturns404_shouldThrowException() {
-        WireMock.stubFor(post("/")
-                .willReturn(aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"error\": \"Endpoint not found\"}")));
-
-        assertThatThrownBy(() -> piperHttpClient.synthesize("Test", null, null, null, null))
-                .as("Exception from 404 Not Found")
-                .isInstanceOf(Exception.class);
-    }
-
-    @Test
-    void synthesize_whenServerReturns500_shouldThrowException() {
-        WireMock.stubFor(post("/")
-                .willReturn(aResponse()
-                        .withStatus(500)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"error\": \"Internal server error\"}")));
-
-        assertThatThrownBy(() -> piperHttpClient.synthesize("Test", null, null, null, null))
-                .as("Exception from 500 Internal Server Error")
-                .isInstanceOf(Exception.class);
-    }
-
-    @Test
-    void synthesize_whenServerReturns503_shouldThrowException() {
-        WireMock.stubFor(post("/")
-                .willReturn(aResponse()
-                        .withStatus(503)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"error\": \"Service unavailable\"}")));
-
-        assertThatThrownBy(() -> piperHttpClient.synthesize("Test", null, null, null, null))
-                .as("Exception from 503 Service Unavailable")
+                .as("Exception from HTTP %d".formatted(statusCode))
                 .isInstanceOf(Exception.class);
     }
 
@@ -293,7 +244,7 @@ class PiperHttpClientWireMockTest {
         List<ServeEvent> serveEvents = getAllServeEvents();
         assertThat(serveEvents).hasSize(3);
         serveEvents.forEach(event ->
-            assertThat(event.getRequest().getBody()).isNotEmpty());
+                assertThat(event.getRequest().getBody()).isNotEmpty());
     }
 
     // ==================== PROPERTIES VERIFICATION ====================

@@ -12,7 +12,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.client.RestClient;
 
 import java.util.Optional;
 
@@ -25,8 +24,8 @@ import java.util.Optional;
 public class TtsConfig {
 
     @Bean
-    public PiperHttpClient piperHttpClient(TtsProperties properties, RestClient.Builder restClientBuilder) {
-        return new PiperHttpClient(properties, restClientBuilder);
+    public PiperHttpClient piperHttpClient(TtsProperties properties) {
+        return new PiperHttpClient(properties);
     }
 
     @Bean

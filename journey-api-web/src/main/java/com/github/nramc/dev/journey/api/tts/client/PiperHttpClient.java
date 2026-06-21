@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.nramc.dev.journey.api.tts.config.TtsProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.resilience.annotation.Retryable;
 import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -19,9 +21,13 @@ public class PiperHttpClient {
     private final RestClient restClient;
     private final TtsProperties properties;
 
-    public PiperHttpClient(TtsProperties properties, RestClient.Builder restClientBuilder) {
-        this.restClient = restClientBuilder
+    public PiperHttpClient(TtsProperties properties) {
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(Duration.ofSeconds(5));
+        requestFactory.setReadTimeout(Duration.ofSeconds(15));
+        this.restClient = RestClient.builder()
                 .baseUrl(properties.baseUrl())
+                .requestFactory(requestFactory)
                 .build();
         this.properties = properties;
     }
