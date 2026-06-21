@@ -17,6 +17,8 @@ spring:
   docker:
     compose:
       file: ../docker-compose.yml
+      profiles:
+        active: default
 
 service:
   cloudinary:
