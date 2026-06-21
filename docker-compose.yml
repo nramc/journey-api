@@ -59,7 +59,6 @@ services:
     ports:
       - "5001:5000"
     profiles:
-      - default
       - tts
 
 
