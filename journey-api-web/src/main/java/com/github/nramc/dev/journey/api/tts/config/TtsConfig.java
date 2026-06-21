@@ -36,7 +36,6 @@ public class TtsConfig {
 
     /**
      * Fixes the OpenAPI schema for the TTS synthesize endpoint.
-     * <p>
      * springdoc auto-generates a schema for {@code ResponseEntity<byte[]>} that includes
      * an invalid {@code default} field, which fails ZAP's swagger-parser validation:
      * "schema.default is not of type object". This customizer replaces that schema with
