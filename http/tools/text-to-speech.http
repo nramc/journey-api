@@ -1,0 +1,11 @@
+### Text-to-Speech Synthesis Request
+POST {{baseUrl}}/api/tts/synthesize
+Content-Type: application/json
+
+{
+  "text": "By default, the timeout for synchronous return values with ReactorHttpExchangeAdapter depends on how the underlying HTTP client is configured. You can set a blockTimeout value on the adapter level as well, but we recommend relying on timeout settings of the underlying HTTP client, which operates at a lower level and provides more control.",
+  "voice": "en_US-lessac-medium",
+  "lengthScale": 1.4,
+  "noiseScale": 0.7,
+  "noiseWScale": 0.8
+}

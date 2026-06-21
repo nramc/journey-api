@@ -115,7 +115,6 @@
                         <phase>pre-integration-test</phase>
                         <configuration>
                             <skip>${skipTests}</skip>
-                            <skip>${integration.test.skip}</skip>
                         </configuration>
                     </execution>
                     <execution>
@@ -126,7 +125,6 @@
                         <phase>post-integration-test</phase>
                         <configuration>
                             <skip>${skipTests}</skip>
-                            <skip>${integration.test.skip}</skip>
                         </configuration>
                     </execution>
                     <!-- Start integration application for security testing in CI workflow -->
@@ -194,14 +192,12 @@
         <profile>
             <id>integration-test</id>
             <properties>
-                <integration.test.skip>false</integration.test.skip>
                 <testcase.spring.profiles>integration-test</testcase.spring.profiles>
             </properties>
         </profile>
         <profile>
             <id>qa-test</id>
             <properties>
-                <integration.test.skip>true</integration.test.skip>
                 <testcase.spring.profiles>qa-test</testcase.spring.profiles>
             </properties>
         </profile>

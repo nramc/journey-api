@@ -42,6 +42,7 @@ public final class Resources {
     public static final String VERIFY_EMAIL_CODE = "/rest/verifyEmailCode";
 
     public static final String FETCH_ALL_CATEGORIES = "/rest/categories";
+    public static final String TTS_API = "/api/tts/synthesize";
 
     public static final class MediaType {
         public static final String UPDATE_JOURNEY_BASIC_DETAILS = "application/vnd.journey.api.basic.v1+json";

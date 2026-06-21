@@ -46,6 +46,10 @@ spring:
       mail.smtp.auth: false
       mail.smtp.starttls.enable: false
       mail.smtp.starttls.required: false
+  docker:
+    compose:
+      profiles:
+        active: default, tts
 
 server:
   ssl:
@@ -58,3 +62,8 @@ server:
 management:
   server:
     port: 8081
+
+journey:
+  module:
+    tts:
+      base-url: http://localhost:5001
