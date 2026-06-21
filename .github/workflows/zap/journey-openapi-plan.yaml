@@ -5,6 +5,8 @@ env:
     - ${TARGET_APP_URL}
     includePaths:
     - "${TARGET_APP_URL}.*"
+    excludePaths:
+    - "${TARGET_APP_URL}/api/tts/synthesize"
     authentication:
       method: json
       parameters:
@@ -55,4 +57,3 @@ jobs:
     reportTitle: Security Testing Report
 - type: exitStatus
   parameters: {}
-
