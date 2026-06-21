@@ -52,6 +52,8 @@ services:
     ports:
       - "5001:5000"
     restart: unless-stopped
+    profiles:
+      - tts
 
 
 volumes:
@@ -60,4 +62,3 @@ volumes:
 networks:
   default:
     name: mongodb_network
-

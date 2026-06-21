@@ -46,6 +46,10 @@ spring:
       mail.smtp.auth: false
       mail.smtp.starttls.enable: false
       mail.smtp.starttls.required: false
+  docker:
+    compose:
+      profiles:
+        active: tts
 
 server:
   ssl:
