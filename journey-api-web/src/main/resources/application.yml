@@ -123,19 +123,26 @@ springdoc:
   group-configs:
     - group: Journeys
       packages-to-scan:
-        - com.github.nramc.dev.journey.api.web.resources.rest.journeys
+        - com.github.nramc.dev.journey.api.journey.web.journeys
+        - com.github.nramc.dev.journey.api.journey.web.statistics
     - group: Users
       packages-to-scan:
-        - com.github.nramc.dev.journey.api.web.resources.rest.users
+        - com.github.nramc.dev.journey.api.account.web.users
     - group: Auth
       packages-to-scan:
-        - com.github.nramc.dev.journey.api.web.resources.rest.auth
+        - com.github.nramc.dev.journey.api.account.web.auth
     - group: API Info
       packages-to-scan:
-        - com.github.nramc.dev.journey.api.web.resources.rest.api
+        - com.github.nramc.dev.journey.api.account.web.api
     - group: Timeline
       packages-to-scan:
-        - com.github.nramc.dev.journey.api.web.resources.rest.timeline
+        - com.github.nramc.dev.journey.api.journey.web.timeline
+    - group: AI
+      packages-to-scan:
+        - com.github.nramc.dev.journey.api.ai
+    - group: TTS
+      packages-to-scan:
+        - com.github.nramc.dev.journey.api.tts.web
 
 service:
   cloudinary:
