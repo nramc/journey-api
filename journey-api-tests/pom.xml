@@ -12,7 +12,7 @@
 
     <properties>
         <!-- test dependencies properties -->
-        <allure.version>2.35.2</allure.version>
+        <allure.version>2.35.3</allure.version>
         <allure-commandline.version>2.43.0</allure-commandline.version>
         <allure-maven.version>3.0.2</allure-maven.version>
         <aspectjweaver.version>1.9.23</aspectjweaver.version>
