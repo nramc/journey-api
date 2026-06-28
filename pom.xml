@@ -55,7 +55,7 @@
         <spring-modulith.version>2.1.0</spring-modulith.version>
         <wiremock-standalone.version>3.13.2</wiremock-standalone.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-        <checkstyle.version>13.6.0</checkstyle.version>
+        <checkstyle.version>13.7.0</checkstyle.version>
         <webauthn-server-core.version>2.9.0</webauthn-server-core.version>
         <uap-java.version>1.6.1</uap-java.version>
     </properties>
