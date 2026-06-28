@@ -49,7 +49,7 @@ public class JourneyAnniversaryNotificationProcessor
         )).toList());
 
         return Optional.of(NotificationData.ofEmail(
-                "Journey: Your anniversary memories for " + DATE_FORMATTER.format(event.date()),
+                "On This Day: Your Journey Memories",
                 List.of(event.username()),
                 ANNIVERSARY_EMAIL_TEMPLATE,
                 placeholders

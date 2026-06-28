@@ -127,27 +127,28 @@ body {
 
 /* --- Section title ---------------------------------------- */
 .section-title {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     font-weight: 800;
-    color: #2341c4;
-    margin: 0 0 22px;
+    color: #1e3bbf;
+    margin: 0 0 24px;
     line-height: 1.35;
 }
 
 /* --- Hero band (full-width accent inside content) --------- */
 .hero-band {
     background: linear-gradient(135deg, #eef1fd 0%, #f0f4ff 100%);
-    border-left: 4px solid #3459e6;
+    border-left: 5px solid #3459e6;
     border-radius: 0 8px 8px 0;
-    padding: 18px 20px;
-    margin: 0 0 26px;
+    padding: 20px 22px;
+    margin: 0 0 28px;
+    box-shadow: 0 2px 8px rgba(52, 89, 230, 0.1);
 }
 
 .hero-band p {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: #2d3d7f;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 /* --- Divider ---------------------------------------------- */
@@ -256,48 +257,58 @@ body {
 /* --- Anniversary: year badge ------------------------------ */
 .anniversary-badge {
     display: inline-block;
-    background: linear-gradient(135deg, #f59e0b 0%, #fb923c 100%);
+    background: linear-gradient(135deg, #3459e6 0%, #2341c4 100%);
     color: #ffffff;
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    padding: 4px 14px;
+    padding: 6px 16px;
     border-radius: 50px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 /* --- Journey card ----------------------------------------- */
 .journey-card {
     border: 1px solid #dde4f5;
     border-radius: 12px;
-    margin: 18px 0;
+    margin: 20px 0;
     overflow: hidden;
     background: #ffffff;
-    box-shadow: 0 2px 10px rgba(52, 89, 230, 0.07);
+    box-shadow: 0 4px 16px rgba(52, 89, 230, 0.08);
+}
+
+.journey-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.journey-image-placeholder {
+    width: 100%;
 }
 
 .journey-hero-image {
     width: 100%;
-    max-height: 220px;
+    max-height: 240px;
     object-fit: cover;
     display: block;
+    border-radius: 8px 8px 0 0;
 }
 
 .journey-body {
-    padding: 18px 22px 20px;
+    padding: 20px 24px 22px;
 }
 
 .journey-title {
-    margin: 0 0 6px;
-    font-size: 1.08rem;
+    margin: 0 0 8px;
+    font-size: 1.12rem;
     font-weight: 700;
     color: #1e293b;
     line-height: 1.35;
 }
 
 .journey-meta {
-    margin: 0 0 12px;
+    margin: 0 0 14px;
     color: #64748b;
     font-size: 0.85rem;
     display: flex;
@@ -311,16 +322,16 @@ body {
 }
 
 .gallery {
-    margin-top: 12px;
+    margin-top: 14px;
 }
 
 .gallery-label {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 700;
-    color: #94a3b8;
+    color: #3459e6;
     letter-spacing: 0.8px;
     text-transform: uppercase;
-    margin: 0 0 8px;
+    margin: 0 0 10px;
 }
 
 /* Gallery table — email-safe multi-column layout */
@@ -328,34 +339,36 @@ body {
     width: 100%;
     table-layout: fixed;
     border-collapse: separate;
-    border-spacing: 3px;
+    border-spacing: 4px;
 }
 
 .gallery-table-cell {
     vertical-align: top;
     padding: 0;
     overflow: hidden;
+    border-radius: 6px;
 }
 
 .gallery-table-img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 4px;
+    border-radius: 6px;
+    border: 1px solid #e8ecf8;
 }
 
 .inline-cta {
     display: inline-block;
-    margin-top: 14px;
-    padding: 8px 20px;
+    margin-top: 16px;
+    padding: 10px 22px;
     background: linear-gradient(135deg, #3459e6 0%, #2341c4 100%);
     color: #ffffff !important;
-    font-size: 0.85rem;
+    font-size: 0.87rem;
     font-weight: 700;
     text-decoration: none;
     border-radius: 50px;
     letter-spacing: 0.3px;
-    box-shadow: 0 2px 8px rgba(52, 89, 230, 0.25);
+    box-shadow: 0 4px 12px rgba(52, 89, 230, 0.28);
 }
 
 /* --- Regards section -------------------------------------- */

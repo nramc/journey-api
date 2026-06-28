@@ -10,22 +10,21 @@
 
         <!-- Anniversary badge + title -->
         <div class="align-center" style="margin-bottom: 6px;">
-            <span class="anniversary-badge">🎊 On This Day</span>
+            <span class="anniversary-badge">📅 On This Day in History</span>
         </div>
 
         <p class="section-title align-center"
-           th:text="'Happy Anniversary, ' + ${recipientName} + '! 🌟'">
-            Happy Anniversary! 🌟
+           th:text="'A Memory Worth Remembering, ' + ${recipientName} + ' 💭'">
+            A Memory Worth Remembering 💭
         </p>
 
         <!-- Emotional opener -->
         <div class="hero-band">
             <p>
-                Some moments are too special to forget.
-                On <strong th:text="${anniversaryDate}">this day</strong>, you created
+                On this day in history, you created
                 <strong th:text="${journeyCount}">a</strong>
                 <span th:text="${journeyCount == 1} ? 'memory' : 'memories'">memory</span>
-                worth reliving. Take a moment to look back — it's yours to keep, forever. 💙
+                that still matters. Look back, smile, and relive the experience — these are the moments that make your story unique. 💙
             </p>
         </div>
 
@@ -33,11 +32,16 @@
         <th:block th:each="journey : ${journeys}">
             <article class="journey-card">
 
-                <!-- Hero image -->
-                <img class="journey-hero-image"
-                     th:if="${journey.thumbnailUrl != null and !journey.thumbnailUrl.isEmpty()}"
-                     th:src="${journey.thumbnailUrl}"
-                     th:alt="${journey.journeyTitle}"/>
+                <!-- Hero image with enhanced styling -->
+                <div class="journey-image-wrapper" th:if="${journey.thumbnailUrl != null and !journey.thumbnailUrl.isEmpty()}">
+                    <img class="journey-hero-image"
+                         th:src="${journey.thumbnailUrl}"
+                         th:alt="${journey.journeyTitle}"
+                         style="width: 100%; max-height: 240px; object-fit: cover; display: block; border-radius: 8px 8px 0 0;"/>
+                </div>
+                <div class="journey-image-placeholder" th:if="${journey.thumbnailUrl == null or journey.thumbnailUrl.isEmpty()}"
+                     style="width: 100%; height: 60px; background: linear-gradient(135deg, #eef1fd 0%, #dde4f5 100%); border-radius: 8px 8px 0 0;">
+                </div>
 
                 <div class="journey-body">
 
@@ -53,16 +57,16 @@
                          3+     → 3 cols, multiple rows
                     -->
                     <div class="gallery" th:if="${journey.imageUrls != null and !#lists.isEmpty(journey.imageUrls)}">
-                        <p class="gallery-label">📷 Photo Highlights</p>
+                        <p class="gallery-label">📷 Photo Highlights from This Day</p>
                         <table class="gallery-table"
                                th:with="
                                    imgCount=${#lists.size(journey.imageUrls)},
                                    cols=${imgCount == 1 ? 1 : (imgCount == 2 ? 2 : 3)},
                                    rows=${(imgCount + cols - 1) / cols},
-                                   colPct=${cols == 1 ? '100%' : (cols == 2 ? '50%' : '33%')}">
+                                   colPct=${cols == 1 ? '100%' : (cols == 2 ? '50%' : '33.33%')}">
                             <tr th:each="rowIdx : ${#numbers.sequence(0, rows - 1)}">
                                 <td th:each="colIdx : ${#numbers.sequence(0, cols - 1)}"
-                                    th:style="'width:' + ${colPct}"
+                                    th:style="'width:' + ${colPct} + ';padding: 0 2px;'"
                                     class="gallery-table-cell">
                                     <img th:if="${rowIdx * cols + colIdx < imgCount}"
                                          th:src="${journey.imageUrls[rowIdx * cols + colIdx]}"
@@ -74,7 +78,7 @@
                     </div>
 
                     <a class="inline-cta" th:href="${journey.journeyUrl}">
-                        Relive This Journey →
+                        Relive This Memory →
                     </a>
                 </div>
 
