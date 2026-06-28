@@ -42,7 +42,7 @@ class JourneyAnniversaryNotificationProcessorTest {
 
         assertThat(result).isPresent();
         var notificationData = result.orElseThrow();
-        assertThat(notificationData.subject()).isEqualTo("Journey: Your anniversary memories for 12 Jun 2026");
+        assertThat(notificationData.subject()).isEqualTo("On This Day: Your Journey Memories");
         assertThat(notificationData.recipients()).containsExactly("john@example.com");
 
         assertThat(notificationData.metadata()).containsEntry("template", "journey-anniversary-postcard-template.html");
