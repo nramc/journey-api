@@ -11,6 +11,7 @@ import com.github.nramc.dev.journey.api.notification.processor.AccountActivatedN
 import com.github.nramc.dev.journey.api.notification.processor.AccountActivationEmailRequestedNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.processor.EmailCodeRequestedNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.processor.JourneyAnniversaryNotificationProcessor;
+import com.github.nramc.dev.journey.api.notification.processor.PasswordRecoveryRequestedNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.processor.UserRegisteredNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramGateway;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
@@ -133,5 +134,10 @@ public class NotificationConfig {
     public JourneyAnniversaryNotificationProcessor journeyAnniversaryNotificationProcessor(
             ApplicationProperties applicationProperties) {
         return new JourneyAnniversaryNotificationProcessor(applicationProperties);
+    }
+
+    @Bean
+    public PasswordRecoveryRequestedNotificationProcessor passwordRecoveryRequestedNotificationProcessor() {
+        return new PasswordRecoveryRequestedNotificationProcessor();
     }
 }
