@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.notification;
 import com.github.nramc.dev.journey.api.account.AccountActivatedEvent;
 import com.github.nramc.dev.journey.api.account.AccountActivationEmailRequestedEvent;
 import com.github.nramc.dev.journey.api.account.EmailCodeRequestedEvent;
+import com.github.nramc.dev.journey.api.account.PasswordRecoveryRequestedEvent;
 import com.github.nramc.dev.journey.api.account.UserRegisteredEvent;
 import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryEvent;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,15 @@ public class NotificationEventHandler {
     @ApplicationModuleListener
     void onJourneyAnniversary(JourneyAnniversaryEvent event) {
         log.debug("Handling JourneyAnniversaryEvent for user: {}", event.username());
+        notificationEventDispatcher.dispatch(event);
+    }
+
+    /**
+     * Sends the account/password recovery e-mail with the One-Time-Token link.
+     */
+    @ApplicationModuleListener
+    void onPasswordRecoveryRequested(PasswordRecoveryRequestedEvent event) {
+        log.debug("Handling PasswordRecoveryRequestedEvent for user: {}", event.username());
         notificationEventDispatcher.dispatch(event);
     }
 }
