@@ -10,6 +10,8 @@ public final class Resources {
     public static final String GUEST_LOGIN = "/rest/guestLogin";
     public static final String LOGIN = "/rest/login";
     public static final String LOGIN_MFA = "/rest/mfa";
+    public static final String LOGIN_OTT = "/rest/login/ott";
+    public static final String SEND_ACCOUNT_RECOVERY = "/rest/account/recover";
 
     public static final String NEW_JOURNEY = "/rest/journey";
     public static final String FIND_JOURNEY_BY_ID = "/rest/journey/{id}";
