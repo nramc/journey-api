@@ -89,6 +89,12 @@ app:
 
 journey:
   module:
+    account:
+      security:
+        ott:
+          token-validity: 15m
+          recovery-path: /recover
+          tokenQueryPram: token
     infrastructure:
       event:
         republisher:
