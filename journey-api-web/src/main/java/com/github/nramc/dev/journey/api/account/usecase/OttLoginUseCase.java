@@ -38,4 +38,3 @@ public class OttLoginUseCase {
         return jwtResponseProvider.jwtResponse(authUser);
     }
 }
-

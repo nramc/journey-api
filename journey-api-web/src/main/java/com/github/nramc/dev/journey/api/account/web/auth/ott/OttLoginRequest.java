@@ -6,4 +6,3 @@ record OttLoginRequest(
         @NotBlank String token
 ) {
 }
-

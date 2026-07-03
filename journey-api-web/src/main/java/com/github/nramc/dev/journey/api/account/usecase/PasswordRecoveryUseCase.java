@@ -66,4 +66,3 @@ public class PasswordRecoveryUseCase {
                 .build().toUriString();
     }
 }
-

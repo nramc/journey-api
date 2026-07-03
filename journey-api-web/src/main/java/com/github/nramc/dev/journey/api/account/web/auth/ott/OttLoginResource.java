@@ -37,4 +37,3 @@ class OttLoginResource {
         return ottLoginUseCase.login(request.token());
     }
 }
-

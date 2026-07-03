@@ -20,4 +20,3 @@ public record OttProperties(
         @NotBlank String tokenQueryPram
 ) {
 }
-

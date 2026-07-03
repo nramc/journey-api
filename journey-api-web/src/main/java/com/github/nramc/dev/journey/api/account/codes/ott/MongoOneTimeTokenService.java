@@ -90,6 +90,3 @@ public class MongoOneTimeTokenService implements OneTimeTokenService {
         return createdAt.plus(ottProperties.tokenValidity()).toInstant(ZoneOffset.UTC);
     }
 }
-
-
-

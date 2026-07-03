@@ -16,4 +16,3 @@ public record PasswordRecoveryRequestedEvent(
         String name,
         String recoveryUrl) {
 }
-

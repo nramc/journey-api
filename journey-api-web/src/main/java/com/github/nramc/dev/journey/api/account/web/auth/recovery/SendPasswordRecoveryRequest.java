@@ -7,4 +7,3 @@ record SendPasswordRecoveryRequest(
         @NotBlank @Email String username
 ) {
 }
-

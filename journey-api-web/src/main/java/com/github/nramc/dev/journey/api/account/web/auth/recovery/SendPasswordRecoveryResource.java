@@ -38,4 +38,3 @@ class SendPasswordRecoveryResource {
         log.info("Account recovery request has been processed");
     }
 }
-
