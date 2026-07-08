@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.account.web.auth.ott;
 
 import com.github.nramc.dev.journey.api.account.usecase.OttLoginUseCase;
 import com.github.nramc.dev.journey.api.account.web.auth.dto.LoginResponse;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.shared.exceptions.BusinessException;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest(OttLoginResource.class)
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 class OttLoginResourceTest {
     private static final String REQUEST_TEMPLATE = """

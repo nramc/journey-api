@@ -86,7 +86,6 @@ app:
             - X-Async-Process
           allow-credentials: true
 
-
 journey:
   module:
     account:
@@ -96,6 +95,23 @@ journey:
           recovery-path: /recover
           tokenQueryPram: token
     infrastructure:
+      rate-limit:
+        policies:
+          login:
+            capacity: 5
+            window: 15m
+          ott-login:
+            capacity: 5
+            window: 15m
+          mfa-verify:
+            capacity: 5
+            window: 15m
+          account-recovery:
+            capacity: 3
+            window: 1h
+          journey-creation:
+            capacity: 5
+            window: 24h
       event:
         republisher:
           retry-delay: 1m

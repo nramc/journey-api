@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.tts.web;
 
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.shared.exceptions.TechnicalException;
 import com.github.nramc.dev.journey.api.tts.TtsService;
@@ -20,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(TtsResource.class)
-@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, RateLimitConfig.class})
 @ActiveProfiles("test")
 class TtsResourceTest {
     @Autowired

@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.infrastructure.web.mvc.home;
 
 import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HomeResource.class)
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 @EnableConfigurationProperties({ApplicationProperties.class})
 class HomeResourceTest {

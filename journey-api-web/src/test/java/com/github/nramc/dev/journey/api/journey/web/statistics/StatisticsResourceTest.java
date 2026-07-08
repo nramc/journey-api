@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.journey.web.statistics;
 
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.journey.domain.Journey;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StatisticsResource.class)
-@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 class StatisticsResourceTest {
     @Autowired

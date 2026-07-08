@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.journey.web.journeys.update.publish;
 
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
@@ -43,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PublishJourneyResource.class)
-@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, ValidationAutoConfiguration.class, JourneyValidator.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, ValidationAutoConfiguration.class, JourneyValidator.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 class PublishJourneyResourceTest {
     private static final JourneyEntity JOURNEY_ENTITY = JourneyData.JOURNEY_ENTITY.toBuilder().build();

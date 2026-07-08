@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.account.web.auth.recovery;
 
 import com.github.nramc.dev.journey.api.account.usecase.PasswordRecoveryUseCase;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest(SendPasswordRecoveryResource.class)
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 class SendPasswordRecoveryResourceTest {
     private static final String REQUEST_TEMPLATE = """

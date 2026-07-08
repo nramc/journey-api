@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.infrastructure.security;
 
+import com.github.nramc.dev.journey.api.infrastructure.ratelimit.RateLimitFilter;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -25,6 +26,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -97,7 +99,7 @@ public class WebSecurityConfig {
 
     @Bean
     @SuppressWarnings("java:S4502") // CSRF protection is not needed for stateless REST APIs
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, RateLimitFilter rateLimitFilter) {
         http
                 // configure CORS security
                 .cors(Customizer.withDefaults())
@@ -194,6 +196,8 @@ public class WebSecurityConfig {
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
                 );
+
+        http.addFilterBefore(rateLimitFilter, AuthorizationFilter.class);
 
         return http.build();
     }

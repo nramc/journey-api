@@ -58,9 +58,15 @@
         <checkstyle.version>13.7.0</checkstyle.version>
         <webauthn-server-core.version>2.9.0</webauthn-server-core.version>
         <uap-java.version>1.6.1</uap-java.version>
+        <bucket4j.version>8.10.1</bucket4j.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.bucket4j</groupId>
+                <artifactId>bucket4j-core</artifactId>
+                <version>${bucket4j.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.cloudinary</groupId>
                 <artifactId>cloudinary-http45</artifactId>
@@ -92,6 +98,7 @@
                 <artifactId>geojson4j</artifactId>
                 <version>${geojson4j.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

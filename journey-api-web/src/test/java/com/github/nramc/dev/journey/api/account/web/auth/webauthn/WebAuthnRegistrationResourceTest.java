@@ -2,11 +2,11 @@ package com.github.nramc.dev.journey.api.account.web.auth.webauthn;
 
 import com.github.nramc.dev.journey.api.account.webauthn.WebAuthnService;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -19,13 +19,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {WebAuthnRegistrationResource.class})
-@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson
 class WebAuthnRegistrationResourceTest {
@@ -76,7 +77,7 @@ class WebAuthnRegistrationResourceTest {
 
     @Test
     void startRegistration_whenUserAuthenticated_thenShouldGetCreateOptions() throws Exception {
-        Mockito.when(webAuthnService.startRegistration(any())).thenReturn(PublicKeyCredentialCreationOptions.fromJson(CREATION_OPTIONS_JSON));
+        when(webAuthnService.startRegistration(any())).thenReturn(PublicKeyCredentialCreationOptions.fromJson(CREATION_OPTIONS_JSON));
         mockMvc.perform(MockMvcRequestBuilders.post("/webauthn/register/start")
                         .with(httpBasic(WithMockAuthenticatedUser.USERNAME, WithMockAuthenticatedUser.PASSWORD))
                 ).andDo(print())

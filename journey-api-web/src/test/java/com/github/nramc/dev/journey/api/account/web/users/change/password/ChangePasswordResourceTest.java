@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.account.web.users.change.password;
 
 import com.github.nramc.dev.journey.api.account.repository.AuthUserDetailsService;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ChangePasswordResource.class)
-@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, BCryptPasswordEncoder.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, BCryptPasswordEncoder.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 class ChangePasswordResourceTest {
     private static final String REQUEST_TEMPLATE = """
