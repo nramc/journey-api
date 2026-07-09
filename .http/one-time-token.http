@@ -12,7 +12,7 @@ POST {{baseUrl}}/rest/login/ott
 Content-Type: application/json
 
 {
-  "token": ""
+  "token": "token 1"
 }
 
 > {%
