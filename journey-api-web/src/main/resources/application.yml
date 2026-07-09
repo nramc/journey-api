@@ -92,7 +92,7 @@ journey:
       security:
         ott:
           token-validity: 15m
-          recovery-path: /recover
+          recovery-path: /account/recover/login
           tokenQueryPram: token
     infrastructure:
       rate-limit:

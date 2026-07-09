@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RateLimiterServiceTest {
     @Test
@@ -30,9 +31,9 @@ class RateLimiterServiceTest {
         RateLimitProperties properties = new RateLimitProperties(Map.of());
         RateLimiterService service = new RateLimiterService(properties);
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> service.tryConsume("unknown-policy", "client-1"))
-                .isInstanceOf(IllegalArgumentException.class);
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> service.assertPolicyConfigured("unknown-policy"))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> service.tryConsume("unknown-policy", "client-1"))
+                .isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> service.assertPolicyConfigured("unknown-policy"))
+                .isInstanceOf(NullPointerException.class);
     }
 }

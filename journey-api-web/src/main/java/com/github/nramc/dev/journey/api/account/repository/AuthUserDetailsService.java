@@ -26,11 +26,15 @@ public class AuthUserDetailsService implements UserDetailsManager, UserDetailsPa
 
     @Override
     public @NonNull UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        return userRepository.findUserByUsername(username);
+        AuthUser user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("user not found");
+        }
+        return user;
     }
 
     public AuthUser getGuestUserDetails() {
-        return userRepository.findUserByUsername("GUEST");
+        return (AuthUser) this.loadUserByUsername("GUEST");
     }
 
     @Override

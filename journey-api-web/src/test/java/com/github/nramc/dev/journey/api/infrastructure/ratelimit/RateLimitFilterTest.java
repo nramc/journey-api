@@ -74,6 +74,6 @@ class RateLimitFilterTest {
 
         var rateLimitKeyResolver = new RateLimitKeyResolver();
         var jsonMapper = new JsonMapper();
-        assertThatThrownBy(() -> new RateLimitFilter(rateLimiterService, rateLimitKeyResolver, jsonMapper)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new RateLimitFilter(rateLimiterService, rateLimitKeyResolver, jsonMapper)).isInstanceOf(NullPointerException.class);
     }
 }

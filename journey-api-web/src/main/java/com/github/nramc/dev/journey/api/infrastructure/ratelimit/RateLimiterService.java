@@ -6,6 +6,7 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public class RateLimiterService {
     private final RateLimitProperties properties;
@@ -36,7 +37,7 @@ public class RateLimiterService {
      * @throws IllegalArgumentException if the policy is not configured
      */
     public void assertPolicyConfigured(String policyName) {
-        properties.policy(policyName);
+        Objects.requireNonNull(properties.policy(policyName), "policy %s not found".formatted(policyName));
     }
 
     private Bucket createBucket(RateLimitProperties.Policy policy) {

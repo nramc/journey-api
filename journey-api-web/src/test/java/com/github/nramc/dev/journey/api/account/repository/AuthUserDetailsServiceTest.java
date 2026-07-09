@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -53,6 +54,16 @@ class AuthUserDetailsServiceTest {
             assertThat(actual).isSameAs(expected);
             verify(userRepository).findUserByUsername("john@example.com");
         }
+
+        @Test
+        void shouldThrowUsernameNotFoundExceptionWhenUserNotExists() {
+            when(userRepository.findUserByUsername("unknown@example.com")).thenReturn(null);
+
+            assertThatThrownBy(() -> userDetailsService.loadUserByUsername("unknown@example.com"))
+                    .isInstanceOf(UsernameNotFoundException.class)
+                    .hasMessage("user not found");
+            verify(userRepository).findUserByUsername("unknown@example.com");
+        }
     }
 
     @Nested
@@ -66,6 +77,16 @@ class AuthUserDetailsServiceTest {
             var actual = userDetailsService.getGuestUserDetails();
 
             assertThat(actual).isSameAs(guest);
+            verify(userRepository).findUserByUsername("GUEST");
+        }
+
+        @Test
+        void shouldThrowUsernameNotFoundExceptionWhenGuestUserNotExists() {
+            when(userRepository.findUserByUsername("GUEST")).thenReturn(null);
+
+            assertThatThrownBy(() -> userDetailsService.getGuestUserDetails())
+                    .isInstanceOf(UsernameNotFoundException.class)
+                    .hasMessage("user not found");
             verify(userRepository).findUserByUsername("GUEST");
         }
     }
