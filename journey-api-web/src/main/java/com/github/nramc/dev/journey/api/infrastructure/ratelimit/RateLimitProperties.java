@@ -5,26 +5,26 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.time.DurationMin;
-import org.jspecify.annotations.NonNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.HttpMethod;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.Duration;
-import java.util.Map;
+import java.util.List;
 
 @ConfigurationProperties(prefix = "journey.module.infrastructure.rate-limit")
 @Validated
-public record RateLimitProperties(Map<@NotBlank String, @NotNull @Valid Policy> policies) {
+public record RateLimitProperties(List<@NotNull @Valid Policy> policies) {
 
     public RateLimitProperties {
-        policies = policies == null ? Map.of() : Map.copyOf(policies);
+        policies = policies == null ? List.of() : List.copyOf(policies);
     }
 
-    @NonNull
-    public Policy policy(@NonNull String policyName) {
-        return policies.get(policyName);
-    }
-
-    public record Policy(@Positive int capacity, @NotNull @DurationMin(seconds = 5) Duration window) {
+    public record Policy(@NotBlank String name,
+                         @NotNull HttpMethod method,
+                         @NotBlank String path,
+                         @Positive int capacity,
+                         @NotNull @DurationMin(seconds = 5) Duration window,
+                         @NotNull RateLimitKey key) {
     }
 }

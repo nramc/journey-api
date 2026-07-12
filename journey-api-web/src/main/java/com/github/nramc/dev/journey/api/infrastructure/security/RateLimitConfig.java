@@ -19,14 +19,15 @@ public class RateLimitConfig {
     }
 
     @Bean
-    public RateLimiterService rateLimiterService(RateLimitProperties properties) {
-        return new RateLimiterService(properties);
+    public RateLimiterService rateLimiterService() {
+        return new RateLimiterService();
     }
 
     @Bean
     public RateLimitFilter rateLimitFilter(RateLimiterService rateLimiterService,
                                            RateLimitKeyResolver rateLimitKeyResolver,
-                                           JsonMapper jsonMapper) {
-        return new RateLimitFilter(rateLimiterService, rateLimitKeyResolver, jsonMapper);
+                                           JsonMapper jsonMapper,
+                                           RateLimitProperties properties) {
+        return new RateLimitFilter(rateLimiterService, rateLimitKeyResolver, jsonMapper, properties);
     }
 }

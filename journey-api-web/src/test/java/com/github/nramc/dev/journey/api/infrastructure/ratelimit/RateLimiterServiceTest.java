@@ -1,39 +1,28 @@
 package com.github.nramc.dev.journey.api.infrastructure.ratelimit;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 
 import java.time.Duration;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RateLimiterServiceTest {
     @Test
     void shouldAllowRequestsWithinCapacityAndBlockAfterLimit() {
-        RateLimitProperties.Policy policy = new RateLimitProperties.Policy(2, Duration.ofMinutes(1));
-        RateLimitProperties properties = new RateLimitProperties(Map.of("login", policy));
+        RateLimitProperties.Policy policy = new RateLimitProperties.Policy(
+                "login", HttpMethod.POST, "/rest/login", 2, Duration.ofMinutes(1), RateLimitKey.CLIENT_IP
+        );
 
-        RateLimiterService service = new RateLimiterService(properties);
+        RateLimiterService service = new RateLimiterService();
 
-        RateLimiterService.RateLimitDecision first = service.tryConsume("login", "client-1");
-        RateLimiterService.RateLimitDecision second = service.tryConsume("login", "client-1");
-        RateLimiterService.RateLimitDecision third = service.tryConsume("login", "client-1");
+        RateLimiterService.RateLimitDecision first = service.tryConsume(policy, "client-1");
+        RateLimiterService.RateLimitDecision second = service.tryConsume(policy, "client-1");
+        RateLimiterService.RateLimitDecision third = service.tryConsume(policy, "client-1");
 
         assertThat(first.allowed()).isTrue();
         assertThat(second.allowed()).isTrue();
         assertThat(third.allowed()).isFalse();
         assertThat(third.retryAfterSeconds()).isGreaterThan(0);
-    }
-
-    @Test
-    void shouldThrowWhenPolicyIsNotConfigured() {
-        RateLimitProperties properties = new RateLimitProperties(Map.of());
-        RateLimiterService service = new RateLimiterService(properties);
-
-        assertThatThrownBy(() -> service.tryConsume("unknown-policy", "client-1"))
-                .isInstanceOf(NullPointerException.class);
-        assertThatThrownBy(() -> service.assertPolicyConfigured("unknown-policy"))
-                .isInstanceOf(NullPointerException.class);
     }
 }

@@ -6,38 +6,23 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 
 import java.time.Duration;
-import java.util.Objects;
 
 public class RateLimiterService {
-    private final RateLimitProperties properties;
     private final Cache<String, Bucket> buckets;
 
-    public RateLimiterService(RateLimitProperties properties) {
-        this.properties = properties;
+    public RateLimiterService() {
         this.buckets = Caffeine.newBuilder()
                 .maximumSize(100_000)
                 .expireAfterAccess(Duration.ofHours(1))
                 .build();
     }
 
-    public RateLimitDecision tryConsume(String policyName, String key) {
-        RateLimitProperties.Policy policy = properties.policy(policyName);
-        String bucketKey = policyName + ":" + key;
+    public RateLimitDecision tryConsume(RateLimitProperties.Policy policy, String key) {
+        String bucketKey = policy.name() + ":" + key;
         Bucket bucket = buckets.get(bucketKey, ignored -> createBucket(policy));
         boolean allowed = bucket.tryConsume(1);
         long retryAfterSeconds = allowed ? 0L : Math.max(1L, policy.window().toSeconds());
-        return new RateLimitDecision(allowed, retryAfterSeconds, policyName, key);
-    }
-
-    /**
-     * Verifies that the given policy name is configured. Intended to be called eagerly (e.g. during filter
-     * construction) so that misconfiguration fails fast at application startup rather than on the first
-     * matching request.
-     *
-     * @throws IllegalArgumentException if the policy is not configured
-     */
-    public void assertPolicyConfigured(String policyName) {
-        Objects.requireNonNull(properties.policy(policyName), "policy %s not found".formatted(policyName));
+        return new RateLimitDecision(allowed, retryAfterSeconds, policy.name(), key);
     }
 
     private Bucket createBucket(RateLimitProperties.Policy policy) {

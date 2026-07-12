@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.infrastructure.ratelimit;
 
-import com.github.nramc.dev.journey.api.shared.web.Resources;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,11 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -26,27 +23,19 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private final RateLimiterService rateLimiterService;
     private final RateLimitKeyResolver rateLimitKeyResolver;
     private final JsonMapper jsonMapper;
-    private final Map<String, RateLimitRule> rules;
+    private final Map<String, RateLimitProperties.Policy> policies;
 
     public RateLimitFilter(RateLimiterService rateLimiterService,
                            RateLimitKeyResolver rateLimitKeyResolver,
-                           JsonMapper jsonMapper) {
+                           JsonMapper jsonMapper,
+                           RateLimitProperties properties) {
         this.rateLimiterService = rateLimiterService;
         this.rateLimitKeyResolver = rateLimitKeyResolver;
         this.jsonMapper = jsonMapper;
-        this.rules = new LinkedHashMap<>();
-        registerRule("login", HttpMethod.POST.name(), Resources.LOGIN, false);
-        registerRule("ott-login", HttpMethod.POST.name(), Resources.LOGIN_OTT, false);
-        registerRule("mfa-verify", HttpMethod.POST.name(), Resources.LOGIN_MFA, false);
-        registerRule("account-recovery", HttpMethod.POST.name(), Resources.SEND_ACCOUNT_RECOVERY, false);
-        registerRule("journey-creation", HttpMethod.POST.name(), Resources.NEW_JOURNEY, true);
-
-        // fail fast: verify every referenced policy is actually configured, instead of failing per-request
-        this.rules.values().forEach(rule -> rateLimiterService.assertPolicyConfigured(rule.policyName()));
-    }
-
-    private void registerRule(String policyName, String method, String path, boolean accountBased) {
-        rules.put(method + " " + path, new RateLimitRule(policyName, accountBased));
+        this.policies = new LinkedHashMap<>();
+        properties.policies().forEach(policy ->
+                policies.put(policy.method().name() + " " + policy.path(), policy)
+        );
     }
 
     @Override
@@ -55,27 +44,25 @@ public class RateLimitFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String requestPath = normalizePath(request);
         String requestMethod = request.getMethod();
-        RateLimitRule rateLimitRule = rules.get(requestMethod + " " + requestPath);
-        if (rateLimitRule == null) {
+        RateLimitProperties.Policy rateLimitPolicy = policies.get(requestMethod + " " + requestPath);
+        if (rateLimitPolicy == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         RateLimiterService.RateLimitDecision decision;
         try {
-            String key = rateLimitRule.accountBased()
-                    ? rateLimitKeyResolver.resolveAccountKey(SecurityContextHolder.getContext().getAuthentication())
-                    : rateLimitKeyResolver.resolveClientIp(request);
-            decision = rateLimiterService.tryConsume(rateLimitRule.policyName(), key);
+            String key = rateLimitKeyResolver.resolve(rateLimitPolicy.key(), request);
+            decision = rateLimiterService.tryConsume(rateLimitPolicy, key);
         } catch (RuntimeException ex) {
             // fail-open: a bug/misconfiguration in the rate limiter must never block legitimate traffic
-            log.warn("Rate limiting check failed for policy '{}', allowing request through", rateLimitRule.policyName(), ex);
+            log.warn("Rate limiting check failed for policy '{}', allowing request through", rateLimitPolicy.name(), ex);
             filterChain.doFilter(request, response);
             return;
         }
 
         if (!decision.allowed()) {
-            writeTooManyRequestsResponse(response, decision.retryAfterSeconds(), rateLimitRule.policyName());
+            writeTooManyRequestsResponse(response, decision.retryAfterSeconds(), rateLimitPolicy.name());
             return;
         }
 
@@ -106,8 +93,5 @@ public class RateLimitFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         jsonMapper.writeValue(response.getWriter(), problemDetail);
-    }
-
-    private record RateLimitRule(String policyName, boolean accountBased) {
     }
 }
