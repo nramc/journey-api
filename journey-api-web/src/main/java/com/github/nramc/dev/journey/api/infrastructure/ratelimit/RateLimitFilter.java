@@ -35,17 +35,17 @@ public class RateLimitFilter extends OncePerRequestFilter {
         this.rateLimitKeyResolver = rateLimitKeyResolver;
         this.jsonMapper = jsonMapper;
         this.rules = new LinkedHashMap<>();
-        registerRule(HttpMethod.POST.name(), Resources.LOGIN, "login", false);
-        registerRule(HttpMethod.POST.name(), Resources.LOGIN_OTT, "ott-login", false);
-        registerRule(HttpMethod.POST.name(), Resources.LOGIN_MFA, "mfa-verify", false);
-        registerRule(HttpMethod.POST.name(), Resources.SEND_ACCOUNT_RECOVERY, "account-recovery", false);
-        registerRule(HttpMethod.POST.name(), Resources.NEW_JOURNEY, "journey-creation", true);
+        registerRule("login", HttpMethod.POST.name(), Resources.LOGIN, false);
+        registerRule("ott-login", HttpMethod.POST.name(), Resources.LOGIN_OTT, false);
+        registerRule("mfa-verify", HttpMethod.POST.name(), Resources.LOGIN_MFA, false);
+        registerRule("account-recovery", HttpMethod.POST.name(), Resources.SEND_ACCOUNT_RECOVERY, false);
+        registerRule("journey-creation", HttpMethod.POST.name(), Resources.NEW_JOURNEY, true);
 
         // fail fast: verify every referenced policy is actually configured, instead of failing per-request
         this.rules.values().forEach(rule -> rateLimiterService.assertPolicyConfigured(rule.policyName()));
     }
 
-    private void registerRule(String method, String path, String policyName, boolean accountBased) {
+    private void registerRule(String policyName, String method, String path, boolean accountBased) {
         rules.put(method + " " + path, new RateLimitRule(policyName, accountBased));
     }
 
