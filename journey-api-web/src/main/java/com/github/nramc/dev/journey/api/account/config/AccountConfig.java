@@ -3,6 +3,8 @@ package com.github.nramc.dev.journey.api.account.config;
 import com.github.nramc.dev.journey.api.account.codes.ConfirmationCodeUseCase;
 import com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeUseCase;
 import com.github.nramc.dev.journey.api.account.codes.emailcode.EmailCodeValidator;
+import com.github.nramc.dev.journey.api.account.codes.ott.MongoOneTimeTokenService;
+import com.github.nramc.dev.journey.api.account.codes.ott.OttProperties;
 import com.github.nramc.dev.journey.api.account.codes.token.EmailTokenUseCase;
 import com.github.nramc.dev.journey.api.account.codes.totp.QRCodeGenerator;
 import com.github.nramc.dev.journey.api.account.codes.totp.TotpCodeGenerator;
@@ -18,6 +20,8 @@ import com.github.nramc.dev.journey.api.account.repository.attributes.UserSecuri
 import com.github.nramc.dev.journey.api.account.repository.attributes.UserSecurityAttributesRepository;
 import com.github.nramc.dev.journey.api.account.repository.code.ConfirmationCodeRepository;
 import com.github.nramc.dev.journey.api.account.usecase.AccountActivationUseCase;
+import com.github.nramc.dev.journey.api.account.usecase.OttLoginUseCase;
+import com.github.nramc.dev.journey.api.account.usecase.PasswordRecoveryUseCase;
 import com.github.nramc.dev.journey.api.account.usecase.RegistrationUseCase;
 import com.github.nramc.dev.journey.api.account.web.auth.provider.JwtResponseProvider;
 import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
@@ -27,6 +31,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -38,7 +43,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
  * generator/response-provider, and the Spring Security user details service.
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties({TotpProperties.class, ApplicationProperties.class})
+@EnableConfigurationProperties({TotpProperties.class, ApplicationProperties.class, OttProperties.class})
 public class AccountConfig {
 
     // ── Spring Security user details ──────────────────────────────────────
@@ -155,5 +160,31 @@ public class AccountConfig {
     @Bean
     public JwtResponseProvider jwtResponseProvider(JwtGenerator jwtGenerator) {
         return new JwtResponseProvider(jwtGenerator);
+    }
+
+    // ── One-Time-Token (account recovery / OTT login) ──────────────────────
+
+    @Bean
+    public MongoOneTimeTokenService oneTimeTokenService(ConfirmationCodeRepository codeRepository,
+                                                        OttProperties ottProperties) {
+        return new MongoOneTimeTokenService(codeRepository, ottProperties);
+    }
+
+    @Bean
+    public PasswordRecoveryUseCase passwordRecoveryUseCase(
+            ApplicationProperties properties,
+            OttProperties ottProperties,
+            MongoOneTimeTokenService oneTimeTokenService,
+            UserDetailsService userDetailsService,
+            ApplicationEventPublisher applicationEvents) {
+        return new PasswordRecoveryUseCase(properties, ottProperties, oneTimeTokenService, userDetailsService, applicationEvents);
+    }
+
+    @Bean
+    public OttLoginUseCase ottLoginUseCase(
+            MongoOneTimeTokenService oneTimeTokenService,
+            UserDetailsService userDetailsService,
+            JwtResponseProvider jwtResponseProvider) {
+        return new OttLoginUseCase(oneTimeTokenService, userDetailsService, jwtResponseProvider);
     }
 }

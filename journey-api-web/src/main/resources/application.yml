@@ -86,10 +86,47 @@ app:
             - X-Async-Process
           allow-credentials: true
 
-
 journey:
   module:
+    account:
+      security:
+        ott:
+          token-validity: 15m
+          recovery-path: /account/recover/login
+          tokenQueryPram: token
     infrastructure:
+      rate-limit:
+        policies:
+          - name: login
+            method: POST
+            path: /rest/login
+            capacity: 5
+            window: 15m
+            key: CLIENT_IP
+          - name: ott-login
+            method: POST
+            path: /rest/login/ott
+            capacity: 5
+            window: 15m
+            key: CLIENT_IP
+          - name: mfa-verify
+            method: POST
+            path: /rest/mfa
+            capacity: 5
+            window: 15m
+            key: CLIENT_IP
+          - name: account-recovery
+            method: POST
+            path: /rest/account/recover
+            capacity: 3
+            window: 1h
+            key: CLIENT_IP
+          - name: journey-creation
+            method: POST
+            path: /rest/journey
+            capacity: 5
+            window: 24h
+            key: USERNAME
       event:
         republisher:
           retry-delay: 1m

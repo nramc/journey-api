@@ -7,6 +7,7 @@ import com.github.nramc.dev.journey.api.account.web.auth.dto.LoginResponse;
 import com.github.nramc.dev.journey.api.account.web.auth.provider.JwtResponseProvider;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.JwtProperties;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {GuestLoginResource.class})
-@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, JwtResponseProvider.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, JwtResponseProvider.class, WebSecurityConfig.class, RateLimitConfig.class})
 @EnableConfigurationProperties({JwtProperties.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson

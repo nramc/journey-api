@@ -5,6 +5,7 @@ import com.github.nramc.dev.journey.api.account.jwt.JwtGenerator;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.JwtProperties;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.EmailCode;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {MultiFactorAuthenticationResource.class})
-@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, JwtGenerator.class, WebSecurityConfig.class, RateLimitConfig.class})
 @EnableConfigurationProperties({JwtProperties.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson

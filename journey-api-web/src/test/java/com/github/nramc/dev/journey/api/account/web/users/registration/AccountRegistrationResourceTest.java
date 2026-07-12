@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.account.web.users.registration;
 import com.github.nramc.dev.journey.api.account.usecase.AccountActivationUseCase;
 import com.github.nramc.dev.journey.api.account.usecase.RegistrationUseCase;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {AccountRegistrationResource.class})
-@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"test"})
 @MockitoBean(types = {RegistrationUseCase.class, AccountActivationUseCase.class})
 class AccountRegistrationResourceTest {

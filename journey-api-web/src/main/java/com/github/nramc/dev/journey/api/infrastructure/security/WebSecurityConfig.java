@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.infrastructure.security;
 
+import com.github.nramc.dev.journey.api.infrastructure.ratelimit.RateLimitFilter;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -25,6 +26,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -54,6 +56,7 @@ import static com.github.nramc.dev.journey.api.shared.web.Resources.HEALTH_CHECK
 import static com.github.nramc.dev.journey.api.shared.web.Resources.HOME;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN_MFA;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN_OTT;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_ATTRIBUTE_EMAIL;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_ATTRIBUTE_TOTP;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_ATTRIBUTE_TOTP_STATUS;
@@ -62,6 +65,7 @@ import static com.github.nramc.dev.journey.api.shared.web.Resources.MY_SECURITY_
 import static com.github.nramc.dev.journey.api.shared.web.Resources.NEW_JOURNEY;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.PROMETHEUS;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.REST_DOC;
+import static com.github.nramc.dev.journey.api.shared.web.Resources.SEND_ACCOUNT_RECOVERY;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.SEND_EMAIL_CODE;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.SIGNUP;
 import static com.github.nramc.dev.journey.api.shared.web.Resources.TTS_API;
@@ -94,7 +98,8 @@ public class WebSecurityConfig {
     );
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    @SuppressWarnings("java:S4502") // CSRF protection is not needed for stateless REST APIs
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, RateLimitFilter rateLimitFilter) {
         http
                 // configure CORS security
                 .cors(Customizer.withDefaults())
@@ -144,6 +149,10 @@ public class WebSecurityConfig {
                         .requestMatchers(POST, "/webauthn/authenticate/*").permitAll()
                         .requestMatchers(POST, LOGIN).authenticated()
                         .requestMatchers(POST, LOGIN_MFA).authenticated()
+                        .requestMatchers(POST, LOGIN_OTT).permitAll()
+
+                        // Account recovery resources
+                        .requestMatchers(POST, SEND_ACCOUNT_RECOVERY).permitAll()
 
                         .requestMatchers(GET, FIND_JOURNEYS).access(readAccessAuthorizationManager)
                         .requestMatchers(GET, FIND_JOURNEY_BY_ID).access(readAccessAuthorizationManager)
@@ -187,6 +196,8 @@ public class WebSecurityConfig {
                         // disallow other paths, or authenticated(), permitAll()
                         .anyRequest().denyAll()
                 );
+
+        http.addFilterBefore(rateLimitFilter, AuthorizationFilter.class);
 
         return http.build();
     }

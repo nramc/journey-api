@@ -2,6 +2,7 @@ package com.github.nramc.dev.journey.api.account.web.auth.webauthn;
 
 import com.github.nramc.dev.journey.api.account.webauthn.WebAuthnService;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {WebAuthnManagerResource.class})
-@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class})
+@Import({InMemoryUserDetailsConfig.class, WebSecurityConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"test"})
 @AutoConfigureJson
 class WebAuthnManagerResourceTest {

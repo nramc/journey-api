@@ -1,0 +1,29 @@
+### Request One Time Token
+POST {{baseUrl}}/rest/account/recover
+Content-Type: application/json
+
+{
+  "username": ""
+}
+
+
+### Login with One Time Token
+POST {{baseUrl}}/rest/login/ott
+Content-Type: application/json
+
+{
+  "token": "token 1"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.token !== null, "Redirect URL is empty");
+        client.global.set("jwtToken", response.body.token)
+    });
+%}
+
+
+### GET My Account Details
+GET {{baseUrl}}/rest/my-account
+Authorization: Bearer {{jwtToken}}

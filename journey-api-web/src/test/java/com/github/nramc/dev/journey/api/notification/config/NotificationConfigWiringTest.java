@@ -10,6 +10,7 @@ import com.github.nramc.dev.journey.api.notification.processor.AccountActivatedN
 import com.github.nramc.dev.journey.api.notification.processor.AccountActivationEmailRequestedNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.processor.EmailCodeRequestedNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.processor.JourneyAnniversaryNotificationProcessor;
+import com.github.nramc.dev.journey.api.notification.processor.PasswordRecoveryRequestedNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.processor.UserRegisteredNotificationProcessor;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramGateway;
 import com.github.nramc.dev.journey.api.notification.telegram.TelegramNotificationService;
@@ -50,9 +51,10 @@ class NotificationConfigWiringTest {
                             .hasSingleBean(AccountActivationEmailRequestedNotificationProcessor.class)
                             .hasSingleBean(AccountActivatedNotificationProcessor.class)
                             .hasSingleBean(EmailCodeRequestedNotificationProcessor.class)
-                            .hasSingleBean(JourneyAnniversaryNotificationProcessor.class);
+                            .hasSingleBean(JourneyAnniversaryNotificationProcessor.class)
+                            .hasSingleBean(PasswordRecoveryRequestedNotificationProcessor.class);
 
-                    assertThat(context.getBeansOfType(NotificationEventProcessor.class)).hasSize(5);
+                    assertThat(context.getBeansOfType(NotificationEventProcessor.class)).hasSize(6);
                     assertThat(context.getBeansOfType(NotificationService.class)).hasSize(1);
                 });
     }

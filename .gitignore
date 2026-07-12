@@ -41,3 +41,4 @@ build/
 
 ### macOS ###
 .DS_Store
+/graphify-out/

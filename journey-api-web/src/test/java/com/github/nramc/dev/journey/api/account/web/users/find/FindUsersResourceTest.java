@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.account.web.users.find;
 import com.github.nramc.dev.journey.api.account.repository.UserRepository;
 import com.github.nramc.dev.journey.api.account.web.users.UsersData;
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAdministratorUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FindUsersResource.class)
-@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 class FindUsersResourceTest {
     @Autowired

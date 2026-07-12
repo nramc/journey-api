@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.journey.web.journeys.update.images;
 
 import com.github.nramc.dev.journey.api.infrastructure.security.InMemoryUserDetailsConfig;
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockGuestUser;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UpdateJourneyImagesDetailsResource.class)
-@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class})
+@Import({WebSecurityConfig.class, InMemoryUserDetailsConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"prod", "test"})
 class UpdateJourneyImagesDetailsResourceTest {
     private static final ResultMatcher[] STATUS_AND_CONTENT_TYPE_MATCH = new ResultMatcher[]{

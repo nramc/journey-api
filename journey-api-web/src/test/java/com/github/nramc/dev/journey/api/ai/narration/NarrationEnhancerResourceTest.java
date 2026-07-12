@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.ai.narration;
 
+import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WithMockAuthenticatedUser;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +17,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(NarrationEnhancerResource.class)
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, RateLimitConfig.class})
 @ActiveProfiles({"test"})
 class NarrationEnhancerResourceTest {
 
@@ -30,8 +32,8 @@ class NarrationEnhancerResourceTest {
 
         @Bean
         ChatClient.Builder mockChatClientBuilder() {
-            ChatClient.Builder builder = Mockito.mock(ChatClient.Builder.class);
-            ChatClient chatClient = Mockito.mock(ChatClient.class);
+            ChatClient.Builder builder = mock(ChatClient.Builder.class);
+            ChatClient chatClient = mock(ChatClient.class);
             when(builder.build()).thenReturn(chatClient);
             return builder;
         }
@@ -42,8 +44,8 @@ class NarrationEnhancerResourceTest {
     private MockMvc mockMvc;
     @Autowired
     private ChatClient.Builder mockChatClientBuilder;
-    ChatClient.ChatClientRequestSpec chatRequestSpec = Mockito.mock(ChatClient.ChatClientRequestSpec.class);
-    ChatClient.CallResponseSpec chatResponseSpec = Mockito.mock(ChatClient.CallResponseSpec.class);
+    ChatClient.ChatClientRequestSpec chatRequestSpec = mock(ChatClient.ChatClientRequestSpec.class);
+    ChatClient.CallResponseSpec chatResponseSpec = mock(ChatClient.CallResponseSpec.class);
 
     @BeforeEach
     void setup() {
