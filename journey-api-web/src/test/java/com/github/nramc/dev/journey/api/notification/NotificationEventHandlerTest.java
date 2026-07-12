@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.notification;
 import com.github.nramc.dev.journey.api.account.AccountActivatedEvent;
 import com.github.nramc.dev.journey.api.account.AccountActivationEmailRequestedEvent;
 import com.github.nramc.dev.journey.api.account.EmailCodeRequestedEvent;
+import com.github.nramc.dev.journey.api.account.PasswordRecoveryRequestedEvent;
 import com.github.nramc.dev.journey.api.account.UserRegisteredEvent;
 import com.github.nramc.dev.journey.api.shared.event.JourneyAnniversaryEvent;
 import org.junit.jupiter.api.Nested;
@@ -104,6 +105,23 @@ class NotificationEventHandlerTest {
             );
 
             createHandler().onJourneyAnniversary(event);
+
+            verify(notificationEventDispatcher).dispatch(event);
+        }
+    }
+
+    @Nested
+    class PasswordRecoveryRequestedListener {
+
+        @Test
+        void shouldDispatchPasswordRecoveryRequestedEvent() {
+            var event = new PasswordRecoveryRequestedEvent(
+                    "john@example.com",
+                    "John",
+                    "https://journey.codewithram.dev/account/recover/login?token=abc123"
+            );
+
+            createHandler().onPasswordRecoveryRequested(event);
 
             verify(notificationEventDispatcher).dispatch(event);
         }
