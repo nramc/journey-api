@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.account.web.auth.recovery;
 import com.github.nramc.dev.journey.api.account.usecase.PasswordRecoveryUseCase;
 import com.github.nramc.dev.journey.api.infrastructure.security.RateLimitConfig;
 import com.github.nramc.dev.journey.api.infrastructure.security.WebSecurityConfig;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -39,7 +40,7 @@ class SendPasswordRecoveryResourceTest {
                 .content(REQUEST_TEMPLATE.formatted("john@example.com"));
         assertThat(mockMvcTester.perform(requestBuilder))
                 .hasStatusOk();
-        verify(passwordRecoveryUseCase).sendRecoveryEmail("john@example.com");
+        verify(passwordRecoveryUseCase).sendRecoveryEmail(EmailAddress.valueOf("john@example.com"));
     }
 
     @Test

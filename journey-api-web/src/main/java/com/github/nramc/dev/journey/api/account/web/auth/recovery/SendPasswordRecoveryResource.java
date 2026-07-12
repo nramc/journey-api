@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.account.web.auth.recovery;
 
 import com.github.nramc.dev.journey.api.account.usecase.PasswordRecoveryUseCase;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 import com.github.nramc.dev.journey.api.shared.web.doc.RestDocCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,7 +35,7 @@ class SendPasswordRecoveryResource {
     @RestDocCommonResponse
     @PostMapping(value = SEND_ACCOUNT_RECOVERY, consumes = MediaType.APPLICATION_JSON_VALUE)
     void recover(@RequestBody @Valid SendPasswordRecoveryRequest request) {
-        passwordRecoveryUseCase.sendRecoveryEmail(request.username());
+        passwordRecoveryUseCase.sendRecoveryEmail(EmailAddress.valueOf(request.username()));
         log.info("Account recovery request has been processed");
     }
 }

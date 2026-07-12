@@ -3,6 +3,7 @@ package com.github.nramc.dev.journey.api.account.usecase;
 import com.github.nramc.dev.journey.api.account.PasswordRecoveryRequestedEvent;
 import com.github.nramc.dev.journey.api.account.codes.ott.OttProperties;
 import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +64,7 @@ class PasswordRecoveryUseCaseTest {
         when(oneTimeTokenService.generate(any(GenerateOneTimeTokenRequest.class)))
                 .thenReturn(new DefaultOneTimeToken(TOKEN_VALUE, AUTHENTICATED_USER.getUsername(), Instant.now().plusSeconds(900)));
 
-        passwordRecoveryUseCase.sendRecoveryEmail(AUTHENTICATED_USER.getUsername());
+        passwordRecoveryUseCase.sendRecoveryEmail(EmailAddress.valueOf(AUTHENTICATED_USER.getUsername()));
 
         verify(applicationEvents).publishEvent(new PasswordRecoveryRequestedEvent(
                 AUTHENTICATED_USER.getUsername(), AUTHENTICATED_USER.getName(),
@@ -75,7 +76,7 @@ class PasswordRecoveryUseCaseTest {
         when(userDetailsService.loadUserByUsername("unknown@example.com"))
                 .thenThrow(new UsernameNotFoundException("not found"));
 
-        assertThatCode(() -> passwordRecoveryUseCase.sendRecoveryEmail("unknown@example.com"))
+        assertThatCode(() -> passwordRecoveryUseCase.sendRecoveryEmail(EmailAddress.valueOf("unknown@example.com")))
                 .doesNotThrowAnyException();
 
         verify(oneTimeTokenService, never()).generate(any());

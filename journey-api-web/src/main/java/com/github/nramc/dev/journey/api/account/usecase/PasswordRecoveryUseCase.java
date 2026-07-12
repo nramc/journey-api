@@ -4,6 +4,7 @@ import com.github.nramc.dev.journey.api.account.PasswordRecoveryRequestedEvent;
 import com.github.nramc.dev.journey.api.account.codes.ott.OttProperties;
 import com.github.nramc.dev.journey.api.account.repository.AuthUser;
 import com.github.nramc.dev.journey.api.infrastructure.actuator.ApplicationProperties;
+import com.github.nramc.dev.journey.api.shared.domain.EmailAddress;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,7 +37,7 @@ public class PasswordRecoveryUseCase {
     private final ApplicationEventPublisher applicationEvents;
 
     @Transactional
-    public void sendRecoveryEmail(String username) {
+    public void sendRecoveryEmail(EmailAddress username) {
         var userIfExists = getRequestedUserIfExists(username);
         if (userIfExists.isPresent()) {
             AuthUser authUser = userIfExists.get();
@@ -50,9 +51,9 @@ public class PasswordRecoveryUseCase {
         }
     }
 
-    private Optional<AuthUser> getRequestedUserIfExists(String username) {
+    private Optional<AuthUser> getRequestedUserIfExists(EmailAddress username) {
         try {
-            return Optional.of((AuthUser) userDetailsService.loadUserByUsername(username));
+            return Optional.of((AuthUser) userDetailsService.loadUserByUsername(username.value()));
         } catch (UsernameNotFoundException ex) {
             log.debug("Account recovery requested for unknown username, ignoring silently");
             return Optional.empty();
