@@ -35,6 +35,25 @@ class RateLimitKeyResolverTest {
     }
 
     @Test
+    void shouldFallBackToRemoteAddressWhenCloudflareHeaderIsBlank() {
+        RateLimitKeyResolver resolver = new RateLimitKeyResolver();
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("CF-Connecting-IP", "   ");
+        request.setRemoteAddr("10.0.0.1");
+
+        assertThat(resolver.resolve(RateLimitKey.CLIENT_IP, request)).isEqualTo("10.0.0.1");
+    }
+
+    @Test
+    void shouldReturnUnknownWhenRemoteAddressIsBlank() {
+        RateLimitKeyResolver resolver = new RateLimitKeyResolver();
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setRemoteAddr("   ");
+
+        assertThat(resolver.resolve(RateLimitKey.CLIENT_IP, request)).isEqualTo("unknown");
+    }
+
+    @Test
     void shouldResolveAnonymousForUnauthenticatedUser() {
         RateLimitKeyResolver resolver = new RateLimitKeyResolver();
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -51,5 +70,16 @@ class RateLimitKeyResolverTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         assertThat(resolver.resolve(RateLimitKey.USERNAME, request)).isEqualTo("user-1");
+    }
+
+    @Test
+    void shouldResolveAnonymousWhenPrincipalIsBlank() {
+        RateLimitKeyResolver resolver = new RateLimitKeyResolver();
+        SecurityContextHolder.getContext().setAuthentication(
+                new TestingAuthenticationToken("   ", "password", "AUTHENTICATED_USER")
+        );
+        MockHttpServletRequest request = new MockHttpServletRequest();
+
+        assertThat(resolver.resolve(RateLimitKey.USERNAME, request)).isEqualTo("anonymous");
     }
 }

@@ -4,4 +4,3 @@ public enum RateLimitKey {
     USERNAME,
     CLIENT_IP
 }
-

@@ -25,4 +25,19 @@ class RateLimiterServiceTest {
         assertThat(third.allowed()).isFalse();
         assertThat(third.retryAfterSeconds()).isGreaterThan(0);
     }
+
+    @Test
+    void shouldIsolateBucketsForDifferentKeys() {
+        RateLimitProperties.Policy policy = new RateLimitProperties.Policy(
+                "login", HttpMethod.POST, "/rest/login", 1, Duration.ofMinutes(1), RateLimitKey.CLIENT_IP
+        );
+
+        RateLimiterService service = new RateLimiterService();
+
+        RateLimiterService.RateLimitDecision firstClient = service.tryConsume(policy, "client-1");
+        RateLimiterService.RateLimitDecision secondClient = service.tryConsume(policy, "client-2");
+
+        assertThat(firstClient.allowed()).isTrue();
+        assertThat(secondClient.allowed()).isTrue();
+    }
 }
