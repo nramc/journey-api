@@ -30,7 +30,8 @@ import static com.github.nramc.dev.journey.api.shared.web.Resources.SEND_ACCOUNT
 class SendPasswordRecoveryResource {
     private final PasswordRecoveryUseCase passwordRecoveryUseCase;
 
-    @Operation(summary = "Send account recovery email with a One-Time-Token link to registered email address")
+    @Operation(summary = "Send account recovery email", description = "Sends a recovery email with a one-time token link. "
+            + "Always returns 200 to prevent user enumeration.")
     @ApiResponse(responseCode = "200", description = "Recovery email has been triggered (if the username exists)")
     @RestDocCommonResponse
     @PostMapping(value = SEND_ACCOUNT_RECOVERY, consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN_MFA;
@@ -32,13 +33,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Multi Factor Login", description = "Multi factor authentication")
+@Tag(name = "Multi Factor Login", description = "Complete multi-factor authentication")
 public class MultiFactorAuthenticationResource {
     private final UserDetailsService userDetailsService;
     private final ConfirmationCodeUseCase confirmationCodeUseCase;
     private final JwtGenerator jwtGenerator;
 
-    @Operation(summary = "Multi factor authentication and retrieve JWT token")
+    @Operation(summary = "Verify multi-factor code", description = "Verifies an email or TOTP code and returns a JWT.")
     @RestDocCommonResponse
     @ApiResponses(@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))}))
@@ -69,7 +70,7 @@ public class MultiFactorAuthenticationResource {
                 .token(jwt.getTokenValue())
                 .expiredAt(jwt.getExpiresAt())
                 .name(userDetails.getName())
-                .authorities(Set.of(jwt.getClaimAsString("scope").split(" ")))
+                .authorities(Optional.ofNullable(jwt.getClaimAsString("scope")).map(s -> Set.of(s.split(" "))).orElse(Set.of()))
                 .build();
     }
 }

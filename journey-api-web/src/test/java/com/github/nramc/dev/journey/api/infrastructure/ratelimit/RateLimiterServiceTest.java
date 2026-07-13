@@ -23,7 +23,7 @@ class RateLimiterServiceTest {
         assertThat(first.allowed()).isTrue();
         assertThat(second.allowed()).isTrue();
         assertThat(third.allowed()).isFalse();
-        assertThat(third.retryAfterSeconds()).isGreaterThan(0);
+        assertThat(third.retryAfterSeconds()).isPositive();
     }
 
     @Test

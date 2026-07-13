@@ -155,8 +155,14 @@ springdoc:
     version: openapi_3_0
 
   swagger-ui:
-    queryConfigEnabled: true
     path: /doc/swagger-ui.html
+    queryConfigEnabled: true
+    tagsSorter: alpha
+    deepLinking: true
+    displayRequestDuration: true
+    filter: true
+    docExpansion: list
+
   group-configs:
     - group: Journeys
       packages-to-scan:
