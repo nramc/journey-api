@@ -17,12 +17,12 @@ import static com.github.nramc.dev.journey.api.shared.web.Resources.API_VERSION;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "API Info", description = "Get Information about deployed API")
+@Tag(name = "API Info", description = "Information about the deployed API")
 class ApiVersionResource {
     private final ApplicationProperties applicationProperties;
 
-    @Operation(summary = "Get application name and version")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Return application Name and Version", content = {
+    @Operation(summary = "Get application name and version", description = "Returns the deployed application name and version.")
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Application name and version", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiVersionResponse.class))}))
     @RestDocCommonResponse
     @GetMapping(value = API_VERSION, produces = MediaType.APPLICATION_JSON_VALUE)

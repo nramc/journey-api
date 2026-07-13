@@ -24,11 +24,11 @@ import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN_OTT;
  */
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Login", description = "Login as application user")
+@Tag(name = "Login", description = "Authenticate application users")
 class OttLoginResource {
     private final OttLoginUseCase ottLoginUseCase;
 
-    @Operation(summary = "login with One-Time-Token and retrieve JWT token")
+    @Operation(summary = "Login with One-Time-Token", description = "Exchanges a one-time token from a recovery email for a JWT.")
     @RestDocCommonResponse
     @ApiResponses(@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))}))

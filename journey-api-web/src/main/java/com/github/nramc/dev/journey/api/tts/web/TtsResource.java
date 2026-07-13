@@ -1,6 +1,7 @@
 package com.github.nramc.dev.journey.api.tts.web;
 
 import com.github.nramc.dev.journey.api.shared.web.Resources;
+import com.github.nramc.dev.journey.api.shared.web.doc.RestDocCommonResponse;
 import com.github.nramc.dev.journey.api.tts.TtsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,15 +41,12 @@ public class TtsResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(
             summary = "Synthesize speech from text",
-            description = "Converts text to speech using the Piper TTS server. Returns audio in WAV format.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Audio file",
-                            content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
-                                    schema = @Schema(type = "string", format = "binary"))),
-                    @ApiResponse(responseCode = "400", description = "Invalid request"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
-            }
+            description = "Converts text to speech using the Piper TTS server. Returns audio in WAV format."
     )
+    @ApiResponse(responseCode = "200", description = "Audio file",
+            content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
+                    schema = @Schema(type = "string", format = "binary")))
+    @RestDocCommonResponse
     public ResponseEntity<byte[]> synthesize(@Valid @RequestBody TtsRequest request) {
         log.info("Received TTS request for text of length: {}", request.text().length());
 

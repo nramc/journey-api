@@ -29,13 +29,13 @@ import static com.github.nramc.dev.journey.api.shared.web.Resources.LOGIN;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Login", description = "Login as application user")
+@Tag(name = "Login", description = "Authenticate application users")
 public class LoginResource {
     private final JwtResponseProvider jwtResponseProvider;
     private final UserSecurityAttributeService attributeService;
     private final UserDetailsService userDetailsService;
 
-    @Operation(summary = "login with credentials and retrieve JWT token")
+    @Operation(summary = "Login with credentials", description = "Authenticates with HTTP Basic and returns a JWT, or an MFA challenge if MFA is enabled.")
     @RestDocCommonResponse
     @ApiResponses(@ApiResponse(responseCode = "200", description = "Authentication successful and return JWT", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))}))

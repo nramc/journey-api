@@ -1,5 +1,10 @@
 package com.github.nramc.dev.journey.api.ai.narration;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
+@Tag(name = "AI Narration", description = "Enhance journey narration text using an AI model")
 class NarrationEnhancerResource {
     private static final String SYSTEM_PROMPT = """
             You are an expert travel narrator and storyteller.
@@ -85,6 +91,13 @@ class NarrationEnhancerResource {
     public NarrationEnhancerResource(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
     }
+
+    @Operation(summary = "Enhance a journey narration", description = "Polishes and improves a personal trip narration using AI while preserving facts.")
+    @ApiResponse(responseCode = "200", description = "Enhanced narration",
+            content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = NarrationEnhancerResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Invalid request")
+    @ApiResponse(responseCode = "401", description = "Authentication required")
+    @ApiResponse(responseCode = "403", description = "Insufficient permissions")
 
     @PostMapping(value = "/rest/ai/enhance-narration", consumes = APPLICATION_JSON_VALUE)
     NarrationEnhancerResponse enhanceNarration(@Valid @RequestBody NarrationEnhancerRequest request) {

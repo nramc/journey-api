@@ -45,8 +45,9 @@
         <rewrite-static-analysis.version>2.38.0</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.41.0</rewrite-testing-frameworks.version>
         <spring-ai.version>2.0.0</spring-ai.version>
-        <spring-cloud-contract.version>5.0.2</spring-cloud-contract.version>
+        <spring-cloud-contract.version>5.0.3</spring-cloud-contract.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.0.3</springdoc-openapi-starter-webmvc-ui.version>
+        <swagger.version>2.2.52</swagger.version>
         <cloudinary-http.version>1.39.0</cloudinary-http.version>
         <zxing-qr.version>3.5.4</zxing-qr.version>
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
@@ -100,11 +101,18 @@
             </dependency>
 
             <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-bom</artifactId>
+                <version>${swagger.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>

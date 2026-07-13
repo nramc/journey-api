@@ -9,6 +9,10 @@ import com.yubico.webauthn.data.ClientRegistrationExtensionOutputs;
 import com.yubico.webauthn.data.PublicKeyCredential;
 import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
 import com.yubico.webauthn.exception.RegistrationFailedException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,7 @@ import java.io.IOException;
 @RequestMapping("/webauthn/register")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "WebAuthn Registration", description = "Register and manage FIDO2 passkeys")
 public class WebAuthnRegistrationResource {
     private final UserDetailsService userDetailsService;
     private final WebAuthnService webAuthnService;
@@ -38,6 +43,8 @@ public class WebAuthnRegistrationResource {
      * @return PublicKeyCredentialCreationOptions for the frontend
      * @throws JsonProcessingException if there is an error processing JSON
      */
+    @Operation(summary = "Start passkey registration", description = "Returns PublicKeyCredentialCreationOptions for the browser to create a new passkey.")
+    @ApiResponse(responseCode = "200", description = "Registration options JSON")
     @PostMapping("/start")
     public String startRegistration(Authentication authentication) throws JsonProcessingException {
         AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());
@@ -52,10 +59,14 @@ public class WebAuthnRegistrationResource {
      * @param publicKeyCredentialJson the JSON representation of the PublicKeyCredential
      * @return a ResponseEntity indicating success or failure
      */
+    @Operation(summary = "Finish passkey registration", description = "Validates the browser's passkey creation response and stores the credential.")
+    @ApiResponse(responseCode = "200", description = "Credential registered successfully")
     @PostMapping("/finish")
     public ResponseEntity<Void> finishRegistration(
             Authentication authentication,
+            @Parameter(description = "PublicKeyCredential JSON from the browser")
             @RequestBody String publicKeyCredentialJson,
+            @Parameter(description = "User-Agent header used for device metadata")
             @RequestHeader("User-Agent") String userAgent)
             throws IOException, RegistrationFailedException {
         AuthUser userDetails = (AuthUser) userDetailsService.loadUserByUsername(authentication.getName());

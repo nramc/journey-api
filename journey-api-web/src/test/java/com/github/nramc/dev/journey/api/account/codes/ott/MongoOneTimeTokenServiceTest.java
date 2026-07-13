@@ -51,8 +51,7 @@ class MongoOneTimeTokenServiceTest {
         assertThat(token.getExpiresAt()).isAfter(LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC));
 
         var entities = codeRepository.findAllByUsername(USERNAME);
-        assertThat(entities).hasSize(1);
-        assertThat(entities.getFirst())
+        assertThat(entities).hasSize(1).first()
                 .satisfies(entity -> assertThat(entity.getType()).isEqualTo(ConfirmationCodeType.ONE_TIME_TOKEN))
                 .satisfies(entity -> assertThat(entity.getCode()).isEqualTo(token.getTokenValue()))
                 .satisfies(entity -> assertThat(entity.isActive()).isTrue());
