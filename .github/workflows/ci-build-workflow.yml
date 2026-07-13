@@ -32,27 +32,11 @@ jobs:
       - name: Verify Maven installation
         run: mvn -version
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v6
-        if: false
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Maven packages
-        uses: actions/cache@v6
-        if: false
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
       - name: Build and Verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P coverage,open-rewrite -Dsonar.projectKey=nramc_journey-api
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P coverage -Dsonar.projectKey=nramc_journey-api
 
 
   security-test:
