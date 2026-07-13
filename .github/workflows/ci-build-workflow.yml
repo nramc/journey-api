@@ -30,7 +30,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Verify Maven installation
-        run: mvn -version
+        run: ./mvnw -version
 
       - name: Clear Maven repository
         run: rm -rf ~/.m2/repository
@@ -39,8 +39,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P coverage,open-rewrite -Dsonar.projectKey=nramc_journey-api
-        run: mvn -B verify
+        run: ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P coverage,open-rewrite -Dsonar.projectKey=nramc_journey-api
+#        run: ./mvnw -B verify
 
 
   security-test:
@@ -56,15 +56,15 @@ jobs:
           distribution: 'temurin'
 
       - name: Verify Maven installation
-        run: mvn -version
+        run: ./mvnw -version
 
       - name: Clear Maven repository
         run: rm -rf ~/.m2/repository
 
       - name: Start application for Security Testing
         run: |
-          mvn clean install -DskipTests
-          mvn spring-boot:start@integration-app -pl journey-api-tests
+          ./mvnw clean install -DskipTests
+          ./mvnw spring-boot:start@integration-app -pl journey-api-tests
         env:
           SPRING_PROFILES_ACTIVE: integration
 
@@ -84,5 +84,5 @@ jobs:
 
       - name: Stop Spring Boot application
         run: |
-          mvn spring-boot:stop -pl journey-api-tests
+          ./mvnw spring-boot:stop -pl journey-api-tests
 
