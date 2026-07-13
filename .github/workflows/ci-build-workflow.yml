@@ -29,8 +29,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Verify Maven installation
+        run: mvn -version
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v6
+        if: false
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -38,6 +42,7 @@ jobs:
 
       - name: Cache Maven packages
         uses: actions/cache@v6
+        if: false
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
