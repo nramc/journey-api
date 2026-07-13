@@ -32,6 +32,9 @@ jobs:
       - name: Verify Maven installation
         run: mvn -version
 
+      - name: Clear Maven repository
+        run: rm -rf ~/.m2/repository
+
       - name: Build and Verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -50,6 +53,12 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+
+      - name: Verify Maven installation
+        run: mvn -version
+
+      - name: Clear Maven repository
+        run: rm -rf ~/.m2/repository
 
       - name: Start application for Security Testing
         run: |
