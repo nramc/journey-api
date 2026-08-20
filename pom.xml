@@ -44,7 +44,7 @@
         <rewrite-pom-cache-dir>${maven.multiModuleProjectDirectory}/.rewrite-cache</rewrite-pom-cache-dir>
         <rewrite-static-analysis.version>2.41.1</rewrite-static-analysis.version>
         <rewrite-testing-frameworks.version>3.44.0</rewrite-testing-frameworks.version>
-        <spring-ai.version>2.0.0</spring-ai.version>
+        <spring-ai.version>2.0.1</spring-ai.version>
         <spring-cloud-contract.version>5.0.3</spring-cloud-contract.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.1.0</springdoc-openapi-starter-webmvc-ui.version>
         <swagger.version>2.2.54</swagger.version>
