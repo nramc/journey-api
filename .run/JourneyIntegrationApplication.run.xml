@@ -1,11 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="JourneyIntegrationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev,integration" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$/.." />
     <additionalParameters>
       <param>
         <option name="enabled" value="true" />
         <option name="name" value="spring.docker.compose.file" />
-        <option name="value" value="  docker-compose.yml" />
+        <option name="value" value="docker-compose.yml" />
       </param>
     </additionalParameters>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -34,11 +35,12 @@
   </configuration>
   <configuration default="false" name="JourneyIntegrationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev,integration" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$/.." />
     <additionalParameters>
       <param>
         <option name="enabled" value="true" />
         <option name="name" value="spring.docker.compose.file" />
-        <option name="value" value="  docker-compose.yml" />
+        <option name="value" value="docker-compose.yml" />
       </param>
     </additionalParameters>
     <option name="envFilePaths">
