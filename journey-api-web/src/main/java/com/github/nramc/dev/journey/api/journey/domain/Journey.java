@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.journey.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.dev.journey.api.shared.domain.user.security.Visibility;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -20,8 +19,8 @@ public record Journey(
         @NotBlank String description,
         @NotEmpty List<String> tags,
         @NotBlank @URL String thumbnail,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate createdDate,
+        @NotNull LocalDate journeyDate,
+        @NotNull LocalDate createdDate,
         @NotNull @Valid JourneyGeoDetails geoDetails,
         @Valid JourneyImagesDetails imagesDetails,
         @Valid JourneyVideosDetails videosDetails,

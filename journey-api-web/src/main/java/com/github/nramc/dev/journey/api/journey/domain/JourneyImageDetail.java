@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.journey.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import org.hibernate.validator.constraints.URL;
@@ -15,5 +14,5 @@ public record JourneyImageDetail(
         String title,
         boolean isFavorite,
         boolean isThumbnail,
-        @JsonFormat(pattern = "yyyy-MM-dd") LocalDate eventDate) {
+        LocalDate eventDate) {
 }

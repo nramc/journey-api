@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.journey.web.journeys.create;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -17,5 +16,5 @@ public record CreateJourneyResponse(
         @NotEmpty List<String> tags,
         @NotBlank String thumbnail,
         @NotNull LocalDate createdDate,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate journeyDate) {
+        @NotNull LocalDate journeyDate) {
 }
