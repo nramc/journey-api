@@ -113,3 +113,7 @@ Sincere Thanks to following open source community for their wonderful efforts to
 ## Show your support
 
 Give a ⭐️ if you like this project!
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).

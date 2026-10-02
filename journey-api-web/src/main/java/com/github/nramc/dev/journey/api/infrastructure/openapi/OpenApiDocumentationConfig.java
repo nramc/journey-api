@@ -34,7 +34,7 @@ public class OpenApiDocumentationConfig {
                                 multi-factor authentication, AI-assisted narration, and text-to-speech features.
                                 """
                         )
-                        .license(new License().name("Apache 2.0").identifier("Apache-2.0"))
+                        .license(new License().name("MIT License").identifier("MIT"))
                         .contact(new Contact()
                                 .name("Ramachandran Nellaiyappan")
                                 .email("ramachandrannellai@gmail.com")
