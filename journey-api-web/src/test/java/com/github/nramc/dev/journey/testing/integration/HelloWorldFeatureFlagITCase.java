@@ -23,14 +23,14 @@ class HelloWorldFeatureFlagITCase {
     @Test
     @ExtendWithFeatureFlagCondition(property = {"feature.hello-world.enabled"}, extensions = {MyBeforeEachMethodExtension.class})
     void myHelloWorld_1() {
-        System.out.println("myHelloWorld_1 > Hello, World!");
+        IO.println("myHelloWorld_1 > Hello, World!");
         assertThat(environment.getProperty("feature.hello-world.enabled")).isEqualTo("true");
     }
 
     @Test
     @ExtendWithFeatureFlagCondition(property = "feature.hello-world-2.enabled", extensions = {MyBeforeTestMethodExtension.class})
     void myHelloWorld_2() {
-        System.out.println("myHelloWorld_2 > Hello, World!");
+        IO.println("myHelloWorld_2 > Hello, World!");
         assertThat(environment.getProperty("feature.hello-world-2.enabled")).isEqualTo("false");
     }
 }

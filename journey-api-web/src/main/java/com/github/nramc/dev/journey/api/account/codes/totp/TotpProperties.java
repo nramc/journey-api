@@ -1,5 +1,6 @@
 package com.github.nramc.dev.journey.api.account.codes.totp;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 public record TotpProperties(
         @Positive @Min(6) @Max(16) int numberOfDigits,
         @Positive @Min(32) @Max(256) int secretLength,
-        @NotNull TotpAlgorithm totpAlgorithm,
+        @NotNull @Valid TotpAlgorithm totpAlgorithm,
         @Positive @Min(30) long timeStepSizeInSeconds,
         @Positive @Min(0) int maxAllowedTimeStepDiscrepancy,
         @NotBlank String qrType,

@@ -24,14 +24,14 @@ class HelloWorldProfileConditionITCase {
     @Test
     @ExtendWithProfileCondition(profiles = {"prod", "dev"}, extensions = {MyBeforeEachMethodExtension.class})
     void myHelloWorld_1() {
-        System.out.println("myHelloWorld_1 > Hello, World!");
+        IO.println("myHelloWorld_1 > Hello, World!");
         assertThat(environment.matchesProfiles("dev")).isTrue();
     }
 
     @Test
     @ExtendWithProfileCondition(profiles = "dev", extensions = {MyBeforeTestMethodExtension.class})
     void myHelloWorld_2() {
-        System.out.println("myHelloWorld_2 > Hello, World!");
+        IO.println("myHelloWorld_2 > Hello, World!");
         assertThat(environment.matchesProfiles("dev")).isTrue();
     }
 }

@@ -11,14 +11,14 @@ class HelloWorldEnvConditionITCase {
     @Test
     @ExtendWithEnvCondition(variables = {"ENV_TEST_TYPE=SMOOTH", "ENV_TEST_TYPE=ROUGH"}, extensions = {MyBeforeEachMethodExtension.class})
     void myHelloWorld_1() {
-        System.out.println("myHelloWorld_1 > Hello, World!");
+        IO.println("myHelloWorld_1 > Hello, World!");
         assertThat(System.getenv()).isNotNull();
     }
 
     @Test
     @ExtendWithEnvCondition(variables = {"ENV_TEST_TYPE=ROUGH"}, extensions = {MyBeforeEachMethodExtension.class})
     void myHelloWorld_2() {
-        System.out.println("myHelloWorld_2 > Hello, World!");
+        IO.println("myHelloWorld_2 > Hello, World!");
         assertThat(System.getenv()).isNotNull();
     }
 }

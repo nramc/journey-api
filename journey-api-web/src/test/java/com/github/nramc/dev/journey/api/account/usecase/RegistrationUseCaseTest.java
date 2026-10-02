@@ -8,16 +8,14 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.validation.autoconfigure.ValidationAutoConfiguration;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -30,8 +28,7 @@ import static org.assertj.core.api.Assertions.within;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {InMemoryUserDetailsConfig.class, ValidationAutoConfiguration.class, BCryptPasswordEncoder.class})
+@SpringJUnitConfig(classes = {InMemoryUserDetailsConfig.class, ValidationAutoConfiguration.class, BCryptPasswordEncoder.class})
 class RegistrationUseCaseTest {
     private static final AppUser ONBOARDING_USER = AppUser.builder()
             .name("Chalese Bitner")

@@ -12,7 +12,7 @@ import com.github.nramc.dev.journey.api.shared.domain.user.security.TotpSecret;
 public final class TotpDemo {
 
 
-    public static void main(String[] args) {
+    static void main() {
         TotpProperties totpProperties = TotpProperties.builder()
                 .totpAlgorithm(TotpAlgorithm.SHA1)
                 .numberOfDigits(6)
@@ -27,15 +27,15 @@ public final class TotpDemo {
 
         // Example secret key (base32 encoded)
         TotpSecret secretKey = secretGenerator.generate();
-        System.out.println("Secret Key generated: " + secretKey.secret());
+        IO.println("Secret Key generated: " + secretKey.secret());
 
         // Generate current TOTP
         TotpCode totp = totpCodeGenerator.generate(secretKey);
-        System.out.println("Generated TOTP: " + totp.code());
+        IO.println("Generated TOTP: " + totp.code());
 
         // Verify the TOTP (example)
         boolean isValid = totpCodeVerifier.verify(secretKey, totp);
-        System.out.println("Is TOTP valid: " + isValid);
+        IO.println("Is TOTP valid: " + isValid);
     }
 
     private TotpDemo() {

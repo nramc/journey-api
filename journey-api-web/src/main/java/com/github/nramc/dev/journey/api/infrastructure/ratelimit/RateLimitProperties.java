@@ -21,10 +21,10 @@ public record RateLimitProperties(List<@NotNull @Valid Policy> policies) {
     }
 
     public record Policy(@NotBlank String name,
-                         @NotNull HttpMethod method,
+                         @NotNull @Valid HttpMethod method,
                          @NotBlank String path,
                          @Positive int capacity,
                          @NotNull @DurationMin(seconds = 5) Duration window,
-                         @NotNull RateLimitKey key) {
+                         @NotNull @Valid RateLimitKey key) {
     }
 }

@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.shared.domain.user.security;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.nramc.dev.journey.api.shared.utils.EmailAddressObfuscator;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -13,8 +12,8 @@ public record UserSecurityAttribute(
         String value,
         boolean enabled,
         boolean verified,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate creationDate,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate lastUpdateDate
+        @NotNull LocalDate creationDate,
+        @NotNull LocalDate lastUpdateDate
 ) {
     public UserSecurityAttribute obfuscateSensitiveInformation() {
         return UserSecurityAttribute.builder()

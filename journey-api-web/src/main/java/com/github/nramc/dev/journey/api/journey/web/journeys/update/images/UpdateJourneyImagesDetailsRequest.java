@@ -1,6 +1,5 @@
 package com.github.nramc.dev.journey.api.journey.web.journeys.update.images;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -17,7 +16,7 @@ public record UpdateJourneyImagesDetailsRequest(List<ImageDetail> images) {
             String title,
             boolean isFavorite,
             boolean isThumbnail,
-            @JsonFormat(pattern = "yyyy-MM-dd") LocalDate eventDate) {
+            LocalDate eventDate) {
 
     }
 }

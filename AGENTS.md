@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Java 21 + Spring Boot 4 **BFF (Backend For Frontend)** REST API for the [Journeys SPA](https://journey.codewithram.dev).
+Java 25 + Spring Boot 4 **BFF (Backend For Frontend)** REST API for the [Journeys SPA](https://journey.codewithram.dev).
 Persists geospatial journey data in MongoDB Atlas using GeoJSON (`geojson4j` library). Deployed via Docker to Render.
 
 
