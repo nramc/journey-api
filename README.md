@@ -44,7 +44,7 @@ The service uses MongoDB for persistence and Mailpit for local email testing.
 Spring Boot's Docker Compose integration automatically starts all required infrastructure (MongoDB, Mongo Express,
 Mailpit)
 when the application is run with the `dev` profile — no manual `docker compose up` needed.
-Make sure you have **Docker** and **Java 21** installed.
+Make sure you have **Docker** and **Java 25** installed.
 
 ### Installation
 

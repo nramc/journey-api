@@ -1,5 +1,5 @@
 # Use a JDK image for the build stage; we run the Maven Wrapper to ensure consistent Maven/version
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:25-jdk AS build
 
 WORKDIR /workspace
 
@@ -13,8 +13,8 @@ RUN chmod +x ./mvnw
 # -B = batch mode, adjust profiles to match your intended build
 RUN ./mvnw -B package -P release -pl '!journey-api-tests' -DskipTests
 
-# Final runtime image: use a matching JRE for Java 21
-FROM eclipse-temurin:21-jre
+# Final runtime image: use a matching JRE for Java 25
+FROM eclipse-temurin:25-jre
 
 # Install any needed packages (alpine vs debian depends on chosen base; using debian-based jre above)
 RUN apt-get update \

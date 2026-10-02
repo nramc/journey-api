@@ -2,7 +2,7 @@
 
 ## Project Context
 
-Java 21 + Spring Boot 4 BFF REST API for the Journeys SPA. Persists geospatial data in MongoDB using GeoJSON via the
+Java 25 + Spring Boot 4 BFF REST API for the Journeys SPA. Persists geospatial data in MongoDB using GeoJSON via the
 `geojson4j` library (`io.github.nramc:geojson4j`). Multi-module Maven project — all source lives in `journey-api-web`.
 
 ---
